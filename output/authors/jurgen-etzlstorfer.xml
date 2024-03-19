@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Ansible Collaborative (Posts by Jürgen Etzlstorfer)</title><link>https://ansible.com/</link><description></description><atom:link href="https://ansible.com/authors/jurgen-etzlstorfer.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2024 &lt;a href="mailto:website@ansible.community"&gt;Ansible Collaborative, et al&lt;/a&gt; </copyright><lastBuildDate>Mon, 18 Mar 2024 19:47:35 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Enable self-healing applications with Ansible and Dynatrace</title><link>https://ansible.com/blog/enable-self-healing-applications-with-ansible-and-dynatrace/</link><dc:creator>Jürgen Etzlstorfer</dc:creator><description>&lt;h2&gt;Enable self-healing applications with Ansible and Dynatrace&lt;/h2&gt;
+&lt;p&gt;The size, complexity and high rate of change in today's IT environments
+can be overwhelming. Enabling the performance and availability of these
+modern microservice environments is a constant challenge for IT
+organizations.&lt;/p&gt;
+&lt;p&gt;One trend contributing to this rate of change is the adoption of IT
+automation for provisioning, configuration management and ongoing
+operations. For this blog, we want to highlight the repeatable and
+consistent outcomes allowed by IT automation, and explore what is
+possible when Ansible automation is extended to the application
+monitoring platform Dynatrace.&lt;/p&gt;
+&lt;h3&gt;Monitoring Today&lt;/h3&gt;
+&lt;p&gt;Considering the size, complexity and high rate of change in today\'s IT
+environments, traditional methods of monitoring application performance
+and availability are often necessary and commonplace in most operations
+teams. Application performance monitoring (APM) platforms are used to
+detect bottlenecks and problems that can impact the experience of your
+customers.&lt;/p&gt;
+&lt;p&gt;Monitoring alone, however, isn't always enough to help keep your
+applications running at peak performance. When issues are detected, APM
+platforms are designed to alert the operator of the problem and its
+root-cause. The Ops team can then agree on a corrective action, and
+implement this action against the impacted systems.&lt;/p&gt;
+&lt;p&gt;What if common or time-consuming corrective actions could be automated?&lt;/p&gt;
+&lt;h3&gt;Dynatrace Automates Remediation&lt;/h3&gt;
+&lt;p&gt;The Dynatrace APM platform provides AI-powered, full stack performance
+monitoring of your microservice environments and its underlying
+infrastructure. Dynatrace enables insights into your IT operation and
+detects if areas of your environment do not meet performance or error
+rate thresholds by an automated baselining.&lt;/p&gt;
+&lt;p&gt;Once Dynatrace detects abnormal system behavior that affects real users,
+a problem alert is created that groups all incidents that share the same
+root-cause.&lt;/p&gt;
+&lt;p&gt;Demo application triggers a Problem alert. Dynatrace detected a
+degradation in response time, impacting 54 real users and more than 300
+service calls:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Dynatrace Problem Alert" src="https://ansible.com/images/posts/archive/Ansible-Dynatrace-2.png"&gt;&lt;/p&gt;
+&lt;p&gt;As soon as Dynatrace detects a problem within an environment, a problem
+notification can be sent out to third party systems to notify them about
+the incidents. Dynatrace allows users to integrate with Ansible Tower as
+a Notification System, allowing operators to launch Ansible Tower job
+templates from Dynatrace Problem Notifications.&lt;/p&gt;
+&lt;p&gt;Ansible Tower is now available as a featured third-party integration
+within the Dynatrace Notification System:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Ansible Tower integration with Dynatrace" src="https://ansible.com/images/posts/archive/Ansible-Dynatrace-4.png"&gt;&lt;/p&gt;
+&lt;p&gt;The integration also allows transferring contextual information for the
+detected problem. This means Ansible job templates can leverage these
+extra variables for a context-aware, finer grained remediation in terms
+of executing a predefined playbook. &lt;/p&gt;
+&lt;p&gt;Specify the Ansible Tower job template URL, credentials and an optional
+custom message. The Notification can be saved and will be triggered as
+soon as Dynatrace detects a problem in your
+environment:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Ansible Tower job template" src="https://ansible.com/images/posts/archive/Ansible-Dynatrace-3.png"&gt;&lt;/p&gt;
+&lt;p&gt;Execution of a job template triggered by the Dynatrace problem
+notification sent to\
+Ansible Tower:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Dynatrace executes Ansible Tower job" src="https://ansible.com/images/posts/archive/Ansible-Dynatrace-1.png"&gt;&lt;/p&gt;
+&lt;p&gt;Note that extra variables are passed with the job template, designed to eliminate the need for the operator to provide this contextual information.&lt;/p&gt;
+&lt;h3&gt;Self-Healing Applications in Action&lt;/h3&gt;
+&lt;p&gt;Once your Ansible job templates are in place and customized for
+facilitating remediation tasks and the integration within Dynatrace is
+set up, the workflow for your self-healing applications looks as
+follows:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Dynatrace monitors your environment and detects problems once they
+    affect real users&lt;/li&gt;
+&lt;li&gt;Dynatrace sends a problem notification to Ansible Tower&lt;/li&gt;
+&lt;li&gt;Ansible Tower launches the specified job template to start the
+    remediation&lt;/li&gt;
+&lt;li&gt;Once the problem is resolved, Dynatrace closes the problem&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;As you can see, the Dynatrace - Ansible Tower integration is designed to
+simplify the setup of IT management automation tasks. Furthermore, the
+integration of Ansible Tower into the Dynatrace Problem Notifications
+workflow enables self-healing applications by triggering pre-defined,
+automatable Ansible job templates that are executed by Ansible Tower
+each time a problem is detected.&lt;/p&gt;</description><guid>https://ansible.com/blog/enable-self-healing-applications-with-ansible-and-dynatrace/</guid><pubDate>Fri, 13 Apr 2018 00:00:00 GMT</pubDate></item></channel></rss>

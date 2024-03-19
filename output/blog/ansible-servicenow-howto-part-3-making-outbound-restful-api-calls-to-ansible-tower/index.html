@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html prefix="
+og: http://ogp.me/ns# article: http://ogp.me/ns/article#
+" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="Making outbound RESTful API calls to Red Hat Ansible Tower">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ansible and ServiceNow Part 3, Making outbound RESTful API calls to Red Hat Ansible Tower | Ansible Collaborative</title>
+<link href="../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/baguetteBox.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/rst.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/code.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/theme.css" rel="stylesheet" type="text/css">
+<!-- Red Hat fonts --><link rel="stylesheet" href="https://static.redhat.com/libs/redhat/redhat-font/2.0.0/webfonts/red-hat-font.css">
+<!-- Font Awesome --><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+<!-- Fork Awesome --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css" integrity="sha256-XoaMnoYC5TH6/+ihMEnospgm0J1PM/nioxbOUdnM8HY=" crossorigin="anonymous">
+<!-- Sass compiled css  --><link rel="stylesheet" href="../../assets/css/main.css">
+<link rel="stylesheet" href="../../assets/css/redhat-footer.css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://ansible.com/blog/ansible-servicenow-howto-part-3-making-outbound-restful-api-calls-to-ansible-tower/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Michael Ford">
+<link rel="prev" href="../kubernetes-operators-ansible-deep-dive-part-2/" title="Kubernetes Operators with Ansible Deep Dive, Part 2" type="text/html">
+<link rel="next" href="../getting-started-with-ansible-collections/" title="Getting Started With Ansible Content Collections" type="text/html">
+<meta property="og:site_name" content="Ansible Collaborative">
+<meta property="og:title" content="Ansible and ServiceNow Part 3, Making outbound RESTful API calls to Re">
+<meta property="og:url" content="https://ansible.com/blog/ansible-servicenow-howto-part-3-making-outbound-restful-api-calls-to-ansible-tower/">
+<meta property="og:description" content="Making outbound RESTful API calls to Red Hat Ansible Tower">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-10-09T00:00:00Z">
+</head>
+<body id="top">
+
+<div class="global-container" id="content" role="main">
+<!-- Start menubar -->
+<nav class="navbar navbar-expand-lg static-top mb-4 navbar-padding full-width-bg   navbar-dark   bg-pool   "><div class="masthead">
+    <!-- This keeps the margins nice -->
+    <a class="navbar-brand" href="../../">
+        <img src="../../images/ansible_logo-small-15.png" alt="Ansible community logo" id="logo" class="d-inline-block align-top" width="50" height="50"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon nav-toggle-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="bs-navbar">
+      <ul class="navbar-nav mr-auto"></ul>
+<ul class="navbar-nav navbar-right">
+<li class="nav-item dropdown">
+	        <a href="#" class="nav-link nav-link-color dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <i class=""></i> Documentation
+                </a>
+		<div class="dropdown-menu dropdown-menu-border">
+	    
+                    <a href="https://docs.ansible.com/" class="dropdown-item">
+		        <i class=""></i> Project documentation
+                    </a>
+                    <a href="https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/" class="dropdown-item">
+		        <i class=""></i> Ansible Automation Platform documentation
+                    </a>
+            </div>
+                 </li>
+<li class="nav-item">
+		     <a href="https://galaxy.ansible.com/" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Galaxy
+		     </a>
+		 </li>
+                 <li class="nav-item">
+		     <a href="https://forum.ansible.com/" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Forum
+		     </a>
+		 </li>
+            <li class="nav-item dropdown">
+	        <a href="#" class="nav-link nav-link-color dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <i class=""></i> Resources
+                </a>
+		<div class="dropdown-menu dropdown-menu-border">
+	    
+                    <a href="../../how-ansible-works/" class="dropdown-item">
+		        <i class=""></i> How Ansible works
+                    </a>
+                    <a href="../../ecosystem/" class="dropdown-item">
+		        <i class=""></i> Ansible ecosystem
+                    </a>
+                    <a href="../archive.html" class="dropdown-item">
+		        <i class=""></i> Blog
+                    </a>
+                    <a href="../../faq/" class="dropdown-item">
+		        <i class=""></i> Frequently asked questions
+                    </a>
+                    <a href="../../ansible-community-training/" class="dropdown-item">
+		        <i class=""></i> Ansible community training
+                    </a>
+                    <a href="../../contact-us/" class="dropdown-item">
+		        <i class=""></i> Contact us
+                    </a>
+            </div>
+                 </li>
+<li class="nav-item">
+		     <a href="https://www.redhat.com/en/technologies/management/ansible?sc_cid=7015Y000003szaKQAQ" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Ansible Automation Platform
+		     </a>
+		 </li>
+
+        
+      </ul>
+</div>
+    <!-- /.navbar-collapse -->
+  </div>
+  <!-- /.container -->
+</nav><!-- End default Menubar --><div class="body-content center-band">
+        <!--Body content-->
+        
+  <article class="post-text h-entry hentry postpage ansible-content" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Ansible and ServiceNow Part 3, Making outbound RESTful API calls to Red Hat Ansible Tower</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard p-author h-card"><span class="byline-name fn p-name" itemprop="author">
+                    <a class="u-url" href="../../authors/michael-ford/">Michael Ford</a>
+            </span></p>
+            <p class="dateline">
+            <a href="." rel="bookmark">
+            <time class="published dt-published" datetime="2019-10-09T00:00:00Z" itemprop="datePublished" title="2019-10-09 00:00">2019-10-09 00:00</time></a>
+            </p>
+                    <p class="sourceline"><a href="index.md" class="sourcelink">Source</a></p>
+
+        </div>
+        
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+<h2>Ansible and ServiceNow Part 3, Making outbound RESTful API calls to Red Hat Ansible Tower</h2>
+<p>Red Hat Ansible Tower offers value by allowing automation to scale in a
+checked manner - users can run playbooks for only the processes and
+targets they need access to, and no further. </p>
+<p>Not only does Ansible Tower provide automation at scale, but it also
+integrates with several external platforms. In many cases, this means
+that users can use the interface they are accustomed to while launching
+Ansible Tower templates in the background. </p>
+<p>One of the most ubiquitous self service platforms in use today is
+ServiceNow, and many of the enterprise conversations had with Ansible
+Tower customers focus on ServiceNow integration. With this in mind, this
+blog entry walks through the steps to set up your ServiceNow instance to
+make outbound RESTful API calls into Ansible Tower, using OAuth2
+authentication.</p>
+<p>The following software versions are used:</p>
+<ul>
+<li>Ansible Tower: 3.4, 3.5</li>
+<li>ServiceNow: London, Madrid</li>
+</ul>
+<p>If you sign up for a ServiceNow Developer account, ServiceNow offers a
+free instance that can be used for replicating and testing this
+functionality. Your ServiceNow instance needs to be able to reach your
+Ansible Tower instance. Additionally, you can visit
+<a href="https://ansible.com/license">https://ansible.com/license</a> to obtain a trial license for Ansible
+Tower. Instructions for installing Ansible Tower can be found
+<a href="https://docs.ansible.com/ansible-tower/latest/html/quickinstall/prepare.html">here</a>. </p>
+<h3>Preparing Ansible Tower</h3>
+<ol>
+<li>
+<p>In Ansible Tower, navigate to <strong>Applications</strong> on the left side of
+the screen. Click the <strong>green plus button</strong> on the right, which will
+present you with a Create Application dialog screen. Fill in the
+following fields:</p>
+</li>
+<li>
+<p>Name: Descriptive name of the application that will contact Ansible Tower</p>
+</li>
+<li>Organization: The organization you wish this application to be a part of</li>
+<li>Authorization Grant Type: Authorization code</li>
+<li>Redirect URIS: <code>https://&lt;snow_instance_id&gt;.service-now.com/oauth_redirect.do</code>
+</li>
+<li>
+<p>Client Type: Confidential</p>
+<p><img alt="image3-4" src="../../images/posts/archive/image3-4.png"></p>
+</li>
+<li>
+<p>Click the green <strong>Save</strong> button on the right, at which point a
+window will pop up, presenting you with the Client ID and Client Secret
+needed for ServiceNow to make API calls into Ansible Tower. This will
+only be presented <strong>ONCE</strong>, so capture these values for later use.</p>
+<p><img alt="image18" src="../../images/posts/archive/image18.png"></p>
+</li>
+<li>
+<p>Next, navigate to <strong>Settings-&gt;System</strong> on the left side of the
+screen. You'll want to toggle the <strong>Allow External Users to Create
+Oauth2 Tokens</strong> option to <strong>on</strong>. Click the green <strong>Save</strong> button to commit the change.</p>
+<p><img alt="image4-4" src="../../images/posts/archive/image4-4.png"></p>
+</li>
+</ol>
+<h3>Preparing ServiceNow</h3>
+<ol>
+<li>
+<p>Moving over to ServiceNow, Navigate to <strong>System Definition-&gt;Certificates</strong>.
+This will take you to a screen of all the
+certificates Service Now uses. Click on the <strong>blue New button</strong>, and
+fill in these details:</p>
+</li>
+<li>
+<p>Name: Descriptive name of the certificate</p>
+</li>
+<li>Format: PEM</li>
+<li>Type: Trust Store Cert</li>
+<li>
+<p>PEM Certificate: The certificate to authenticate against Ansible
+    Tower with. You can use the built-in certificate on your Tower
+    server, located at <code>/etc/tower/tower.cert</code>. Copy the contents of this
+    file into the field in ServiceNow.</p>
+<p>Click the <strong>Submit</strong> button at the bottom.</p>
+<p><img alt="image9-1" src="../../images/posts/archive/image9-1.png"></p>
+</li>
+<li>
+<p>In ServiceNow, Navigate to <strong>System OAuth-&gt;Application Registry</strong>.
+This will take you to a screen of all the Applications ServiceNow
+communicates with. Click on the <strong>blue New button</strong>, and you will be
+asked What kind of Oauth application you want to set up. Select
+<strong>Connect to a third party Oauth Provider</strong>.</p>
+<p><img alt="image20" src="../../images/posts/archive/image20.png"></p>
+</li>
+<li>
+<p>On the new application screen, fill in these details:</p>
+</li>
+<li>
+<p>Name: Descriptive Application Name</p>
+</li>
+<li>Client ID: The Client ID you got from Ansible Tower</li>
+<li>Client Secret: The Client Secret you got from Ansible Tower</li>
+<li>Default Grant Type: Authorization Code</li>
+<li>Authorization URL: <code>https://&lt;tower_url&gt;/api/o/authorize/</code>
+</li>
+<li>Token URL: <code>https://&lt;tower_url&gt;/api/o/token/</code>
+</li>
+<li>
+<p>Redirect URL: <code>https://&lt;snow_instance_id&gt;.service-now.com/oauth_redirect.do</code></p>
+<p>Click the <strong>Submit</strong> button at the bottom.</p>
+<p><img alt="image19" src="../../images/posts/archive/image19.png"></p>
+</li>
+<li>
+<p>You should be taken out to the list of all Application Registries.
+Click back into the Application you just created. At the bottom, there
+should be two tabs: Click on the tab <strong>Oauth Entity Scopes</strong>. Under
+here, there is a section called <strong>Insert a new row...</strong>. Double click
+here, and fill in the field to say Writing Scope. Click on the <strong>green
+check mark</strong> to confirm this change. Then, right-click inside the grey
+area at the top where it says Application Registries and click Save in
+the menu that pops up.</p>
+<p><img alt="image11-1" src="../../images/posts/archive/image11-1.png"></p>
+</li>
+<li>
+<p>The writing scope should now be Clickable. Click on it, and in the
+dialog window that you are taken to, type <strong>write</strong> in the Oauth scope
+box. Click the Update button at the bottom.</p>
+<p><img alt="image7-1" src="../../images/posts/archive/image7-1.png"></p>
+</li>
+<li>
+<p>Back in the Application Settings page, scroll back to the bottom and
+click the <strong>Oauth Entity Profiles</strong> tab. There should be an entity
+profile populated - click into it.</p>
+<p><img alt="image21" src="../../images/posts/archive/image21.png"></p>
+</li>
+<li>
+<p>You will be taken to the Oauth Entity Profile Window. At the
+bottom, Type <strong>Writing Scope</strong> into the Oauth Entity Scope field. Click
+the green check mark and update.</p>
+<p><img alt="image23" src="../../images/posts/archive/image23.png"></p>
+</li>
+<li>
+<p>Navigate to <strong>System Web Services -&gt; REST Messages</strong>. Click the
+blue <strong>New</strong> button. In the resulting dialog window, fill in the
+following fields:</p>
+</li>
+<li>
+<p>Name: Descriptive REST Message Name</p>
+</li>
+<li>Endpoint: The url endpoint of the Ansible Tower action you wish to
+    do. This can be taken from the browsable API at
+    <code>https://&lt;tower_url&gt;/api</code>
+</li>
+<li>Authentication Type: Oauth 2.0</li>
+<li>
+<p>Oauth Profile: Select the Oauth profile you created</p>
+<p>Right-click inside the grey area at the top; click <strong>Save</strong>.</p>
+<p><img alt="image10-1" src="../../images/posts/archive/image10-1.png"></p>
+</li>
+<li>
+<p>Click the <strong>Get Oauth Token</strong> button on the REST Message screen.
+This will generate a pop-up window asking to authorize ServiceNow
+against your Ansible Tower instance/cluster. Click Authorize. ServiceNow will now have an OAuth2 token to authenticate against your Ansible Tower server.</p>
+<p><img alt="image22" src="../../images/posts/archive/image22.png"></p>
+</li>
+<li>
+<p>Under the HTTP Methods section at the bottom, click the blue New button. At the new dialog window that appears, fill in the following fields:</p>
+</li>
+<li>
+<p>HTTP Method: POST</p>
+</li>
+<li>Name: Descriptive HTTP Method Name</li>
+<li>Endpoint: The url endpoint of the Ansible Tower action you wish to do. This can be taken from the browsable API at
+    <code>https://&lt;tower_url&gt;/api</code>
+</li>
+<li>HTTP Headers (under the HTTP Request tab)<ul>
+<li>The only HTTP Header that should be required is <em>Content-Type: application/json</em>
+</li>
+</ul>
+</li>
+</ol>
+<p>You can kick off a RESTful call to Ansible Tower using these parameters
+with the <strong>Test</strong> link.</p>
+<p><img alt="image6-3" src="../../images/posts/archive/image6-3.png"></p>
+<h3>Testing connectivity between ServiceNow and Ansible Tower</h3>
+<p>Clicking the <strong>Test</strong> link will take you to a results screen, which
+should indicate that the Restful call was sent successfully to Ansible
+Tower. In this example, ServiceNow kicks off an Ansible Tower job
+Template, and the response includes the Job ID in Ansible Tower: 276.</p>
+<p><img alt="image eight" src="../../images/posts/archive/image-88.png"></p>
+<p>You can confirm that this Job Template was in fact started by going back
+to Ansible Tower and clicking the <strong>Jobs</strong> section on the left side of
+the screen; a Job with the same ID should be in the list (and, depending
+on the playbook size, may still be in process):</p>
+<p><img alt="image15" src="../../images/posts/archive/image15.png"></p>
+<h3>Creating a ServiceNow Catalog Item to Launch an Ansible Tower Job Template</h3>
+<p>Now that you are able to make outbound RESTful calls from
+ServiceNow to Ansible Tower, it's time to create a catalog item for
+users to select in ServiceNow in a production self-service fashion.
+While in the HTTP Method options, click the <strong>Preview Script Usage</strong>
+link:</p>
+<p><img alt="image nine" src="../../images/posts/archive/image-99.png"></p>
+<p>Copy the resulting script the appears, and paste it into a text editor
+to reference later.</p>
+<ol>
+<li>
+<p>In ServiceNow, navigate to <strong>Workflow -&gt; Workflow Editor.</strong> This
+will open a new tab with a list of all existing ServiceNow workflows.
+Click on the blue <strong>New Workflow</strong> button:</p>
+<p><img alt="image16" src="../../images/posts/archive/image16.png"></p>
+</li>
+<li>
+<p>In the <strong>New Workflow</strong> dialog box that appears, fill in the
+following options:</p>
+</li>
+<li>
+<p>Name: A descriptive name of the workflow</p>
+</li>
+<li>
+<p>Table: Requested Item <code>sc_req_item</code></p>
+<p>Everything else can be left alone. Click the <strong>Submit</strong> button.</p>
+<p><img alt="image1-10" src="../../images/posts/archive/image1-10.png"></p>
+</li>
+<li>
+<p>The resulting Workflow Editor will have only a Begin and End box.
+Click on the line (it will turn blue to indicate it has been selected),
+then press delete to get rid of it.</p>
+<p><img alt="image14-1" src="../../images/posts/archive/image14-1.png"></p>
+</li>
+<li>
+<p>On the right side of the Workflow Editor Screen, select the Core
+tab and, under Core Activities-&gt;Utilities, drag the Run Script option
+into the Workflow Editor. In the new dialog box that appears, type in a
+descriptive name, and paste in the script you captured from before.
+Click Submit to save the Script.</p>
+<p><img alt="image12-1" src="../../images/posts/archive/image12-1.png"></p>
+</li>
+<li>
+<p>Draw a connection from <strong>Begin</strong>, to the newly created Run Script
+Box, and another from the <strong>Run Script</strong> box to <strong>End</strong>. Afterward,
+click on the three horizontal lines to the left of the Workflow name,
+and select the <strong>Publish</strong> option. You are now ready to associate this
+workflow with a catalog item.</p>
+<p><img alt="image8-1" src="../../images/posts/archive/image8-1.png"></p>
+</li>
+<li>
+<p>Navigate to <strong>Service Catalog -&gt; Catalog Definitions -&gt; Maintain Items</strong>. Click the blue <strong>New</strong> button on the resulting item list. In
+the resulting dialog box, fill in the following fields:</p>
+</li>
+<li>
+<p>Name: Descriptive name of the Catalog Item</p>
+</li>
+<li>Catalog: The catalog that this item should be a part of</li>
+<li>
+<p>Category: Required if you wish users to be able to search for this
+    item</p>
+<p>In the Process Engine tab, populate the <strong>Workflow</strong> field with the Workflow you just created.
+Click the Submit Button.
+You've not created a new catalog item!</p>
+<p><img alt="image5-4" src="../../images/posts/archive/image5-4.png"></p>
+</li>
+<li>
+<p>Lastly, to run this catalog item, navigate to
+<strong>Self-Service -&gt; Homepage</strong> and search for the catalog item you just
+created. Once found, click the <strong>order now</strong> button. You can see the
+results page pop up in ServiceNow, and you can confirm that the Job is
+being run in Ansible Tower.</p>
+</li>
+</ol>
+<p>Congratulations! After completing these steps, you can now use a
+ServiceNow Catalog Item to launch Job and Workflow Templates in Ansible
+Tower. This is ideal for allowing end users to use a front end they are
+familiar with in order to perform automated tasks of varying
+complexities. This familiarity goes a long way toward reducing the time
+to value for the enterprise as a whole, rather than just the teams
+responsible for writing the playbooks being used.</p>
+</div>
+    <aside class="postpromonav"><nav><ul class="pager hidden-print">
+<li class="previous">
+                <a href="../kubernetes-operators-ansible-deep-dive-part-2/" rel="prev" title="Kubernetes Operators with Ansible Deep Dive, Part 2">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../getting-started-with-ansible-collections/" rel="next" title="Getting Started With Ansible Content Collections">Next post</a>
+            </li>
+        </ul></nav></aside></article><!--End of body content-->
+</div>
+        <div class="content-slim redhat-footer">
+      <div class="footer-left">
+        <ul class="footer-left-links">
+<li>
+            <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-SA 4.0</a>
+          </li>
+          <li>
+            <a href="https://www.redhat.com/en/about/privacy-policy" target="_blank">Privacy policy</a>
+          </li>
+          <li>
+            <a href="https://docs.ansible.com/ansible/latest/community/code_of_conduct.html" target="_blank">Code of conduct</a>
+          </li>
+        </ul>
+</div>
+      <div class="footer-right">
+        <span class="redhat">Powered by</span>
+        <span class="redhat-logo">
+          <a href="https://www.redhat.com/en/technologies/management/ansible" target="_blank">
+            <img src="../../assets/images/redhat_reversed.svg" alt="Red Hat logo." width="96" height="28"></a>
+        </span>
+      </div>
+    </div>
+
+</div>
+
+            <script src="../../assets/js/jquery.min.js"></script><script src="../../assets/js/popper.min.js"></script><script src="../../assets/js/bootstrap.min.js"></script><script src="../../assets/js/baguetteBox.min.js"></script><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+</script><script src="../../assets/js/clipboard.min.js" type="text/javascript"></script><script src="../../assets/js/clipboard.js" type="text/javascript"></script>
+</body>
+</html>

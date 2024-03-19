@@ -1,0 +1,74 @@
+<p><img alt="Ansible Bullhorn banner" src="/images/bullhorn-banner-mango.png"></p>
+<h2>The Bullhorn</h2>
+<p><em>A Newsletter for the Ansible Developer Community</em>
+<em>Issue #29, 2021-07-01 (<a href="https://us19.campaign-archive.com/home/?u=56d874e027110e35dea0e03c1&amp;id=d6635f5420">Past Issues</a>)</em></p>
+<p>Welcome to the Bullhorn, our newsletter for the Ansible developer community. If you have any questions or content you’d like to share, please reach out to us at the-bullhorn@redhat.com, or comment on this <a href="https://github.com/ansible/community/issues/546">GitHub issue</a>.</p>
+<!-- TEASER_END -->
+
+<p><strong>KEY DATES</strong></p>
+<ul>
+<li>2021-07-07: <a href="https://github.com/ansible/community/issues/539">community IRC meeting</a>, 18:00 UTC (propose topics <a href="https://github.com/ansible-community/community-topics/issues">here</a>)</li>
+<li>2021-07-08: <a href="https://github.com/ansible/community/issues/577">D&amp;I working group meeting</a>, 19:00 UTC</li>
+<li>2021-07-13: <a href="https://github.com/ansible/community/issues/546">Bullhorn #30 content deadline</a></li>
+<li>2021-07-14: <a href="https://github.com/ansible/community/issues/539">community IRC meeting</a>, 18:00 UTC (propose topics <a href="https://github.com/ansible-community/community-topics/issues">here</a>)</li>
+<li>2021-07-19: ETA for Ansible-Core 2.11.3 and Ansible-Base 2.10.12 release</li>
+<li>2021-07-20: <a href="https://docs.ansible.com/ansible/devel/roadmap/COLLECTIONS_4.html">ETA for Ansible 4.3.0 release</a></li>
+</ul>
+<p><strong>ANSIBLE 4.2.0 RELEASED</strong></p>
+<p>The Ansible Community team announced the availability of Ansible 4.2.0 on June 30th. This update contains bugfixes and new, backwards compatible features in the contained collections. The release makes use of Ansible-core-2.11. There may be changes to the playbook language or other backwards incompatibilities. Please see the <a href="https://docs.ansible.com/ansible/devel/porting_guides/porting_guide_4.html">porting guide</a> for details.</p>
+<p>For what's new in this release and how to get it, please see <a href="https://groups.google.com/g/ansible-announce/c/LzSCGkYpdOU">Toshio Kuratomi’s email to the ansible-announce list</a>. </p>
+<p>We're planning to release Ansible 5.0.0 in November 2021, bringing in the Ansible-core-2.12 release.</p>
+<p><strong>ANSIBLE-CORE 2.11.2, ANSIBLE-BASE 2.10.11, AND ANSIBLE 2.9.23 RELEASED</strong></p>
+<p>The Ansible Core team announced the maintenance releases of Ansible-Core 2.11.2, Ansible-Base 2.10.11, and Ansible 2.9.23 on June 22nd. These releases fix a templating security issue, CVE-2021-3583, in addition to several other bugs. Follow <a href="https://groups.google.com/g/ansible-devel/c/nPmBIXpGrPk">this link</a> for Rick Elrod’s email to the ansible-devel mailing list, to obtain details on what’s new, installation instructions, and schedule for future releases.</p>
+<p><strong>ANTSIBULL-CHANGELOG AND ANSIBLE-PYGMENTS</strong></p>
+<p>The changelog generator <a href="https://github.com/ansible-community/antsibull-changelog">antsibull-changelog</a> 0.11.0 has been released, with support for detecting new roles in collections.</p>
+<p><a href="https://github.com/ansible-community/ansible-pygments/">ansible-pygments</a> 0.1.0 has been released. This package provides a Pygments lexer <code>ansible-output</code> for highlighting <code>ansible-playbook</code> output, and the Pygments color scheme used for the Ansible docsite.</p>
+<p><strong>NEW/UPDATED COMMUNITY COLLECTIONS</strong></p>
+<ul>
+<li>Foreman Ansible Collection - <a href="https://galaxy.ansible.com/theforeman/foreman">theforeman.foreman</a> <a href="https://theforeman.github.io/foreman-ansible-modules/v2.1.1/CHANGELOG.html#v2-1-1">2.1.0 and 2.1.1</a> were released. Most notable changes include:</li>
+<li>more <code>*_info</code> modules: content_view_info, content_view_version_info, domain_info, host_errata_info, repository_set_info, setting_info, subnet_info, and subscription_info</li>
+<li>new roles: content_rhel, hostgroups, content_views, organizations, and content_credentials</li>
+<li><code>compute_resource</code> module can now better manage Azure compute resources</li>
+<li>important bugfix in 2.1.1: host, hostgroup - don’t override already set parameters when passing an activation key only (and vice versa).</li>
+<li>Ansible Collection for ServiceNow ITSM - <a href="https://galaxy.ansible.com/servicenow/itsm">servicenow.itsm</a> <a href="https://github.com/ansible-collections/servicenow.itsm/blob/1.1.0/CHANGELOG.rst">1.1.0</a> released. Most Notable changes include:</li>
+<li>support for <code>refresh_token</code> in the login mechanism</li>
+<li>support for specifying queries in the <code>*_info</code> modules.</li>
+<li>Openstack Ansible Collection - <a href="https://galaxy.ansible.com/openstack/cloud">openstack.cloud</a> <a href="https://github.com/openstack/ansible-collections-openstack/blob/master/CHANGELOG.rst#v1-5-0">1.5.0</a> was released with a lot of bugfixes, improvements, and 3 new modules: <a href="https://github.com/openstack/ansible-collections-openstack/blob/master/plugins/modules/address_scope.py">address_scope</a>, <a href="https://github.com/openstack/ansible-collections-openstack/blob/master/plugins/modules/dns_zone_info.py">dns_zone_info</a>, and <a href="https://github.com/openstack/ansible-collections-openstack/blob/master/plugins/modules/floating_ip_info.py">floating_ip_info</a>.</li>
+<li>Podman Ansible Collection - <a href="https://galaxy.ansible.com/containers/podman">containers.podman</a> <a href="https://github.com/containers/ansible-podman-collections/blob/master/CHANGELOG.rst#v1-6-0">1.6.0</a> and <a href="https://github.com/containers/ansible-podman-collections/blob/master/CHANGELOG.rst#v1-6-1">1.6.1</a> were released. New module <a href="https://github.com/containers/ansible-podman-collections/blob/master/plugins/modules/podman_play.py">podman_play</a> was introduced for playing Kubernetes YAML files as Podman Pods.</li>
+<li>Ansible VMware vSphere Collection - <a href="https://galaxy.ansible.com/vmware/vmware_rest">vmware.vmware_rest</a> 2.0.0 released (new major version). Notable changes:</li>
+<li>a new set of modules to manage the vCenter appliances (VCSA)</li>
+<li>modules to manage Library, including snapshoting and booting VM through an OVF.</li>
+<li>TrendMicro DeepSecurity Ansible Collection - <a href="https://galaxy.ansible.com/trendmicro/deepsec">trendmicro.deepsec</a> <a href="https://github.com/ansible-collections/trendmicro.deepsec/blob/main/changelogs/CHANGELOG.rst#v110">1.1.0</a> released. Two new modules are introduced in this release:</li>
+<li>deepsec_apikey - Create new and manage API Keys</li>
+<li>deepsec_system_settings - Modify the system settings for TrendMicro Deep Security.</li>
+<li>Docker Community Collection - <a href="https://galaxy.ansible.com/community/docker">community.docker</a> 1.8.0 has been released with bugfixes and new features.</li>
+<li>Community HashiVault Collection - <a href="https://galaxy.ansible.com/community/hashi_vault">community.hashi_vault</a> <a href="https://github.com/ansible-collections/community.hashi_vault/releases/tag/1.2.0">1.2.0</a> and <a href="https://github.com/ansible-collections/community.hashi_vault/releases/tag/1.3.0">1.3.0</a> have been released. A new <a href="https://docs.ansible.com/ansible/devel/collections/community/hashi_vault/docsite/user_guide.html">User Guide</a> has also been published providing some detailed information about certain options.</li>
+<li>Community General Collection - <a href="https://galaxy.ansible.com/community/general">community.general</a> 1.3.11, 2.5.4, and 3.3.0 (plus 3.3.1) have been released. The former two with bugfixes, and the latter with new features and bugfixes.</li>
+<li>Community Sops Collection - <a href="https://galaxy.ansible.com/community/sops">community.sops</a> <a href="https://github.com/ansible-collections/community.sops/releases/tag/1.1.0">1.1.0</a> has been released, with a minor change to use public API from Ansible, and the addition of the <code>decrypt</code> filter.</li>
+<li>Community RouterOS Collection - <a href="https://galaxy.ansible.com/community/routeros">community.routeros</a> 1.2.0 has been released.</li>
+</ul>
+<p><strong>ANSIBLE DOCUMENTATION UPDATE</strong></p>
+<p>The <a href="https://docs.ansible.com/ansible/devel/collections/index.html">Ansible devel docsite</a> will now always include the latest release version (the latest version that's not a prerelease according to semantic versioning) of all collections that will appear in the next Ansible release, instead of using exactly the same versions as the latest Ansible release. This means that <code>devel</code> for example includes community.hashi_vault 1.3.0, while the latest Ansible release available at time of writing (ansible-4.1.0) only contains community.hashi_vault 1.1.3. Also if community.hashi_vault 2.0.0 would have been released, it would be used for the <code>devel</code> docs, even if future Ansible 4.x.0 releases will only contain 1.y.z releases.</p>
+<p>This allows collection developers and users to read documentation for the latest collection release, instead of just having docs for the latest release that's included in some Ansible version.</p>
+<p>You can also see that the collection releases mentioned above - theforeman.foreman 2.1.1, community.routeros 1.2.0, and openstack.cloud 1.5.0 - are already documented on <a href="https://docs.ansible.com/ansible/devel/collections/index.html"><code>/devel/</code></a>, while <a href="https://docs.ansible.com/ansible/latest/collections/index.html"><code>/latest/</code></a> contains older versions of these collections.</p>
+<p><strong>LOOKING FOR COLLECTION MAINTAINERS/CONTRIBUTORS</strong></p>
+<p>The following collections - <a href="https://github.com/ansible-collections/community.mysql/issues/180">community.mysql</a>, <a href="https://github.com/ansible-collections/community.postgresql/issues/102">community.postgresql</a>, and <a href="https://github.com/ansible-collections/community.proxysql/issues/39">community.proxysql</a> - are looking for new maintainers and contributors! If you are interested, please refer to the corresponding pinned issues linked via the collection names.</p>
+<p><strong>REVIEWS AND FEEDBACK WANTED!</strong></p>
+<ul>
+<li>Requesting review on <a href="https://github.com/ansible-collections/ansible.netcommon/pull/279">gRPC connection plugin</a>. This PR will add a new connection plugin for gRPC based communication with network hosts.</li>
+<li>Requesting review on <a href="https://github.com/ansible-collections/ansible.network/issues/13">Platform agnostics network resource manager role</a> for <a href="https://github.com/ansible-collections/ansible.network">ansible.network</a> collection.</li>
+<li>Ansible has a new open source, data-centric, container-first, developer-friendly interface called <a href="https://github.com/ansible/ansible-navigator">ansible-navigator</a> which will be included in the next Red Hat Ansible Automation Platform release. We are looking forward to your feedback, issues, and PRs in the <a href="https://github.com/ansible/ansible-navigator">repo</a>. Please help us make this great!</li>
+</ul>
+<p><strong>CONTENT FROM THE ANSIBLE COMMUNITY</strong></p>
+<p><a href="https://github.com/rndmh3ro">Sebastian Gumprich</a> wrote a blog post in German on how to convert roles into collections: <a href="https://blog.t-systems-mms.com/tech-insights/von-einer-ansible-rolle-zur-collection-der-weg-ist-das-ziel">Von einer Ansible-Rolle zur Collection – der weg ist das ziel</a>.</p>
+<p><strong>THE ANSIBLE TEAM IS HIRING</strong></p>
+<p>Red Hat is hiring several roles to work on Ansible. Please check the job descriptions in the links and apply!</p>
+<ul>
+<li><a href="https://global-redhat.icims.com/jobs/86822/principal-software-engineer--ansible/job">Principal Software Engineer- Ansible</a></li>
+<li><a href="https://global-redhat.icims.com/jobs/82487/devops-automation-engineer---red-hat-ansible/job">DevOps Automation Engineer - Red Hat Ansible</a></li>
+</ul>
+<p><strong>ANSIBLE CONTRIBUTOR SUMMIT AND SURVEY</strong> </p>
+<p>Thanks to everyone who participated in the <a href="https://hackmd.io/@ansible-community/contrib-summit-202106">Ansible Contributor Summit 2021.06</a> on June 8, 2021! We are slightly delayed with the editing of the recordings, and will have the videos and logs available in the <a href="https://github.com/ansible/community/wiki/Contributor-Summit">Ansible Community wiki</a> soon. In the meantime, please take a few minutes to fill in the <a href="https://www.surveymonkey.co.uk/r/3YBYKTS">Contributor Survey</a> that we have put together.</p>
+<p>The next Contributor Summit will take place alongside AnsibleFest. The dates are not confirmed yet, but it will be in the week of September 27, 2021. Details to follow!</p>
+<p><strong>FEEDBACK</strong></p>
+<p>Have any questions you’d like to ask, or issues you’d like to see covered? Please send us an email at the-bullhorn@redhat.com.</p>

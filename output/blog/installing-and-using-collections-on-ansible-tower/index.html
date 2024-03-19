@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html prefix="
+og: http://ogp.me/ns# article: http://ogp.me/ns/article#
+" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="In this blog post we'll walk through using Ansible Collections with Ansible Tower, part of the Red Hat Ansible Automation Platform.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Installing and using collections on Ansible Tower | Ansible Collaborative</title>
+<link href="../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/baguetteBox.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/rst.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/code.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/theme.css" rel="stylesheet" type="text/css">
+<!-- Red Hat fonts --><link rel="stylesheet" href="https://static.redhat.com/libs/redhat/redhat-font/2.0.0/webfonts/red-hat-font.css">
+<!-- Font Awesome --><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+<!-- Fork Awesome --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css" integrity="sha256-XoaMnoYC5TH6/+ihMEnospgm0J1PM/nioxbOUdnM8HY=" crossorigin="anonymous">
+<!-- Sass compiled css  --><link rel="stylesheet" href="../../assets/css/main.css">
+<link rel="stylesheet" href="../../assets/css/redhat-footer.css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://ansible.com/blog/installing-and-using-collections-on-ansible-tower/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Ajay Chenampara">
+<link rel="prev" href="../ansible-security-automation-resource-modules/" title="Ansible security automation resource modules" type="text/html">
+<link rel="next" href="../deep-dive-on-cisco-asa-resource-modules/" title="Deep dive on Cisco ASA resource modules" type="text/html">
+<meta property="og:site_name" content="Ansible Collaborative">
+<meta property="og:title" content="Installing and using collections on Ansible Tower">
+<meta property="og:url" content="https://ansible.com/blog/installing-and-using-collections-on-ansible-tower/">
+<meta property="og:description" content="In this blog post we'll walk through using Ansible Collections with Ansible Tower, part of the Red Hat Ansible Automation Platform.">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2020-07-01T00:00:00Z">
+</head>
+<body id="top">
+
+<div class="global-container" id="content" role="main">
+<!-- Start menubar -->
+<nav class="navbar navbar-expand-lg static-top mb-4 navbar-padding full-width-bg   navbar-dark   bg-pool   "><div class="masthead">
+    <!-- This keeps the margins nice -->
+    <a class="navbar-brand" href="../../">
+        <img src="../../images/ansible_logo-small-15.png" alt="Ansible community logo" id="logo" class="d-inline-block align-top" width="50" height="50"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon nav-toggle-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="bs-navbar">
+      <ul class="navbar-nav mr-auto"></ul>
+<ul class="navbar-nav navbar-right">
+<li class="nav-item dropdown">
+	        <a href="#" class="nav-link nav-link-color dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <i class=""></i> Documentation
+                </a>
+		<div class="dropdown-menu dropdown-menu-border">
+	    
+                    <a href="https://docs.ansible.com/" class="dropdown-item">
+		        <i class=""></i> Project documentation
+                    </a>
+                    <a href="https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/" class="dropdown-item">
+		        <i class=""></i> Ansible Automation Platform documentation
+                    </a>
+            </div>
+                 </li>
+<li class="nav-item">
+		     <a href="https://galaxy.ansible.com/" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Galaxy
+		     </a>
+		 </li>
+                 <li class="nav-item">
+		     <a href="https://forum.ansible.com/" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Forum
+		     </a>
+		 </li>
+            <li class="nav-item dropdown">
+	        <a href="#" class="nav-link nav-link-color dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <i class=""></i> Resources
+                </a>
+		<div class="dropdown-menu dropdown-menu-border">
+	    
+                    <a href="../../how-ansible-works/" class="dropdown-item">
+		        <i class=""></i> How Ansible works
+                    </a>
+                    <a href="../../ecosystem/" class="dropdown-item">
+		        <i class=""></i> Ansible ecosystem
+                    </a>
+                    <a href="../archive.html" class="dropdown-item">
+		        <i class=""></i> Blog
+                    </a>
+                    <a href="../../faq/" class="dropdown-item">
+		        <i class=""></i> Frequently asked questions
+                    </a>
+                    <a href="../../ansible-community-training/" class="dropdown-item">
+		        <i class=""></i> Ansible community training
+                    </a>
+                    <a href="../../contact-us/" class="dropdown-item">
+		        <i class=""></i> Contact us
+                    </a>
+            </div>
+                 </li>
+<li class="nav-item">
+		     <a href="https://www.redhat.com/en/technologies/management/ansible?sc_cid=7015Y000003szaKQAQ" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Ansible Automation Platform
+		     </a>
+		 </li>
+
+        
+      </ul>
+</div>
+    <!-- /.navbar-collapse -->
+  </div>
+  <!-- /.container -->
+</nav><!-- End default Menubar --><div class="body-content center-band">
+        <!--Body content-->
+        
+  <article class="post-text h-entry hentry postpage ansible-content" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Installing and using collections on Ansible Tower</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard p-author h-card"><span class="byline-name fn p-name" itemprop="author">
+                    <a class="u-url" href="../../authors/ajay-chenampara/">Ajay Chenampara</a>
+            </span></p>
+            <p class="dateline">
+            <a href="." rel="bookmark">
+            <time class="published dt-published" datetime="2020-07-01T00:00:00Z" itemprop="datePublished" title="2020-07-01 00:00">2020-07-01 00:00</time></a>
+            </p>
+                    <p class="sourceline"><a href="index.md" class="sourcelink">Source</a></p>
+
+        </div>
+        
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+<h2>Installing and using collections on Ansible Tower</h2>
+<p>Ansible Collections are the new way to distribute and manage content.
+Ansible content can be modules, roles, plugins and even Ansible
+Playbooks. In my previous blog, I
+provide a walkthrough of using Ansible Collections from Ansible Galaxy
+and Automation Hub.  Ansible Galaxy is the upstream community for
+sharing Ansible Collections.  Any community user can create a namespace
+and share content with anyone. Access to Automation Hub is included with
+a Red Hat Ansible Automation Platform subscription. Automation Hub only
+contains fully supported and certified content from Red Hat and our
+partners.</p>
+<p>In this blog post we'll walk through using Ansible Collections with
+Ansible Tower, part of the Red Hat Ansible Automation Platform.  There
+are a few differences between using command-line Ansible for syncing
+with Ansible Galaxy or the Automation Hub versus using Ansible Tower.
+However, it is really easy and I will show you how!</p>
+<h3>Accessing collections content from Automation Hub and Galaxy from Ansible Tower.</h3>
+<p>If the Ansible Collections are included in your project you do not need
+to authenticate to Automation Hub. This method is where you are
+downloading dynamically using a requirements file.
+In general there are three strategies for using Ansible Collections with
+your environment:</p>
+<ol>
+<li>Install the collection into your runtime environment or virtual
+    environment</li>
+<li>Provide the collection as part of your SCM tree </li>
+<li>Use a requirements file</li>
+</ol>
+<p>When accessing content from Automation Hub, the authentication token and
+authentication URL configuration has to be made in Ansible Tower's
+settings. </p>
+<p><em>Note: Even if you have the authorization details in your ansible.cfg
+file within the project repo, it will not be picked up by Ansible Tower.
+You will need to enter these details in the Ansible Tower settings</em></p>
+<p>In order to do this, navigate to the <em>Settings &gt; Jobs</em>  sidebar link
+from the Ansible Tower administration section.</p>
+<p><img alt="tower jobs ui" src="../../images/posts/archive/tower-jobs-ui.png"></p>
+<p>Click on <em>Jobs</em> and update the following fields:</p>
+<ol>
+<li>PRIMARY GALAXY SERVER URL: <code>https://cloud.redhat.com/api/automation-hub/</code>
+</li>
+<li>PRIMARY GALAXY AUTHENTICATION URL: <code>https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token</code>
+</li>
+<li>PRIMARY GALAXY SERVER TOKEN: <code>xxxxxxxxxxxxxxxxxxxxxxxxx......</code>
+</li>
+</ol>
+<blockquote>
+<p>Red Hat recommends using Automation Hub for your primary Galaxy Server URL to ensure you are using certified content that is fully supported via your Red Hat Ansible Automation Platform subscription</p>
+</blockquote>
+<p><img alt="tower ui screenshot" src="../../images/posts/archive/tower-galaxy-connect-parameters.png"></p>
+<p>This is the only step you need to do in Ansible Tower in order to
+download the certified collection from Automation Hub which was defined
+in the <em>collections/requirements.yml</em> file.</p>
+<p>The playbook is invoked via a job template as usual.</p>
+<p><img alt="tower ui screenshot" src="../../images/posts/archive/tower-ui-demo-collections.png"></p>
+<p>Launching this job template results in the collections being pulled down
+from Automation Hub and Galaxy and invoking modules made available
+through those collections.</p>
+<p><img alt="ajay collections" src="../../images/posts/archive/ajay-blog-collections.png"></p>
+<h3>Conclusion</h3>
+<p>Ansible Collections introduce a way to modularize and package automation
+content effectively. The Red Hat Automation Hub hosts certified
+collections that are validated and supported by Red Hat. Ansible Galaxy
+hosts community contributed collections. Customers can access
+collections from both content repositories. I think of collections as
+superchargers to the "batteries included" approach that Ansible takes.
+It up-levels the nuances involved in building out automation, allowing
+users to plug-n-play the latest and greatest automation content being
+built by certified partners and the community.</p>
+</div>
+    <aside class="postpromonav"><nav><ul class="pager hidden-print">
+<li class="previous">
+                <a href="../ansible-security-automation-resource-modules/" rel="prev" title="Ansible security automation resource modules">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../deep-dive-on-cisco-asa-resource-modules/" rel="next" title="Deep dive on Cisco ASA resource modules">Next post</a>
+            </li>
+        </ul></nav></aside></article><!--End of body content-->
+</div>
+        <div class="content-slim redhat-footer">
+      <div class="footer-left">
+        <ul class="footer-left-links">
+<li>
+            <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-SA 4.0</a>
+          </li>
+          <li>
+            <a href="https://www.redhat.com/en/about/privacy-policy" target="_blank">Privacy policy</a>
+          </li>
+          <li>
+            <a href="https://docs.ansible.com/ansible/latest/community/code_of_conduct.html" target="_blank">Code of conduct</a>
+          </li>
+        </ul>
+</div>
+      <div class="footer-right">
+        <span class="redhat">Powered by</span>
+        <span class="redhat-logo">
+          <a href="https://www.redhat.com/en/technologies/management/ansible" target="_blank">
+            <img src="../../assets/images/redhat_reversed.svg" alt="Red Hat logo." width="96" height="28"></a>
+        </span>
+      </div>
+    </div>
+
+</div>
+
+            <script src="../../assets/js/jquery.min.js"></script><script src="../../assets/js/popper.min.js"></script><script src="../../assets/js/bootstrap.min.js"></script><script src="../../assets/js/baguetteBox.min.js"></script><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+</script><script src="../../assets/js/clipboard.min.js" type="text/javascript"></script><script src="../../assets/js/clipboard.js" type="text/javascript"></script>
+</body>
+</html>

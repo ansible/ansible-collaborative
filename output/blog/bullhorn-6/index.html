@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html prefix="
+og: http://ogp.me/ns# article: http://ogp.me/ns/article#
+" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bullhorn #6 | Ansible Collaborative</title>
+<link href="../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/baguetteBox.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/rst.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/code.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/theme.css" rel="stylesheet" type="text/css">
+<!-- Red Hat fonts --><link rel="stylesheet" href="https://static.redhat.com/libs/redhat/redhat-font/2.0.0/webfonts/red-hat-font.css">
+<!-- Font Awesome --><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+<!-- Fork Awesome --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css" integrity="sha256-XoaMnoYC5TH6/+ihMEnospgm0J1PM/nioxbOUdnM8HY=" crossorigin="anonymous">
+<!-- Sass compiled css  --><link rel="stylesheet" href="../../assets/css/main.css">
+<link rel="stylesheet" href="../../assets/css/redhat-footer.css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://ansible.com/blog/bullhorn-6/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Ansible Collaborative, et al">
+<link rel="prev" href="../centralize-your-automation-logs-with-ansible-tower-and-splunk-enterprise/" title="Centralize your Automation Logs with Ansible Tower and Splunk Enterprise" type="text/html">
+<link rel="next" href="../securing-tower-installer-passwords/" title="Securing Tower Installer Passwords" type="text/html">
+<meta property="og:site_name" content="Ansible Collaborative">
+<meta property="og:title" content="Bullhorn #6">
+<meta property="og:url" content="https://ansible.com/blog/bullhorn-6/">
+<meta property="og:description" content="The Bullhorn
+
+A Newsletter for the Ansible Developer Community
+
+Welcome to The Bullhorn, our newsletter for the Ansible developer community. If you have any questions or content you’d like to share, p">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2020-07-15T15:00:00Z">
+<meta property="article:tag" content="news">
+</head>
+<body id="top">
+
+<div class="global-container" id="content" role="main">
+<!-- Start menubar -->
+<nav class="navbar navbar-expand-lg static-top mb-4 navbar-padding full-width-bg   navbar-dark   bg-pool   "><div class="masthead">
+    <!-- This keeps the margins nice -->
+    <a class="navbar-brand" href="../../">
+        <img src="../../images/ansible_logo-small-15.png" alt="Ansible community logo" id="logo" class="d-inline-block align-top" width="50" height="50"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon nav-toggle-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="bs-navbar">
+      <ul class="navbar-nav mr-auto"></ul>
+<ul class="navbar-nav navbar-right">
+<li class="nav-item dropdown">
+	        <a href="#" class="nav-link nav-link-color dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <i class=""></i> Documentation
+                </a>
+		<div class="dropdown-menu dropdown-menu-border">
+	    
+                    <a href="https://docs.ansible.com/" class="dropdown-item">
+		        <i class=""></i> Project documentation
+                    </a>
+                    <a href="https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/" class="dropdown-item">
+		        <i class=""></i> Ansible Automation Platform documentation
+                    </a>
+            </div>
+                 </li>
+<li class="nav-item">
+		     <a href="https://galaxy.ansible.com/" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Galaxy
+		     </a>
+		 </li>
+                 <li class="nav-item">
+		     <a href="https://forum.ansible.com/" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Forum
+		     </a>
+		 </li>
+            <li class="nav-item dropdown">
+	        <a href="#" class="nav-link nav-link-color dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <i class=""></i> Resources
+                </a>
+		<div class="dropdown-menu dropdown-menu-border">
+	    
+                    <a href="../../how-ansible-works/" class="dropdown-item">
+		        <i class=""></i> How Ansible works
+                    </a>
+                    <a href="../../ecosystem/" class="dropdown-item">
+		        <i class=""></i> Ansible ecosystem
+                    </a>
+                    <a href="../archive.html" class="dropdown-item">
+		        <i class=""></i> Blog
+                    </a>
+                    <a href="../../faq/" class="dropdown-item">
+		        <i class=""></i> Frequently asked questions
+                    </a>
+                    <a href="../../ansible-community-training/" class="dropdown-item">
+		        <i class=""></i> Ansible community training
+                    </a>
+                    <a href="../../contact-us/" class="dropdown-item">
+		        <i class=""></i> Contact us
+                    </a>
+            </div>
+                 </li>
+<li class="nav-item">
+		     <a href="https://www.redhat.com/en/technologies/management/ansible?sc_cid=7015Y000003szaKQAQ" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Ansible Automation Platform
+		     </a>
+		 </li>
+
+        
+      </ul>
+</div>
+    <!-- /.navbar-collapse -->
+  </div>
+  <!-- /.container -->
+</nav><!-- End default Menubar --><div class="body-content center-band">
+        <!--Body content-->
+        
+  <article class="post-text h-entry hentry postpage ansible-content" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Bullhorn #6</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard p-author h-card"><span class="byline-name fn p-name" itemprop="author">
+                    <a class="u-url" href="../../authors/ansible-collaborative-et-al/">Ansible Collaborative, et al</a>
+            </span></p>
+            <p class="dateline">
+            <a href="." rel="bookmark">
+            <time class="published dt-published" datetime="2020-07-15T15:00:00Z" itemprop="datePublished" title="2020-07-15 15:00">2020-07-15 15:00</time></a>
+            </p>
+                    <p class="sourceline"><a href="index.md" class="sourcelink">Source</a></p>
+
+        </div>
+        
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+<p><img alt="Ansible Bullhorn banner" src="../../images/bullhorn-banner-mango.png"></p>
+<tr>
+<td class="mcnTextContent" style='padding: 0px 18px 9px;font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #202020;font-size: 16px;line-height: 150%;text-align: left;' valign="top">
+
+                            <h2 class="null" dir="ltr" style="display: block;margin: 0;padding: 0;color: #202020;font-family: Helvetica;font-size: 26px;font-style: normal;font-weight: bold;line-height: 125%;letter-spacing: normal;text-align: left;">The Bullhorn</h2>
+
+<p dir="ltr" style='font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;margin: 10px 0;padding: 0;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #202020;font-size: 16px;line-height: 150%;text-align: left;'><em>A Newsletter for the Ansible Developer Community</em><br><br>
+Welcome to <em>The Bullhorn</em>, our newsletter for the Ansible developer community. If you have any questions or content you’d like to share, please reach out to us at the-bullhorn@redhat.com.<br>
+ </p>
+
+<h3 class="null" dir="ltr" style="display: block;margin: 0;padding: 0;color: #202020;font-family: Helvetica;font-size: 22px;font-style: normal;font-weight: bold;line-height: 125%;letter-spacing: normal;text-align: left;">ANSIBLE 2.8.13 AND 2.9.10 RELEASED</h3>
+
+<div dir="ltr">The Ansible Core team announced the availability of <a href="https://groups.google.com/forum/#!topic/ansible-devel/brQ1S95vHlk" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #007C89;font-weight: normal;text-decoration: underline;">Ansible 2.9.10 on June 19th</a>, and <a href="https://groups.google.com/forum/#!topic/ansible-devel/RGi1GkVMF1Y" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #007C89;font-weight: normal;text-decoration: underline;">Ansible 2.8.13 on July 15th</a>, both of which are maintenance releases. Follow the links for Rick Elrod’s emails to the ansible-devel mailing list, to obtain details on what’s new, installation instructions, and links to the full changelogs.<br>
+ </div>
+
+<h3 class="null" dir="ltr" style="display: block;margin: 0;padding: 0;color: #202020;font-family: Helvetica;font-size: 22px;font-style: normal;font-weight: bold;line-height: 125%;letter-spacing: normal;text-align: left;">VIRTUAL ANSIBLE CONTRIBUTOR SUMMIT RECAP</h3>
+
+<div dir="ltr">The second fully virtual Ansible Contributor Summit was held on July 6th. Almost 70 contributors - new and existing - joined us over the course of the day, around 20 more than the previous event. You can check out the <a href="https://www.youtube.com/playlist?list=PL0FmYCf7ocrbmgUsXJFqJrIKQRg9hz02h" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #007C89;font-weight: normal;text-decoration: underline;">videos</a> from the summit, as well as the <a href="https://meetbot.fedoraproject.org/ansible-community/2020-07-06/ansible_contributors_summit.2020-07-06-10.57.html" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #007C89;font-weight: normal;text-decoration: underline;">summary</a> and <a href="https://meetbot.fedoraproject.org/ansible-community/2020-07-06/ansible_contributors_summit.2020-07-06-10.57.log.html" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #007C89;font-weight: normal;text-decoration: underline;">full log</a> from the IRC session.<br><br>
+On July 7-8, we held the virtual Ansible Hackathon, in which we followed up on the issues that were discussed during the contributor summit. Both a <a href="https://meetbot.fedoraproject.org/ansible-community/2020-07-07/ansible_hackathon.2020-07-07-11.03.html" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #007C89;font-weight: normal;text-decoration: underline;">summary</a> and <a href="https://meetbot.fedoraproject.org/ansible-community/2020-07-07/ansible_hackathon.2020-07-07-11.03.log.html" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #007C89;font-weight: normal;text-decoration: underline;">full log</a> are available for the hackathon as well.<br><br>
+These new collections were created during the event: <a href="https://github.com/ansible-collections/community.digitalocean" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #007C89;font-weight: normal;text-decoration: underline;">community.digitalocean</a>, <a href="https://github.com/ansible-collections/community.proxysql" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #007C89;font-weight: normal;text-decoration: underline;">community.proxysql</a>, and <a href="https://github.com/ansible-collections/community.mysql" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #007C89;font-weight: normal;text-decoration: underline;">community.mysql</a>. Thanks to our community contributors!<br><br>
+We would appreciate your feedback to help us improve the Contributor Experience, whether or not you were able to attend the event. Here is the <a href="https://www.surveymonkey.co.uk/r/8NKP93R" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #007C89;font-weight: normal;text-decoration: underline;">Contributor Survey</a>; please take a couple of minutes to fill this in (if you haven't already).<br><br>
+The next Contributor Summit will be on October 12, 2020. It will once again be a virtual experience, along with <a href="https://www.ansible.com/ansiblefest" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #007C89;font-weight: normal;text-decoration: underline;">AnsibleFest</a> in the same week. When we have more details, we will share them in future issues of The Bullhorn!<br>
+ </div>
+
+<h3 class="null" dir="ltr" style="display: block;margin: 0;padding: 0;color: #202020;font-family: Helvetica;font-size: 22px;font-style: normal;font-weight: bold;line-height: 125%;letter-spacing: normal;text-align: left;">UPDATES FROM THE WORKING GROUPS</h3>
+
+<div dir="ltr">
+<br><strong>Diversity (NEW!)</strong>
+</div>
+
+<ul dir="ltr">
+<li style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">The Ansible community has launched a new <a href="https://github.com/ansible/community/wiki/Diversity" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #007C89;font-weight: normal;text-decoration: underline;">working group</a> focused on improving diversity and inclusion in the project. Community members looking to get involved with this initiative can join #ansible-diversity on Freenode IRC. You can also check out the <a href="https://youtu.be/S7OJDmcl6Zw?t=3117" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #007C89;font-weight: normal;text-decoration: underline;">announcement</a> made at the Virtual Ansible Contributor Summit last week.</li>
+</ul>
+ 
+
+<h3 class="null" style="display: block;margin: 0;padding: 0;color: #202020;font-family: Helvetica;font-size: 22px;font-style: normal;font-weight: bold;line-height: 125%;letter-spacing: normal;text-align: left;">STATS UPDATE</h3>
+Greg 'Gwmngilfen' Sutcliffe, our team stats person, has been hard at work on some of the suggestions that came out of the Contributor Summit. One such idea, from Jeff Geerling, was some kind of heatmap of contributors, so that we can see where there is activity, and also potentially some "bus-factor". Here's a first cut of that map:<br><a href="https://mcusercontent.com/56d874e027110e35dea0e03c1/images/e2b09753-6605-4c55-970e-51af63b7aa83.png" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #007C89;font-weight: normal;text-decoration: underline;"><img data-file-id="5274181" src="https://mcusercontent.com/56d874e027110e35dea0e03c1/images/e2b09753-6605-4c55-970e-51af63b7aa83.png" style="border: 0px;width: 600px;height: 338px;margin: 0px;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;" width="600" height="338"></a><br>
+The colour ranges from "1 contributor" in red to "lots" in pool, with white centred at 5 unique contributors.<br><br>
+Community.General has <strong>such</strong> a large number of contributors that it overshadows the others - but note how many collections are &lt;5 contributors for any single file, but largely healthy at the directory level, which is good to see! You can see a bigger version on the <a href="https://stats.eng.ansible.com/~/admin/bubble.png" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #007C89;font-weight: normal;text-decoration: underline;">Ansible Stats pages</a> if you want to zoom in.<br>
+ 
+<h3 class="null" style="display: block;margin: 0;padding: 0;color: #202020;font-family: Helvetica;font-size: 22px;font-style: normal;font-weight: bold;line-height: 125%;letter-spacing: normal;text-align: left;">COMMUNITY CONTENT</h3>
+Every month we notice the community posting great content. Although not all strictly developer focussed, maybe there’s an article or two here that piques your interest? Let us know if you’d like to see more of this.<br><br><a href="https://twitter.com/Zhenech" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #007C89;font-weight: normal;text-decoration: underline;">Evgeni Golov</a> details how they <a href="https://www.die-welt.net/2020/06/mass-migrating-modules-inside-an-ansible-collection/" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #007C89;font-weight: normal;text-decoration: underline;">mass-migrated modules inside an Ansible Collection</a> for the Foreman project, complete with the script used.<br><br><a href="https://twitter.com/wilber822" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #007C89;font-weight: normal;text-decoration: underline;">Wu</a> shares how he <a href="https://zhengwu.org/2020/06/26/how-to-manage-windows-servers-with-ansible-on-centos-8/" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #007C89;font-weight: normal;text-decoration: underline;">manages Windows Servers with Ansible on CentOS 8</a>.<br><br>
+Here’s <a href="https://dev.to/baptistemm/kubernetes-configuration-management-with-ansible-part-1-4aem" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #007C89;font-weight: normal;text-decoration: underline;">Part 1</a> and <a href="https://dev.to/baptistemm/kubernetes-configuration-management-with-ansible-part-2-4bep" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #007C89;font-weight: normal;text-decoration: underline;">Part 2</a> of Kubernetes Configuration Management with Ansible by <a href="https://twitter.com/baptistemm" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #007C89;font-weight: normal;text-decoration: underline;">Baptiste Mille-Mathias</a>, who also joined us at the virtual contributor summit.<br><br>
+Tadej Borovšak of <a href="https://twitter.com/xlab_si" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #007C89;font-weight: normal;text-decoration: underline;">XLAB</a> Steampunk covers an important topic - testing - with <a href="https://steampunk.si/blog/adding-integration-tests-to-ansible-content-collections/" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #007C89;font-weight: normal;text-decoration: underline;">Adding integration tests to Ansible Content Collections</a>.<br><br><a href="https://twitter.com/nleiv4" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #007C89;font-weight: normal;text-decoration: underline;">Nicolas Leiva</a> describes how you can make your favorite <a href="https://medium.com/@nleiva/python-and-ansible-to-automate-a-network-security-workflow-28b9a44660c6?source=friends_link&amp;sk=1611e6d422030a8dc756fe1e9f46717d" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #007C89;font-weight: normal;text-decoration: underline;">Python library an Ansible module to Automate a Network Security Workflow</a>.<br><br><a href="https://twitter.com/cybette" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #007C89;font-weight: normal;text-decoration: underline;">Carol Chen</a>, part of the Ansible Community team, talks about <a href="https://www.youtube.com/watch?v=alGC9YKZtX4" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #007C89;font-weight: normal;text-decoration: underline;">connecting and growing your community</a> with examples from the Ansible community meetup groups.<br>
+ 
+<h3 class="null" style="display: block;margin: 0;padding: 0;color: #202020;font-family: Helvetica;font-size: 22px;font-style: normal;font-weight: bold;line-height: 125%;letter-spacing: normal;text-align: left;">ANSIBLE VIRTUAL MEETUPS</h3>
+The following virtual meetups are being held in the Ansible community over the next month:<br><br>
+Ansible in DevOps Torun-Bydgoszcz: QA in DevOps World<br>
+Wed, Jul 15 · 5:00 PM GMT+2<br><a href="https://www.meetup.com/Ansible-in-DevOps-Torun-Bydgoszcz/events/271620303/" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #007C89;font-weight: normal;text-decoration: underline;">https://www.meetup.com/Ansible-in-DevOps-Torun-Bydgoszcz/events/271620303/</a> <br><br>
+Ansible Minneapolis: Using Ansible to Create AWS AMI Images<br>
+Thu, Jul 16 · 6:30 PM GMT-5<br><a href="https://www.meetup.com/Ansible-Minneapolis/events/sbqkgrybckbvb/" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #007C89;font-weight: normal;text-decoration: underline;">https://www.meetup.com/Ansible-Minneapolis/events/sbqkgrybckbvb/</a><br><br>
+Ansible India Meetup: Getting Started with Ansible Network Automation<br>
+Sat, Jul 18 · 9:45 AM GMT+5:30<br>
+RSVP with one of the meetup groups “near” you: <a href="https://www.meetup.com/Ansible-Aurangabad/events/271856973/" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #007C89;font-weight: normal;text-decoration: underline;">Aurangabad</a>, <a href="https://www.meetup.com/Ansible-Bangalore/events/271856969/" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #007C89;font-weight: normal;text-decoration: underline;">Bangalore</a>, <a href="https://www.meetup.com/Ansible-Chennai/events/271856968/" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #007C89;font-weight: normal;text-decoration: underline;">Chennai</a>, <a href="https://www.meetup.com/Ansible-Delhi/events/271856976/" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #007C89;font-weight: normal;text-decoration: underline;">Delhi</a>, <a href="https://www.meetup.com/Ansible-Hyderabad/events/271856970/" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #007C89;font-weight: normal;text-decoration: underline;">Hyderabad</a>, <a href="https://www.meetup.com/Ansible-Kolkata/events/271856972/" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #007C89;font-weight: normal;text-decoration: underline;">Kolkata</a>, <a href="https://www.meetup.com/Ansible-Mumbai/events/271856974/" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #007C89;font-weight: normal;text-decoration: underline;">Mumbai</a>, <a href="https://www.meetup.com/Ansible-Pune/events/271856967/" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #007C89;font-weight: normal;text-decoration: underline;">Pune</a>! (They will link to the same virtual event.)<br><br>
+Ansible Fort Worth/Dallas: Multicloud Networking Leveraging Ansible and Pureport<br>
+Tue, Jul 28 · 4:00 PM GMT-6<br><a href="https://www.meetup.com/Ansible-Fort-Worth/events/271912439/" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #007C89;font-weight: normal;text-decoration: underline;">https://www.meetup.com/Ansible-Fort-Worth/events/271912439/</a><br><a href="https://www.meetup.com/Ansible-Dallas/events/271912537/" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #007C89;font-weight: normal;text-decoration: underline;">https://www.meetup.com/Ansible-Dallas/events/271912537/</a><br><br>
+Ansible New Zealand: building stateless self configuring Ansible Clusters<br>
+Thu, Aug 13 · 12:00 PM GMT+12<br><a href="https://www.meetup.com/Ansible-New-Zealand/events/271707416/" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #007C89;font-weight: normal;text-decoration: underline;">https://www.meetup.com/Ansible-New-Zealand/events/271707416/</a> <br><br>
+Here is the <a href="https://www.youtube.com/playlist?list=PLiAgKW2c2Mbk2pO0GLdcGGh-Vm0j-E3K3" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #007C89;font-weight: normal;text-decoration: underline;">playlist</a> from the previous Ansible India Meetup held on June 27.<br><br><strong>Note:</strong> <em>For these virtual events, the links to participate in the meetups will be visible once you RSVP to attend. If you’re interested in the topics presented, you can join from anywhere in the world as long as the time zone and language works for you!</em><br>
+ 
+<h3 class="null" dir="ltr" style="display: block;margin: 0;padding: 0;color: #202020;font-family: Helvetica;font-size: 22px;font-style: normal;font-weight: bold;line-height: 125%;letter-spacing: normal;text-align: left;">FEEDBACK</h3>
+
+<p dir="ltr" style='font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;margin: 10px 0;padding: 0;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #202020;font-size: 16px;line-height: 150%;text-align: left;'>Have any questions you’d like to ask, or issues you’d like to see covered? Please send us an email at the-bullhorn@redhat.com.</p>
+ 
+
+<h2 class="null" dir="ltr" style="display: block;margin: 0;padding: 0;color: #202020;font-family: Helvetica;font-size: 26px;font-style: normal;font-weight: bold;line-height: 125%;letter-spacing: normal;text-align: left;"> </h2>
+
+                        </td>
+                    </tr>
+</div>
+    <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">
+<li><a class="tag p-category" href="../../categories/news/" rel="tag">news</a></li>
+        </ul>
+<ul class="pager hidden-print">
+<li class="previous">
+                <a href="../centralize-your-automation-logs-with-ansible-tower-and-splunk-enterprise/" rel="prev" title="Centralize your Automation Logs with Ansible Tower and Splunk Enterprise">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../securing-tower-installer-passwords/" rel="next" title="Securing Tower Installer Passwords">Next post</a>
+            </li>
+        </ul></nav></aside></article><!--End of body content-->
+</div>
+        <div class="content-slim redhat-footer">
+      <div class="footer-left">
+        <ul class="footer-left-links">
+<li>
+            <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-SA 4.0</a>
+          </li>
+          <li>
+            <a href="https://www.redhat.com/en/about/privacy-policy" target="_blank">Privacy policy</a>
+          </li>
+          <li>
+            <a href="https://docs.ansible.com/ansible/latest/community/code_of_conduct.html" target="_blank">Code of conduct</a>
+          </li>
+        </ul>
+</div>
+      <div class="footer-right">
+        <span class="redhat">Powered by</span>
+        <span class="redhat-logo">
+          <a href="https://www.redhat.com/en/technologies/management/ansible" target="_blank">
+            <img src="../../assets/images/redhat_reversed.svg" alt="Red Hat logo." width="96" height="28"></a>
+        </span>
+      </div>
+    </div>
+
+</div>
+
+            <script src="../../assets/js/jquery.min.js"></script><script src="../../assets/js/popper.min.js"></script><script src="../../assets/js/bootstrap.min.js"></script><script src="../../assets/js/baguetteBox.min.js"></script><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+</script><script src="../../assets/js/clipboard.min.js" type="text/javascript"></script><script src="../../assets/js/clipboard.js" type="text/javascript"></script>
+</body>
+</html>

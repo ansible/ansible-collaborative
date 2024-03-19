@@ -1,0 +1,149 @@
+<p><img alt="Ansible Bullhorn banner" src="/images/bullhorn-banner-mango.png"></p>
+<p><em>A Newsletter for the Ansible Developer Community</em>
+<em>Issue #38, 2021-11-18 (<a href="https://us19.campaign-archive.com/home/?u=56d874e027110e35dea0e03c1&amp;id=d6635f5420">Past Issues</a>)</em></p>
+<p>Welcome to the Bullhorn, our newsletter for the Ansible developer community. If you have any questions or content you’d like to share, please reach out to us at the-bullhorn@redhat.com, or chat with us in the <a href="https://matrix.to/#/#social:ansible.com">Ansible Social room on Matrix</a>.</p>
+<!-- TEASER_END -->
+
+<h2>KEY DATES</h2>
+<p><a href="https://matrix.to/#/@cybette:ansible.im">cybette</a> said</p>
+<blockquote>
+<ul>
+<li>2021-11-23: <a href="https://docs.ansible.com/ansible/devel/roadmap/COLLECTIONS_4.html">ETA for Ansible 4.9.0 release</a></li>
+<li>2021-11-24: <a href="https://github.com/ansible/community/issues/539">community IRC meeting</a>, 18:00 UTC (propose topics <a href="https://github.com/ansible-community/community-topics/issues">here</a>)</li>
+<li>2021-11-30: <a href="https://docs.ansible.com/ansible/devel/roadmap/COLLECTIONS_5.html">ETA for Ansible 5.0.0 GA release</a></li>
+<li>2021-12-01: <a href="https://github.com/ansible/community/issues/539">community IRC meeting</a>, 18:00 UTC (propose topics <a href="https://github.com/ansible-community/community-topics/issues">here</a>)</li>
+<li>2021-12-01: <a href="https://github.com/ansible/community/issues/546">Bullhorn #39 content deadline</a></li>
+<li>2021-12-06: ETA for Ansible-Core 2.12.1 release</li>
+</ul>
+</blockquote>
+<h2>GENERAL NEWS UPDATES</h2>
+<p><a href="https://matrix.to/#/@smccann:matrix.org">samccann</a> contributed</p>
+<blockquote>
+<p>We are proposing the addition of semantic markup for module documentation to separate what the module has (options, values, etc.) from how we display it (bold, italic, monospace, etc.). See https://github.com/ansible-community/community-topics/issues/53 for details and to add your thoughts.</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@smccann:matrix.org">samccann</a> said</p>
+<blockquote>
+<p>We are experimenting with changing the module documentation tables that appear on docs.ansible.com to make them more compatible with smaller screen sizes. This also impacts how it appears on wider screens so please take a look at https://github.com/ansible-community/antsibull/pull/335 and post your comments!</p>
+<p>Before example:</p>
+<p>https://docs.ansible.com/ansible/devel/collections/community/crypto/acme_account_module.html#parameters</p>
+<p><img alt="" src="https://i.imgur.com/ZJDVDko.png"></p>
+<p>After example:</p>
+<p>https://ansible.fontein.de/collections/community/crypto/acme_account_module.html#parameters</p>
+<p><img alt="" src="https://i.imgur.com/NjHVJF4.png"></p>
+<p>(More examples in the <a href="https://github.com/ansible-community/antsibull/pull/335">pull request</a>.)</p>
+</blockquote>
+<h3>Ansible-Core <a href="https://github.com/ansible/ansible">↗</a></h3>
+<p><strong>Ansible Core</strong> is minimal package containing the base engine, modules, and plugins</p>
+<p><a href="https://matrix.to/#/@gundalow:ansible.im">gundalow</a> said</p>
+<blockquote>
+<p>We are happy to announce that <code>ansible-core-2.12</code> is available on CentOS Stream - <a href="https://kojihub.stream.centos.org/koji/buildinfo?buildID=15195">Ansible on Koji Hub</a></p>
+</blockquote>
+<h2>MAJOR NEW RELEASES</h2>
+<h3>Ansible <a href="https://github.com/ansible-collections">↗</a></h3>
+<p><strong>Ansible</strong> is the full-fat package containing Ansible Core &amp; the Community Collections</p>
+<p><a href="https://matrix.to/#/@dmsimard:libera.chat">dmsimard</a> contributed</p>
+<blockquote>
+<p>Ansible 5.0.0b2 (including ansible-core 2.12.0) is now available for testing: https://groups.google.com/g/ansible-announce/c/_Z4JE5X-gZg</p>
+</blockquote>
+<h3>Ansible-Core <a href="https://github.com/ansible/ansible">↗</a></h3>
+<p><strong>Ansible Core</strong> is minimal package containing the base engine, modules, and plugins</p>
+<p><a href="https://matrix.to/#/@gwmngilfen:ansible.im">Gwmngilfen (work)</a> said</p>
+<blockquote>
+<p>Update from @sivel: New major release: ansible-core 2.12.0 https://groups.google.com/g/ansible-announce/c/Q3Gp8O8sJak</p>
+</blockquote>
+<h3>Antsibull <a href="https://github.com/ansible-community/antsibull">↗</a></h3>
+<p>Tooling for building various things related to ansible</p>
+<p><a href="https://matrix.to/#/@felixfontein:libera.chat">felixfontein</a> contributed</p>
+<blockquote>
+<p>antsibull 0.39.2 has been released</p>
+</blockquote>
+<h2>COLLECTION UPDATES</h2>
+<p><a href="https://matrix.to/#/@felixfontein:libera.chat">felixfontein</a> said</p>
+<blockquote>
+<p>community.docker 1.10.1 and 2.0.1 have been released with docs fixes</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@felixfontein:libera.chat">felixfontein</a> said</p>
+<blockquote>
+<p>community.hrobot 1.2.1 has been released</p>
+</blockquote>
+<p><a href="https://github.com/briantist">briantist</a> contributed</p>
+<blockquote>
+<p><a href="https://github.com/ansible-collections/community.hashi_vault/releases/tag/1.5.0"><code>community.hashi_vault</code> version <code>1.5.0</code> has been released with a new action group and <code>mount_point</code> vars for plugins</a>. This is expected to be the final <code>1.x</code> release of the collection.</p>
+</blockquote>
+<p><a href="https://github.com/briantist">briantist</a> shared</p>
+<blockquote>
+<p><a href="https://github.com/ansible-collections/community.hashi_vault/releases/tag/2.0.0"><code>community.hashi_vault</code> version <code>2.0.0</code> has been released</a>. Some deprecated features have been removed and support for Python 2 and Python 3.5 has been dropped.</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@felixfontein:libera.chat">felixfontein</a> shared</p>
+<blockquote>
+<p>community.dns 2.0.2 has been released with updates to the Public Suffix List</p>
+</blockquote>
+<p><a href="https://github.com/resmo">resmo</a> contributed</p>
+<blockquote>
+<p><code>ngine_io.vultr</code> has started the conversion to the Vultr API v2, which will be completed with the collection release of 2.0.0. Progress can be followed at https://github.com/ngine-io/ansible-collection-vultr/pull/22.</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@felixfontein:libera.chat">felixfontein</a> said</p>
+<blockquote>
+<p>community.general 2.5.7 has been released. This is the last regular 2.5.x release, from now on there will only be releases for major bugfixes or security fixes.</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@andersson007_:matrix.org">andersson007_</a> said</p>
+<blockquote>
+<p>community.cockroachdb 0.2.0 has been released</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@felixfontein:libera.chat">felixfontein</a> contributed</p>
+<blockquote>
+<p>community.general 4.0.2 has been released</p>
+</blockquote>
+<p><a href="https://github.com/evgeni">evgeni</a> shared</p>
+<blockquote>
+<p>The <a href="https://galaxy.ansible.com/theforeman/foreman">Foreman Ansible Collection</a> v3.0.0 was released.
+Most notable changes include:
+- drop of Ansible 2.8 support (breaking change)
+- switch inventory plugin to the new Reports API (breaking change as this might change returned results)
+- convert2rhel role to ease setup of environments to convert CentOS and Oracle Linux installations to RHEL</p>
+<p><a href="https://theforeman.github.io/foreman-ansible-modules/v3.0.0/CHANGELOG.html#v3-0-0">full changelog</a></p>
+</blockquote>
+<p><a href="https://github.com/tremble">tremble</a> contributed</p>
+<blockquote>
+<p>amazon.aws 2.1.0 has been released
+community.aws 2.1.0 has been released</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@felixfontein:libera.chat">felixfontein</a> said</p>
+<blockquote>
+<p>community.internal_test_tools 0.5.0 has been released with some tool improvements</p>
+</blockquote>
+<p><a href="https://github.com/endorama">endorama</a> shared</p>
+<blockquote>
+<p>community.sops 1.2.0 has been released</p>
+</blockquote>
+<h2>COMMUNITY UPDATES</h2>
+<p><a href="https://matrix.to/#/@gwmngilfen:ansible.im">Gwmngilfen (work)</a> contributed</p>
+<blockquote>
+<h3>Contributor Summit on Matrix Live</h3>
+<p>I got the chance to join <a href="https://matrix.to/#/@thib:ergaster.org">Thib</a> from Element on the latest episode of Matrix Live! We spent a very pleasant time discussing how running events on Matrix felt, what the architecture was, where we think it did well, and how to improve it in the future. You can watch it <a href="https://www.youtube.com/watch?v=3dqrqMglXNY">on YouTube</a> or on the <a href="https://matrix.org/blog/2021/11/12/this-week-in-matrix-2021-11-12/">This Week in Matrix blog</a>.</p>
+<p><img alt="" src="https://i.imgur.com/m3dokr3.png"></p>
+</blockquote>
+<p><a href="https://matrix.to/#/@cybette:ansible.im">cybette</a> said</p>
+<blockquote>
+<p>Thanks to those who have already filled in the <a href="https://www.surveymonkey.co.uk/r/GSMSG7K">Contributor Survey</a>! If you haven't had the chance to do so, please spare a few minutes to take <a href="https://www.surveymonkey.co.uk/r/GSMSG7K">the survey</a>. We truly appreciate your feedback!</p>
+</blockquote>
+<h3>Maintainers <a href="https://github.com/ansible-community">↗</a></h3>
+<p>Maintainers help to run the community!</p>
+<p><a href="https://matrix.to/#/@andersson007_:matrix.org">andersson007_</a> said</p>
+<blockquote>
+<p>The <a href="https://github.com/ansible-collections/community.libvirt">community.libvirt</a> collection is looking for new maintainers. If you're interested, please let us know in <a href="https://github.com/ansible-collections/community.libvirt/issues/78">this</a> issue. Thank you!</p>
+</blockquote>
+<h2>COMMUNITY EVENTS/MEETUPS</h2>
+<p><a href="https://matrix.to/#/@cybette:ansible.im">cybette</a> contributed</p>
+<blockquote>
+<ul>
+<li>Thu, Nov 18 @ 6:30PM CST - <a href="https://www.meetup.com/Ansible-Minneapolis/events/lndxqsyccpbxb/">Ansible Minneapolis</a> - Ansible Meetup at Indeed Brewing</li>
+<li>Thu, Nov 25 @ 11:00AM SGT - <a href="https://www.meetup.com/Ansible-Singapore/events/281992436/">Ansible Singapore</a> - Ansible Virtual Meet Up - November 2021</li>
+</ul>
+</blockquote>
+<p><a href="https://github.com/tima">tima</a> shared</p>
+<blockquote>
+<p>An Ansible Working Group meeting has been started under the <a href="https://github.com/operator-framework/operator-sdk">Operator Framework</a> project community. Meetings will be held monthly, ever third Monday at 5PM UTC. Topics will include not only the Ansible Operator SDK, but also the <a href="https://github.com/ansible-collections/kubernetes.core">kubernetes.core</a> collection and other Ansible + cloud native discussion. For more information <a href="https://github.com/operator-framework/community#ansible-working-group">see the Operator Framework community repo</a>. The first meeting was held November 15. <a href="https://youtu.be/bxkpITK5qfc">A recording of the call is available here</a>. The WG has also setup <a href="https://groups.google.com/g/ansible-k8s-operator/about">a new mailing list</a> for discussion between the meetings. Please subscribe and join in the conversation.</p>
+</blockquote>
+<h2>THAT'S ALL FOR NOW!</h2>
+<p>Have any questions you’d like to ask, or issues you’d like to see covered? Please ask in <a href="https://matrix.to/#/#social:ansible.com">#social:ansible.com</a>! See you next time!</p>

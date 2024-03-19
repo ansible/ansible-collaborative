@@ -1,0 +1,85 @@
+<p><img alt="Ansible Bullhorn banner" src="/images/bullhorn-banner-mango.png"></p>
+<p><em>A Newsletter for the Ansible Developer Community</em>
+<em>Issue #86, 2022-12-23 (<a href="https://us19.campaign-archive.com/home/?u=56d874e027110e35dea0e03c1&amp;id=d6635f5420">Past Issues</a>)</em></p>
+<p>Welcome to <a href="https://github.com/ansible/community/wiki/News#the-bullhorn">The Bullhorn</a>, our newsletter for the Ansible developer community. If you have any questions or content you’d like to share, you're welcome to chat with us in the <a href="https://matrix.to/#/#social:ansible.com">Ansible Social room on Matrix</a>, and mention <a href="https://matrix.to/#/@newsbot:ansible.im"><code>newsbot</code></a> to have your news item tagged for review for the next issue!</p>
+<!-- TEASER_END -->
+
+<h2>KEY DATES ⏱️</h2>
+<p><a href="https://matrix.to/#/@cybette:ansible.im">cybette</a> contributed</p>
+<blockquote>
+<ul>
+<li>2023-01-03: <a href="https://github.com/ansible/community/issues/643#issuecomment-1349579652">DaWGs meeting</a>, 16:00 UTC</li>
+<li>2023-01-04: <a href="https://github.com/ansible/community/issues/645">Community WG meeting</a>, 19:00 UTC (propose topics <a href="https://github.com/ansible-community/community-topics/issues">here</a>)</li>
+<li>2023-01-05: <a href="https://github.com/ansible/community/wiki/News#the-bullhorn">Bullhorn #87 content deadline</a>, 18:00 UTC</li>
+<li>2023-01-30: <a href="https://groups.google.com/g/ansible-devel/c/IQ7VPnw9yS8">ETA for Ansible-Core 2.14.2 and 2.13.8 releases</a></li>
+<li>2023-01-31: <a href="https://groups.google.com/g/ansible-devel/c/htFjU7jZVYA">ETA for Ansible 7.2.0 release</a></li>
+<li>2023-02-08: <a href="https://hackmd.io/@ansible-community/cs202302-planning">Ansible Contributor Summit 2023.02</a></li>
+</ul>
+</blockquote>
+<h2>GENERAL NEWS UPDATES 🔈️</h2>
+<p>This will be the last issue for 2022. A big THANKS to every one of you for all of your contributions and readership! Happy holidays and see you in 2023 🎉</p>
+<p><a href="https://matrix.to/#/@cybette:ansible.im">cybette</a> said</p>
+<blockquote>
+<h3>Ansible Contributor Summit</h3>
+<p>Ansible Contributor Summit 2023.02 will be held on the third day of <a href="https://cfgmgmtcamp.eu/ghent2023/">CfgMgmtCamp 2023</a> on <strong>February 8, 2023</strong>, where participants will be able to join both in-person (in Ghent, Belgium) and online. Please take a look at the initial details <a href="https://hackmd.io/@ansible-community/cs202302-planning">here</a> and propose your topics!</p>
+</blockquote>
+<h2>MAJOR NEW RELEASES 🏆️</h2>
+<h3>Antsibull <a href="https://github.com/ansible-community/antsibull">↗</a> 🐂</h3>
+<p>Tooling for building the <code>Ansible</code> package and collection documentation.</p>
+<p><a href="https://matrix.to/#/@felixfontein:libera.chat">felixfontein</a> contributed</p>
+<blockquote>
+<p>antsibull-changelog 0.18.0 (<a href="https://github.com/ansible-community/antsibull-changelog/blob/main/CHANGELOG.rst#v0-18-0">changelog</a>) has been released. This is a maintainence release that drops support for Python versions 3.6, 3.7, and 3.8. There are no functional changes; if this is causing problems in CI, please either make sure a newer Python version is used, or restrict the antsibull-changelog version to &lt; 0.18.0.</p>
+</blockquote>
+<h3>AWX Project <a href="https://github.com/ansible/awx">↗</a></h3>
+<p>AWX provides a web-based user interface, REST API, and task engine built on top of Ansible.</p>
+<p><a href="https://matrix.to/#/@relrod:matrix.org">relrod</a> said</p>
+<blockquote>
+<p>We're happy to announce that <a href="https://github.com/ansible/awx/releases/tag/21.10.2">AWX version 21.10.2</a> is now available! We're happy to announce that <a href="https://github.com/ansible/awx-operator/releases/tag/1.1.3">AWX Operator version 1.1.3</a> is now available! This AWX version downgrades a dependency which was causing tracebacks to appear often in the logs of some deployments.</p>
+</blockquote>
+<h2>COLLECTION UPDATES 🪄</h2>
+<p><a href="https://matrix.to/#/@sdodsley:matrix.org">Simon Dodsley</a> said</p>
+<blockquote>
+<p>purestorage-fusion 1.3.0 (<a href="https://github.com/Pure-Storage-Ansible/Fusion-Collection/blob/master/CHANGELOG.rst#v1-3-0">changelog</a>) has been released.</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@tsutsumiyusuke:matrix.org">Yusuke Tsutsumi</a> shared</p>
+<blockquote>
+<p>The google.cloud 1.1.0 collection is now available! <a href="https://galaxy.ansible.com/google/cloud">This version</a> includes multiple bugfixes and has been tested with ansible-core up to 2.13. Please give it a shot, and file any bugs or PRs <a href="https://github.com/ansible-collections/google.cloud">on GitHub</a>.</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@resmo:libera.chat">resmo</a> shared</p>
+<blockquote>
+<p>The <a href="https://galaxy.ansible.com/vultr/cloud">vultr.cloud collection</a> team is pleased to announce version 1.5.0. In this version, VPC support for the instance module has been added as well as a new module instance_info.</p>
+</blockquote>
+<h2>PROJECT UPDATES 🛠️</h2>
+<h3>AWX Project <a href="https://github.com/ansible/awx">↗</a></h3>
+<p>AWX provides a web-based user interface, REST API, and task engine built on top of Ansible.</p>
+<p><a href="https://matrix.to/#/@relrod:matrix.org">relrod</a> contributed</p>
+<blockquote>
+<p>Our AWX Community Office Hours for December was a huge success! Thank you to all who attended! Missed it? Catch it <a href="https://www.youtube.com/watch?v=xG58czmXPxY&amp;list=PLp4Ci0fwnVC2XIA0xstmjQKvAan-oQqhl&amp;index=2">on YouTube</a>. We have an agenda started for January! Have something you want to bring up? Throw it on the agenda <a href="https://github.com/ansible/awx/issues/13325">here</a> and we'll see you there!</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@relrod:matrix.org">relrod</a> shared</p>
+<blockquote>
+<p>There's a super cool <a href="https://www.youtube.com/@ansible-awx">AWX community YouTube channel</a> now. This is a place where we -- the AWX community -- can show off some cool ways to use AWX or share information that the rest of the community might find useful. If you're of the creative type and wish to volunteer to make a video, let's work together and make something cool! Check out <a href="https://github.com/ansible/awx/issues/13242">this GitHub issue</a> for information. Make a cool video and get a limited-time angry potato plush!</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@relrod:matrix.org">relrod</a> contributed</p>
+<blockquote>
+<p>By popular demand, awx-ee images will soon start having version tags, created when an AWX release happens as a snapshot of the current <code>awx-ee:latest</code> at that point. No more relying on daily builds and a single <code>latest</code> tag! It will be possible to specify a specific, stable image and update to a newer one on your own time! Coming soon!</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@relrod:matrix.org">relrod</a> said</p>
+<blockquote>
+<p>AWX is working towards moving its Kubernetes deployment from a single deployment to two deployments: one for Task pods and one for Web/API pods. The goal here is to be able to scale these pods independently of each other, which means we need to decouple some service dependencies that we've accumulated over time in the single deployment world. The work here is making steady progress. If anyone is interested in helping out with this or if this will be useful for you, let's chat in the <a href="https://matrix.to/#/#awx:ansible.com">AWX Matrix channel</a>!</p>
+</blockquote>
+<h2>COMMUNITY UPDATES 👂️</h2>
+<p><a href="https://matrix.to/#/@lucab_it:matrix.org">lucab_it</a> shared</p>
+<blockquote>
+<p><strong>"Ansible For VMware By Examples"</strong> by <a href="https://www.ansiblepilot.com/">Luca Berton, aka "Ansible Pilot"</a> has been released! Exclusive 20% off for the Ansible community using the <code>ANSIBLEPILOT</code> discount code during the first month via <a href="https://link.springer.com/book/10.1007/978-1-4842-8879-5">Apress</a>. Code examples are available on <a href="https://github.com/Apress/Ansible-For-VMware-by-Examples_Luca-Berton">GitHub</a>.</p>
+</blockquote>
+<h2>COMMUNITY EVENTS AND MEETUPS 📅</h2>
+<p><a href="https://matrix.to/#/@anwesha:ansible.im">anwesha</a> said</p>
+<blockquote>
+<p>We are reviving the Stockholm Ansible Meetup group from the new year, 2023 💖 We are having our in-person meetup on 12th January 2023.</p>
+<p>The plan is to know and talk about the state and the working of the Ansible community. We are also holding a lightning talks session where you can share your Ansible story and your overall automation journey.</p>
+<p>Register your talk for the lightning talks session, check out the detailed plan and RSVP at our <a href="https://www.meetup.com/ansible-stockholm/events/290310440/">event page</a>. </p>
+<p>See you all folks there.🙂</p>
+</blockquote>
+<h2>THAT'S ALL FOR NOW!</h2>
+<p>Have any questions you’d like to ask, or issues you’d like to see covered? Please ask in <a href="https://matrix.to/#/#social:ansible.com">#social:ansible.com</a>! See you next time!</p>

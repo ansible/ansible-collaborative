@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html prefix="
+og: http://ogp.me/ns# article: http://ogp.me/ns/article#
+" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="Allen Eastwood takes you from complicated scripts to streamlined Ansible Roles.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shell Scripts to Ansible | Ansible Collaborative</title>
+<link href="../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/baguetteBox.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/rst.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/code.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/theme.css" rel="stylesheet" type="text/css">
+<!-- Red Hat fonts --><link rel="stylesheet" href="https://static.redhat.com/libs/redhat/redhat-font/2.0.0/webfonts/red-hat-font.css">
+<!-- Font Awesome --><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+<!-- Fork Awesome --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css" integrity="sha256-XoaMnoYC5TH6/+ihMEnospgm0J1PM/nioxbOUdnM8HY=" crossorigin="anonymous">
+<!-- Sass compiled css  --><link rel="stylesheet" href="../../assets/css/main.css">
+<link rel="stylesheet" href="../../assets/css/redhat-footer.css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://ansible.com/blog/shell-scripts-to-ansible/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Allen Eastwood">
+<link rel="prev" href="../command-module-deep-dive-for-networks/" title="Command Module Deep Dive for Networks" type="text/html">
+<link rel="next" href="../red-hat-single-sign-on-integration-with-ansible-tower/" title="Red Hat Single Sign-on Integration with Ansible Tower" type="text/html">
+<meta property="og:site_name" content="Ansible Collaborative">
+<meta property="og:title" content="Shell Scripts to Ansible">
+<meta property="og:url" content="https://ansible.com/blog/shell-scripts-to-ansible/">
+<meta property="og:description" content="Allen Eastwood takes you from complicated scripts to streamlined Ansible Roles.">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2018-06-12T00:00:00Z">
+</head>
+<body id="top">
+
+<div class="global-container" id="content" role="main">
+<!-- Start menubar -->
+<nav class="navbar navbar-expand-lg static-top mb-4 navbar-padding full-width-bg   navbar-dark   bg-pool   "><div class="masthead">
+    <!-- This keeps the margins nice -->
+    <a class="navbar-brand" href="../../">
+        <img src="../../images/ansible_logo-small-15.png" alt="Ansible community logo" id="logo" class="d-inline-block align-top" width="50" height="50"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon nav-toggle-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="bs-navbar">
+      <ul class="navbar-nav mr-auto"></ul>
+<ul class="navbar-nav navbar-right">
+<li class="nav-item dropdown">
+	        <a href="#" class="nav-link nav-link-color dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <i class=""></i> Documentation
+                </a>
+		<div class="dropdown-menu dropdown-menu-border">
+	    
+                    <a href="https://docs.ansible.com/" class="dropdown-item">
+		        <i class=""></i> Project documentation
+                    </a>
+                    <a href="https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/" class="dropdown-item">
+		        <i class=""></i> Ansible Automation Platform documentation
+                    </a>
+            </div>
+                 </li>
+<li class="nav-item">
+		     <a href="https://galaxy.ansible.com/" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Galaxy
+		     </a>
+		 </li>
+                 <li class="nav-item">
+		     <a href="https://forum.ansible.com/" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Forum
+		     </a>
+		 </li>
+            <li class="nav-item dropdown">
+	        <a href="#" class="nav-link nav-link-color dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <i class=""></i> Resources
+                </a>
+		<div class="dropdown-menu dropdown-menu-border">
+	    
+                    <a href="../../how-ansible-works/" class="dropdown-item">
+		        <i class=""></i> How Ansible works
+                    </a>
+                    <a href="../../ecosystem/" class="dropdown-item">
+		        <i class=""></i> Ansible ecosystem
+                    </a>
+                    <a href="../archive.html" class="dropdown-item">
+		        <i class=""></i> Blog
+                    </a>
+                    <a href="../../faq/" class="dropdown-item">
+		        <i class=""></i> Frequently asked questions
+                    </a>
+                    <a href="../../ansible-community-training/" class="dropdown-item">
+		        <i class=""></i> Ansible community training
+                    </a>
+                    <a href="../../contact-us/" class="dropdown-item">
+		        <i class=""></i> Contact us
+                    </a>
+            </div>
+                 </li>
+<li class="nav-item">
+		     <a href="https://www.redhat.com/en/technologies/management/ansible?sc_cid=7015Y000003szaKQAQ" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Ansible Automation Platform
+		     </a>
+		 </li>
+
+        
+      </ul>
+</div>
+    <!-- /.navbar-collapse -->
+  </div>
+  <!-- /.container -->
+</nav><!-- End default Menubar --><div class="body-content center-band">
+        <!--Body content-->
+        
+  <article class="post-text h-entry hentry postpage ansible-content" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Shell Scripts to Ansible</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard p-author h-card"><span class="byline-name fn p-name" itemprop="author">
+                    <a class="u-url" href="../../authors/allen-eastwood/">Allen Eastwood</a>
+            </span></p>
+            <p class="dateline">
+            <a href="." rel="bookmark">
+            <time class="published dt-published" datetime="2018-06-12T00:00:00Z" itemprop="datePublished" title="2018-06-12 00:00">2018-06-12 00:00</time></a>
+            </p>
+                    <p class="sourceline"><a href="index.md" class="sourcelink">Source</a></p>
+
+        </div>
+        
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+<h2>Shell Scripts to Ansible</h2>
+<p>During a recent client visit, we were asked to help migrate the
+following script for deploying a centralized sudoers file to RHEL and
+AIX servers. This is a common scenario which can provide some good
+examples of leveraging advanced Ansible features. Additionally, we can
+consider the shift in approach from a script that does a task to
+describing and enforcing the state of an item idempotently.</p>
+<p>Here is the script:</p>
+<div class="code"><pre class="code literal-block"><span class="ch">#!/bin/sh</span>
+<span class="c1"># Desc: Distribute unified copy of /etc/sudoers</span>
+<span class="c1">#</span>
+<span class="c1"># $Id: $</span>
+<span class="c1">#set -x</span>
+
+<span class="nb">export</span><span class="w"> </span><span class="nv">ODMDIR</span><span class="o">=</span>/etc/repos
+
+<span class="c1">#</span>
+<span class="c1"># perform any cleanup actions we need to do, and then exit with the</span>
+<span class="c1"># passed status/return code</span>
+<span class="c1">#</span>
+clean_exit<span class="o">()</span>
+<span class="o">{</span>
+<span class="nb">cd</span><span class="w"> </span>/
+<span class="nb">test</span><span class="w"> </span>-f<span class="w"> </span><span class="s2">"</span><span class="nv">$tmpfile</span><span class="s2">"</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>rm<span class="w"> </span><span class="nv">$tmpfile</span>
+<span class="nb">exit</span><span class="w"> </span><span class="nv">$1</span>
+<span class="o">}</span>
+
+<span class="c1">#Set variables</span>
+<span class="nv">PROG</span><span class="o">=</span><span class="sb">`</span>basename<span class="w"> </span><span class="nv">$0</span><span class="sb">`</span>
+<span class="nv">PLAT</span><span class="o">=</span><span class="sb">`</span>uname<span class="w"> </span>-s<span class="p">|</span>awk<span class="w"> </span><span class="s1">'{print $1}'</span><span class="sb">`</span>
+<span class="nv">HOSTNAME</span><span class="o">=</span><span class="sb">`</span>uname<span class="w"> </span>-n<span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span>-F.<span class="w"> </span><span class="s1">'{print $1}'</span><span class="sb">`</span>
+<span class="nv">HOSTPFX</span><span class="o">=</span><span class="k">$(</span><span class="nb">echo</span><span class="w"> </span><span class="nv">$HOSTNAME</span><span class="w"> </span><span class="p">|</span>cut<span class="w"> </span>-c<span class="w"> </span><span class="m">1</span>-2<span class="k">)</span>
+<span class="nv">NFSserver</span><span class="o">=</span><span class="s2">"nfs-server"</span>
+<span class="nv">NFSdir</span><span class="o">=</span><span class="s2">"/NFS/AIXSOFT_NFS"</span>
+<span class="nv">MOUNTPT</span><span class="o">=</span><span class="s2">"/mnt.</span><span class="nv">$$</span><span class="s2">"</span>
+<span class="nv">MAILTO</span><span class="o">=</span><span class="s2">"unix@company.com"</span>
+<span class="nv">DSTRING</span><span class="o">=</span><span class="k">$(</span>date<span class="w"> </span>+%Y%m%d%H%M<span class="k">)</span>
+<span class="nv">LOGFILE</span><span class="o">=</span><span class="s2">"/tmp/</span><span class="si">${</span><span class="nv">PROG</span><span class="si">}</span><span class="s2">.dist_sudoers.</span><span class="si">${</span><span class="nv">DSTRING</span><span class="si">}</span><span class="s2">.log"</span>
+<span class="nv">BKUPFILE</span><span class="o">=</span>/etc/sudoers.<span class="si">${</span><span class="nv">DSTRING</span><span class="si">}</span>
+<span class="nv">SRCFILE</span><span class="o">=</span><span class="si">${</span><span class="nv">MOUNTPT</span><span class="si">}</span>/skel/sudoers-uni
+<span class="nv">MD5FILE</span><span class="o">=</span><span class="s2">"/.sudoers.md5"</span>
+
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"Starting </span><span class="si">${</span><span class="nv">PROG</span><span class="si">}</span><span class="s2"> on </span><span class="si">${</span><span class="nv">HOSTNAME</span><span class="si">}</span><span class="s2">"</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="si">${</span><span class="nv">LOGFILE</span><span class="si">}</span><span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+
+<span class="c1"># Make sure we run as root</span>
+<span class="nv">runas</span><span class="o">=</span><span class="sb">`</span>id<span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span>-F<span class="s1">'('</span><span class="w"> </span><span class="s1">'{print $1}'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span>-F<span class="s1">'='</span><span class="w"> </span><span class="s1">'{print $2}'</span><span class="sb">`</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="nv">$runas</span><span class="w"> </span>-ne<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">]</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"</span><span class="nv">$PROG</span><span class="s2">: you must be root to run this script."</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="si">${</span><span class="nv">LOGFILE</span><span class="si">}</span><span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+<span class="nb">exit</span><span class="w"> </span><span class="m">1</span>
+<span class="k">fi</span>
+
+<span class="k">case</span><span class="w"> </span><span class="s2">"</span><span class="nv">$PLAT</span><span class="s2">"</span><span class="w"> </span><span class="k">in</span>
+SunOS<span class="o">)</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">PINGP</span><span class="o">=</span><span class="s2">" -t 7 </span><span class="nv">$NFSserver</span><span class="s2"> "</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">MOUNTP</span><span class="o">=</span><span class="s2">" -F nfs -o vers=3,soft "</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">"/usr/sbin:/usr/bin"</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"SunOS"</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="si">${</span><span class="nv">LOGFILE</span><span class="si">}</span><span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+<span class="nb">exit</span><span class="w"> </span><span class="m">0</span>
+<span class="p">;;</span>
+AIX<span class="o">)</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">PINGP</span><span class="o">=</span><span class="s2">" -T 7 </span><span class="nv">$NFSserver</span><span class="s2"> 2 2"</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">MOUNTP</span><span class="o">=</span><span class="s2">" -o vers=3,bsy,soft "</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">"/usr/bin:/etc:/usr/sbin:/usr/ucb:/usr/bin/X11:/sbin:/usr/java5/jre/bin:/usr/java5/bin"</span>
+<span class="nb">printf</span><span class="w"> </span><span class="s2">"Continuing on AIX...\n\n"</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="si">${</span><span class="nv">LOGFILE</span><span class="si">}</span><span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+<span class="p">;;</span>
+Linux<span class="o">)</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">PINGP</span><span class="o">=</span><span class="s2">" -t 7 -c 2 </span><span class="nv">$NFSserver</span><span class="s2">"</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">MOUNTP</span><span class="o">=</span><span class="s2">" -o nfsvers=3,soft "</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">"/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin"</span>
+<span class="nb">printf</span><span class="w"> </span><span class="s2">"Continuing on Linux...\n\n"</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="si">${</span><span class="nv">LOGFILE</span><span class="si">}</span><span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+<span class="p">;;</span>
+*<span class="o">)</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"Unsupported Platform."</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="si">${</span><span class="nv">LOGFILE</span><span class="si">}</span><span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+<span class="nb">exit</span><span class="w"> </span><span class="m">1</span>
+<span class="k">esac</span>
+
+<span class="c1">##</span>
+<span class="c1">## Exclude Lawson Hosts</span>
+<span class="c1">##</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="si">${</span><span class="nv">HOSTPFX</span><span class="si">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"la"</span><span class="w"> </span><span class="o">]</span>
+<span class="k">then</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"Exiting Lawson host </span><span class="si">${</span><span class="nv">HOSTNAME</span><span class="si">}</span><span class="s2"> with no changes."</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="si">${</span><span class="nv">LOGFILE</span><span class="si">}</span><span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+<span class="nb">exit</span><span class="w"> </span><span class="m">0</span>
+<span class="k">fi</span>
+
+<span class="c1">##</span>
+<span class="c1">## * NFS Mount Section *</span>
+<span class="c1">##</span>
+
+<span class="c1">## Check to make sure NFS host is up</span>
+<span class="nb">printf</span><span class="w"> </span><span class="s2">"Current PATH is..."</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="si">${</span><span class="nv">LOGFILE</span><span class="si">}</span><span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+<span class="nb">echo</span><span class="w"> </span><span class="nv">$PATH</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="nv">$LOGFILE</span><span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+ping<span class="w"> </span><span class="nv">$PINGP</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="nv">$LOGFILE</span><span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="nv">$?</span><span class="w"> </span>-ne<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">" NFS server is DOWN ... ABORTING SCRIPT ... Please check server..."</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="nv">$LOGFILE</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"</span><span class="nv">$PROG</span><span class="s2"> failed on </span><span class="nv">$HOSTNAME</span><span class="s2"> ... NFS server is DOWN ... ABORTING SCRIPT ... Please check server ... "</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>mailx<span class="w"> </span>-s<span class="w"> </span><span class="s2">"</span><span class="nv">$PROG</span><span class="s2"> Failed on </span><span class="nv">$HOSTNAME</span><span class="s2">"</span><span class="w"> </span><span class="nv">$MAILTO</span>
+<span class="nb">exit</span><span class="w"> </span><span class="m">1</span>
+<span class="k">else</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">" NFS server is UP ... We will continue..."</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="nv">$LOGFILE</span>
+<span class="k">fi</span>
+
+<span class="c1">##</span>
+<span class="c1">## Mount NFS share to HOSTNAME. We do this using a soft mount in case it is lost during a backup</span>
+<span class="c1">##</span>
+mkdir<span class="w"> </span><span class="nv">$MOUNTPT</span>
+mount<span class="w"> </span><span class="nv">$MOUNTP</span><span class="w"> </span><span class="nv">$NFSserver</span>:<span class="si">${</span><span class="nv">NFSdir</span><span class="si">}</span><span class="w"> </span><span class="nv">$MOUNTPT</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="nv">$LOGFILE</span><span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+
+<span class="c1">##</span>
+<span class="c1">## Check to make sure mount command returned 0. If it did not odds are something else is mounted on /mnt.$$</span>
+<span class="c1">##</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="nv">$?</span><span class="w"> </span>-ne<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">" Mount command did not work ... Please check server ... Odds are something is mounted on </span><span class="nv">$MOUNTPT</span><span class="s2"> ..."</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="nv">$LOGFILE</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">" </span><span class="nv">$PROG</span><span class="s2"> failed on </span><span class="nv">$HOSTNAME</span><span class="s2"> ... Mount command did not work ... Please check server ... Odds are something is mounted on </span><span class="nv">$MOUNTPT</span><span class="s2"> ..."</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>mailx<span class="w"> </span>-s<span class="w"> </span><span class="s2">"</span><span class="nv">$PROG</span><span class="s2"> Failed on </span><span class="nv">$HOSTNAME</span><span class="s2">"</span><span class="w"> </span><span class="nv">$MAILTO</span>
+<span class="nb">exit</span><span class="w"> </span><span class="m">1</span>
+<span class="k">else</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">" Mount command returned a good status which means </span><span class="nv">$MOUNPT</span><span class="s2"> was free for us to use ... We will now continue ..."</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="nv">$LOGFILE</span>
+<span class="k">fi</span>
+
+<span class="c1">##</span>
+<span class="c1">## Now check to see if the mount worked</span>
+<span class="c1">##</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>!<span class="w"> </span>-f<span class="w"> </span><span class="si">${</span><span class="nv">SRCFILE</span><span class="si">}</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">" File </span><span class="si">${</span><span class="nv">SRCFILE</span><span class="si">}</span><span class="s2"> is missing... Maybe NFS mount did NOT WORK ... Please check server ..."</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="nv">$LOGFILE</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">" </span><span class="nv">$PROG</span><span class="s2"> failed on </span><span class="nv">$HOSTNAME</span><span class="s2"> ... File </span><span class="si">${</span><span class="nv">SRCFILE</span><span class="si">}</span><span class="s2"> is missing... Maybe NFS mount did NOT WORK ... Please check server ..."</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>mailx<span class="w"> </span>-s<span class="w"> </span><span class="s2">"</span><span class="nv">$PROG</span><span class="s2"> Failed on </span><span class="nv">$HOSTNAME</span><span class="s2">"</span><span class="w"> </span><span class="nv">$MA</span>
+ILTO
+umount<span class="w"> </span>-f<span class="w"> </span><span class="nv">$MOUNTPT</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="nv">$LOGFILE</span>
+rmdir<span class="w"> </span><span class="nv">$MOUNTPT</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="nv">$LOGFILE</span>
+<span class="nb">exit</span><span class="w"> </span><span class="m">1</span>
+<span class="k">else</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">" NFS mount worked we are going to continue ..."</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="nv">$LOGFILE</span>
+<span class="k">fi</span>
+
+
+<span class="c1">##</span>
+<span class="c1">## * Main Section *</span>
+<span class="c1">##</span>
+
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>!<span class="w"> </span>-f<span class="w"> </span><span class="si">${</span><span class="nv">BKUPFILE</span><span class="si">}</span><span class="w"> </span><span class="o">]</span>
+<span class="k">then</span>
+cp<span class="w"> </span>-p<span class="w"> </span>/etc/sudoers<span class="w"> </span><span class="si">${</span><span class="nv">BKUPFILE</span><span class="si">}</span>
+<span class="k">else</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"Backup file already exists</span>$<span class="s2">"</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="si">${</span><span class="nv">LOGFILE</span><span class="si">}</span><span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+<span class="nb">exit</span><span class="w"> </span><span class="m">1</span>
+<span class="k">fi</span>
+
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-f<span class="w"> </span><span class="s2">"</span><span class="nv">$SRCFILE</span><span class="s2">"</span><span class="w"> </span><span class="o">]</span>
+<span class="k">then</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"Copying in new sudoers file from </span><span class="nv">$SRCFILE</span><span class="s2">."</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="si">${</span><span class="nv">LOGFILE</span><span class="si">}</span><span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+cp<span class="w"> </span>-p<span class="w"> </span><span class="nv">$SRCFILE</span><span class="w"> </span>/etc/sudoers
+chmod<span class="w"> </span><span class="m">440</span><span class="w"> </span>/etc/sudoers
+<span class="k">else</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"Source file not found"</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="si">${</span><span class="nv">LOGFILE</span><span class="si">}</span><span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+<span class="nb">exit</span><span class="w"> </span><span class="m">1</span>
+<span class="k">fi</span>
+
+<span class="nb">echo</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="si">${</span><span class="nv">LOGFILE</span><span class="si">}</span><span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+visudo<span class="w"> </span>-c<span class="w"> </span><span class="p">|</span>tee<span class="w"> </span>-a<span class="w"> </span><span class="si">${</span><span class="nv">LOGFILE</span><span class="si">}</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="nv">$?</span><span class="w"> </span>-ne<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">]</span>
+<span class="k">then</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"sudoers syntax error on </span><span class="nv">$HOSTNAME</span><span class="s2">."</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="si">${</span><span class="nv">LOGFILE</span><span class="si">}</span><span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+mailx<span class="w"> </span>-s<span class="w"> </span><span class="s2">"</span><span class="si">${</span><span class="nv">PROG</span><span class="si">}</span><span class="s2">: sudoers syntax error on </span><span class="nv">$HOSTNAME</span><span class="s2">"</span><span class="w"> </span><span class="s2">"</span><span class="nv">$MAILTO</span><span class="s2">"</span><span class="w"> </span><span class="s">&lt;&lt; EOF</span>
+
+<span class="s">Syntax error /etc/sudoers on $HOSTNAME.</span>
+
+<span class="s">Reverting changes</span>
+
+<span class="s">Please investigate.</span>
+
+<span class="s">EOF</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"Reverting changes."</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="si">${</span><span class="nv">LOGFILE</span><span class="si">}</span><span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+cp<span class="w"> </span>-p<span class="w"> </span><span class="si">${</span><span class="nv">BKUPFILE</span><span class="si">}</span><span class="w"> </span>/etc/sudoers
+<span class="k">else</span>
+<span class="c1">#</span>
+<span class="c1"># Update checksum file</span>
+<span class="c1">#</span>
+grep<span class="w"> </span>-v<span class="w"> </span><span class="s1">'/etc/sudoers'</span><span class="w"> </span><span class="si">${</span><span class="nv">MD5FILE</span><span class="si">}</span><span class="w"> </span>&gt;<span class="w"> </span><span class="si">${</span><span class="nv">MD5FILE</span><span class="si">}</span>.tmp
+csum<span class="w"> </span>/etc/sudoers<span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="si">${</span><span class="nv">MD5FILE</span><span class="si">}</span>.tmp
+mv<span class="w"> </span><span class="si">${</span><span class="nv">MD5FILE</span><span class="si">}</span>.tmp<span class="w"> </span><span class="si">${</span><span class="nv">MD5FILE</span><span class="si">}</span>
+chmod<span class="w"> </span><span class="m">600</span><span class="w"> </span><span class="si">${</span><span class="nv">MD5FILE</span><span class="si">}</span>
+<span class="k">fi</span>
+
+<span class="nb">echo</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="si">${</span><span class="nv">LOGFILE</span><span class="si">}</span><span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="s2">"</span><span class="si">${</span><span class="nv">HOSTPFX</span><span class="si">}</span><span class="s2">"</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"hd"</span><span class="w"> </span><span class="o">]</span>
+<span class="k">then</span>
+<span class="nb">printf</span><span class="w"> </span><span class="s2">"\nAppending #includedir /etc/sudoers.d at end of file.\n"</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="si">${</span><span class="nv">LOGFILE</span><span class="si">}</span><span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">""</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>/etc/sudoers
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"## Read drop-in files from /etc/sudoers.d (the # here does not mean a comment)"</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>/etc/sudoers
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"#includedir /etc/sudoers.d"</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>/etc/sudoers
+<span class="k">fi</span>
+
+<span class="c1">##</span>
+<span class="c1">## * NFS Un-mount Section *</span>
+<span class="c1">##</span>
+
+<span class="c1">##</span>
+<span class="c1">## Unmount /mnt.$$ directory</span>
+<span class="c1">##</span>
+umount<span class="w"> </span><span class="si">${</span><span class="nv">MOUNTPT</span><span class="si">}</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="nv">$LOGFILE</span><span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-d<span class="w"> </span><span class="si">${</span><span class="nv">MOUNTPT</span><span class="si">}</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+rmdir<span class="w"> </span><span class="si">${</span><span class="nv">MOUNTPT</span><span class="si">}</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="nv">$LOGFILE</span><span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+<span class="k">fi</span>
+
+<span class="c1">##</span>
+<span class="c1">## Make sure that /mnt.$$ got unmounted</span>
+<span class="c1">##</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-f<span class="w"> </span><span class="si">${</span><span class="nv">SRCFILE</span><span class="si">}</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">" The umount command failed to unmount </span><span class="si">${</span><span class="nv">MOUNTPT</span><span class="si">}</span><span class="s2"> ... We will not force the unmount ..."</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="nv">$LOGFILE</span>
+umount<span class="w"> </span>-f<span class="w"> </span><span class="si">${</span><span class="nv">MOUNTPT</span><span class="si">}</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="nv">$LOGFILE</span><span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-d<span class="w"> </span><span class="si">${</span><span class="nv">MOUNTPT</span><span class="si">}</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+rmdir<span class="w"> </span><span class="si">${</span><span class="nv">MOUNTPT</span><span class="si">}</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="nv">$LOGFILE</span><span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+<span class="k">fi</span>
+<span class="k">else</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">" </span><span class="nv">$MOUNTPT</span><span class="s2"> was unmounted ... There is no need for user intervention on </span><span class="nv">$HOSTNAME</span><span class="s2"> ..."</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="nv">$LOGFILE</span>
+<span class="k">fi</span>
+
+<span class="c1">#</span>
+<span class="c1"># as always, exit cleanly</span>
+<span class="c1">#</span>
+clean_exit<span class="w"> </span><span class="m">0</span>
+</pre></div>
+
+<p>That's 212 lines of code; there's no versioning of the sudoers file. The
+customer has an existing process that runs weekly to validate the
+checksum of the file for security. Although the script references
+Solaris, for this customer we did not need to migrate the Solaris
+requirement.</p>
+<p>We started with the idea of creating a role and placing the sudoers file
+into Git for version control. This also removes the need for NFS mounts.</p>
+<p>With the "validate" and "backup" parameters for the <code>copy</code> and
+<code>template</code> modules, we can eliminate the need for code to backup and
+restore the file. The validation is run before the file is placed in the
+destination and, if failed, the module errors out.</p>
+<p>We'll need tasks, templates and vars for the role. Here's the file
+layout:</p>
+<div class="code"><pre class="code literal-block">├──<span class="w"> </span>README.md
+├──<span class="w"> </span>roles
+│<span class="w"> </span>└──<span class="w"> </span>sudoers
+│<span class="w"> </span>├──<span class="w"> </span>tasks
+│<span class="w"> </span>│<span class="w"> </span>└──<span class="w"> </span>main.yml
+│<span class="w"> </span>├──<span class="w"> </span>templates
+│<span class="w"> </span>│<span class="w"> </span>└──<span class="w"> </span>sudoers.j2
+│<span class="w"> </span>└──<span class="w"> </span>vars
+│<span class="w"> </span>└──<span class="w"> </span>main.yml
+└──<span class="w"> </span>sudoers.yml
+</pre></div>
+
+<p>The role playbook, <code>sudoers.yml</code>, is simple:</p>
+<div class="code"><pre class="code literal-block"><span class="nn">---</span>
+<span class="c1">##</span>
+<span class="c1"># Role playbook</span>
+<span class="c1">##</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">all</span>
+<span class="w">  </span><span class="nt">roles</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sudoers</span>
+<span class="nn">...</span>
+</pre></div>
+
+<p>Role variables are located in the <code>vars/main.yml</code> file. I've set
+variables for the checksum file, and include/exclude variables that will
+be used to create the logic that skips "Lawson" hosts and only adds the
+sudoers.d include to "hd" hosts.</p>
+<p>Below is what is in the <code>vars/main.yml</code> file:</p>
+<div class="code"><pre class="code literal-block"><span class="nn">---</span>
+<span class="nt">MD5FILE</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/root/.sudoer.md5</span>
+<span class="nt">EXCLUDE</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">la</span>
+<span class="nt">INCLUDE</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hd</span>
+<span class="nn">...</span>
+</pre></div>
+
+<p>If we use the <code>copy</code> and <code>lineinfile</code> modules, the role will not be
+idempotent. Copy will deploy the base file, and lineinfile will have to
+reinsert the includes on every run. As this role will be scheduled in
+Ansible Tower, idempotence is a requirement. We'll convert the file to a
+jinja2 template.</p>
+<p>In the first line, we add the following to <a href="https://ansiblemaster.wordpress.com/2016/07/29/jinja2-lstrip_blocks-to-manage-indentation/">manage whitespace and indentations</a>:</p>
+<div class="code"><pre class="code literal-block"><span class="c1">#jinja2: lstrip_blocks: True, trim_blocks: True</span>
+</pre></div>
+
+<p>Note that newer versions of the <code>template</code> module include parameters for
+<code>trim_blocks</code> (added in Ansible 2.4).</p>
+<p>Here is the code to insert the <code>include</code> line at the end of the file:</p>
+<div class="code"><pre class="code literal-block"><span class="p p-Indicator">{</span><span class="err">%</span><span class="w"> </span><span class="nv">if ansible_hostname</span><span class="p p-Indicator">[</span><span class="nv">0</span><span class="p p-Indicator">:</span><span class="nv">2</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="nv">== INCLUDE %</span><span class="p p-Indicator">}</span>
+<span class="c1">#includedir /etc/sudoers.d</span>
+<span class="p p-Indicator">{</span><span class="err">%</span><span class="w"> </span><span class="nv">endif %</span><span class="p p-Indicator">}</span>
+</pre></div>
+
+<p>We use a conditional ( <code>{% if %}</code>, <code>{% endif %}</code> ) to replace the shell
+that inserts the line for hosts where "hd" is in the first two
+characters of the hostname. We leverage Ansible facts and the filter
+<code>[0:2]</code> to parse the hostname.</p>
+<p>Now for the tasks. First, set a fact to parse the hostname. We will use
+the "parhost" fact in conditionals.</p>
+<div class="code"><pre class="code literal-block"><span class="nn">---</span>
+<span class="c1">##</span>
+<span class="c1"># Parse hostnames to grab 1st 2 characters</span>
+<span class="c1">##</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">"Parse</span><span class="nv"> </span><span class="s">hostname's</span><span class="nv"> </span><span class="s">1st</span><span class="nv"> </span><span class="s">2</span><span class="nv"> </span><span class="s">characters"</span>
+<span class="err">  </span><span class="nt">set_fact</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">parhost={{ ansible_hostname[0:2] }}</span>
+</pre></div>
+
+<p>Next, I noticed that <code>csum</code> doesn't exist on a stock RHEL server. In
+case it's needed, we can use another fact to conditionally set the name
+of the checksum binary. Note that further coding may be needed if that
+differs between AIX, Solaris and Linux. As the customer was not
+concerned with the Solaris hosts, I skipped that development.</p>
+<p>We'll also deal with the difference in root's groups between AIX and RHEL.</p>
+<div class="code"><pre class="code literal-block"><span class="c1">##</span>
+<span class="c1"># Conditionally set name of checksum binary</span>
+<span class="c1">##</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">"set</span><span class="nv"> </span><span class="s">checksum</span><span class="nv"> </span><span class="s">binary"</span>
+<span class="err">  </span><span class="nt">set_fact</span><span class="p">:</span>
+<span class="err">    </span><span class="nt">csbin</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">'cksum'</span><span class="nv"> </span><span class="s">if</span><span class="nv"> </span><span class="s">(ansible_distribution</span><span class="nv"> </span><span class="s">==</span><span class="nv"> </span><span class="s">'RedHat')</span><span class="nv"> </span><span class="s">else</span><span class="nv"> </span><span class="s">'csum'</span><span class="nv"> </span><span class="s">}}"</span>
+
+<span class="c1">##</span>
+<span class="c1"># Conditionally set name of root group</span>
+<span class="c1">##</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">"set</span><span class="nv"> </span><span class="s">system</span><span class="nv"> </span><span class="s">group"</span>
+<span class="err">  </span><span class="nt">set_fact</span><span class="p">:</span>
+<span class="err">    </span><span class="nt">sysgroup</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">'root'</span><span class="nv"> </span><span class="s">if</span><span class="nv"> </span><span class="s">(ansible_distribution</span><span class="nv"> </span><span class="s">==</span><span class="nv"> </span><span class="s">'RedHat')</span><span class="nv"> </span><span class="s">else</span><span class="nv"> </span><span class="s">'sys'</span><span class="nv"> </span><span class="s">}}"</span>
+</pre></div>
+
+<p>Blocks will allow us to provide a conditional around the tasks. We'll
+use a conditional at the end of the block to exclude the "la"
+hosts.</p>
+<div class="code"><pre class="code literal-block"><span class="c1">##</span>
+<span class="c1"># Enclose in block so we can use parhost to exclude hosts</span>
+<span class="c1">##</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">block</span><span class="p">:</span>
+</pre></div>
+
+<p>The template module validates and deploys the file. We register the
+result so we can determine if there was a change in this task. Using the
+validate parameter of the module ensures the new sudoers file is valid
+before putting it in place.</p>
+<div class="code"><pre class="code literal-block"><span class="c1">##</span>
+<span class="c1"># Validate will prevent bad files, no need to revert</span>
+<span class="c1"># Jinja2 template will add include line</span>
+<span class="c1">##</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Ensure sudoers file</span>
+<span class="err">  </span><span class="nt">template</span><span class="p">:</span>
+<span class="err">    </span><span class="nt">src</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sudoers.j2</span>
+<span class="w"> </span><span class="err">   </span><span class="l l-Scalar l-Scalar-Plain">dest</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/etc/sudoers</span>
+<span class="w"> </span><span class="err">   </span><span class="l l-Scalar l-Scalar-Plain">owner</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">root</span>
+<span class="w"> </span><span class="err">   </span><span class="l l-Scalar l-Scalar-Plain">group</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">sysgroup</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="err">    </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0440</span>
+<span class="w"> </span><span class="err">   </span><span class="l l-Scalar l-Scalar-Plain">backup</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">yes</span>
+<span class="w"> </span><span class="err">   </span><span class="l l-Scalar l-Scalar-Plain">validate</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/usr/sbin/visudo -cf %s</span>
+<span class="w"> </span><span class="err">   </span><span class="l l-Scalar l-Scalar-Plain">register</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sudochg</span>
+</pre></div>
+
+<p>If a new template was deployed, we run shell to generate the checksum file.
+The conditional updates the checksum file when the sudoers template is deployed, or if the checksum file is missing.
+As the existing process also monitors other files, we use the shell code provided in the original script:</p>
+<div class="code"><pre class="code literal-block"><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sudoers checksum</span>
+<span class="err">  </span><span class="nt">shell</span><span class="p">:</span><span class="w"> </span><span class="s">"grep</span><span class="nv"> </span><span class="s">-v</span><span class="nv"> </span><span class="s">'/etc/sudoers'</span><span class="nv"> </span><span class="s">{{</span><span class="nv"> </span><span class="s">MD5FILE</span><span class="nv"> </span><span class="s">}}</span><span class="nv"> </span><span class="s">&gt;</span><span class="nv"> </span><span class="s">{{</span><span class="nv"> </span><span class="s">MD5FILE</span><span class="nv"> </span><span class="s">}}.tmp</span><span class="nv"> </span><span class="s">;</span><span class="nv"> </span><span class="s">{{</span><span class="nv"> </span><span class="s">csbin</span><span class="nv"> </span><span class="s">}}</span><span class="nv"> </span><span class="s">/etc/sudoers</span><span class="nv"> </span><span class="s">&gt;&gt;</span><span class="nv"> </span><span class="s">{{</span><span class="nv"> </span><span class="s">MD5FILE</span><span class="nv"> </span><span class="s">}}</span><span class="nv"> </span><span class="s">;</span><span class="nv"> </span><span class="s">mv</span><span class="nv"> </span><span class="s">{{</span><span class="nv"> </span><span class="s">MD5FILE</span><span class="nv"> </span><span class="s">}}.tmp</span><span class="nv"> </span><span class="s">{{</span><span class="nv"> </span><span class="s">MD5FILE</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="err">  </span><span class="nt">when</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sudochg.changed or MD5STAT.exists == false</span>
+</pre></div>
+
+<p>The file module enforces the permissions:</p>
+<div class="code"><pre class="code literal-block"><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Ensure MD5FILE permissions</span>
+<span class="err">  </span><span class="nt">file</span><span class="p">:</span>
+<span class="err">  </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">MD5FILE</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="err">  </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">root</span>
+<span class="w"> </span><span class="err"> </span><span class="l l-Scalar l-Scalar-Plain">group</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">sysgroup</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="err">  </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0600</span>
+<span class="w"> </span><span class="err"> </span><span class="l l-Scalar l-Scalar-Plain">state</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">file</span>
+</pre></div>
+
+<p>Since the backup parameter does not provide any options for cleanup of older backups, we'll add some code to handle that for us.
+This also demonstrates leveraging the "register" and "stdout_lines" features.</p>
+<div class="code"><pre class="code literal-block"><span class="c1">##</span>
+<span class="c1"># List and clean up backup files. Retain 3 copies.</span>
+<span class="c1">##</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">List /etc/sudoers.*~ files</span>
+<span class="err">  </span><span class="nt">shell</span><span class="p">:</span><span class="w"> </span><span class="s">"ls</span><span class="nv"> </span><span class="s">-t</span><span class="nv"> </span><span class="s">/etc/sudoers*~</span><span class="nv"> </span><span class="s">|tail</span><span class="nv"> </span><span class="s">-n</span><span class="nv"> </span><span class="s">+4"</span>
+<span class="err">  </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">LIST_SUDOERS</span>
+<span class="w"> </span><span class="err"> </span><span class="l l-Scalar l-Scalar-Plain">changed_when</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Cleanup /etc/sudoers.*~ files</span>
+<span class="err">  </span><span class="nt">file</span><span class="p">:</span>
+<span class="err">  </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">item</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="err">  </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">absent</span>
+<span class="w"> </span><span class="err"> </span><span class="l l-Scalar l-Scalar-Plain">loop</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">LIST_SUDOERS.stdout_lines</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="err">  </span><span class="nt">when</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">LIST_SUDOERS.stdout_lines != ""</span>
+</pre></div>
+
+<p>Closing the block:</p>
+<div class="code"><pre class="code literal-block"><span class="c1">##</span>
+<span class="c1"># This conditional restricts what hosts this block runs on</span>
+<span class="c1">##</span>
+<span class="nt">when</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">parhost != EXCLUDE</span>
+<span class="nn">...</span>
+</pre></div>
+
+<p>The intended use here is to run this role in Ansible Tower. Ansible
+Tower notifications can be configured for job failure via email, Slack
+or other methods. This role runs in Ansible, Ansible Engine or Ansible
+Tower.</p>
+<p>We've condensed the script and created a fully idempotent role that can
+enforce the desired state of the sudoers file. Use of SCM provides
+versioning, better change management and accountability. CI/CD with
+Jenkins or other tools can provide automated testing of the Ansible code
+for future changes. The Auditor role in Ansible Tower can oversee and
+maintain the compliance requirements of organizations.</p>
+<p>We could remove the process around the checksum, but the customer will
+have to have conversations with their Security team first. If desired,
+the sudoers template can be protected with Ansible Vault. Finally, use
+of groups could replace the logic around the includes and excludes.</p>
+<p>You can find the <a href="https://github.com/AJEastwood/sudoers">role on GitHub</a>.</p>
+</div>
+    <aside class="postpromonav"><nav><ul class="pager hidden-print">
+<li class="previous">
+                <a href="../command-module-deep-dive-for-networks/" rel="prev" title="Command Module Deep Dive for Networks">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../red-hat-single-sign-on-integration-with-ansible-tower/" rel="next" title="Red Hat Single Sign-on Integration with Ansible Tower">Next post</a>
+            </li>
+        </ul></nav></aside></article><!--End of body content-->
+</div>
+        <div class="content-slim redhat-footer">
+      <div class="footer-left">
+        <ul class="footer-left-links">
+<li>
+            <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-SA 4.0</a>
+          </li>
+          <li>
+            <a href="https://www.redhat.com/en/about/privacy-policy" target="_blank">Privacy policy</a>
+          </li>
+          <li>
+            <a href="https://docs.ansible.com/ansible/latest/community/code_of_conduct.html" target="_blank">Code of conduct</a>
+          </li>
+        </ul>
+</div>
+      <div class="footer-right">
+        <span class="redhat">Powered by</span>
+        <span class="redhat-logo">
+          <a href="https://www.redhat.com/en/technologies/management/ansible" target="_blank">
+            <img src="../../assets/images/redhat_reversed.svg" alt="Red Hat logo." width="96" height="28"></a>
+        </span>
+      </div>
+    </div>
+
+</div>
+
+            <script src="../../assets/js/jquery.min.js"></script><script src="../../assets/js/popper.min.js"></script><script src="../../assets/js/bootstrap.min.js"></script><script src="../../assets/js/baguetteBox.min.js"></script><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+</script><script src="../../assets/js/clipboard.min.js" type="text/javascript"></script><script src="../../assets/js/clipboard.js" type="text/javascript"></script>
+</body>
+</html>

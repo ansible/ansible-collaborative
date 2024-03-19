@@ -1,0 +1,1984 @@
+<!DOCTYPE html>
+<html prefix="
+og: http://ogp.me/ns# article: http://ogp.me/ns/article#
+" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="Ansible Collaborative Website">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ansible Collaborative (old posts, page 2) | Ansible Collaborative</title>
+<link href="../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="../assets/css/baguetteBox.min.css" rel="stylesheet" type="text/css">
+<link href="../assets/css/rst.css" rel="stylesheet" type="text/css">
+<link href="../assets/css/code.css" rel="stylesheet" type="text/css">
+<link href="../assets/css/theme.css" rel="stylesheet" type="text/css">
+<!-- Red Hat fonts --><link rel="stylesheet" href="https://static.redhat.com/libs/redhat/redhat-font/2.0.0/webfonts/red-hat-font.css">
+<!-- Font Awesome --><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+<!-- Fork Awesome --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css" integrity="sha256-XoaMnoYC5TH6/+ihMEnospgm0J1PM/nioxbOUdnM8HY=" crossorigin="anonymous">
+<!-- Sass compiled css  --><link rel="stylesheet" href="../assets/css/main.css">
+<link rel="stylesheet" href="../assets/css/redhat-footer.css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../rss.xml">
+<link rel="canonical" href="https://ansible.com/blog/index-2.html">
+<link rel="prev" href="index-3.html" type="text/html">
+<link rel="next" href="index-1.html" type="text/html">
+<!--[if lt IE 9]><script src="../assets/js/html5.js"></script><![endif]-->
+</head>
+<body id="top">
+
+<div class="global-container" id="content" role="main">
+<!-- Start menubar -->
+<nav class="navbar navbar-expand-lg static-top mb-4 navbar-padding full-width-bg   navbar-dark   bg-pool   "><div class="masthead">
+    <!-- This keeps the margins nice -->
+    <a class="navbar-brand" href="../">
+        <img src="../images/ansible_logo-small-15.png" alt="Ansible community logo" id="logo" class="d-inline-block align-top" width="50" height="50"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon nav-toggle-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="bs-navbar">
+      <ul class="navbar-nav mr-auto"></ul>
+<ul class="navbar-nav navbar-right">
+<li class="nav-item dropdown">
+	        <a href="#" class="nav-link nav-link-color dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <i class=""></i> Documentation
+                </a>
+		<div class="dropdown-menu dropdown-menu-border">
+	    
+                    <a href="https://docs.ansible.com/" class="dropdown-item">
+		        <i class=""></i> Project documentation
+                    </a>
+                    <a href="https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/" class="dropdown-item">
+		        <i class=""></i> Ansible Automation Platform documentation
+                    </a>
+            </div>
+                 </li>
+<li class="nav-item">
+		     <a href="https://galaxy.ansible.com/" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Galaxy
+		     </a>
+		 </li>
+                 <li class="nav-item">
+		     <a href="https://forum.ansible.com/" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Forum
+		     </a>
+		 </li>
+            <li class="nav-item dropdown">
+	        <a href="#" class="nav-link nav-link-color dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <i class=""></i> Resources
+                </a>
+		<div class="dropdown-menu dropdown-menu-border">
+	    
+                    <a href="../how-ansible-works/" class="dropdown-item">
+		        <i class=""></i> How Ansible works
+                    </a>
+                    <a href="../ecosystem/" class="dropdown-item">
+		        <i class=""></i> Ansible ecosystem
+                    </a>
+                    <a href="archive.html" class="dropdown-item">
+		        <i class=""></i> Blog
+                    </a>
+                    <a href="../faq/" class="dropdown-item">
+		        <i class=""></i> Frequently asked questions
+                    </a>
+                    <a href="../ansible-community-training/" class="dropdown-item">
+		        <i class=""></i> Ansible community training
+                    </a>
+                    <a href="../contact-us/" class="dropdown-item">
+		        <i class=""></i> Contact us
+                    </a>
+            </div>
+                 </li>
+<li class="nav-item">
+		     <a href="https://www.redhat.com/en/technologies/management/ansible?sc_cid=7015Y000003szaKQAQ" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Ansible Automation Platform
+		     </a>
+		 </li>
+
+        
+      </ul>
+</div>
+    <!-- /.navbar-collapse -->
+  </div>
+  <!-- /.container -->
+</nav><!-- End default Menubar --><div class="body-content center-band">
+        <!--Body content-->
+        
+    
+  <div class="postindex ansible-content">
+      <article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title">
+            <a href="ansible-and-infoblox-roles-deep-dive/" class="u-url">Ansible and Infoblox Roles Deep Dive</a>
+          </h1>
+          <div class="metadata">
+            <p class="byline author vcard">
+              <span class="byline-name fn" itemprop="author">
+                  <a href="../authors/branden-pleines/">Branden Pleines</a>
+              </span>
+            </p>
+            <p class="dateline">
+              <a href="ansible-and-infoblox-roles-deep-dive/" rel="bookmark">
+                <time class="published dt-published" datetime="2018-10-02T00:00:00Z" itemprop="datePublished" title="2018-10-02 00:00">2018-10-02 00:00</time></a>
+            </p>
+          </div>
+        </header><div class="p-summary entry-summary">
+            <h2>Ansible and Infoblox Roles Deep Dive</h2>
+<p>As Sean Cavanaugh mentioned in his earlier Infoblox blog
+post, the release of Ansible
+2.5 introduced a lookup plugin, a dynamic inventory script, and five
+modules that allow for Infoblox automation. A combination of these
+modules and lookups in a role provides a powerful DNS automation
+framework.</p>
+<h3>Summary</h3>
+<p>Today we are going to demonstrate how automating Infoblox Core Network
+Services using Ansible can help make managing IP addresses and routing
+traffic across your network easy, quick, and reliable. Your network
+systems for virtualization and cloud require rapid provisioning life
+cycles; Infoblox helps you manage those lifecycles. When paired with
+Infoblox, Ansible lets you automate that work. Ansible's integration
+with Infoblox is flexible and powerful: you can automate Infoblox tasks
+with modules or with direct calls to the Infoblox WAPI REST API.</p>
+<p>This post will walk you through six real-world scenarios where Ansible
+and Infoblox can streamline your network tasks:</p>
+<ol>
+<li>Creating a provider in one place that is reusable across a collection of roles.</li>
+<li>Expanding your network by creating a new subnet with a forward DNS zone. Ansible modules for Infoblox make this common two-part task
+    simple.</li>
+<li>Creating a reverse DNS zone, for example, to flag email from any IP
+    addresses that don't have an associated address name. You must do
+    this task with calls to the Infoblox API for older versions of
+    Ansible, but this is now supported functionality in the
+    <code>nios_zone</code> module as
+    of Ansible v2.7.</li>
+<li>Reserving a host record for the gateway address of your new subnet
+    with Ansible's powerful Jinja2 templates.</li>
+<li>Creating additional hosts in the subnet using a loop and
+    <code>host_count</code>.</li>
+<li>Managing Infoblox Grids to automate your network at scale, where one
+    Infoblox appliance may not be enough. Grids physically separate your
+    managed network and eliminate single points of failure.</li>
+</ol>
+<p>To follow along with these examples on your own Infoblox devices, you'll
+need to install the
+<a href="https://github.com/network-automation/dynamic-infoblox">dynamic-infoblox Roles</a> and set
+up your Infoblox credentials as a provider.</p>
+<h4>Infoblox credentials and the nios_provider</h4>
+<p>[Any time you use Ansible with Infoblox, invoking an Infoblox
+<a href="https://docs.ansible.com/ansible/latest/plugins/lookup.html">lookup</a> or
+<a href="https://docs.ansible.com/ansible/latest/modules/list_of_net_tools_modules.html#nios">module</a>,
+you must specify the Infoblox IP, username, and the user's password.
+<a href="https://github.com/network-automation/dynamic-infoblox">Our Roles</a> call
+these credentials, taken together, the
+<code>nios_provider</code>. By
+creating a <code>nios_provider</code>
+dictionary as a group variable, you can apply these values consistently
+in all your playbooks and roles, referring to them in a single line
+whenever you need them.</p>
+<div class="code"><pre class="code literal-block"><span class="o">*</span><span class="n">group_vars</span><span class="o">/</span><span class="n">all</span><span class="o">/</span><span class="n">main</span><span class="o">.</span><span class="n">yml</span><span class="o">*</span>
+
+<span class="n">nios_provider</span><span class="p">:</span>
+<span class="w">   </span><span class="c1">#Infoblox out-of-the-box defaults specified here</span>
+<span class="w">    </span><span class="n">host</span><span class="p">:</span><span class="w"> </span><span class="mf">192.168</span><span class="o">.</span><span class="mf">1.2</span>
+<span class="w">    </span><span class="n">username</span><span class="p">:</span><span class="w"> </span><span class="n">admin</span>
+<span class="w">    </span><span class="n">password</span><span class="p">:</span><span class="w"> </span><span class="n">infoblox</span>
+<span class="n">wapi_version</span><span class="p">:</span><span class="w"> </span><span class="err">“</span><span class="n">v2</span><span class="o">.</span><span class="mi">7</span><span class="err">”</span>
+</pre></div>
+
+<h4>Using modules to set up a subnet and forward DNS zone</h4>
+<p>Once you've got your credentials ready, you can run a playbook that
+leverages the
+<a href="https://github.com/network-automation/dynamic-infoblox/tree/master/roles/dynamicInfoblox">dynamic Infoblox</a>
+Role to create a subnet and a forward DNS zone; Ansible modules take
+care of this with ease. Creating a subnet is a common network project:
+subnets allow an administrator to expand the network, responding to a
+new company branch, office, or line of business. Forward DNS zones
+establish the single direction mapping of address names to IP addresses.
+A new DNS zone may be required for a business to expand its global reach
+into an additional country (e.g. .uk) or respond to a merger. The tasks
+shown here define <code>ansible_subnet</code> and <code>ansible_zone</code> as
+variables, so you can override them each time you create a new subnet.</p>
+<div class="code"><pre class="code literal-block"><span class="x">- name: Create a test network subnet</span>
+<span class="x">  nios_network:</span>
+<span class="x">     network: "</span><span class="cp">{{</span> <span class="nv">ansible_subnet</span> <span class="cp">}}</span><span class="x">"</span>
+<span class="x">     comment: Test network subnet to add host records to</span>
+<span class="x">     state: present</span>
+<span class="x">     provider: "</span><span class="cp">{{</span> <span class="nv">nios_provider</span> <span class="cp">}}</span><span class="x">"</span>
+
+<span class="x">- name: "Create a forward DNS zone called </span><span class="cp">{{</span> <span class="nv">ansible_zone</span> <span class="cp">}}</span><span class="x">"</span>
+<span class="x">  nios_zone:</span>
+<span class="x">     name: "</span><span class="cp">{{</span> <span class="nv">ansible_zone</span> <span class="cp">}}</span><span class="x">"</span>
+<span class="x">     comment: local DNS zone</span>
+<span class="x">     state: present</span>
+<span class="x">     provider: "</span><span class="cp">{{</span> <span class="nv">nios_provider</span> <span class="cp">}}</span><span class="x">"</span>
+</pre></div>
+
+<p>In this example, we've used the default Infoblox View. Infoblox allows
+multiple Views within a single DNS zone. If you want to route internal
+traffic to on-premise servers and route external traffic to public cloud
+servers, you can do that by designing a DNS zone with two DNS Views.
+This type of setup ensures that traffic to your employee intranet does
+not burden the servers your customers use, providing better geographic
+coverage and higher levels of around-the-clock coverage for customers.
+However, for the simple example above (and subsequent examples), we've
+stuck to using the default View.</p>
+<h4>Using the Infoblox API to set up a reverse DNS zone</h4>
+<p>So far you've seen how to use Ansible modules to automate Infoblox
+changes. Our next example shows how to use the Infoblox WAPI REST API to
+automate a task that may not be available in your current version of
+Ansible. Reverse DNS zones allow a client to look up an address name if
+they know the equivalent IP address. The importance of reverse zones can
+be illustrated with a common example: email servers. Incoming traffic
+from an IP address that does not have an associated address name through
+reverse DNS can often be flagged as spam. Reverse zones can also help
+with other use cases, like gathering authentic data about other
+businesses that visit your websites.</p>
+<p>The <code>nios_zone</code> module can
+already create a forward DNS zone, but it can only create reverse zones
+with the latest version of Ansible. However, you can still automate this
+task in older versions of Ansible - just use Ansible to make calls
+directly to the WAPI API. You can do this with either the uri module or
+a shell script. We recommend the uri module, since it helps capture the
+integration more descriptively and enables idempotent calls leveraging
+standard REST return codes. Here the uri module serves as a umbrella
+module to succinctly capture a single WAPI call within the Ansible
+module ecosystem. It is worth noting that the WAPI API operates much
+like Ansible modules: JSON in and JSON out. If you express the body of
+the API call in yaml, it is easy to use a Jinja2 filter (a topic we will
+revisit in depth) to convert it to JSON at runtime.</p>
+<div class="code"><pre class="code literal-block"><span class="o">-</span><span class="w"> </span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="n">Create</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">reverse</span><span class="w"> </span><span class="n">DNS</span><span class="w"> </span><span class="n">zone</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">complement</span><span class="w"> </span><span class="n">forward</span><span class="w"> </span><span class="n">zone</span>
+<span class="w">  </span><span class="n">uri</span><span class="p">:</span>
+<span class="w">    </span><span class="n">url</span><span class="p">:</span><span class="w"> </span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="p">{{</span><span class="w"> </span><span class="n">nios_provider</span><span class="o">.</span><span class="n">host</span><span class="w"> </span><span class="p">}}</span><span class="o">/</span><span class="n">wapi</span><span class="o">/</span><span class="p">{{</span><span class="w"> </span><span class="n">wapi_version</span><span class="w"> </span><span class="p">}}</span><span class="o">/</span><span class="n">zone_auth</span>
+<span class="w">    </span><span class="n">method</span><span class="p">:</span><span class="w"> </span><span class="n">POST</span>
+<span class="w">    </span><span class="n">user</span><span class="p">:</span><span class="w"> </span><span class="s2">"{{ nios_provider.username }}"</span>
+<span class="w">    </span><span class="n">password</span><span class="p">:</span><span class="w"> </span><span class="s2">"{{ nios_provider.password }}"</span>
+<span class="w">    </span><span class="n">body</span><span class="p">:</span><span class="w"> </span><span class="s2">"{{ reverse_zone_yml | to_json }}"</span>
+<span class="w">    </span><span class="c1">#201 signifies successful creation</span>
+<span class="w">    </span><span class="c1">#400 signifies existing entry</span>
+<span class="w">    </span><span class="c1">#both signify a successful WAPI call</span>
+<span class="w">    </span><span class="n">status_code</span><span class="p">:</span><span class="w"> </span><span class="mi">201</span><span class="p">,</span><span class="mi">400</span>
+<span class="w">    </span><span class="n">headers</span><span class="p">:</span>
+<span class="w">        </span><span class="n">Content</span><span class="o">-</span><span class="n">Type</span><span class="p">:</span><span class="w"> </span><span class="s2">"application/json"</span>
+<span class="w">    </span><span class="n">validate_certs</span><span class="p">:</span><span class="w"> </span><span class="n">no</span>
+<span class="w">  </span><span class="n">register</span><span class="p">:</span><span class="w"> </span><span class="n">reverse_dns_create</span>
+<span class="w">  </span><span class="n">changed_when</span><span class="p">:</span><span class="w"> </span><span class="n">reverse_dns_create</span><span class="o">.</span><span class="n">status</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">201</span>
+<span class="w">  </span><span class="n">vars</span><span class="p">:</span>
+<span class="w">    </span><span class="n">reverse_zone_yml</span><span class="p">:</span>
+<span class="w">      </span><span class="n">fqdn</span><span class="p">:</span><span class="w"> </span><span class="s2">"{{ ansible_subnet }}"</span>
+<span class="w">      </span><span class="n">zone_format</span><span class="p">:</span><span class="w"> </span><span class="s2">"IPV4"</span>
+</pre></div>
+
+<p>If you establish the subnet, forward zone, and reverse zone before
+creating any host records, each host record you create in that forward
+zone automatically creates the corresponding reverse zone entry! With a
+network, forward zone, and reverse zone defined, the stage is set to
+start creating host records for your new subnet.</p>
+<h4>Using a Jinja2 template to reserve the gateway address</h4>
+<p>When you start creating host records, you want to reserve the first (or
+last) host record in the zone as the gateway address, the address that
+forwards packets of data destined for an IP address outside of the
+immediate network. As mentioned earlier, you can use Jinja2 filters to
+manipulate data by calling a short python function on it; the Jinja2
+filter syntax effectively acts as a
+<a href="http://www.linfo.org/pipes.html">linux pipe</a>. Jinja2 filters are a way to
+quickly manipulate data and in this case we use two of them (see example
+below) to adhere to Infoblox gateway address naming conventions. It is
+important to note that defining the gateway address name relative to the
+subnet avoids gateway address name overwrites because it is common for
+each subnet to have its own gateway address.</p>
+<div class="code"><pre class="code literal-block"><span class="o">-</span><span class="w"> </span><span class="nx">name</span><span class="p">:</span><span class="w"> </span><span class="nx">Create</span><span class="w"> </span><span class="nx">a</span><span class="w"> </span><span class="nx">host</span><span class="w"> </span><span class="nx">record</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">gateway</span><span class="w"> </span><span class="nx">address</span>
+<span class="w">  </span><span class="nx">nios_host_record</span><span class="p">:</span>
+<span class="w">     </span><span class="nx">name</span><span class="p">:</span><span class="w"> </span><span class="err">“</span><span class="nx">gateway</span><span class="p">{{</span><span class="w"> </span><span class="nx">ansible_subnet</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nx">ipaddr</span><span class="p">(</span><span class="err">‘</span><span class="nx">first_usable</span><span class="err">’</span><span class="p">)</span><span class="w"> </span><span class="o">|</span>
+<span class="w">  </span><span class="nx">replace</span><span class="p">(</span><span class="s">"."</span><span class="p">,</span><span class="s">"_"</span><span class="p">)</span><span class="w"> </span><span class="p">}}.{{</span><span class="w"> </span><span class="nx">ansible_zone</span><span class="w"> </span><span class="p">}}</span><span class="err">”</span>
+<span class="w">     </span><span class="nx">ipv4</span><span class="p">:</span>
+<span class="w">        </span><span class="o">-</span><span class="w"> </span><span class="nx">address</span><span class="p">:</span><span class="w"> </span><span class="s">"{{ gateway_address }}"</span>
+<span class="w">     </span><span class="nx">state</span><span class="p">:</span><span class="w"> </span><span class="nx">present</span>
+<span class="w">     </span><span class="nx">provider</span><span class="p">:</span><span class="w"> </span><span class="s">"{{ nios_provider }}"</span>
+</pre></div>
+
+<p>This task builds your gateway host name step by step with this complex
+Jinja2 expression. The Ansible-packaged
+<a href="https://docs.ansible.com/ansible/latest/user_guide/playbooks_filters_ipaddr.html#converting-subnet-masks-to-cidr-notation">ipaddr filter</a>
+is versatile - it is capable of achieving a larger number of routine IP
+address manipulations. For example, if your IP range is 192.168.1.0/24
+and your <code>ansible_zone</code> is
+ansible.local, the filter in the task above creates a name in a single
+line:</p>
+<ol>
+<li>Expression starts with "gateway"</li>
+<li>The section in the does a few things:
+    a. Retrieves the templated value of ansible_subnet
+    <code>ansible_subnet =&gt; 198.168.1.0/24</code>
+    b. Uses the retrieved ansible_subnet value and supplies it to the
+    ipaddr('first_usable') filter plugin to obtain first usable IP
+    <code>192.168.1.0/24 | ipaddr('first_usable') =&gt; 192.168.1.1</code>
+    c. Formats the resulting IP with underscores instead of dots
+    <code>192.168.1.1 | replace('.', '_') =&gt; 192_168_1_1</code>
+    d. Adds a <code>.</code> separator before the subnet value
+    e. Retrieves the templated value of ansible_zone
+    <code>ansible_zone =&gt; ansible.local</code>
+</li>
+</ol>
+<p>The gateway host name, passing the values listed above through the
+example template, would be:</p>
+<div class="code"><pre class="code literal-block">gateway192_168_1_1.ansible.local
+</pre></div>
+
+<p>Jinja2 filters are a complex Ansible topic; you should have a solid
+Ansible foundation before building your own Jinja2 filters. As you start
+creating filters, you can test expected values locally, or leverage
+<a href="https://ansible.sivel.net/test/">Sivel's Ansible Template Tester</a> to
+see the results of your filters before you use them in a playbook or
+role. </p>
+<p><img alt="Infoblox-Roles-Deep-Dive-Ansible-Template-Tester" src="../images/posts/archive/Infoblox-Roles-Deep-Dive-Ansible-Template-Tester.png"></p>
+<h4>Using loops and host_count to generate host records</h4>
+<p>Once your gateway address is reserved, you can use a loop to generate a
+known number of additional host records. In a real-world scenario, you
+would probably generate groups of servers within the subnet (for
+example, database servers, application servers, etc.). For this simple
+demo, you can define a loop that will dynamically generate generic host
+records based on a user-supplied <code>host_count</code> value. This
+demo shows the power of <code>nios_next_ip</code> lookup
+plugin, which can obtain a single next available IP or a range of next
+available IPs to assign. In a Playbook with both tasks (the one above
+that creates a host record for the gateway address and the one below
+that generates host records), if you don't define a
+<code>host_count</code>, the playbook won't create any additional host records;
+just the gateway address will be created.</p>
+<div class="code"><pre class="code literal-block"><span class="c1">#Generating records this way should be for demo purposes</span>
+<span class="c1">#Normal scenario would be to iterate over a dictionary/list of hosts or populate via a static csv file</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">“Dynamically generate {{ host_count }} host records at next available ip in {{ ansible_subnet }}”</span>
+<span class="w">  </span><span class="nt">include_tasks</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">host_record_generation.yml</span>
+<span class="w">  </span><span class="nt">loop_control</span><span class="p">:</span>
+<span class="w">     </span><span class="nt">loop_var</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">count</span>
+<span class="w">  </span><span class="nt">with_sequence</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">start=1 end={{ host_count }}</span>
+<span class="w">  </span><span class="nt">when</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">host_count is defined</span>
+</pre></div>
+
+<p>If you generate host records with Ansible based on a user-supplied host
+count, wouldn't looping through a host count potentially cause indexing
+issues on a second run? Unfortunately it does, but keeping a total count
+of generated hosts solves this problem. One approach is to maintain a
+static total host count file on the control node viewed as a source of
+truth. By leveraging Ansible's lookup plugin feature to retrieve its
+contents, each time a host is generated the count in this file is
+incremented so consequent role executions (especially those automated in
+different subnets) do not overwrite each other's records!</p>
+<p>Generating host records this way is different than generating them with
+naming conventions like most enterprises do, but it is an easy
+out-of-the-box method using the <code>nios_next_ip</code> lookup to
+create some records across different zones and/or subnets. Infoblox also
+supports a csv record import feature for static records.</p>
+<p><img alt="Infoblox-Roles-Deep-Dive-Records" src="../images/posts/archive/Infoblox-Roles-Deep-Dive-Records.png"></p>
+<h4>Predefine Infoblox Grids with Ansible</h4>
+<p>In the first four scenarios, you've seen how Ansible works with Infoblox
+at the level of hosts and subnets. What can Ansible do with Infoblox at
+scale? Automating a single Infoblox instance provides value, but
+production Infoblox systems are often designed in a Grid. The Infoblox
+website explains the full power of Infoblox Grid technology. The
+Infoblox Grid establishes a distributed relationship between individual
+or paired appliances to remove single points of failure and other
+operational risks inherent in legacy DNS, DHCP, and IP Address
+Management infrastructure. Each Grid contains one Grid Master and a
+varying number of additional Grid Members and/or Grid Master candidates.
+Grid Members only contain a portion of the Infoblox database needed to
+do their job. Grid Master Candidates, on the other hand, have a
+real-time full copy of the Grid Master's database to provide disaster
+recovery functionality. You can use our Ansible Roles to predefine new
+Grid Master Candidates and Grid Members like this:</p>
+<div class="code"><pre class="code literal-block"><span class="o">-</span><span class="w"> </span><span class="nx">name</span><span class="p">:</span><span class="w"> </span><span class="nx">Predefine</span><span class="w"> </span><span class="nx">a</span><span class="w"> </span><span class="nx">new</span><span class="w"> </span><span class="nx">Grid</span><span class="w"> </span><span class="nx">Master</span><span class="w"> </span><span class="nx">Candidate</span>
+<span class="w">  </span><span class="nx">hosts</span><span class="p">:</span><span class="w"> </span><span class="nx">localhost</span>
+<span class="w">  </span><span class="nx">connection</span><span class="p">:</span><span class="w"> </span><span class="nx">local</span>
+<span class="w">  </span><span class="nx">roles</span><span class="p">:</span>
+<span class="w">    </span><span class="o">-</span><span class="w">  </span><span class="nx">role</span><span class="p">:</span><span class="w"> </span><span class="nx">predefineGridmasterCandidate</span>
+<span class="w">       </span><span class="nx">master_candidate_name</span><span class="p">:</span><span class="w"> </span><span class="nx">gmc</span><span class="p">.</span><span class="nx">ansible</span><span class="p">.</span><span class="nx">local</span>
+<span class="w">       </span><span class="nx">master_candidate_address</span><span class="p">:</span><span class="w"> </span><span class="m m-Double">192.168.2.2</span>
+<span class="w">       </span><span class="nx">master_candidate_gateway</span><span class="p">:</span><span class="w"> </span><span class="m m-Double">192.168.2.254</span>
+<span class="w">       </span><span class="nx">master_candidate_subnet_mask</span><span class="p">:</span><span class="w"> </span><span class="m m-Double">255.255.255.0</span>
+
+<span class="o">-</span><span class="w"> </span><span class="nx">name</span><span class="p">:</span><span class="w"> </span><span class="nx">Predefine</span><span class="w"> </span><span class="nx">a</span><span class="w"> </span><span class="nx">new</span><span class="w"> </span><span class="nx">Grid</span><span class="w"> </span><span class="nx">Member</span>
+<span class="w">  </span><span class="nx">hosts</span><span class="p">:</span><span class="w"> </span><span class="nx">localhost</span>
+<span class="w">  </span><span class="nx">connection</span><span class="p">:</span><span class="w"> </span><span class="nx">local</span>
+<span class="w">  </span><span class="nx">roles</span><span class="p">:</span>
+<span class="w">    </span><span class="o">-</span><span class="w">  </span><span class="nx">role</span><span class="p">:</span><span class="w"> </span><span class="nx">predefineGridMember</span>
+<span class="w">       </span><span class="nx">member_name</span><span class="p">:</span><span class="w"> </span><span class="nx">m3</span><span class="p">.</span><span class="nx">ansible</span><span class="p">.</span><span class="nx">local</span>
+<span class="w">       </span><span class="nx">member_address</span><span class="p">:</span><span class="w"> </span><span class="m m-Double">192.168.2.3</span>
+<span class="w">       </span><span class="nx">member_gateway</span><span class="p">:</span><span class="w"> </span><span class="m m-Double">192.168.2.254</span>
+<span class="w">       </span><span class="nx">member_subnet_mask</span><span class="p">:</span><span class="w"> </span><span class="m m-Double">255.255.255.0</span>
+</pre></div>
+
+<p><img alt="Infoblox-Roles-Deep-Dive-Members" src="../images/posts/archive/Infoblox-Roles-Deep-Dive-Members.png"></p>
+<p>As you can see from these five examples, Ansible and Infoblox work
+together to manage your network infrastructure and the traffic it
+carries quickly, easily, and reliably. Ansible builds on the robust
+capabilities of the Infoblox WAPI API. Using Ansible modules and direct
+calls to the WAPI API, you can write reusable Ansible Roles and
+Playbooks that can be quickly adapted to handle separate networks. If
+you'd like, you can start by customizing the roles in the
+<a href="https://github.com/network-automation/dynamic-infoblox">ansible-networking repository</a>,
+which connect all of the Ansible concepts discussed in today's post.</p>
+          </div>
+      </article><br><hr>
+<br><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title">
+            <a href="make-your-ansible-playbooks-flexible-maintainable-and-scalable/" class="u-url">Make your Ansible Playbooks flexible, maintainable, and scalable</a>
+          </h1>
+          <div class="metadata">
+            <p class="byline author vcard">
+              <span class="byline-name fn" itemprop="author">
+                  <a href="../authors/jeff-geerling/">Jeff Geerling</a>
+              </span>
+            </p>
+            <p class="dateline">
+              <a href="make-your-ansible-playbooks-flexible-maintainable-and-scalable/" rel="bookmark">
+                <time class="published dt-published" datetime="2018-09-28T00:00:00Z" itemprop="datePublished" title="2018-09-28 00:00">2018-09-28 00:00</time></a>
+            </p>
+          </div>
+        </header><div class="p-summary entry-summary">
+            <h2>Make your Ansible Playbooks flexible, maintainable, and scalable</h2>
+<p>In the years since, I've learned a lot of tricks to help ease the
+maintenance burden for my work. It's important to me to have
+maintainable projects, because many of my projects---like Hosted Apache
+Solr---have been in operation for over a decade! If it's hard to
+maintain the project or it's hard to make major architecture changes,
+then I can lose customers to more nimble competitors, I can lose money,
+and---most importantly---I can lose my sanity!</p>
+<p>I'm presenting a session at AnsibleFest Austin this year,
+"Make your Ansible Playbooks flexible, maintainable, and scalable",
+and I thought I'd summarize some of the major themes here.</p>
+<h2>Stay Organized</h2>
+<p>I love photography and automation, and so I spend a lot of time
+building electronics projects that involve Raspberry Pis and cameras.
+Without the organization system I use, it would be very frustrating putting
+together the right components for my project.</p>
+<p>Similarly, in Ansible, I like to have my tasks organized so I can
+compose them more easily, test them, and manage them without too much
+effort.</p>
+<p>I generally start a playbook with all the tasks in one file. Once I hit
+around 100 lines of YAML, I'll work to break related groups of tasks
+into separate files and include them in the playbook with
+<code>include_tasks</code>.</p>
+<p>After the playbook starts becoming more complete, I often notice sets
+of tasks that are related and can be isolated---like installing a piece
+of software, copying a configuration for that software, then starting
+(or restarting) a daemon. So I create a new role using
+<code>ansible-galaxy init ROLE_NAME</code>,
+and then put those tasks into that role.</p>
+<p>If the role is generic enough, I'll either put it on GitHub and submit
+it to Ansible Galaxy, or put it into a separate, private Git repository.
+Now I can add a generic set of tests for the role (with
+<a href="https://github.com/metacloud/molecule/">Molecule</a>
+or some other testing setup), and I can share the role with many
+projects---even with projects managed by completely separate
+teams!</p>
+<p>Then I include the external roles into my project via a
+<code>requirements.yml</code>
+file. For some projects, where stability is the most important trait, I
+will also define the version
+(a git ref or tag) for each included Ansible role. For other projects,
+where I can afford to sacrifice stability a little for easier
+maintenance over time (like test playbooks, or one-off server
+configurations), I'll just put the role name (and repo details if it's
+not on Galaxy).</p>
+<p>For most projects, I don't commit the external roles (those defined in
+<code>requirements.yml</code>) to the repository---I have a task in my CI system which installs the
+roles fresh on every run. However, there are some cases where it's best
+to commit <em>all</em> the roles to the codebase. For example,
+since developers can run my <a href="https://www.drupalvm.com/">Drupal VM</a> playbook on
+a daily basis, and these developers often don't live near where Ansible
+Galaxy's servers are located, they had trouble installing the large
+number of Ansible Galaxy roles required. So I committed the roles to the
+codebase, and now they don't have to wait for all the roles to be
+installed every time they build a new Drupal VM instance.</p>
+<p>If you <em>do</em>
+commit the roles to your codebase, you need to have a thorough process
+for updating roles---make sure you don't let your
+<code>requirements.yml</code> file go out of sync with the installed roles! I often run
+<code>ansible-galaxy install -r requirements.yml --force</code>
+to force-replace all the required roles in the codebase, and keep myself
+honest!</p>
+<h3>Simplify and Optimize</h3>
+<div class="code"><pre class="code literal-block">&gt; YAML is not a programming language.
+&gt;
+&gt; ---Jeff Geerling
+</pre></div>
+
+<p>One of the reasons people enjoy using Ansible is because it uses YAML,
+and has a declarative syntax. You want a package installed, so you have
+the task package: <code>name=httpd state=present</code>. You want a
+service running, so you have the task service: <code>name=httpd state=started</code>.</p>
+<p>There are many cases where you need to add a little more intelligence,
+though. For example, if you're using the same role to build both VMs
+and containers and you don't want the service started in the container,
+you need to add a when condition, like:</p>
+<div class="code"><pre class="code literal-block"><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Ensure Apache is started.</span>
+<span class="w">  </span><span class="nt">service</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">httpd</span>
+<span class="w">    </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">started</span>
+<span class="w">  </span><span class="nt">when</span><span class="p">:</span><span class="w"> </span><span class="s">'server_type</span><span class="nv"> </span><span class="s">!=</span><span class="nv"> </span><span class="s">"container"'</span>
+</pre></div>
+
+<p>This kind of logic is simple, and makes sense when reading a task and
+figuring out what it does. But some may try to stuff tons of fancy logic
+inside when
+conditions or other places where Ansible gives a little exposure to
+Jinja2 and Python, and that's when things can get off the
+rails.</p>
+<p>As a rule of thumb, if you've spent more than 10 minutes wrestling
+with escaping quotes in a
+when condition
+in your playbook, it's probably time to consider writing a separate
+module to perform the logic you need to do for the task. Python should
+<em>generally</em> be in a separate module, not
+inline with the rest of the YAML. There are exceptions to this (e.g.
+when comparing more complex dicts and strings), but I try to avoid
+writing any complex code in my Ansible
+playbooks.</p>
+<p>Besides avoiding complex logic, it's also helpful to have your
+playbooks run faster. Many times, I'll profile a playbook timer in the <code>ansible.cfg</code>
+file defaults section and run the playbook, and find that one or two
+tasks or roles takes a really long time, compared to the rest of the
+playbook.</p>
+<p>For example, one playbook used the copy module
+for a large directory with dozens of files. Because of the way Ansible
+performs a file copy internally, this meant there were many seconds
+wasted waiting for Ansible to ferry each file across the SSH
+connection.</p>
+<p>Converting that task to use <code>synchronize</code> instead saved many seconds per playbook run.
+For one run, this doesn't
+seem like much; but when the playbook is run on a schedule (e.g. to
+enforce a certain configuration on a server), or run as part of your CI
+suite, it's important to help make it efficient. Otherwise this can
+burn extra CPU cycles on inefficient code, and developers often hate
+waiting a long time for CI tests to pass before they can know if their
+code broke something or not.</p>
+          </div>
+      </article><br><hr>
+<br><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title">
+            <a href="large-scale-deployments-using-ansible/" class="u-url">Large Scale Deployments Using Ansible</a>
+          </h1>
+          <div class="metadata">
+            <p class="byline author vcard">
+              <span class="byline-name fn" itemprop="author">
+                  <a href="../authors/mark-phillips/">Mark Phillips</a>
+              </span>
+            </p>
+            <p class="dateline">
+              <a href="large-scale-deployments-using-ansible/" rel="bookmark">
+                <time class="published dt-published" datetime="2018-09-26T00:00:00Z" itemprop="datePublished" title="2018-09-26 00:00">2018-09-26 00:00</time></a>
+            </p>
+          </div>
+        </header><div class="p-summary entry-summary">
+            <h2>Large Scale Deployments Using Ansible</h2>
+<p>The Ansible simplicity is about being easy to understand, learn and
+share. It's about people. The often peddled notion that "Ansible doesn't
+scale past 500 hosts" is shadowed by the customers we have with over
+100,000 nodes under management. But the idea that scale is purely about
+the number of hosts isn't recognising the greater relevance. Scale is so
+much more, scale is about the context in your business.</p>
+<h3>What is scale?</h3>
+<p>According to most dictionaries, scale is a noun that means the relative size or extent of something.</p>
+<h3>Technological Scale</h3>
+<p>When it comes to IT, conclusions about 'scale' usually equate to numbers
+of something technical. A frequent customer ask might go something like
+"We need Ansible to scale to 70,000 hosts".</p>
+<p>Once we look into that number though, the reality is no technical
+operation will happen across them all at once. The jeopardy to a
+business of this size is too great to chance a failure of every system.
+Operations at large scale happen piecemeal for safety reasons -- rolling
+updates are not only a safer way to operate, we see the results faster.</p>
+<p>Business function, geography, application and networks all affect the
+big number, and all can be 'sliced up' in ways which minimise risk --
+with the added benefit of enabling large scale operation.</p>
+<p>Looking at the other side of the equation, the technology itself, also
+carries nuance. A large and complex operation takes more resources --
+memory, compute, etc -- compared to a small and simple task. The numbers
+of hosts we're able to operate on in parallel will change depending on
+the ask.</p>
+<h4>Human Scale</h4>
+<p>There are at least half a dozen different ways to achieve anything in
+IT. The choice we settle on can depend on many factors, but a powerful
+influencer will be people.</p>
+<p>A startup might pick a high level programming language to write their
+application in because it's quick and easy to get going with. A little
+code produces a lot of results -- unlike writing in C, or even
+assembler! We all know coding C will result in fast programs requiring
+fewer compute resources. That will give us greater utilisation for a
+given piece of hardware. But the act of programming will likely be
+slower, and the pool of talent shallower. To kickstart a project a
+'slower' language leads to faster growth. As the business grows it
+will add coders with skills in the existing language used, as they'll
+get up to speed the quickest.</p>
+<p>Some technology is harder to learn than others. But a language that is
+understandable by anyone, with or without existing skills, is going to
+be faster to pick up.</p>
+<p>There's a chapter in Malcolm Gladwell's "Outliers: The story of
+success" titled "Rice paddies and math tests". In short, he tells us
+how the Chinese number system means kids get to grips with maths far
+quicker, so they enjoy it more. The enjoyment means they're happy to
+indulge in it even further. It's easy to see the snowball effect.</p>
+<p>When tech produces results with little effort we get that enjoyment
+factor--it's not restricted to children :). This draws us to put more
+time in, which produces results even faster.</p>
+<p>Scaling a technology's use in a large organisation happens faster, with
+a larger reach, when people enjoy using it. Rapid adoption follows.</p>
+<h4>Scaling Ansible</h4>
+<p>Scaling across your organisation is going to be context specific, but
+there are some fundamentals you can start with.</p>
+<h5>Scaling the Technology</h5>
+<p>Ensure the hardware you're working with fits the use case.
+Documentation which will help ...</p>
+<ul>
+<li><a href="https://docs.ansible.com/ansible-tower/latest/html/quickinstall/prepare.html#prerequisites-and-requirements">Red Hat Ansible Tower Requirements</a></li>
+<li><a href="https://docs.ansible.com/ansible/latest/network/user_guide/faq.html?highlight=memory#how-can-i-improve-performance-for-network-playbooks">Ansible Networking</a></li>
+</ul>
+<p>Most important will be the way you manage inventory (how you group
+hosts). Spend time thinking about smallest viable reach. If you had to
+upgrade the whole stack, which bits could you upgrade independently of
+the others?</p>
+<p>Ansible is fundamentally an orchestrator -- it doesn't have to be doing
+the actual operation. You may already have a tool which Ansible can
+instruct, so leverage the fact there's no new learning. You get the
+best of all worlds, not least that the high level instruction set is an
+easy to read Ansible Playbook.</p>
+<h5>Scale the Human Reach</h5>
+<p>Scaling any technology in a large company comes down to two fundamental
+roots.</p>
+<ol>
+<li>Education</li>
+<li>Organisation</li>
+</ol>
+<p>Everything else spans from these two starting points.</p>
+<p><strong>Education</strong></p>
+<p>From here two branches emerge -- first, adoption. For a new technology
+to take hold it needs to be quick to get up and
+running, and easy to learn. When you can solve
+a problem in a few minutes it makes it easy to show to others -- and the
+adoption spreads.</p>
+<p>Second, education needs to be ongoing. And this is where implementing
+other tools and practices
+around what you do can help. For example, storing your Ansible playbooks
+and roles in a source code repository allows others to share and learn.
+We once saw a customer put in place a great system for helping their
+staff learn Ansible from colleagues. New commits had to be submitted to
+a source code repository as a 'pull request', which was reviewed by
+more experienced staff. A feedback loop mimicking open source culture
+was introduced and reinforced. We've also seen customers push commit
+messages to their chat systems. Another great way to encourage sharing.</p>
+<p><strong>Organisation</strong></p>
+<p>"You can have any color as long as it's black". Uniformity is the
+friend of scalability, as I'm sure Henry Ford would've told us. People
+enjoy being creative, it's pleasing to finish a day's coding and sit
+back admiring the job well done. At the same time, to scale we do need
+to have some organisation around what we produce.</p>
+<p>Security, auditing, and accountability all have a place in a large
+company. We need to be able to give the right access to the right
+people, as much to prevent accidents as anything. Managing access to
+tens of thousands of devices is cumbersome without technological help.</p>
+<p>Source code repositories, coding standards, credential management and
+access control can all help put organisational structure around Ansible.
+Bring together the simplicity of getting the job done, but wrap it in a
+security blanket to enable safe, managed, scaling.</p>
+<h4>Ansible, scaled</h4>
+<p>Scaling anything brings about new challenges, and not just around
+numbers of hosts. But, a lot of those challenges are met by our
+customers on a daily basis. If you have a scaling challenge on your
+hands and would like some help, please get in touch. Our
+consulting team have worked across every business segment, from the
+smallest to the largest companies in the world. We'll have a story or
+two you can relate to, and we can help you solve those difficult
+problems.</p>
+          </div>
+      </article><br><hr>
+<br><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title">
+            <a href="ansible-tower-advanced-smart-inventory-usage/" class="u-url">Ansible Tower Advanced Smart Inventory Usage</a>
+          </h1>
+          <div class="metadata">
+            <p class="byline author vcard">
+              <span class="byline-name fn" itemprop="author">
+                  <a href="../authors/chris-meyers/">Chris Meyers</a>
+              </span>
+            </p>
+            <p class="dateline">
+              <a href="ansible-tower-advanced-smart-inventory-usage/" rel="bookmark">
+                <time class="published dt-published" datetime="2018-09-22T00:00:00Z" itemprop="datePublished" title="2018-09-22 00:00">2018-09-22 00:00</time></a>
+            </p>
+          </div>
+        </header><div class="p-summary entry-summary">
+            <h2>Ansible Tower Advanced Smart Inventory Usage</h2>
+<h3>Background</h3>
+<p><a href="http://docs.ansible.com/ansible-tower/latest/html/userguide/inventories.html#smart-inventories">Smart Inventory</a>
+is a feature that was added to Red Hat Ansible Tower 3.2. The feature
+allows you to generate a new Inventory that is made of up hosts existing
+in other Inventory in Ansible Tower. This inventory is always-up-to-date
+and is populated using what we call a host filter. The host filter is a
+domain specific query language that is a mix of Django Rest Framework
+GET query language with a JSON query syntax added in. Effectively, this
+allows you create an Inventory of Hosts and their relational fields as
+well as related JSON structures.</p>
+<p>The ansible_facts field is a related field on a Host that is populated
+by Job Template runs (Jobs) that have fact caching enabled. Ansible
+Tower bolts on an Ansible fact cache plugin with Job Template that have
+fact caching enabled. Job Templates of this kind that run playbooks that
+invoke Ansible gather_facts will result in those facts being saved to
+the Ansible Tower database when the Job finishes.</p>
+<p>A limitation of the Smart Inventory filter is that it only allows
+equality matching on ansible_fact JSON data. In this blog post I will
+show you how to overcome this limitation and add hosts to a Smart
+Inventory using, for example, a range query on if a host is part of a
+subnet.</p>
+<h4>Ansible Tower Objects</h4>
+<p>Enough talking about it, let's see an example. We are going to have to
+create objects in Ansible Tower. Specifically, the objects in the table
+below.</p>
+<table>
+<thead><tr>
+<th>Resource</th>
+<th>Value</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Organization</td>
+<td>Transformers</td>
+</tr>
+<tr>
+<td>Inventory</td>
+<td>Autobots</td>
+</tr>
+<tr>
+<td>Project</td>
+<td><a href="https://github.com/chrismeyersfsu/ansible-examples">Facts</a></td>
+</tr>
+<tr>
+<td>Hosts</td>
+<td>optimus, bumblebee, jazz</td>
+</tr>
+<tr>
+<td>Job Templates</td>
+<td>
+<a href="https://github.com/chrismeyersfsu/ansible-examples/blob/master/gather_facts/main.yml">gather</a>, <a href="https://github.com/chrismeyersfsu/ansible-examples/blob/master/clear_facts/main.yml">clear</a>, <a href="https://github.com/chrismeyersfsu/ansible-examples/blob/master/subnet/main.yml">subnet</a>, <a href="https://github.com/chrismeyersfsu/ansible-examples/blob/master/set_fact/cacheable.yml">set_fact_cacheable</a>
+</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Enable fact cache for all the job templates</p>
+</blockquote>
+<h4>1. Fact Cache</h4>
+<p>Now, let's make something happen. Run the gather job template. Then look
+at the resulting facts that got gathered in the UI for the Inventory
+Autobots.</p>
+<p><img alt="Tower-Facts-2-Screen" src="../images/posts/archive/Tower-Facts-2-Screen.png"></p>
+<p>Above is an example of how you view the results from the fact gathering
+process in the UI. Now let's see how we can create a Smart Inventory
+from the facts gathered.</p>
+<h4>2. Our First Smart Inventory</h4>
+<p>We will create a smart inventory that contains only Red Hat hosts. In my
+example, optimus and bumblebee are both Red Hat hosts while jazz is an
+Ubuntu host.</p>
+<p><img alt="Tower-Smart-Iventory-Screen" src="../images/posts/archive/Tower-Smart-Iventory-Screen.png"></p>
+<p>Create a smart inventory with host filter: <code>ansible_facts.ansible_distribution:RedHat</code></p>
+<p>My new smart inventory, Red Hat Autobots, contains 2 hosts (see below image).</p>
+<p><img alt="Tower-Inventories-Screen" src="../images/posts/archive/Tower-Inventories-Screen.png"></p>
+<h4>3. Inject playbook facts</h4>
+<p>We are now going to leave the Smart Inventory feature and go back to
+fact caching. Specifically, I am going to show you how to <code>set_fact</code> in
+a playbook and have that fact stored in Ansible Tower.</p>
+<p>Run the job template <code>set_fact_cacheable</code>. Below is the result of that run.</p>
+<p><img alt="Tower-Jobs-Screen" src="../images/posts/archive/Tower-Jobs-Screen.png"></p>
+<p>Now, let's look at the facts for any of the 3 hosts that this playbook
+ran against. Notice how bumblebee now has a new set of facts (see below
+image).</p>
+<p><img alt="Tower-Facts-Screen" src="../images/posts/archive/Tower-Facts-Screen.png"></p>
+<p>Specifically:</p>
+<div class="code"><pre class="code literal-block"><span class="nt">a</span><span class="p">:</span>
+<span class="w">   </span><span class="nt">b</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">c</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">a</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">b</span>
+</pre></div>
+
+<p>These facts were set by this playbook which uses the set_fact Ansible
+module with <code>cacheable: true</code> set.</p>
+<h4>Create a Smart Inventory</h4>
+<p>I've showed you all the pieces you are going to need to create a Smart
+Inventory based on host facts that aren't simple equality matching. The
+pieces are:</p>
+<ol>
+<li>Fact Cache</li>
+<li>Smart Inventory</li>
+<li>Inject playbook facts</li>
+</ol>
+<p>Now I'll show you an example using all these pieces to construct a
+Smart Inventory of hosts within a subnet. This is a good example because
+selecting hosts based on subnet is a range query, it is not a simple
+equality query. Therefore, we are going to need to leverage 3. Inject
+playbook facts to accomplish creating a Smart Inventory to group these
+hosts.</p>
+<p>The overall goal is to set <code>is_subnet</code> on a host to True if the host is
+in the desired subnet, or False if the host is not in the subnet. Then,
+we can construct a Smart Inventory host filter like
+<code>ansible_facts.is_subnet:true</code> to get hosts in the subnet. The below
+playbook <a href="https://github.com/chrismeyersfsu/ansible-examples/blob/master/subnet/main.yml">accomplishes this</a>.</p>
+<div class="code"><pre class="code literal-block"><span class="o">-</span><span class="w"> </span><span class="n">hosts</span><span class="p">:</span><span class="w"> </span><span class="n">all</span>
+<span class="w">  </span><span class="n">vars</span><span class="p">:</span>
+<span class="w">    </span><span class="n">subnet</span><span class="p">:</span><span class="w"> </span><span class="s1">'172.18.0.0/16'</span>
+<span class="w">  </span><span class="n">tasks</span><span class="p">:</span>
+<span class="w">    </span><span class="o">-</span><span class="w"> </span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="s2">"Presume host to not belong to subnet"</span>
+<span class="w">      </span><span class="n">set_fact</span><span class="p">:</span>
+<span class="w">        </span><span class="n">is_subnet</span><span class="p">:</span><span class="w"> </span><span class="n">False</span>
+<span class="w">        </span><span class="n">cacheable</span><span class="p">:</span><span class="w"> </span><span class="n">True</span>
+
+<span class="w">    </span><span class="o">-</span><span class="w"> </span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="s2">"Figure out if host belongs to subnet"</span>
+<span class="w">      </span><span class="n">set_fact</span><span class="p">:</span>
+<span class="w">        </span><span class="n">is_subnet</span><span class="p">:</span><span class="w"> </span><span class="n">True</span>
+<span class="w">        </span><span class="n">cacheable</span><span class="p">:</span><span class="w"> </span><span class="n">True</span>
+<span class="w">      </span><span class="n">when</span><span class="p">:</span><span class="w"> </span><span class="n">ansible_all_ipv4_addresses</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">ipaddr</span><span class="p">(</span><span class="n">subnet</span><span class="p">)</span>
+</pre></div>
+
+<h4>Future</h4>
+<p>Currently, all traditional relational database fields on Ansible Tower
+objects can be used in a Smart Inventory host filter query (i.e. Host
+name, Inventory name, Organization description, etc); the only JSON
+searchable field related to Hosts is the ansible_facts field. We hope to
+expand the searchable JSON fields in the future as well as the operators
+supported (right now we only support equality). However, much
+consideration must be given to the performance characteristics as well
+as the storage requirements in doing so.</p>
+          </div>
+      </article><br><hr>
+<br><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title">
+            <a href="the-total-economic-impact-of-red-hat-ansible-tower/" class="u-url">The Total Economic Impact of Red Hat Ansible Tower</a>
+          </h1>
+          <div class="metadata">
+            <p class="byline author vcard">
+              <span class="byline-name fn" itemprop="author">
+                  <a href="../authors/chris-short/">Chris Short</a>
+              </span>
+            </p>
+            <p class="dateline">
+              <a href="the-total-economic-impact-of-red-hat-ansible-tower/" rel="bookmark">
+                <time class="published dt-published" datetime="2018-08-14T00:00:00Z" itemprop="datePublished" title="2018-08-14 00:00">2018-08-14 00:00</time></a>
+            </p>
+          </div>
+        </header><div class="p-summary entry-summary">
+            <h2>The Total Economic Impact of Red Hat Ansible Tower</h2>
+<p><a href="https://www.redhat.com/en/resources/ansible-automation-forrester-total-ecomonic-impact-study">The Total Economic Impact of Red Hat Ansible Tower</a>
+is a Red Hat commissioned Forrester Consulting study published in June
+2018. This study demonstrates the cost savings and business benefits
+enabled by Ansible. Let's dive into the what Ansible Tower enables, the
+efficiencies gained, the acceleration of revenue recognition, and other
+tangible benefits.</p>
+<h3>Faster Revenue Recognition</h3>
+<p>Revenue recognition is a critical aspect of business operations.
+Quickening the pace of revenue recognition is something every
+organization has their eye on. Forrester's TEI of Ansible Tower observed
+a company cutting delivery lead times by 66%. Imagine the pace of
+feature deployment an organization experiences when cutting lead times
+from days to hours!</p>
+<p>System reconfiguration times fell as well. Automating changes due to new
+bugs or policy changes across systems helps mitigate the costly impact
+of reconfiguration. This company found that the total time savings of
+being able to reconfigure a fleet of systems through Ansible automation
+reduced staff hours by 94% for this type of work.</p>
+<p>The TEI also measured the security and compliance gains of Ansible
+Tower. Ansible Tower reduced staff hours spent patching systems by 80%.
+This also meant that patching systems could occur more often. This
+helped reduce the number of known vulnerabilities in customer
+environments at any given moment.</p>
+<h4>Improving Security and Compliance</h4>
+<p>Ansible Tower also helps enable the adoption and automation of <a href="https://www.cisecurity.org/cis-benchmarks/">CIS
+Benchmarks</a> across systems.
+CIS Benchmarks are, "guidelines for various technology groups to
+safeguard systems against today's evolving cyber threats." This enabled
+the customer interviewed for the study to navigate an ever changing
+security landscape. Using trusted automation workflows that "maintain
+the latest and greatest standards" created a more secure environment.</p>
+<p>Additionally, the study found Ansible Tower reduced response times to
+security incidents by 94%. When you consider something as impactful as
+Heartbleed or WannaCry, being able to rapidly patch systems could
+prevent a catastrophic impact to business continuity. Ansible Tower
+helped enable GDPR compliance as well. The laborious tasks for patching
+systems became significantly easier  thanks to Ansible Tower. "The
+organization moved to a monthly patching cycle, increasing the frequency
+of updates."  The best part, for the company surveyed, Red Hat Ansible
+Tower enabled these security and compliance gains with no extra staff.</p>
+<h4>Empower Staff to Do More</h4>
+<p>One of the key benefits observed in the TEI, was better staff
+enablement. Not only were existing staff accomplishing more tasks in
+less time but, junior staff could be empowered to take on higher level
+tasks. Complex tasks could be delegated to greener team members. Ansible
+Tower eliminated dull, boring, and repetitive tasks through automation.</p>
+<p>Red Hat Ansible Tower's ease of use shined in this study. The lead
+infrastructure architect said, "We had the ability for Tower to be used
+within our environment in under a week with the tools provided out of
+the box." Ansible Tower democratizes the flexibility and power of
+Ansible. Infrastructure staff built functionality to enable end users to
+act safely in their own environments. End users of Ansible Tower
+functionality required only one hour of training to be qualified and
+productive.</p>
+<p>Hiring is an increasingly difficult task for IT organizations. The time
+it takes to find and recruit talent, onboard, and train new hires comes
+at a cost. The gains made by implementing Ansible Tower reduced the
+urgency of onboarding more staff for this company. Forrester's TEI
+indicated Red Hat's customer, "saved 48,000 hours of staff time by
+automating the process of bringing servers online, stress testing
+resources and deleting nodes." When assuming a typical, salaried US
+employee's work hours to be 2,000 hours per year, implementing Ansible
+Tower has a potential staff hours savings of eight full time employees
+per year.</p>
+<h4>No Expensive Hardware Needed</h4>
+<p>According to the TEI, "Rather than purchase name-brand appliances for
+its data centers, the interviewed organization created an Ansible
+Playbook and ran the automated functionality using generic Linux systems
+Rather than purchase name-brand appliances for cloud configuration,
+backups, etc. in its data centers, the customer stood up Ansible Tower
+and ran the automated functionality using generic Linux systems." The
+organization avoided purchasing 10 name brand infrastructure appliances,
+representing a three-year present value of $389,707."</p>
+<p>In conclusion, we believe that Red Hat Ansible Tower can enable
+organizations to do what they've done successfully for years at scale.
+Ansible Tower helps organizations accelerate revenue recognition.
+Automation with Ansible can improve the safety and surety of IT
+infrastructure by automating patching and compliance tasks. Ansible can
+free up staff time and raise the capabilities of all staff to take part
+in a greater velocity of improvements. What do you want to Ansible
+today?</p>
+          </div>
+      </article><br><hr>
+<br><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title">
+            <a href="using-the-win_dsc-module-in-ansible/" class="u-url">Using the win_dsc Module in Ansible</a>
+          </h1>
+          <div class="metadata">
+            <p class="byline author vcard">
+              <span class="byline-name fn" itemprop="author">
+                  <a href="../authors/bianca-henderson/">Bianca Henderson</a>
+              </span>
+            </p>
+            <p class="dateline">
+              <a href="using-the-win_dsc-module-in-ansible/" rel="bookmark">
+                <time class="published dt-published" datetime="2018-07-31T00:00:00Z" itemprop="datePublished" title="2018-07-31 00:00">2018-07-31 00:00</time></a>
+            </p>
+          </div>
+        </header><div class="p-summary entry-summary">
+            <h2>Using the win_dsc Module in Ansible</h2>
+<p>Hello, and welcome to another Getting Started with Ansible + Windows post! In
+this article we'll be exploring what Desired State Configuration is, why
+it's useful, and how to utilize it with Ansible to manage your Windows
+nodes.</p>
+<h3>What is DSC?</h3>
+<p>So what exactly is Desired State Configuration? It's basically a system
+configuration management platform that uses the declarative model; in
+other words, you tell DSC the "what", and it will figure out the "how".
+Much like Ansible, DSC uses push-mode execution to send configurations
+to the target hosts. This is very important to consider when delivering
+resources to multiple targets.</p>
+<p>This time-saving tool is built into PowerShell, defining Windows node
+setup through code. It uses the Local Configuration Manager (which is
+the DSC execution engine that runs on each node).</p>
+<p>Microsoft fosters a community effort to build and maintain DSC resources
+for a variety of technologies. The results of these efforts are curated
+and published each month to the Powershell Gallery as the <a href="https://github.com/PowerShell/DscResources">DSC Resource
+Kit</a>. If there isn't a
+native Ansible module available for the technology you need to manage,
+there may be a DSC resource.</p>
+<h3>How Do You Use DSC with Ansible?</h3>
+<p>DSC Resources are distributed as PowerShell modules, which means that it
+works similarly to Ansible, just implemented in a different manner. The
+<code>win_dsc</code> module has been available since the release of Ansible 2.4,
+and it can influence existing DSC resources whenever it interacts with a
+Windows host.</p>
+<p>To use this module, you will need PowerShell 5.1 or later. Once you make
+sure that you have the correct version of PowerShell installed on your
+Windows nodes, using DSC is as easy as executing a task using the
+<code>win_dsc</code> module.</p>
+<p>Let's look at it in action. For this example we'll ensure a DNS server
+is installed, the <code>xDnsServer</code> DSC resource module is present, and also
+use a couple of the DSC resources under it to define a zone and an A
+Record:</p>
+<div class="code"><pre class="code literal-block"><span class="k">-</span> hosts: Erasmus
+  tasks:
+  <span class="k">-</span> win_feature:
+      name:
+      <span class="k">-</span> DNS
+      <span class="k">-</span> RSAT-DNS-Server
+      state: present
+  <span class="k">-</span> win_psmodule:
+      name: xDnsServer
+      repository: PSGallery
+  <span class="k">-</span> win_dsc:
+      resource_name: xDnsServerPrimaryZone
+      Name: my-arbre.com
+  <span class="k">-</span> win_dsc:
+      resource_name: xDnsRecord
+      Name: test
+      Zone: my-arbre.com
+      Target: 192.168.17.75
+      Type: ARecord
+</pre></div>
+
+<p>Let's walk through what's happening in the above playbook: it starts by
+installing the DNS Server on the target, then the <code>xDnsServer</code> DSC
+resource module is installed. With the DSC resources now installed the
+<code>xDnsServerPrimaryZone</code> resource is called to create the zone, then the
+<code>xDnsRecord</code> resource is invoked with arguments to fill in the zone
+details for our <code>my-arbre.com</code> site. The <code>xDnsServer</code> resource is
+downloaded from PowerShellGallery.com which has a reliable community for
+DSC resources.</p>
+<p>Keep in mind that the <code>win_dsc</code> module is designed for driving a single
+DSC Resource provider to make it work like an Ansible module. It is not
+intended to be used for defining the DSC equivalent of a playbook on the
+host and running it.</p>
+<p>A couple more points to remember:</p>
+<ul>
+<li>The <code>resource_name</code> must be set to the name of a DSC resource
+    already installed on the target when defining the task.</li>
+<li>Matching the case to the documentation is best practices; this also
+    makes it easier to tell the difference of DSC resource options from
+    Ansible's <code>win_dsc</code> options.</li>
+</ul>
+<h3>Conclusion</h3>
+<p>Now you know the basics of how to use DSC for your Windows nodes by
+invoking the win_dsc module in an Ansible Playbook. To read more about
+Ansible + DSC, check out our official <a href="https://docs.ansible.com/ansible/latest/user_guide/windows_dsc.html">documentation page</a>
+on the topic.</p>
+<p>Special thanks to my teammate John Lieske for lots of technical assistance with this post.
+And as always, happy automating!</p>
+          </div>
+      </article><br><hr>
+<br><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title">
+            <a href="getting-started-workflow-job-templates/" class="u-url">Getting Started with Workflow Job Templates</a>
+          </h1>
+          <div class="metadata">
+            <p class="byline author vcard">
+              <span class="byline-name fn" itemprop="author">
+                  <a href="../authors/bianca-henderson/">Bianca Henderson</a>
+              </span>
+            </p>
+            <p class="dateline">
+              <a href="getting-started-workflow-job-templates/" rel="bookmark">
+                <time class="published dt-published" datetime="2018-07-05T00:00:00Z" itemprop="datePublished" title="2018-07-05 00:00">2018-07-05 00:00</time></a>
+            </p>
+          </div>
+        </header><div class="p-summary entry-summary">
+            <h2>Getting Started with Workflow Job Templates</h2>
+<p>Welcome to another post in the Getting Started series! Today we're going to get
+into the topic of Workflow Job Templates. If you don't know what regular
+Job Templates are in Red Hat Ansible Tower, please read the previously
+published article that describes them. It'll provide you with some technical
+details that'll be a useful jumping-off point for the topic of workflows.</p>
+<p>Once you're familiar with the basics, read on! We'll be covering what
+exactly Workflow Job Templates are, what makes them useful, how to
+generate/edit one, and a few extra pointers as well as best practices to
+make the most out of this great tool.</p>
+<h3>What is a Workflow Job Template?</h3>
+<p>The word "workflow" says it all. This particular feature in Ansible
+Tower (available as of version 3.1) enables users to create sequences
+consisting of any combination of job templates, project syncs, and
+inventory syncs that are linked together in order to execute them as a
+single unit. Because of this, workflows can help you organize playbooks
+and job templates into separate groups.</p>
+<h3>Why are Workflows Useful?</h3>
+<p>By utilizing this feature, you can set up ordered structures for
+different teams to use. For example, two different environments (i.e.,
+networking and developers) can interface via workflows as long as they
+have permissions to access it. Not everyone involved will need to know
+what job run goes after what, since the structure is set up for them by
+the user who created the workflow. This connects disparate job types and
+unifies projects without each team needing to know everything about what
+the other does.</p>
+<p>Another reason workflows are useful is because they allow the user to
+take any number of playbooks and "daisy chain" them, with the ability to
+make a decision tree depending on a job's success or failure. You can
+make them as simple or as complex as they need to be!</p>
+<h4>How Do You Create One?</h4>
+<p>[Go into the Templates section on the top menu of Ansible Tower:</p>
+<p><img alt="Getting-Started-Tower-Workflows-13" src="../images/posts/archive/Getting-Started-Tower-Workflows-13.jpg"></p>
+<p>From there, click on "Add", but make sure to select "Workflow Template":</p>
+<p><img alt="Getting-Started-Tower-Workflows-15" src="../images/posts/archive/Getting-Started-Tower-Workflows-15.jpg"></p>
+<p>You'll see this new screen, where you can name your workflow template
+anything you like and save it:</p>
+<p><img alt="Getting-Started-Tower-Workflows-10" src="../images/posts/archive/Getting-Started-Tower-Workflows-10.jpg"></p>
+<p>Once you've done that, go into "Edit Workflow":</p>
+<p><img alt="Getting-Started-Tower-Workflows-1" src="../images/posts/archive/Getting-Started-Tower-Workflows-1.jpg"></p>
+<p>This screen will come up, where you can add different job templates and
+make sure they run on failure, success, or with either outcome:</p>
+<p><img alt="Getting-Started-Tower-Workflows-11" src="../images/posts/archive/Getting-Started-Tower-Workflows-11.jpg"></p>
+<p>Note that you can decide if things run on success, on failure, or
+always.</p>
+<p>[**<img alt="Getting-Started-Tower-Workflows-9" src="../images/posts/archive/Getting-Started-Tower-Workflows-9.jpg"></p>
+<p>As mentioned in the previous section, you can make your Ansible workflow
+as simple...</p>
+<p><img alt="Getting-Started-Tower-Workflows-4" src="../images/posts/archive/Getting-Started-Tower-Workflows-4.jpg"></p>
+<p>...or complex as you need to!</p>
+<p><img alt="Getting-Started-Tower-Workflows-12" src="../images/posts/archive/Getting-Started-Tower-Workflows-12.jpg"></p>
+<p>After everything is set and saved, you're ready to launch your template,
+which you can do by clicking on the rocket icon next to the workflow
+you'd like to run:</p>
+<p><img alt="Getting-Started-Tower-Workflows-7" src="../images/posts/archive/Getting-Started-Tower-Workflows-7.jpg"></p>
+<h4>What More Can You Do With Workflows?</h4>
+<p>You can <a href="https://docs.ansible.com/ansible-tower/latest/html/userguide/workflow_templates.html#scheduling">schedule your workflows</a>
+to run when you need them to! Just click on the calendar icon next to
+any workflow job template:</p>
+<p><img alt="Getting-Started-Tower-Workflows-5" src="../images/posts/archive/Getting-Started-Tower-Workflows-5.jpg"></p>
+<p>... and fill out the information for when you want the specified
+workflow to automatically run:</p>
+<p><img alt="Getting-Started-Tower-Workflows-8" src="../images/posts/archive/Getting-Started-Tower-Workflows-8.jpg">
+ 
+If you have a workflow template created that works very well for you and
+you'd like to copy it, click on the button highlighted below:</p>
+<p><img alt="Getting-Started-Tower-Workflows-2" src="../images/posts/archive/Getting-Started-Tower-Workflows-2.jpg"></p>
+<p>Keep in mind that copying a workflow won't also copy over any of the
+permissions, notifications, or schedules associated with the original.</p>
+<p>If you need to set extra variables for the playbooks involved in a
+workflow template and/or allow for authorization of user input, then
+<a href="https://docs.ansible.com/ansible-tower/latest/html/userguide/workflow_templates.html#surveys">setting up surveys</a>
+is the way to go. In order to set one up, select a workflow template and
+click on the "Add Survey" button:</p>
+<p><img alt="Getting-Started-Tower-Workflows-3" src="../images/posts/archive/Getting-Started-Tower-Workflows-3.jpg"></p>
+<p>A survey screen that you can fill out with specific questions and answer
+types will show up:</p>
+<p><img alt="Getting-Started-Tower-Workflows-14" src="../images/posts/archive/Getting-Started-Tower-Workflows-14.jpg"></p>
+<p><a href="https://docs.ansible.com/ansible-tower/latest/html/userguide/workflow_templates.html#work-with-notifications">Notifications</a>
+can give you more control and knowledge related to specific workflows.
+To activate one, select the workflow that you want to set notifications
+for, then click the Notifications button:</p>
+<p><img alt="Getting-Started-Tower-Workflows-16" src="../images/posts/archive/Getting-Started-Tower-Workflows-16.jpg"></p>
+<p>Keep in mind that you'll have to already have some notifications set up
+in the Notifications list. The screen that comes up will enable you to
+select specific notifications; in the example below the
+"Workflow-Specific Notification" has been set to activate on either a
+successful or failed run:</p>
+<p><img alt="Getting-Started-Tower-Workflows-6" src="../images/posts/archive/Getting-Started-Tower-Workflows-6.jpg"></p>
+<p>Note: Make sure you have "update on launch" on your inventory
+selected when you make a new workflow job template if you're acting
+against a dynamic
+inventory!</p>
+<h4>Conclusion</h4>
+<p>Now you know how to combine any number of playbooks into a customized
+decision tree, with the ability to schedule those jobs, add
+notifications, and much more. An added bonus is the fact that this isn't
+an enterprise-only feature, so no matter your Ansible Tower license
+type, you can log into your instance and have fun creating workflows!</p>
+<p>To read more about how to create and modify workflow job templates,
+check out our <a href="https://docs.ansible.com/ansible-tower/latest/html/userguide/workflow_templates.html">official documentation page</a>
+on the topic.</p>
+<p>I hope this article was helpful, and that it enables you to take
+advantage of the powerful automation features that are possible with
+Ansible Tower!</p>
+          </div>
+      </article><br><hr>
+<br><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title">
+            <a href="an-introduction-to-windows-security-with-ansible/" class="u-url">An Introduction to Windows Security with Ansible</a>
+          </h1>
+          <div class="metadata">
+            <p class="byline author vcard">
+              <span class="byline-name fn" itemprop="author">
+                  <a href="../authors/the-getting-started-team/">The Getting Started Team</a>
+              </span>
+            </p>
+            <p class="dateline">
+              <a href="an-introduction-to-windows-security-with-ansible/" rel="bookmark">
+                <time class="published dt-published" datetime="2018-06-21T00:00:00Z" itemprop="datePublished" title="2018-06-21 00:00">2018-06-21 00:00</time></a>
+            </p>
+          </div>
+        </header><div class="p-summary entry-summary">
+            <h2>An Introduction to Windows Security with Ansible</h2>
+<p>Welcome to another installment of our Windows-centric Getting Started
+Series! In the prior posts we talked about
+connecting to Windows machines, gave a brief introduction on using
+Ansible with Active Directory, and discussed package management options
+on Windows with Ansible. In this post we'll talk a little about applying
+security methodologies and practices in relation to our original topics.</p>
+<h3>The Triad</h3>
+<p>In order to discuss security issues in relation to Ansible and Windows,
+we'll be applying concepts from the popular CIA Triad: Confidentiality,
+Integrity, and Availability.</p>
+<p>Confidentiality is pretty self-evident --- protecting confidentiality
+helps restrict private data to only authorized users and helps to
+prevent non-authorized ones from seeing it. The way this is accomplished
+involves several techniques such as authentication, authorization, and
+encryption. When working with Windows, this means making sure the hosts
+know all of the necessary identities, that each user is appropriately
+verified, and that the data is protected (by, for example, encryption)
+so that it can only be accessed by authorized parties.</p>
+<p>Integrity is about making sure that the data is not tampered with or
+damaged so that it is unusable. When you're sending data across a
+network you want to make sure that it arrives in the same condition as
+it was sent out. This will apply to the tasks in an Ansible Playbook,
+any files that may be transferred, or packages that are installed (and
+more!).</p>
+<p>Availability is mainly about making data available to those authorized
+users when they need to access it. Think about things like redundancy,
+resiliency, high-availability, or clustering as ways to help ensure
+availability of systems and data.</p>
+<h4>Confidentiality</h4>
+<p>As Bianca mentioned in the first installment of this series, Ansible
+uses WinRM and sends user/password with variables (or, in the case of
+Ansible Tower, by using credentials). In the example below, which shows
+an inventory file that includes variables as <code>[win:vars]</code>, the
+certificate is ignored:</p>
+<div class="code"><pre class="code literal-block"><span class="k">[win:vars]</span>
+<span class="na">ansible_user</span><span class="o">=</span><span class="s">vagrant</span>
+<span class="na">ansible_connection</span><span class="o">=</span><span class="s">winrm</span>
+<span class="na">ansible_winrm_server_cert_validation</span><span class="o">=</span><span class="s">ignore</span>
+</pre></div>
+
+<p>In an Active Directory environment the domain-joined hosts won't
+require ignoring certificates that validate if your control node has
+been set to trust the Active Directory CS.</p>
+<h4>Integrity</h4>
+<p>Active Directory, discussed by John in the second installment, adds more
+verification to credentials and authority for validating certificates on
+domains in its scope. The directory services provide added strength to
+confidentiality by being the authoritative credential store. Joining a
+host to the domain establishes its trust, so as long as a user
+requesting resources is valid, then a domain-joined host will have
+established integrity.</p>
+<p>Ansible is able to add and manage users
+(<a href="https://docs.ansible.com/ansible/latest/modules/win_domain_user_module.html#win-domain-user-module">win_domain_user</a>),
+groups
+(<a href="https://docs.ansible.com/ansible/latest/modules/win_domain_group_module.html#win-domain-group-module">win_domain_group</a>),
+or hosts
+(<a href="https://docs.ansible.com/ansible/latest/modules/win_domain_membership_module.html#win-domain-membership-module">win_domain_membership</a>)
+securely and with valid domain credentials. See the example below for
+how these tasks can be done with the use of a playbook:</p>
+<div class="code"><pre class="code literal-block"><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Join to domain</span>
+<span class="w">  </span><span class="nt">win_domain_membership</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">dns_domain_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tycho.local</span>
+<span class="w">    </span><span class="nt">hostname</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mydomainclient</span>
+<span class="w">    </span><span class="nt">domain_admin_user</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">win_domain_admin_user</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="w">    </span><span class="nt">domain_admin_password</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">win_domain_admin_password</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="w">    </span><span class="nt">domain_ou_path</span><span class="p">:</span><span class="w"> </span><span class="s">"OU=Windows,OU=Servers,DC=tycho,DC=local"</span>
+<span class="w">    </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">domain</span>
+<span class="w">  </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">domain_state</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">set group with delete protection enabled</span>
+<span class="w">  </span><span class="nt">win_domain_group</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Users</span>
+<span class="w">    </span><span class="nt">scope</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">domainlocal</span>
+<span class="w">    </span><span class="nt">category</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">security</span>
+<span class="w">    </span><span class="nt">ignore_protection</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">no</span>
+</pre></div>
+
+<h4>Availability</h4>
+<p>In the a recent Windows-related
+post, which was about package
+management, Jake gave a few examples that used the Ansible Modules
+<a href="https://docs.ansible.com/ansible/latest/modules/win_package_module.html#win-package-module">win_package</a>
+and
+<a href="https://docs.ansible.com/ansible/latest/modules/win_chocolatey_module.html#win-chocolatey-module">win_chocolatey</a>.
+This is related to the third part of that security triad because the
+data model's physical and transport layers get a lot of attention in
+terms of obtainability, but fast and efficient software/patch management
+is also a part of maintaining this availability. The less time eaten up
+through rolling out updates reduces downtime. Shaving minutes or even
+seconds in a rollout can pay off with more consistent service delivery.</p>
+<p>An important availability-related security function which can be
+executed using an Ansible module is related to updates. As the name
+suggests,
+<a href="https://docs.ansible.com/ansible/latest/modules/win_updates_module.html#win-updates-module">win_updates</a>
+searches, downloads, and installs updates on all Windows hosts
+simultaneously by automating the Windows update client. Let's explore
+this module further.</p>
+<p>The example below is taken from the
+<a href="https://raw.githubusercontent.com/ansible/ansible-lockdown/master/meltdown-spectre-windows.yml">example</a>
+that's part of a collection of <a href="https://github.com/ansible/ansible-lockdown">Ansible
+Roles</a> related to security
+automation. Here you can see the win_updates module in action:</p>
+<div class="code"><pre class="code literal-block">tasks:
+ <span class="k">-</span> name: Install security updates
+   win_updates:
+     category_names:
+       <span class="k">-</span> SecurityUpdates
+     Notify: reboot windows system
+</pre></div>
+
+<p>Another example shows how you can use this module within a playbook for
+patching Windows nodes, along with the win_reboot module which is used
+for--- you guessed it!--- automating the restarting of Windows machines:</p>
+<div class="code"><pre class="code literal-block">– name: Install missing updates
+  win_updates:
+    Category_names:
+       – ServicePacks
+       – UpdateRollups
+       – CriticalUpdates
+    Reboot: yes
+</pre></div>
+
+<h4>Conclusion</h4>
+<p>Security is a complex and ever-evolving field that's dependent on each
+organization's particular environment, vulnerabilities, and specific
+needs. It's extremely important to read the above as a guideline and not
+a checklist; no amount of implementation is going to have any
+long-lasting effect if continual improvement isn't implemented.</p>
+<p>We hope you found this information helpful, and that this five-part
+series has provided you with the tools for automating your Windows hosts
+with confidence by using Ansible to do the work for you!</p>
+          </div>
+      </article><br><hr>
+<br><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title">
+            <a href="red-hat-single-sign-on-integration-with-ansible-tower/" class="u-url">Red Hat Single Sign-on Integration with Ansible Tower</a>
+          </h1>
+          <div class="metadata">
+            <p class="byline author vcard">
+              <span class="byline-name fn" itemprop="author">
+                  <a href="../authors/juan-manuel/">Juan Manuel</a>
+              </span>
+            </p>
+            <p class="dateline">
+              <a href="red-hat-single-sign-on-integration-with-ansible-tower/" rel="bookmark">
+                <time class="published dt-published" datetime="2018-06-14T00:00:00Z" itemprop="datePublished" title="2018-06-14 00:00">2018-06-14 00:00</time></a>
+            </p>
+          </div>
+        </header><div class="p-summary entry-summary">
+            <h2>Red Hat Single Sign-on Integration with Ansible Tower</h2>
+<p>As you might know, Red Hat Ansible Tower supports SAML authentication
+(both N and Z) by default. This document will guide you through the
+steps for configuring both products to delegate the authentication to
+RHSSO/Keycloak (Red Hat Single Sign-On).</p>
+<p>Requirements:</p>
+<ul>
+<li>A running RHSSO/Keycloak instance</li>
+<li>Ansible Tower</li>
+<li>Admin rights for both</li>
+<li>DNS resolution</li>
+</ul>
+<h3>Hands-On Lab</h3>
+<p>Unless you have your own certificate already, the first step will be to
+create one. To do so, execute the following command:</p>
+<p><code>openssl req -new -x509 -days 365 -nodes -out saml.crt -keyout saml.key</code></p>
+<p>Now we need to create the Ansible Tower Realm on the RHSSO platform. Go
+to the "Select Realm" drop-down and click on "Add new realm":</p>
+<p><img alt="Ansible-Tower-SSO-Screen-16" src="../images/posts/archive/Ansible-Tower-SSO-Screen-16.png"></p>
+<p>Once created, go to the "Keys" tab and delete all certificates, keys,
+etc. that were created by default.</p>
+<p>Now that we have a clean realm, let's populate it with the appropriate
+information. Click on "Add Keystore" in the upper right corner and
+click on RSA:</p>
+<p><img alt="Ansible-Tower-SSO-Screen-15" src="../images/posts/archive/Ansible-Tower-SSO-Screen-15.png"></p>
+<p>Click on Save and create your Ansible Tower client information. It is
+recommend to start with the Tower configuration so that you can inject
+the metadata file and customize a few of the fields.</p>
+<p>Log in as the admin user on Ansible Tower and go to "Settings &gt;
+Configure Tower &gt; Authentication &gt; SAML". Here you will find many
+fields (two of them read-only), that give us the information necessary
+to make this work:</p>
+<ul>
+<li>Assertion Consumer Service</li>
+<li>Metadata URL for the Service Provider (this will return the
+    configuration for your IDP)</li>
+</ul>
+<p><img alt="Ansible-Tower-SSO-Screen-18" src="../images/posts/archive/Ansible-Tower-SSO-Screen-18.png"></p>
+<p>Now let's fill all the required fields:</p>
+<ul>
+<li>EntityID for SAML Service Provider: <code>tower.usersys.redhat.com</code> (must
+    be the same on RHSSO as <code>client_id</code> name)</li>
+<li>Pub Cert: use the saml.crt (<code>cat saml.crt</code> and copy/paste)</li>
+<li>Private Key: use the same.key (<code>cat saml.key</code> and copy/paste)</li>
+</ul>
+<p><img alt="Ansible-Tower-SSO-Screen-17" src="../images/posts/archive/Ansible-Tower-SSO-Screen-17.png"></p>
+<ul>
+<li>Org info of Service Provider:</li>
+</ul>
+<div class="code"><pre class="code literal-block">{
+  "en-US": {
+    "url": "https://rhsso.usersys.redhat.com:8443",
+    "displayname": "RHSSO Solutions Engineering",
+    "name": "RHSSO"
+  }
+}
+</pre></div>
+
+<p><img alt="Ansible-Tower-SSO-Screen-4" src="../images/posts/archive/Ansible-Tower-SSO-Screen-4.png"></p>
+<ul>
+<li>Technical contact for SAML Service Provider:</li>
+</ul>
+<div class="code"><pre class="code literal-block"><span class="err">{</span>
+<span class="w">  </span><span class="ss">"givenName"</span><span class="err">:</span><span class="w"> </span><span class="ss">"Juan Manuel Parrilla"</span><span class="p">,</span>
+<span class="w">  </span><span class="ss">"emailAddress"</span><span class="err">:</span><span class="w"> </span><span class="ss">"jparrill@redhat.com"</span>
+<span class="err">}</span>
+</pre></div>
+
+<p><img alt="Ansible-Tower-SSO-Screen-7" src="../images/posts/archive/Ansible-Tower-SSO-Screen-7.png"></p>
+<ul>
+<li>Support contact for SAML Service Provider:</li>
+</ul>
+<div class="code"><pre class="code literal-block"><span class="err">{</span>
+<span class="w">  </span><span class="ss">"givenName"</span><span class="err">:</span><span class="w"> </span><span class="ss">"Juan Manuel Parrilla"</span><span class="p">,</span>
+<span class="w">  </span><span class="ss">"emailAddress"</span><span class="err">:</span><span class="w"> </span><span class="ss">"jparrill@redhat.com"</span>
+<span class="err">}</span>
+</pre></div>
+
+<p><img alt="Ansible-Tower-SSO-Screen-7" src="../images/posts/archive/Ansible-Tower-SSO-Screen-7.png"></p>
+<ul>
+<li>Enabled SAML Identity Providers:</li>
+</ul>
+<div class="code"><pre class="code literal-block">{
+   "RHSSO": {
+      "attr_last_name": "last_name",
+      "attr_username": "username",
+      "entity_id": "https://rhsso.usersys.redhat.com:8443/auth/realms/tower",
+      "attr_user_permanent_id": "name_id",
+      "url": "https://rhsso.usersys.redhat.com:8443/auth/realms/tower/protocol/saml",
+      "attr_email": "email",
+      "x509cert": "",
+      "attr_first_name": "first_name",
+      "attr_groups": "groups"
+   }
+}
+</pre></div>
+
+<p>Note: To provide the x509cert field on the JSON, just execute this command and paste the result on the Ansible Tower interface:</p>
+<div class="code"><pre class="code literal-block">sed<span class="w"> </span><span class="s1">':a;N;$!ba;s/\n//g'</span><span class="w"> </span>saml.crt
+</pre></div>
+
+<p><img alt="Ansible-Tower-SSO-Screen-20" src="../images/posts/archive/Ansible-Tower-SSO-Screen-20.png"></p>
+<ul>
+<li>Organization SAML Map:</li>
+</ul>
+<div class="code"><pre class="code literal-block"><span class="err">{</span>
+<span class="w">   </span><span class="ss">"Default"</span><span class="err">:</span><span class="w"> </span><span class="err">{</span>
+<span class="w">      </span><span class="ss">"users"</span><span class="err">:</span><span class="w"> </span><span class="k">true</span>
+<span class="w">   </span><span class="err">}</span><span class="p">,</span>
+<span class="w">   </span><span class="ss">"Systems Engineering"</span><span class="err">:</span><span class="w"> </span><span class="err">{</span>
+<span class="w">      </span><span class="ss">"admins"</span><span class="err">:</span><span class="w"> </span><span class="o">[</span>
+<span class="n">         "acheron@redhat.com",</span>
+<span class="n">         "jparrill@redhat.com",</span>
+<span class="n">         "covenant@redhat.com",</span>
+<span class="n">         "olympia@redhat.com</span>
+<span class="n">      </span><span class="o">]</span><span class="p">,</span>
+<span class="w">      </span><span class="ss">"remove_admins"</span><span class="err">:</span><span class="w"> </span><span class="k">false</span><span class="p">,</span>
+<span class="w">      </span><span class="ss">"remove_users"</span><span class="err">:</span><span class="w"> </span><span class="k">false</span><span class="p">,</span>
+<span class="w">      </span><span class="ss">"users"</span><span class="err">:</span><span class="w"> </span><span class="k">true</span>
+<span class="w">   </span><span class="err">}</span>
+<span class="err">}</span>
+</pre></div>
+
+<p><img alt="Ansible-Tower-SSO-Screen-10" src="../images/posts/archive/Ansible-Tower-SSO-Screen-10.png"></p>
+<h3>Recommended Steps and Things to Check</h3>
+<ul>
+<li>RHSSO is the chosen name, which can be whatever you want and is not
+    tied to DNS or server configurations. This is simply a visual
+    marker.</li>
+<li>All the <code>attr_ fields</code> are required to work and will be mappers on
+    the client that we will create on the next step.</li>
+<li>
+<code>Entity_id</code> will point to your realm. Go to your RHSSO realm through
+    WebUI and in "General" you will see "OpenID Endpoint
+    Configuration". Just click and catch the "issuer" field to
+    fulfill the <code>entity_id</code>.</li>
+<li>"For url" is a fixed field; put your <code>entity_id</code> there, followed by
+    <code>/protocol/saml</code>.</li>
+<li>If you generated your cert/key in RHSSO, you will have them in one
+    line. To convert to PEM format you can just wrap them in
+    "-----BEGIN CERTIFICATE-----" etc. and use <code>fold -w64</code> to
+    split the single line.</li>
+</ul>
+<h3>RHSSO Client Configuration</h3>
+<p>Now that you've configured SAML on Ansible Tower save the changes and
+start with the RHSSO Client configuration.</p>
+<p>First, log in as the admin user on the RHSSO platform and go to the
+"Tower" realm. From there, go to "Clients" and select "Create". Click
+on "select file" to import the data that we already have on Ansible
+Tower (to get the configuration execute this command from your laptop:
+<code>curl -L -k https://tower.usersys.redhat.com/sso/metadata/saml/</code>).
+Modify the Client ID by pointing it to <code>tower.usersys.redhat.com</code>, then
+set the "Client Protocol" to SAML as displayed below:</p>
+<p><img alt="Ansible-Tower-SSO-Screen-19" src="../images/posts/archive/Ansible-Tower-SSO-Screen-19.png"></p>
+<p>Next, fix the configuration to fit the following screenshot:</p>
+<p><img alt="Ansible-Tower-SSO-Screen-1" src="../images/posts/archive/Ansible-Tower-SSO-Screen-1.png"></p>
+<p>The last step to take is to create the mappers on Tower's RHSSO client.
+The purpose of this is to define the information that comes from your
+RHSSO, which will be mapped against Ansible Tower users.</p>
+<p>To do this, we must go to Mappers tab:</p>
+<p><img alt="Ansible-Tower-SSO-Screen-14" src="../images/posts/archive/Ansible-Tower-SSO-Screen-14.png"></p>
+<p>Displayed below are the necessary mappers:</p>
+<p><img alt="Ansible-Tower-SSO-Screen-6" src="../images/posts/archive/Ansible-Tower-SSO-Screen-6.png"></p>
+<p>The following screenshot shows proper configuration of user name, last
+name, email, user ID, and first name:</p>
+<p><img alt="Ansible-Tower-SSO-Screen-22" src="../images/posts/archive/Ansible-Tower-SSO-Screen-22.png"></p>
+<p><img alt="Ansible-Tower-SSO-Screen-11" src="../images/posts/archive/Ansible-Tower-SSO-Screen-11.png"></p>
+<p><img alt="Ansible-Tower-SSO-Screen-8" src="../images/posts/archive/Ansible-Tower-SSO-Screen-8.png"></p>
+<p><img alt="Ansible-Tower-SSO-Screen-9" src="../images/posts/archive/Ansible-Tower-SSO-Screen-9.png"></p>
+<p><img alt="Ansible-Tower-SSO-Screen-3" src="../images/posts/archive/Ansible-Tower-SSO-Screen-3.png"></p>
+<p>Note: "firstName" and "lastName" are case sensitive since they map the RHSSO user property.</p>
+<h4>Now you're all set!</h4>
+<p>Let's test with a user that we already have on our RHSSO (we have RHSSO
+with a user federation against <code>ldap.example.com</code>). For testing
+purposes, you can create a user on "Manage &gt; Users" if you wish.</p>
+<p>Now go to the Ansible Tower login page and you should see "Sign in With S":</p>
+<p><img alt="Ansible-Tower-SSO-Screen-21" src="../images/posts/archive/Ansible-Tower-SSO-Screen-21.png"></p>
+<p>Click on this "S" and you will be redirected to login on your RHSSO
+server:</p>
+<p><img alt="Ansible-Tower-SSO-Screen-2" src="../images/posts/archive/Ansible-Tower-SSO-Screen-2.png"></p>
+<p>And that's it!
+<img alt="Ansible-Tower-SSO-Screen-5" src="../images/posts/archive/Ansible-Tower-SSO-Screen-5.png"></p>
+<p>Hope this was a helpful guide to Red Hat Single Sign-On integration with
+Ansible Tower!</p>
+          </div>
+      </article><br><hr>
+<br><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title">
+            <a href="shell-scripts-to-ansible/" class="u-url">Shell Scripts to Ansible</a>
+          </h1>
+          <div class="metadata">
+            <p class="byline author vcard">
+              <span class="byline-name fn" itemprop="author">
+                  <a href="../authors/allen-eastwood/">Allen Eastwood</a>
+              </span>
+            </p>
+            <p class="dateline">
+              <a href="shell-scripts-to-ansible/" rel="bookmark">
+                <time class="published dt-published" datetime="2018-06-12T00:00:00Z" itemprop="datePublished" title="2018-06-12 00:00">2018-06-12 00:00</time></a>
+            </p>
+          </div>
+        </header><div class="p-summary entry-summary">
+            <h2>Shell Scripts to Ansible</h2>
+<p>During a recent client visit, we were asked to help migrate the
+following script for deploying a centralized sudoers file to RHEL and
+AIX servers. This is a common scenario which can provide some good
+examples of leveraging advanced Ansible features. Additionally, we can
+consider the shift in approach from a script that does a task to
+describing and enforcing the state of an item idempotently.</p>
+<p>Here is the script:</p>
+<div class="code"><pre class="code literal-block"><span class="ch">#!/bin/sh</span>
+<span class="c1"># Desc: Distribute unified copy of /etc/sudoers</span>
+<span class="c1">#</span>
+<span class="c1"># $Id: $</span>
+<span class="c1">#set -x</span>
+
+<span class="nb">export</span><span class="w"> </span><span class="nv">ODMDIR</span><span class="o">=</span>/etc/repos
+
+<span class="c1">#</span>
+<span class="c1"># perform any cleanup actions we need to do, and then exit with the</span>
+<span class="c1"># passed status/return code</span>
+<span class="c1">#</span>
+clean_exit<span class="o">()</span>
+<span class="o">{</span>
+<span class="nb">cd</span><span class="w"> </span>/
+<span class="nb">test</span><span class="w"> </span>-f<span class="w"> </span><span class="s2">"</span><span class="nv">$tmpfile</span><span class="s2">"</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>rm<span class="w"> </span><span class="nv">$tmpfile</span>
+<span class="nb">exit</span><span class="w"> </span><span class="nv">$1</span>
+<span class="o">}</span>
+
+<span class="c1">#Set variables</span>
+<span class="nv">PROG</span><span class="o">=</span><span class="sb">`</span>basename<span class="w"> </span><span class="nv">$0</span><span class="sb">`</span>
+<span class="nv">PLAT</span><span class="o">=</span><span class="sb">`</span>uname<span class="w"> </span>-s<span class="p">|</span>awk<span class="w"> </span><span class="s1">'{print $1}'</span><span class="sb">`</span>
+<span class="nv">HOSTNAME</span><span class="o">=</span><span class="sb">`</span>uname<span class="w"> </span>-n<span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span>-F.<span class="w"> </span><span class="s1">'{print $1}'</span><span class="sb">`</span>
+<span class="nv">HOSTPFX</span><span class="o">=</span><span class="k">$(</span><span class="nb">echo</span><span class="w"> </span><span class="nv">$HOSTNAME</span><span class="w"> </span><span class="p">|</span>cut<span class="w"> </span>-c<span class="w"> </span><span class="m">1</span>-2<span class="k">)</span>
+<span class="nv">NFSserver</span><span class="o">=</span><span class="s2">"nfs-server"</span>
+<span class="nv">NFSdir</span><span class="o">=</span><span class="s2">"/NFS/AIXSOFT_NFS"</span>
+<span class="nv">MOUNTPT</span><span class="o">=</span><span class="s2">"/mnt.</span><span class="nv">$$</span><span class="s2">"</span>
+<span class="nv">MAILTO</span><span class="o">=</span><span class="s2">"unix@company.com"</span>
+<span class="nv">DSTRING</span><span class="o">=</span><span class="k">$(</span>date<span class="w"> </span>+%Y%m%d%H%M<span class="k">)</span>
+<span class="nv">LOGFILE</span><span class="o">=</span><span class="s2">"/tmp/</span><span class="si">${</span><span class="nv">PROG</span><span class="si">}</span><span class="s2">.dist_sudoers.</span><span class="si">${</span><span class="nv">DSTRING</span><span class="si">}</span><span class="s2">.log"</span>
+<span class="nv">BKUPFILE</span><span class="o">=</span>/etc/sudoers.<span class="si">${</span><span class="nv">DSTRING</span><span class="si">}</span>
+<span class="nv">SRCFILE</span><span class="o">=</span><span class="si">${</span><span class="nv">MOUNTPT</span><span class="si">}</span>/skel/sudoers-uni
+<span class="nv">MD5FILE</span><span class="o">=</span><span class="s2">"/.sudoers.md5"</span>
+
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"Starting </span><span class="si">${</span><span class="nv">PROG</span><span class="si">}</span><span class="s2"> on </span><span class="si">${</span><span class="nv">HOSTNAME</span><span class="si">}</span><span class="s2">"</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="si">${</span><span class="nv">LOGFILE</span><span class="si">}</span><span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+
+<span class="c1"># Make sure we run as root</span>
+<span class="nv">runas</span><span class="o">=</span><span class="sb">`</span>id<span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span>-F<span class="s1">'('</span><span class="w"> </span><span class="s1">'{print $1}'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span>-F<span class="s1">'='</span><span class="w"> </span><span class="s1">'{print $2}'</span><span class="sb">`</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="nv">$runas</span><span class="w"> </span>-ne<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">]</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"</span><span class="nv">$PROG</span><span class="s2">: you must be root to run this script."</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="si">${</span><span class="nv">LOGFILE</span><span class="si">}</span><span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+<span class="nb">exit</span><span class="w"> </span><span class="m">1</span>
+<span class="k">fi</span>
+
+<span class="k">case</span><span class="w"> </span><span class="s2">"</span><span class="nv">$PLAT</span><span class="s2">"</span><span class="w"> </span><span class="k">in</span>
+SunOS<span class="o">)</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">PINGP</span><span class="o">=</span><span class="s2">" -t 7 </span><span class="nv">$NFSserver</span><span class="s2"> "</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">MOUNTP</span><span class="o">=</span><span class="s2">" -F nfs -o vers=3,soft "</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">"/usr/sbin:/usr/bin"</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"SunOS"</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="si">${</span><span class="nv">LOGFILE</span><span class="si">}</span><span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+<span class="nb">exit</span><span class="w"> </span><span class="m">0</span>
+<span class="p">;;</span>
+AIX<span class="o">)</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">PINGP</span><span class="o">=</span><span class="s2">" -T 7 </span><span class="nv">$NFSserver</span><span class="s2"> 2 2"</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">MOUNTP</span><span class="o">=</span><span class="s2">" -o vers=3,bsy,soft "</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">"/usr/bin:/etc:/usr/sbin:/usr/ucb:/usr/bin/X11:/sbin:/usr/java5/jre/bin:/usr/java5/bin"</span>
+<span class="nb">printf</span><span class="w"> </span><span class="s2">"Continuing on AIX...\n\n"</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="si">${</span><span class="nv">LOGFILE</span><span class="si">}</span><span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+<span class="p">;;</span>
+Linux<span class="o">)</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">PINGP</span><span class="o">=</span><span class="s2">" -t 7 -c 2 </span><span class="nv">$NFSserver</span><span class="s2">"</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">MOUNTP</span><span class="o">=</span><span class="s2">" -o nfsvers=3,soft "</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">"/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin"</span>
+<span class="nb">printf</span><span class="w"> </span><span class="s2">"Continuing on Linux...\n\n"</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="si">${</span><span class="nv">LOGFILE</span><span class="si">}</span><span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+<span class="p">;;</span>
+*<span class="o">)</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"Unsupported Platform."</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="si">${</span><span class="nv">LOGFILE</span><span class="si">}</span><span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+<span class="nb">exit</span><span class="w"> </span><span class="m">1</span>
+<span class="k">esac</span>
+
+<span class="c1">##</span>
+<span class="c1">## Exclude Lawson Hosts</span>
+<span class="c1">##</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="si">${</span><span class="nv">HOSTPFX</span><span class="si">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"la"</span><span class="w"> </span><span class="o">]</span>
+<span class="k">then</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"Exiting Lawson host </span><span class="si">${</span><span class="nv">HOSTNAME</span><span class="si">}</span><span class="s2"> with no changes."</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="si">${</span><span class="nv">LOGFILE</span><span class="si">}</span><span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+<span class="nb">exit</span><span class="w"> </span><span class="m">0</span>
+<span class="k">fi</span>
+
+<span class="c1">##</span>
+<span class="c1">## * NFS Mount Section *</span>
+<span class="c1">##</span>
+
+<span class="c1">## Check to make sure NFS host is up</span>
+<span class="nb">printf</span><span class="w"> </span><span class="s2">"Current PATH is..."</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="si">${</span><span class="nv">LOGFILE</span><span class="si">}</span><span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+<span class="nb">echo</span><span class="w"> </span><span class="nv">$PATH</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="nv">$LOGFILE</span><span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+ping<span class="w"> </span><span class="nv">$PINGP</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="nv">$LOGFILE</span><span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="nv">$?</span><span class="w"> </span>-ne<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">" NFS server is DOWN ... ABORTING SCRIPT ... Please check server..."</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="nv">$LOGFILE</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"</span><span class="nv">$PROG</span><span class="s2"> failed on </span><span class="nv">$HOSTNAME</span><span class="s2"> ... NFS server is DOWN ... ABORTING SCRIPT ... Please check server ... "</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>mailx<span class="w"> </span>-s<span class="w"> </span><span class="s2">"</span><span class="nv">$PROG</span><span class="s2"> Failed on </span><span class="nv">$HOSTNAME</span><span class="s2">"</span><span class="w"> </span><span class="nv">$MAILTO</span>
+<span class="nb">exit</span><span class="w"> </span><span class="m">1</span>
+<span class="k">else</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">" NFS server is UP ... We will continue..."</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="nv">$LOGFILE</span>
+<span class="k">fi</span>
+
+<span class="c1">##</span>
+<span class="c1">## Mount NFS share to HOSTNAME. We do this using a soft mount in case it is lost during a backup</span>
+<span class="c1">##</span>
+mkdir<span class="w"> </span><span class="nv">$MOUNTPT</span>
+mount<span class="w"> </span><span class="nv">$MOUNTP</span><span class="w"> </span><span class="nv">$NFSserver</span>:<span class="si">${</span><span class="nv">NFSdir</span><span class="si">}</span><span class="w"> </span><span class="nv">$MOUNTPT</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="nv">$LOGFILE</span><span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+
+<span class="c1">##</span>
+<span class="c1">## Check to make sure mount command returned 0. If it did not odds are something else is mounted on /mnt.$$</span>
+<span class="c1">##</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="nv">$?</span><span class="w"> </span>-ne<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">" Mount command did not work ... Please check server ... Odds are something is mounted on </span><span class="nv">$MOUNTPT</span><span class="s2"> ..."</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="nv">$LOGFILE</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">" </span><span class="nv">$PROG</span><span class="s2"> failed on </span><span class="nv">$HOSTNAME</span><span class="s2"> ... Mount command did not work ... Please check server ... Odds are something is mounted on </span><span class="nv">$MOUNTPT</span><span class="s2"> ..."</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>mailx<span class="w"> </span>-s<span class="w"> </span><span class="s2">"</span><span class="nv">$PROG</span><span class="s2"> Failed on </span><span class="nv">$HOSTNAME</span><span class="s2">"</span><span class="w"> </span><span class="nv">$MAILTO</span>
+<span class="nb">exit</span><span class="w"> </span><span class="m">1</span>
+<span class="k">else</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">" Mount command returned a good status which means </span><span class="nv">$MOUNPT</span><span class="s2"> was free for us to use ... We will now continue ..."</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="nv">$LOGFILE</span>
+<span class="k">fi</span>
+
+<span class="c1">##</span>
+<span class="c1">## Now check to see if the mount worked</span>
+<span class="c1">##</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>!<span class="w"> </span>-f<span class="w"> </span><span class="si">${</span><span class="nv">SRCFILE</span><span class="si">}</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">" File </span><span class="si">${</span><span class="nv">SRCFILE</span><span class="si">}</span><span class="s2"> is missing... Maybe NFS mount did NOT WORK ... Please check server ..."</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="nv">$LOGFILE</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">" </span><span class="nv">$PROG</span><span class="s2"> failed on </span><span class="nv">$HOSTNAME</span><span class="s2"> ... File </span><span class="si">${</span><span class="nv">SRCFILE</span><span class="si">}</span><span class="s2"> is missing... Maybe NFS mount did NOT WORK ... Please check server ..."</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>mailx<span class="w"> </span>-s<span class="w"> </span><span class="s2">"</span><span class="nv">$PROG</span><span class="s2"> Failed on </span><span class="nv">$HOSTNAME</span><span class="s2">"</span><span class="w"> </span><span class="nv">$MA</span>
+ILTO
+umount<span class="w"> </span>-f<span class="w"> </span><span class="nv">$MOUNTPT</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="nv">$LOGFILE</span>
+rmdir<span class="w"> </span><span class="nv">$MOUNTPT</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="nv">$LOGFILE</span>
+<span class="nb">exit</span><span class="w"> </span><span class="m">1</span>
+<span class="k">else</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">" NFS mount worked we are going to continue ..."</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="nv">$LOGFILE</span>
+<span class="k">fi</span>
+
+
+<span class="c1">##</span>
+<span class="c1">## * Main Section *</span>
+<span class="c1">##</span>
+
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>!<span class="w"> </span>-f<span class="w"> </span><span class="si">${</span><span class="nv">BKUPFILE</span><span class="si">}</span><span class="w"> </span><span class="o">]</span>
+<span class="k">then</span>
+cp<span class="w"> </span>-p<span class="w"> </span>/etc/sudoers<span class="w"> </span><span class="si">${</span><span class="nv">BKUPFILE</span><span class="si">}</span>
+<span class="k">else</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"Backup file already exists</span>$<span class="s2">"</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="si">${</span><span class="nv">LOGFILE</span><span class="si">}</span><span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+<span class="nb">exit</span><span class="w"> </span><span class="m">1</span>
+<span class="k">fi</span>
+
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-f<span class="w"> </span><span class="s2">"</span><span class="nv">$SRCFILE</span><span class="s2">"</span><span class="w"> </span><span class="o">]</span>
+<span class="k">then</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"Copying in new sudoers file from </span><span class="nv">$SRCFILE</span><span class="s2">."</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="si">${</span><span class="nv">LOGFILE</span><span class="si">}</span><span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+cp<span class="w"> </span>-p<span class="w"> </span><span class="nv">$SRCFILE</span><span class="w"> </span>/etc/sudoers
+chmod<span class="w"> </span><span class="m">440</span><span class="w"> </span>/etc/sudoers
+<span class="k">else</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"Source file not found"</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="si">${</span><span class="nv">LOGFILE</span><span class="si">}</span><span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+<span class="nb">exit</span><span class="w"> </span><span class="m">1</span>
+<span class="k">fi</span>
+
+<span class="nb">echo</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="si">${</span><span class="nv">LOGFILE</span><span class="si">}</span><span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+visudo<span class="w"> </span>-c<span class="w"> </span><span class="p">|</span>tee<span class="w"> </span>-a<span class="w"> </span><span class="si">${</span><span class="nv">LOGFILE</span><span class="si">}</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="nv">$?</span><span class="w"> </span>-ne<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">]</span>
+<span class="k">then</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"sudoers syntax error on </span><span class="nv">$HOSTNAME</span><span class="s2">."</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="si">${</span><span class="nv">LOGFILE</span><span class="si">}</span><span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+mailx<span class="w"> </span>-s<span class="w"> </span><span class="s2">"</span><span class="si">${</span><span class="nv">PROG</span><span class="si">}</span><span class="s2">: sudoers syntax error on </span><span class="nv">$HOSTNAME</span><span class="s2">"</span><span class="w"> </span><span class="s2">"</span><span class="nv">$MAILTO</span><span class="s2">"</span><span class="w"> </span><span class="s">&lt;&lt; EOF</span>
+
+<span class="s">Syntax error /etc/sudoers on $HOSTNAME.</span>
+
+<span class="s">Reverting changes</span>
+
+<span class="s">Please investigate.</span>
+
+<span class="s">EOF</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"Reverting changes."</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="si">${</span><span class="nv">LOGFILE</span><span class="si">}</span><span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+cp<span class="w"> </span>-p<span class="w"> </span><span class="si">${</span><span class="nv">BKUPFILE</span><span class="si">}</span><span class="w"> </span>/etc/sudoers
+<span class="k">else</span>
+<span class="c1">#</span>
+<span class="c1"># Update checksum file</span>
+<span class="c1">#</span>
+grep<span class="w"> </span>-v<span class="w"> </span><span class="s1">'/etc/sudoers'</span><span class="w"> </span><span class="si">${</span><span class="nv">MD5FILE</span><span class="si">}</span><span class="w"> </span>&gt;<span class="w"> </span><span class="si">${</span><span class="nv">MD5FILE</span><span class="si">}</span>.tmp
+csum<span class="w"> </span>/etc/sudoers<span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="si">${</span><span class="nv">MD5FILE</span><span class="si">}</span>.tmp
+mv<span class="w"> </span><span class="si">${</span><span class="nv">MD5FILE</span><span class="si">}</span>.tmp<span class="w"> </span><span class="si">${</span><span class="nv">MD5FILE</span><span class="si">}</span>
+chmod<span class="w"> </span><span class="m">600</span><span class="w"> </span><span class="si">${</span><span class="nv">MD5FILE</span><span class="si">}</span>
+<span class="k">fi</span>
+
+<span class="nb">echo</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="si">${</span><span class="nv">LOGFILE</span><span class="si">}</span><span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="s2">"</span><span class="si">${</span><span class="nv">HOSTPFX</span><span class="si">}</span><span class="s2">"</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"hd"</span><span class="w"> </span><span class="o">]</span>
+<span class="k">then</span>
+<span class="nb">printf</span><span class="w"> </span><span class="s2">"\nAppending #includedir /etc/sudoers.d at end of file.\n"</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="si">${</span><span class="nv">LOGFILE</span><span class="si">}</span><span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">""</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>/etc/sudoers
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"## Read drop-in files from /etc/sudoers.d (the # here does not mean a comment)"</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>/etc/sudoers
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"#includedir /etc/sudoers.d"</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>/etc/sudoers
+<span class="k">fi</span>
+
+<span class="c1">##</span>
+<span class="c1">## * NFS Un-mount Section *</span>
+<span class="c1">##</span>
+
+<span class="c1">##</span>
+<span class="c1">## Unmount /mnt.$$ directory</span>
+<span class="c1">##</span>
+umount<span class="w"> </span><span class="si">${</span><span class="nv">MOUNTPT</span><span class="si">}</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="nv">$LOGFILE</span><span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-d<span class="w"> </span><span class="si">${</span><span class="nv">MOUNTPT</span><span class="si">}</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+rmdir<span class="w"> </span><span class="si">${</span><span class="nv">MOUNTPT</span><span class="si">}</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="nv">$LOGFILE</span><span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+<span class="k">fi</span>
+
+<span class="c1">##</span>
+<span class="c1">## Make sure that /mnt.$$ got unmounted</span>
+<span class="c1">##</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-f<span class="w"> </span><span class="si">${</span><span class="nv">SRCFILE</span><span class="si">}</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">" The umount command failed to unmount </span><span class="si">${</span><span class="nv">MOUNTPT</span><span class="si">}</span><span class="s2"> ... We will not force the unmount ..."</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="nv">$LOGFILE</span>
+umount<span class="w"> </span>-f<span class="w"> </span><span class="si">${</span><span class="nv">MOUNTPT</span><span class="si">}</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="nv">$LOGFILE</span><span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-d<span class="w"> </span><span class="si">${</span><span class="nv">MOUNTPT</span><span class="si">}</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+rmdir<span class="w"> </span><span class="si">${</span><span class="nv">MOUNTPT</span><span class="si">}</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="nv">$LOGFILE</span><span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+<span class="k">fi</span>
+<span class="k">else</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">" </span><span class="nv">$MOUNTPT</span><span class="s2"> was unmounted ... There is no need for user intervention on </span><span class="nv">$HOSTNAME</span><span class="s2"> ..."</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="nv">$LOGFILE</span>
+<span class="k">fi</span>
+
+<span class="c1">#</span>
+<span class="c1"># as always, exit cleanly</span>
+<span class="c1">#</span>
+clean_exit<span class="w"> </span><span class="m">0</span>
+</pre></div>
+
+<p>That's 212 lines of code; there's no versioning of the sudoers file. The
+customer has an existing process that runs weekly to validate the
+checksum of the file for security. Although the script references
+Solaris, for this customer we did not need to migrate the Solaris
+requirement.</p>
+<p>We started with the idea of creating a role and placing the sudoers file
+into Git for version control. This also removes the need for NFS mounts.</p>
+<p>With the "validate" and "backup" parameters for the <code>copy</code> and
+<code>template</code> modules, we can eliminate the need for code to backup and
+restore the file. The validation is run before the file is placed in the
+destination and, if failed, the module errors out.</p>
+<p>We'll need tasks, templates and vars for the role. Here's the file
+layout:</p>
+<div class="code"><pre class="code literal-block">├──<span class="w"> </span>README.md
+├──<span class="w"> </span>roles
+│<span class="w"> </span>└──<span class="w"> </span>sudoers
+│<span class="w"> </span>├──<span class="w"> </span>tasks
+│<span class="w"> </span>│<span class="w"> </span>└──<span class="w"> </span>main.yml
+│<span class="w"> </span>├──<span class="w"> </span>templates
+│<span class="w"> </span>│<span class="w"> </span>└──<span class="w"> </span>sudoers.j2
+│<span class="w"> </span>└──<span class="w"> </span>vars
+│<span class="w"> </span>└──<span class="w"> </span>main.yml
+└──<span class="w"> </span>sudoers.yml
+</pre></div>
+
+<p>The role playbook, <code>sudoers.yml</code>, is simple:</p>
+<div class="code"><pre class="code literal-block"><span class="nn">---</span>
+<span class="c1">##</span>
+<span class="c1"># Role playbook</span>
+<span class="c1">##</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">all</span>
+<span class="w">  </span><span class="nt">roles</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sudoers</span>
+<span class="nn">...</span>
+</pre></div>
+
+<p>Role variables are located in the <code>vars/main.yml</code> file. I've set
+variables for the checksum file, and include/exclude variables that will
+be used to create the logic that skips "Lawson" hosts and only adds the
+sudoers.d include to "hd" hosts.</p>
+<p>Below is what is in the <code>vars/main.yml</code> file:</p>
+<div class="code"><pre class="code literal-block"><span class="nn">---</span>
+<span class="nt">MD5FILE</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/root/.sudoer.md5</span>
+<span class="nt">EXCLUDE</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">la</span>
+<span class="nt">INCLUDE</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hd</span>
+<span class="nn">...</span>
+</pre></div>
+
+<p>If we use the <code>copy</code> and <code>lineinfile</code> modules, the role will not be
+idempotent. Copy will deploy the base file, and lineinfile will have to
+reinsert the includes on every run. As this role will be scheduled in
+Ansible Tower, idempotence is a requirement. We'll convert the file to a
+jinja2 template.</p>
+<p>In the first line, we add the following to <a href="https://ansiblemaster.wordpress.com/2016/07/29/jinja2-lstrip_blocks-to-manage-indentation/">manage whitespace and indentations</a>:</p>
+<div class="code"><pre class="code literal-block"><span class="c1">#jinja2: lstrip_blocks: True, trim_blocks: True</span>
+</pre></div>
+
+<p>Note that newer versions of the <code>template</code> module include parameters for
+<code>trim_blocks</code> (added in Ansible 2.4).</p>
+<p>Here is the code to insert the <code>include</code> line at the end of the file:</p>
+<div class="code"><pre class="code literal-block"><span class="p p-Indicator">{</span><span class="err">%</span><span class="w"> </span><span class="nv">if ansible_hostname</span><span class="p p-Indicator">[</span><span class="nv">0</span><span class="p p-Indicator">:</span><span class="nv">2</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="nv">== INCLUDE %</span><span class="p p-Indicator">}</span>
+<span class="c1">#includedir /etc/sudoers.d</span>
+<span class="p p-Indicator">{</span><span class="err">%</span><span class="w"> </span><span class="nv">endif %</span><span class="p p-Indicator">}</span>
+</pre></div>
+
+<p>We use a conditional ( <code>{% if %}</code>, <code>{% endif %}</code> ) to replace the shell
+that inserts the line for hosts where "hd" is in the first two
+characters of the hostname. We leverage Ansible facts and the filter
+<code>[0:2]</code> to parse the hostname.</p>
+<p>Now for the tasks. First, set a fact to parse the hostname. We will use
+the "parhost" fact in conditionals.</p>
+<div class="code"><pre class="code literal-block"><span class="nn">---</span>
+<span class="c1">##</span>
+<span class="c1"># Parse hostnames to grab 1st 2 characters</span>
+<span class="c1">##</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">"Parse</span><span class="nv"> </span><span class="s">hostname's</span><span class="nv"> </span><span class="s">1st</span><span class="nv"> </span><span class="s">2</span><span class="nv"> </span><span class="s">characters"</span>
+<span class="err">  </span><span class="nt">set_fact</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">parhost={{ ansible_hostname[0:2] }}</span>
+</pre></div>
+
+<p>Next, I noticed that <code>csum</code> doesn't exist on a stock RHEL server. In
+case it's needed, we can use another fact to conditionally set the name
+of the checksum binary. Note that further coding may be needed if that
+differs between AIX, Solaris and Linux. As the customer was not
+concerned with the Solaris hosts, I skipped that development.</p>
+<p>We'll also deal with the difference in root's groups between AIX and RHEL.</p>
+<div class="code"><pre class="code literal-block"><span class="c1">##</span>
+<span class="c1"># Conditionally set name of checksum binary</span>
+<span class="c1">##</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">"set</span><span class="nv"> </span><span class="s">checksum</span><span class="nv"> </span><span class="s">binary"</span>
+<span class="err">  </span><span class="nt">set_fact</span><span class="p">:</span>
+<span class="err">    </span><span class="nt">csbin</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">'cksum'</span><span class="nv"> </span><span class="s">if</span><span class="nv"> </span><span class="s">(ansible_distribution</span><span class="nv"> </span><span class="s">==</span><span class="nv"> </span><span class="s">'RedHat')</span><span class="nv"> </span><span class="s">else</span><span class="nv"> </span><span class="s">'csum'</span><span class="nv"> </span><span class="s">}}"</span>
+
+<span class="c1">##</span>
+<span class="c1"># Conditionally set name of root group</span>
+<span class="c1">##</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">"set</span><span class="nv"> </span><span class="s">system</span><span class="nv"> </span><span class="s">group"</span>
+<span class="err">  </span><span class="nt">set_fact</span><span class="p">:</span>
+<span class="err">    </span><span class="nt">sysgroup</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">'root'</span><span class="nv"> </span><span class="s">if</span><span class="nv"> </span><span class="s">(ansible_distribution</span><span class="nv"> </span><span class="s">==</span><span class="nv"> </span><span class="s">'RedHat')</span><span class="nv"> </span><span class="s">else</span><span class="nv"> </span><span class="s">'sys'</span><span class="nv"> </span><span class="s">}}"</span>
+</pre></div>
+
+<p>Blocks will allow us to provide a conditional around the tasks. We'll
+use a conditional at the end of the block to exclude the "la"
+hosts.</p>
+<div class="code"><pre class="code literal-block"><span class="c1">##</span>
+<span class="c1"># Enclose in block so we can use parhost to exclude hosts</span>
+<span class="c1">##</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">block</span><span class="p">:</span>
+</pre></div>
+
+<p>The template module validates and deploys the file. We register the
+result so we can determine if there was a change in this task. Using the
+validate parameter of the module ensures the new sudoers file is valid
+before putting it in place.</p>
+<div class="code"><pre class="code literal-block"><span class="c1">##</span>
+<span class="c1"># Validate will prevent bad files, no need to revert</span>
+<span class="c1"># Jinja2 template will add include line</span>
+<span class="c1">##</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Ensure sudoers file</span>
+<span class="err">  </span><span class="nt">template</span><span class="p">:</span>
+<span class="err">    </span><span class="nt">src</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sudoers.j2</span>
+<span class="w"> </span><span class="err">   </span><span class="l l-Scalar l-Scalar-Plain">dest</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/etc/sudoers</span>
+<span class="w"> </span><span class="err">   </span><span class="l l-Scalar l-Scalar-Plain">owner</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">root</span>
+<span class="w"> </span><span class="err">   </span><span class="l l-Scalar l-Scalar-Plain">group</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">sysgroup</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="err">    </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0440</span>
+<span class="w"> </span><span class="err">   </span><span class="l l-Scalar l-Scalar-Plain">backup</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">yes</span>
+<span class="w"> </span><span class="err">   </span><span class="l l-Scalar l-Scalar-Plain">validate</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/usr/sbin/visudo -cf %s</span>
+<span class="w"> </span><span class="err">   </span><span class="l l-Scalar l-Scalar-Plain">register</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sudochg</span>
+</pre></div>
+
+<p>If a new template was deployed, we run shell to generate the checksum file.
+The conditional updates the checksum file when the sudoers template is deployed, or if the checksum file is missing.
+As the existing process also monitors other files, we use the shell code provided in the original script:</p>
+<div class="code"><pre class="code literal-block"><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sudoers checksum</span>
+<span class="err">  </span><span class="nt">shell</span><span class="p">:</span><span class="w"> </span><span class="s">"grep</span><span class="nv"> </span><span class="s">-v</span><span class="nv"> </span><span class="s">'/etc/sudoers'</span><span class="nv"> </span><span class="s">{{</span><span class="nv"> </span><span class="s">MD5FILE</span><span class="nv"> </span><span class="s">}}</span><span class="nv"> </span><span class="s">&gt;</span><span class="nv"> </span><span class="s">{{</span><span class="nv"> </span><span class="s">MD5FILE</span><span class="nv"> </span><span class="s">}}.tmp</span><span class="nv"> </span><span class="s">;</span><span class="nv"> </span><span class="s">{{</span><span class="nv"> </span><span class="s">csbin</span><span class="nv"> </span><span class="s">}}</span><span class="nv"> </span><span class="s">/etc/sudoers</span><span class="nv"> </span><span class="s">&gt;&gt;</span><span class="nv"> </span><span class="s">{{</span><span class="nv"> </span><span class="s">MD5FILE</span><span class="nv"> </span><span class="s">}}</span><span class="nv"> </span><span class="s">;</span><span class="nv"> </span><span class="s">mv</span><span class="nv"> </span><span class="s">{{</span><span class="nv"> </span><span class="s">MD5FILE</span><span class="nv"> </span><span class="s">}}.tmp</span><span class="nv"> </span><span class="s">{{</span><span class="nv"> </span><span class="s">MD5FILE</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="err">  </span><span class="nt">when</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sudochg.changed or MD5STAT.exists == false</span>
+</pre></div>
+
+<p>The file module enforces the permissions:</p>
+<div class="code"><pre class="code literal-block"><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Ensure MD5FILE permissions</span>
+<span class="err">  </span><span class="nt">file</span><span class="p">:</span>
+<span class="err">  </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">MD5FILE</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="err">  </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">root</span>
+<span class="w"> </span><span class="err"> </span><span class="l l-Scalar l-Scalar-Plain">group</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">sysgroup</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="err">  </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0600</span>
+<span class="w"> </span><span class="err"> </span><span class="l l-Scalar l-Scalar-Plain">state</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">file</span>
+</pre></div>
+
+<p>Since the backup parameter does not provide any options for cleanup of older backups, we'll add some code to handle that for us.
+This also demonstrates leveraging the "register" and "stdout_lines" features.</p>
+<div class="code"><pre class="code literal-block"><span class="c1">##</span>
+<span class="c1"># List and clean up backup files. Retain 3 copies.</span>
+<span class="c1">##</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">List /etc/sudoers.*~ files</span>
+<span class="err">  </span><span class="nt">shell</span><span class="p">:</span><span class="w"> </span><span class="s">"ls</span><span class="nv"> </span><span class="s">-t</span><span class="nv"> </span><span class="s">/etc/sudoers*~</span><span class="nv"> </span><span class="s">|tail</span><span class="nv"> </span><span class="s">-n</span><span class="nv"> </span><span class="s">+4"</span>
+<span class="err">  </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">LIST_SUDOERS</span>
+<span class="w"> </span><span class="err"> </span><span class="l l-Scalar l-Scalar-Plain">changed_when</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Cleanup /etc/sudoers.*~ files</span>
+<span class="err">  </span><span class="nt">file</span><span class="p">:</span>
+<span class="err">  </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">item</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="err">  </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">absent</span>
+<span class="w"> </span><span class="err"> </span><span class="l l-Scalar l-Scalar-Plain">loop</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">LIST_SUDOERS.stdout_lines</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="err">  </span><span class="nt">when</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">LIST_SUDOERS.stdout_lines != ""</span>
+</pre></div>
+
+<p>Closing the block:</p>
+<div class="code"><pre class="code literal-block"><span class="c1">##</span>
+<span class="c1"># This conditional restricts what hosts this block runs on</span>
+<span class="c1">##</span>
+<span class="nt">when</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">parhost != EXCLUDE</span>
+<span class="nn">...</span>
+</pre></div>
+
+<p>The intended use here is to run this role in Ansible Tower. Ansible
+Tower notifications can be configured for job failure via email, Slack
+or other methods. This role runs in Ansible, Ansible Engine or Ansible
+Tower.</p>
+<p>We've condensed the script and created a fully idempotent role that can
+enforce the desired state of the sudoers file. Use of SCM provides
+versioning, better change management and accountability. CI/CD with
+Jenkins or other tools can provide automated testing of the Ansible code
+for future changes. The Auditor role in Ansible Tower can oversee and
+maintain the compliance requirements of organizations.</p>
+<p>We could remove the process around the checksum, but the customer will
+have to have conversations with their Security team first. If desired,
+the sudoers template can be protected with Ansible Vault. Finally, use
+of groups could replace the logic around the includes and excludes.</p>
+<p>You can find the <a href="https://github.com/AJEastwood/sudoers">role on GitHub</a>.</p>
+          </div>
+      </article><br><hr>
+<br>
+</div>
+          <ul class="pager postindexpager clearfix">
+<li class="previous"><a href="index-3.html" rel="prev">Newer posts</a></li>
+            <li class="next"><a href="index-1.html" rel="next">Older posts</a></li>
+        </ul>
+<!--End of body content-->
+</div>
+        <div class="content-slim redhat-footer">
+      <div class="footer-left">
+        <ul class="footer-left-links">
+<li>
+            <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-SA 4.0</a>
+          </li>
+          <li>
+            <a href="https://www.redhat.com/en/about/privacy-policy" target="_blank">Privacy policy</a>
+          </li>
+          <li>
+            <a href="https://docs.ansible.com/ansible/latest/community/code_of_conduct.html" target="_blank">Code of conduct</a>
+          </li>
+        </ul>
+</div>
+      <div class="footer-right">
+        <span class="redhat">Powered by</span>
+        <span class="redhat-logo">
+          <a href="https://www.redhat.com/en/technologies/management/ansible" target="_blank">
+            <img src="../assets/images/redhat_reversed.svg" alt="Red Hat logo." width="96" height="28"></a>
+        </span>
+      </div>
+    </div>
+
+</div>
+
+            <script src="../assets/js/jquery.min.js"></script><script src="../assets/js/popper.min.js"></script><script src="../assets/js/bootstrap.min.js"></script><script src="../assets/js/baguetteBox.min.js"></script><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+</script><script src="../assets/js/clipboard.min.js" type="text/javascript"></script><script src="../assets/js/clipboard.js" type="text/javascript"></script>
+</body>
+</html>

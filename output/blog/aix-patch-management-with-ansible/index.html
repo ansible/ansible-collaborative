@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html prefix="
+og: http://ogp.me/ns# article: http://ogp.me/ns/article#
+" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="This blog will help AIX system administrators get started with Ansible on AIX, and introduce a patching use case.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AIX Patch Management with Ansible | Ansible Collaborative</title>
+<link href="../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/baguetteBox.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/rst.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/code.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/theme.css" rel="stylesheet" type="text/css">
+<!-- Red Hat fonts --><link rel="stylesheet" href="https://static.redhat.com/libs/redhat/redhat-font/2.0.0/webfonts/red-hat-font.css">
+<!-- Font Awesome --><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+<!-- Fork Awesome --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css" integrity="sha256-XoaMnoYC5TH6/+ihMEnospgm0J1PM/nioxbOUdnM8HY=" crossorigin="anonymous">
+<!-- Sass compiled css  --><link rel="stylesheet" href="../../assets/css/main.css">
+<link rel="stylesheet" href="../../assets/css/redhat-footer.css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://ansible.com/blog/aix-patch-management-with-ansible/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Talor Holloway">
+<link rel="prev" href="../bullhorn-29/" title="Bullhorn #29" type="text/html">
+<link rel="next" href="../ansible-and-matrix/" title="Ansible and Matrix" type="text/html">
+<meta property="og:site_name" content="Ansible Collaborative">
+<meta property="og:title" content="AIX Patch Management with Ansible">
+<meta property="og:url" content="https://ansible.com/blog/aix-patch-management-with-ansible/">
+<meta property="og:description" content="This blog will help AIX system administrators get started with Ansible on AIX, and introduce a patching use case.">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2021-07-07T00:00:00Z">
+</head>
+<body id="top">
+
+<div class="global-container" id="content" role="main">
+<!-- Start menubar -->
+<nav class="navbar navbar-expand-lg static-top mb-4 navbar-padding full-width-bg   navbar-dark   bg-pool   "><div class="masthead">
+    <!-- This keeps the margins nice -->
+    <a class="navbar-brand" href="../../">
+        <img src="../../images/ansible_logo-small-15.png" alt="Ansible community logo" id="logo" class="d-inline-block align-top" width="50" height="50"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon nav-toggle-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="bs-navbar">
+      <ul class="navbar-nav mr-auto"></ul>
+<ul class="navbar-nav navbar-right">
+<li class="nav-item dropdown">
+	        <a href="#" class="nav-link nav-link-color dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <i class=""></i> Documentation
+                </a>
+		<div class="dropdown-menu dropdown-menu-border">
+	    
+                    <a href="https://docs.ansible.com/" class="dropdown-item">
+		        <i class=""></i> Project documentation
+                    </a>
+                    <a href="https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/" class="dropdown-item">
+		        <i class=""></i> Ansible Automation Platform documentation
+                    </a>
+            </div>
+                 </li>
+<li class="nav-item">
+		     <a href="https://galaxy.ansible.com/" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Galaxy
+		     </a>
+		 </li>
+                 <li class="nav-item">
+		     <a href="https://forum.ansible.com/" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Forum
+		     </a>
+		 </li>
+            <li class="nav-item dropdown">
+	        <a href="#" class="nav-link nav-link-color dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <i class=""></i> Resources
+                </a>
+		<div class="dropdown-menu dropdown-menu-border">
+	    
+                    <a href="../../how-ansible-works/" class="dropdown-item">
+		        <i class=""></i> How Ansible works
+                    </a>
+                    <a href="../../ecosystem/" class="dropdown-item">
+		        <i class=""></i> Ansible ecosystem
+                    </a>
+                    <a href="../archive.html" class="dropdown-item">
+		        <i class=""></i> Blog
+                    </a>
+                    <a href="../../faq/" class="dropdown-item">
+		        <i class=""></i> Frequently asked questions
+                    </a>
+                    <a href="../../ansible-community-training/" class="dropdown-item">
+		        <i class=""></i> Ansible community training
+                    </a>
+                    <a href="../../contact-us/" class="dropdown-item">
+		        <i class=""></i> Contact us
+                    </a>
+            </div>
+                 </li>
+<li class="nav-item">
+		     <a href="https://www.redhat.com/en/technologies/management/ansible?sc_cid=7015Y000003szaKQAQ" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Ansible Automation Platform
+		     </a>
+		 </li>
+
+        
+      </ul>
+</div>
+    <!-- /.navbar-collapse -->
+  </div>
+  <!-- /.container -->
+</nav><!-- End default Menubar --><div class="body-content center-band">
+        <!--Body content-->
+        
+  <article class="post-text h-entry hentry postpage ansible-content" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">AIX Patch Management with Ansible</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard p-author h-card"><span class="byline-name fn p-name" itemprop="author">
+                    <a class="u-url" href="../../authors/talor-holloway/">Talor Holloway</a>
+            </span></p>
+            <p class="dateline">
+            <a href="." rel="bookmark">
+            <time class="published dt-published" datetime="2021-07-07T00:00:00Z" itemprop="datePublished" title="2021-07-07 00:00">2021-07-07 00:00</time></a>
+            </p>
+                    <p class="sourceline"><a href="index.md" class="sourcelink">Source</a></p>
+
+        </div>
+        
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+<h2>AIX Patch Management with Ansible</h2>
+<p>Leading enterprises today use Red Hat Ansible Automation Platform to
+provision, configure, manage, secure and orchestrate hybrid IT
+environments. A common misconception is that Ansible is just used to
+manage the Linux operating system. This is a false belief. Ansible
+supports Linux, Windows, AIX, IBM i and IBM z/OS environments. This blog
+will help AIX system administrators get started with Ansible on AIX, and
+introduce a patching use case.</p>
+<h3>Ansible Content Collections</h3>
+<p>When Ansible Automation Platform was released, Ansible Content
+Collections became the de facto standard for distributing, maintaining
+and consuming automation content. The shift to Collections increased
+community participation and has exponentially increased the number of
+stable and supported Ansible modules. Modules delivered via Collections
+rather than packaged with Ansible Core have resulted in a faster release
+cadence for new modules.</p>
+<p>Let us explore the IBM provided Ansible Collection for AIX. It is
+important to note that many of the Ansible modules for the Linux
+operating system will also work on AIX (in addition to the IBM provided
+AIX modules), making the use cases for Ansible on AIX very broad.</p>
+<h3>Ansible and AIX, why?</h3>
+<p>The AIX operating system has been around for 35 years and is used to run
+business-critical applications. Historically, AIX systems were managed
+using the tools that ship with AIX, complimented by shell scripts
+written by AIX system administrators. The problem with this approach is
+that these scripts can become extremely complex over the years, and
+often wind up being held together with "duct tape and zip ties".</p>
+<p>As enterprises move to a modern, enterprise-wide automation strategy
+with Ansible Automation Platform, extending automation to AIX is a great
+method to simplify and develop consistency in the way AIX systems are
+supported, all while using the same automation tools that can be used
+across the enterprise.</p>
+<h3>Ansible Concepts</h3>
+<p>First let us cover some basic Ansible concepts that will be used in the
+example. Further information can be found on the
+<a href="https://docs.ansible.com">Ansible documentation site</a>.</p>
+<p>Playbooks, which are ordered lists of tasks and variables that are
+performed against an inventory of hosts.</p>
+<p>Tasks are a single unit of action in Ansible, which calls a module.</p>
+<p>Modules are code that Ansible executes. Each module could be something
+like copying a file to using NIM to trigger an AIX update.</p>
+<p>Roles are repeatable bundles of tasks that are contained in a specific
+directory structure.</p>
+<p>Variables within Ansible are called like this "".</p>
+<p>Task delegation is how tasks can be delegated to another host in the
+inventory, other than the host that the Ansible run is targeted against.</p>
+<h3>Getting started with Ansible</h3>
+<p>In this example, I'm using a Fedora Linux 34 workstation, so I'm going
+to use the dnf package manager to install Ansible:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>sudo<span class="w"> </span>dnf<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>ansible
+</pre></div>
+
+<p>Once Ansible is installed, I'm going to install the ibm.power_aix
+Collection:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>ansible-galaxy<span class="w"> </span>collection<span class="w"> </span>install<span class="w"> </span>ibm.power_aix
+</pre></div>
+
+<p>When Ansible is installed, a default inventory file /etc/ansible/hosts
+is created. At this point, I'm going to include in the inventory the
+hosts used in this example:</p>
+<ul>
+<li>nim01 is our AIX 7.2 NIM Master which is functional and has an
+    lpp_source defined.</li>
+<li>bruce is an AIX 7.2 NIM client registered to the nim01 NIM master.</li>
+<li>freddie is an AIX 7.2 NIM client registered to the nim01 NIM master.</li>
+</ul>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>cat<span class="w"> </span>/etc/ansible/hosts
+nim01<span class="w"> </span><span class="nv">ansible_host</span><span class="o">=</span><span class="m">10</span>.0.0.5<span class="w"> </span><span class="nv">ansible_user</span><span class="o">=</span>root
+bruce<span class="w"> </span><span class="nv">ansible_host</span><span class="o">=</span><span class="m">10</span>.0.0.6<span class="w"> </span><span class="nv">ansible_user</span><span class="o">=</span>root
+freddie<span class="w"> </span><span class="nv">ansible_host</span><span class="o">=</span><span class="m">10</span>.0.0.7<span class="w"> </span><span class="nv">ansible_user</span><span class="o">=</span>root
+</pre></div>
+
+<p>I'm now going to connect to all the systems over SSH as "root". The
+usual practice is to have a service account with "sudo" access, however
+for this example I will use "root" in our lab environment. Using the
+ssh-copy-id command, I can distribute my SSH public key to the AIX
+servers.</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>ssh-copy-id<span class="w"> </span>root@nim01
+$<span class="w"> </span>ssh-copy-id<span class="w"> </span>root@bruce
+$<span class="w"> </span>ssh-copy-id<span class="w"> </span>root@freddie
+</pre></div>
+
+<p>The next step is to use the Ansible ping module to check that I can
+connect to the three hosts in our inventory.</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>ansible<span class="w"> </span>-m<span class="w"> </span>ping<span class="w"> </span>all
+
+PLAY<span class="w"> </span><span class="o">[</span>Ansible<span class="w"> </span>Ad-Hoc<span class="o">]</span><span class="w"> </span>************************************************************************************************************************************************************************************************************************
+
+TASK<span class="w"> </span><span class="o">[</span>ping<span class="o">]</span><span class="w"> </span>**********************************************************************************************************************************************************************************************************************************
+ok:<span class="w"> </span><span class="o">[</span>nim01<span class="o">]</span>
+ok:<span class="w"> </span><span class="o">[</span>freddie<span class="o">]</span>
+ok:<span class="w"> </span><span class="o">[</span>bruce<span class="o">]</span>
+
+PLAY<span class="w"> </span>RECAP<span class="w"> </span>***********************************************************************************************************************************************************************************************************************************
+nim01<span class="w">                  </span>:<span class="w"> </span><span class="nv">ok</span><span class="o">=</span><span class="m">1</span><span class="w">    </span><span class="nv">changed</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">unreachable</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">failed</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">skipped</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">rescued</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">ignored</span><span class="o">=</span><span class="m">0</span>
+bruce<span class="w">                  </span>:<span class="w"> </span><span class="nv">ok</span><span class="o">=</span><span class="m">1</span><span class="w">    </span><span class="nv">changed</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">unreachable</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">failed</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">skipped</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">rescued</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">ignored</span><span class="o">=</span><span class="m">0</span>
+freddie<span class="w">                </span>:<span class="w"> </span><span class="nv">ok</span><span class="o">=</span><span class="m">1</span><span class="w">    </span><span class="nv">changed</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">unreachable</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">failed</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">skipped</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">rescued</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">ignored</span><span class="o">=</span><span class="m">0</span>
+</pre></div>
+
+<p>Ansible needs "python" to be installed on the AIX systems, and ideally
+the "yum" package manager should also be configured on AIX. If your AIX
+systems do not have these packages installed, or is a vanilla
+installation of AIX, IBM provides an Ansible Role to "bootstrap" an AIX
+system and manage it.</p>
+<p>The playbook below uses the IBM provided role to prepare an AIX system
+for Ansible automation.</p>
+<div class="code"><pre class="code literal-block">cat<span class="w"> </span>aix_bootstrap.yml
+---
+
+-<span class="w"> </span>name:<span class="w"> </span>Prep<span class="w"> </span>AIX<span class="w"> </span><span class="k">for</span><span class="w"> </span>Ansible
+<span class="w">  </span>hosts:<span class="w"> </span>all
+<span class="w">  </span>vars:
+<span class="w">    </span>pkgtype:<span class="w"> </span>yum
+<span class="w">  </span>collections:
+<span class="w">    </span>-<span class="w"> </span>ibm.power_aix
+<span class="w">  </span>roles:
+<span class="w">    </span>-<span class="w"> </span>power_aix_bootstrap
+</pre></div>
+
+<p>The following example demonstrates running the playbook; however, I can
+see that the hosts Ansible is running against already have "python" and
+"yum" installed, so there is no need for any changes to be made to these
+hosts.</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>ansible-playbook<span class="w"> </span>aix_bootstrap.yml
+
+PLAY<span class="w"> </span><span class="o">[</span>Prep<span class="w"> </span>AIX<span class="w"> </span><span class="k">for</span><span class="w"> </span>Ansible<span class="o">]</span><span class="w"> </span>******************************************************************************************************************************************************************************************************************
+
+TASK<span class="w"> </span><span class="o">[</span>Gathering<span class="w"> </span>Facts<span class="o">]</span><span class="w"> </span>***********************************************************************************************************************************************************************************************************************
+ok:<span class="w"> </span><span class="o">[</span>bruce<span class="o">]</span>
+ok:<span class="w"> </span><span class="o">[</span>freddie<span class="o">]</span>
+ok:<span class="w"> </span><span class="o">[</span>nim01<span class="o">]</span>
+
+TASK<span class="w"> </span><span class="o">[</span>ibm.power_aix.power_aix_bootstrap<span class="w"> </span>:<span class="w"> </span>Fail<span class="w"> </span><span class="k">if</span><span class="w"> </span>pkgtype<span class="w"> </span>not<span class="w"> </span>specified<span class="o">]</span><span class="w"> </span>*********************************************************************************************************************************************************************
+skipping:<span class="w"> </span><span class="o">[</span>nim01<span class="o">]</span>
+skipping:<span class="w"> </span><span class="o">[</span>bruce<span class="o">]</span>
+skipping:<span class="w"> </span><span class="o">[</span>freddie<span class="o">]</span>
+
+TASK<span class="w"> </span><span class="o">[</span>ibm.power_aix.power_aix_bootstrap<span class="w"> </span>:<span class="w"> </span>Fail<span class="w"> </span><span class="k">if</span><span class="w"> </span>download_dir<span class="w"> </span>not<span class="w"> </span>specified<span class="o">]</span><span class="w"> </span>****************************************************************************************************************************************************************
+skipping:<span class="w"> </span><span class="o">[</span>nim01<span class="o">]</span>
+skipping:<span class="w"> </span><span class="o">[</span>bruce<span class="o">]</span>
+skipping:<span class="w"> </span><span class="o">[</span>freddie<span class="o">]</span>
+
+TASK<span class="w"> </span><span class="o">[</span>ibm.power_aix.power_aix_bootstrap<span class="w"> </span>:<span class="w"> </span>Fail<span class="w"> </span><span class="k">if</span><span class="w"> </span>target_dir<span class="w"> </span>not<span class="w"> </span>specified<span class="o">]</span><span class="w"> </span>******************************************************************************************************************************************************************
+skipping:<span class="w"> </span><span class="o">[</span>nim01<span class="o">]</span>
+skipping:<span class="w"> </span><span class="o">[</span>bruce<span class="o">]</span>
+skipping:<span class="w"> </span><span class="o">[</span>freddie<span class="o">]</span>
+
+TASK<span class="w"> </span><span class="o">[</span>ibm.power_aix.power_aix_bootstrap<span class="w"> </span>:<span class="w"> </span>Fail<span class="w"> </span><span class="k">if</span><span class="w"> </span>rpm_src<span class="w"> </span>not<span class="w"> </span>specified<span class="o">]</span><span class="w"> </span>*********************************************************************************************************************************************************************
+skipping:<span class="w"> </span><span class="o">[</span>nim01<span class="o">]</span>
+skipping:<span class="w"> </span><span class="o">[</span>bruce<span class="o">]</span>
+skipping:<span class="w"> </span><span class="o">[</span>freddie<span class="o">]</span>
+
+TASK<span class="w"> </span><span class="o">[</span>ibm.power_aix.power_aix_bootstrap<span class="w"> </span>:<span class="w"> </span>Fail<span class="w"> </span><span class="k">if</span><span class="w"> </span>yum_src<span class="w"> </span>not<span class="w"> </span>specified<span class="o">]</span><span class="w"> </span>*********************************************************************************************************************************************************************
+skipping:<span class="w"> </span><span class="o">[</span>nim01<span class="o">]</span>
+skipping:<span class="w"> </span><span class="o">[</span>bruce<span class="o">]</span>
+skipping:<span class="w"> </span><span class="o">[</span>freddie<span class="o">]</span>
+
+TASK<span class="w"> </span><span class="o">[</span>ibm.power_aix.power_aix_bootstrap<span class="w"> </span>:<span class="w"> </span>Bootstrap<span class="w"> </span>yum<span class="o">]</span><span class="w"> </span>*************************************************************************************************************************************************************************************
+included:<span class="w"> </span>/home/tholloway/.ansible/collections/ansible_collections/ibm/power_aix/roles/power_aix_bootstrap/tasks/yum_install.yml<span class="w"> </span><span class="k">for</span><span class="w"> </span>nim01,<span class="w"> </span>bruce,<span class="w"> </span>freddie
+
+TASK<span class="w"> </span><span class="o">[</span>ibm.power_aix.power_aix_bootstrap<span class="w"> </span>:<span class="w"> </span>Check<span class="w"> </span><span class="k">for</span><span class="w"> </span>existence<span class="w"> </span>of<span class="w"> </span>yum<span class="o">]</span><span class="w"> </span>************************************************************************************************************************************************************************
+changed:<span class="w"> </span><span class="o">[</span>bruce<span class="o">]</span>
+changed:<span class="w"> </span><span class="o">[</span>nim01<span class="o">]</span>
+changed:<span class="w"> </span><span class="o">[</span>freddie<span class="o">]</span>
+
+PLAY<span class="w"> </span>RECAP<span class="w"> </span>***********************************************************************************************************************************************************************************************************************************
+nim01<span class="w">                  </span>:<span class="w"> </span><span class="nv">ok</span><span class="o">=</span><span class="m">3</span><span class="w">    </span><span class="nv">changed</span><span class="o">=</span><span class="m">1</span><span class="w">    </span><span class="nv">unreachable</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">failed</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">skipped</span><span class="o">=</span><span class="m">5</span><span class="w">    </span><span class="nv">rescued</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">ignored</span><span class="o">=</span><span class="m">0</span>
+bruce<span class="w">                  </span>:<span class="w"> </span><span class="nv">ok</span><span class="o">=</span><span class="m">3</span><span class="w">    </span><span class="nv">changed</span><span class="o">=</span><span class="m">1</span><span class="w">    </span><span class="nv">unreachable</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">failed</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">skipped</span><span class="o">=</span><span class="m">5</span><span class="w">    </span><span class="nv">rescued</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">ignored</span><span class="o">=</span><span class="m">0</span>
+freddie<span class="w">                </span>:<span class="w"> </span><span class="nv">ok</span><span class="o">=</span><span class="m">3</span><span class="w">    </span><span class="nv">changed</span><span class="o">=</span><span class="m">1</span><span class="w">    </span><span class="nv">unreachable</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">failed</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">skipped</span><span class="o">=</span><span class="m">5</span><span class="w">    </span><span class="nv">rescued</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">ignored</span><span class="o">=</span><span class="m">0</span>
+</pre></div>
+
+<p>Now that the platforms meet the required minimum components, I am now
+ready to automate AIX operations.</p>
+<h3>Running an AIX Update using NIM and Ansible</h3>
+<p>First off, I'll use a simple playbook to see what "oslevel" our NIM
+master and NIM clients are on, before I start.</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>cat<span class="w"> </span>aix_oslevel_check.yml
+---
+
+-<span class="w"> </span>name:<span class="w"> </span>AIX<span class="w"> </span>oslevel<span class="w"> </span>checking<span class="w"> </span>playbook
+<span class="w">  </span>hosts:<span class="w"> </span>all
+<span class="w">  </span>tasks:
+
+<span class="w">  </span>-<span class="w"> </span>name:<span class="w"> </span>Gather<span class="w"> </span>LPP<span class="w"> </span>Facts
+<span class="w">    </span>shell:<span class="w"> </span><span class="s2">"oslevel -s"</span>
+<span class="w">    </span>register:<span class="w"> </span>output_oslevel
+
+<span class="w">  </span>-<span class="w"> </span>name:<span class="w"> </span>Print<span class="w"> </span>the<span class="w"> </span>oslevel
+<span class="w">    </span>debug:
+<span class="w">      </span>msg:<span class="w"> </span><span class="s2">"{{ ansible_hostname }} has the AIX oslevel of {{ output_oslevel.stdout }}"</span>
+</pre></div>
+
+<p>Running that playbook delivers the below result. I can see that bruce
+and freddie are a service pack behind.</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>ansible-playbook<span class="w"> </span>aix_oslevel_check.yml
+
+PLAY<span class="w"> </span><span class="o">[</span>AIX<span class="w"> </span>oslevel<span class="w"> </span>checking<span class="w"> </span>playbook<span class="w"> </span><span class="o">]</span><span class="w"> </span>*****************************************************************************************************************************************************************************************************************
+
+TASK<span class="w"> </span><span class="o">[</span>Gathering<span class="w"> </span>Facts<span class="o">]</span><span class="w"> </span>***********************************************************************************************************************************************************************************************************************
+ok:<span class="w"> </span><span class="o">[</span>bruce<span class="o">]</span>
+ok:<span class="w"> </span><span class="o">[</span>freddie<span class="o">]</span>
+ok:<span class="w"> </span><span class="o">[</span>nim01<span class="o">]</span>
+
+TASK<span class="w"> </span><span class="o">[</span>Gather<span class="w"> </span>LPP<span class="w"> </span>Facts<span class="o">]</span><span class="w"> </span>**********************************************************************************************************************************************************************************************************************
+changed:<span class="w"> </span><span class="o">[</span>freddie<span class="o">]</span>
+changed:<span class="w"> </span><span class="o">[</span>bruce<span class="o">]</span>
+changed:<span class="w"> </span><span class="o">[</span>nim01<span class="o">]</span>
+
+TASK<span class="w"> </span><span class="o">[</span>Print<span class="w"> </span>the<span class="w"> </span>oslevel<span class="o">]</span><span class="w"> </span>*********************************************************************************************************************************************************************************************************************
+ok:<span class="w"> </span><span class="o">[</span>nim01<span class="o">]</span><span class="w"> </span><span class="o">=</span>&gt;
+<span class="w">  </span>msg:<span class="w"> </span>nim01<span class="w"> </span>has<span class="w"> </span>the<span class="w"> </span>AIX<span class="w"> </span>oslevel<span class="w"> </span>of<span class="w"> </span><span class="m">7200</span>-05-02-2114
+ok:<span class="w"> </span><span class="o">[</span>bruce<span class="o">]</span><span class="w"> </span><span class="o">=</span>&gt;
+<span class="w">  </span>msg:<span class="w"> </span>bruce<span class="w"> </span>has<span class="w"> </span>the<span class="w"> </span>AIX<span class="w"> </span>oslevel<span class="w"> </span>of<span class="w"> </span><span class="m">7200</span>-05-01-2038
+ok:<span class="w"> </span><span class="o">[</span>freddie<span class="o">]</span><span class="w"> </span><span class="o">=</span>&gt;
+<span class="w">  </span>msg:<span class="w"> </span>freddie<span class="w"> </span>has<span class="w"> </span>the<span class="w"> </span>AIX<span class="w"> </span>oslevel<span class="w"> </span>of<span class="w"> </span><span class="m">7200</span>-05-01-2038
+
+PLAY<span class="w"> </span>RECAP<span class="w"> </span>***********************************************************************************************************************************************************************************************************************************
+nim01<span class="w">                  </span>:<span class="w"> </span><span class="nv">ok</span><span class="o">=</span><span class="m">3</span><span class="w">    </span><span class="nv">changed</span><span class="o">=</span><span class="m">1</span><span class="w">    </span><span class="nv">unreachable</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">failed</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">skipped</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">rescued</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">ignored</span><span class="o">=</span><span class="m">0</span>
+bruce<span class="w">                  </span>:<span class="w"> </span><span class="nv">ok</span><span class="o">=</span><span class="m">3</span><span class="w">    </span><span class="nv">changed</span><span class="o">=</span><span class="m">1</span><span class="w">    </span><span class="nv">unreachable</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">failed</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">skipped</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">rescued</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">ignored</span><span class="o">=</span><span class="m">0</span>
+freddie<span class="w">                </span>:<span class="w"> </span><span class="nv">ok</span><span class="o">=</span><span class="m">3</span><span class="w">    </span><span class="nv">changed</span><span class="o">=</span><span class="m">1</span><span class="w">    </span><span class="nv">unreachable</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">failed</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">skipped</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">rescued</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">ignored</span><span class="o">=</span><span class="m">0</span>
+</pre></div>
+
+<p>To ensure all systems are operating on the same OS level, I need to
+download the latest service pack. It should define an "lpp_source" on
+our NIM master. Make sure that the name of the "lpp_source" matches the
+example below, or the Ansible module will not detect the "oslevel".</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>cat<span class="w"> </span>aix_download.yml
+---
+
+-<span class="w"> </span>name:<span class="w"> </span>AIX<span class="w"> </span>Patching<span class="w"> </span>Playbook
+<span class="w">  </span>hosts:<span class="w"> </span>nim01
+<span class="w">  </span>vars:
+<span class="w">    </span>oslevel:<span class="w"> </span><span class="m">7200</span>-05-02
+<span class="w">    </span>nim_lpp_source:<span class="w"> </span><span class="m">7200</span>-05-02-2114-lpp_source
+<span class="w">  </span>collections:
+<span class="w">    </span>-<span class="w"> </span>ibm.power_aix
+<span class="w">  </span>tasks:
+
+<span class="w">  </span>-<span class="w"> </span>name:<span class="w"> </span>Download<span class="w"> </span>AIX<span class="w"> </span>Updates
+<span class="w">    </span>nim_suma:
+<span class="w">      </span>action:<span class="w"> </span>download
+<span class="w">      </span>download_dir:<span class="w"> </span><span class="s2">"/export/nim/lpp_source"</span>
+<span class="w">      </span>lpp_source_name:<span class="w"> </span><span class="s2">"{{ nim_lpp_source }}"</span>
+<span class="w">      </span>oslevel:<span class="w"> </span><span class="s2">"{{ oslevel }}"</span>
+<span class="w">      </span>targets:<span class="w"> </span><span class="s1">'bruce, freddie'</span>
+</pre></div>
+
+<p>Next step is to run the <em>download playbook</em>. It will download the
+required updates from IBM Fix Central and define an "lpp_source" on the
+NIM master:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>ansible-playbook<span class="w"> </span>aix_download.yml
+
+PLAY<span class="w"> </span><span class="o">[</span>AIX<span class="w"> </span>Patching<span class="w"> </span>Playbook<span class="o">]</span><span class="w"> </span>*****************************************************************************************************************************************************************************************************************
+
+TASK<span class="w"> </span><span class="o">[</span>Gathering<span class="w"> </span>Facts<span class="o">]</span><span class="w"> </span>***********************************************************************************************************************************************************************************************************************
+ok:<span class="w"> </span><span class="o">[</span>nim01<span class="o">]</span>
+
+TASK<span class="w"> </span><span class="o">[</span>Download<span class="w"> </span>AIX<span class="w"> </span>Updates<span class="o">]</span><span class="w"> </span>******************************************************************************************************************************************************************************************************************
+changed:<span class="w"> </span><span class="o">[</span>nim01<span class="o">]</span>
+
+PLAY<span class="w"> </span>RECAP<span class="w"> </span>***********************************************************************************************************************************************************************************************************************************
+nim01<span class="w">                  </span>:<span class="w"> </span><span class="nv">ok</span><span class="o">=</span><span class="m">2</span><span class="w">    </span><span class="nv">changed</span><span class="o">=</span><span class="m">1</span><span class="w">    </span><span class="nv">unreachable</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">failed</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">skipped</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">rescued</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">ignored</span><span class="o">=</span><span class="m">0</span>
+</pre></div>
+
+<p>Now I can run a <em>patching playbook</em>, which will make use of the
+"alt_disk" and "nim" Ansible modules. The playbook is going to perform
+the following tasks:</p>
+<ul>
+<li>Remove any existing "altinst_rootvg" "alt_disk_copy" that is left on
+    the AIX system.</li>
+<li>Create a new "alt_disk_copy" clone of the root volume group to a
+    spare disk as a backup.</li>
+<li>Run an application stop script.</li>
+<li>Run the AIX update via task delegation to the NIM master.</li>
+<li>Reboot.</li>
+<li>Run an application start script.</li>
+</ul>
+<div class="code"><pre class="code literal-block"><span class="nn">---</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AIX Patching Playbook</span>
+<span class="w">  </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">bruce,freddie</span>
+<span class="w">  </span><span class="nt">vars</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">nim_lpp_source</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">7200-05-02-2114-lpp_source</span>
+<span class="w">    </span><span class="nt">nim_master</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nim01</span>
+<span class="w">  </span><span class="nt">collections</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ibm.power_aix</span>
+<span class="w">  </span><span class="nt">tasks</span><span class="p">:</span>
+
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Cleanup any existing alt_disk_copy</span>
+<span class="w">    </span><span class="nt">alt_disk</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">action</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">clean</span>
+
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Create an alt_disk_copy for backup</span>
+<span class="w">    </span><span class="nt">alt_disk</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">targets</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hdisk1</span>
+
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Stop Application</span>
+<span class="w">    </span><span class="nt">shell</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/usr/local/bin/stop.sh</span>
+
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Run AIX Update</span>
+<span class="w">    </span><span class="nt">nim</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">action</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">update</span>
+<span class="w">      </span><span class="nt">lpp_source</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">nim_lpp_source</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="w">      </span><span class="nt">targets</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">ansible_hostname</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="w">    </span><span class="nt">delegate_to</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">nim_master</span><span class="nv"> </span><span class="s">}}"</span>
+
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Reboot</span>
+<span class="w">    </span><span class="nt">reboot</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">post_reboot_delay</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">180</span>
+
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Start Application</span>
+<span class="w">    </span><span class="nt">shell</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/usr/local/bin/start.sh</span>
+</pre></div>
+
+<p>Now I will run the playbook and patch the NIM client systems "bruce" and
+"freddie":</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>ansible-playbook<span class="w"> </span>aix_patching.yml
+
+<span class="w"> </span>PLAY<span class="w"> </span><span class="o">[</span>AIX<span class="w"> </span>Patching<span class="w"> </span>Playbook<span class="o">]</span><span class="w"> </span>*****************************************************************************************************************************************************************************************************************
+
+TASK<span class="w"> </span><span class="o">[</span>Gathering<span class="w"> </span>Facts<span class="o">]</span><span class="w"> </span>***********************************************************************************************************************************************************************************************************************
+ok:<span class="w"> </span><span class="o">[</span>bruce<span class="o">]</span>
+ok:<span class="w"> </span><span class="o">[</span>freddie<span class="o">]</span>
+
+TASK<span class="w"> </span><span class="o">[</span>Cleanup<span class="w"> </span>any<span class="w"> </span>existing<span class="w"> </span>alt_disk_copy<span class="o">]</span><span class="w"> </span>****************************************************************************************************************************************************************************************************
+changed:<span class="w"> </span><span class="o">[</span>bruce<span class="o">]</span>
+changed:<span class="w"> </span><span class="o">[</span>freddie<span class="o">]</span>
+
+TASK<span class="w"> </span><span class="o">[</span>Create<span class="w"> </span>an<span class="w"> </span>alt_disk_copy<span class="w"> </span><span class="k">for</span><span class="w"> </span>backup<span class="o">]</span><span class="w"> </span>****************************************************************************************************************************************************************************************************
+changed:<span class="w"> </span><span class="o">[</span>bruce<span class="o">]</span>
+changed:<span class="w"> </span><span class="o">[</span>freddie<span class="o">]</span>
+
+TASK<span class="w"> </span><span class="o">[</span>Stop<span class="w"> </span>Application<span class="o">]</span><span class="w"> </span>**********************************************************************************************************************************************************************************************************************
+changed:<span class="w"> </span><span class="o">[</span>bruce<span class="o">]</span>
+changed:<span class="w"> </span><span class="o">[</span>freddie<span class="o">]</span>
+
+TASK<span class="w"> </span><span class="o">[</span>Run<span class="w"> </span>AIX<span class="w"> </span>Update<span class="o">]</span><span class="w"> </span>*************************************************************************************************************************************************************************************************************************
+changed:<span class="w"> </span><span class="o">[</span>bruce<span class="w"> </span>-&gt;<span class="w"> </span><span class="m">10</span>.0.0.5<span class="o">]</span>
+changed:<span class="w"> </span><span class="o">[</span>freddie<span class="w"> </span>-&gt;<span class="w"> </span><span class="m">10</span>.0.0.5<span class="o">]</span>
+
+TASK<span class="w"> </span><span class="o">[</span>Reboot<span class="o">]</span><span class="w"> </span>********************************************************************************************************************************************************************************************************************************
+changed:<span class="w"> </span><span class="o">[</span>freddie<span class="o">]</span>
+changed:<span class="w"> </span><span class="o">[</span>bruce<span class="o">]</span>
+
+TASK<span class="w"> </span><span class="o">[</span>Start<span class="w"> </span>Application<span class="o">]</span><span class="w"> </span>*********************************************************************************************************************************************************************************************************************
+changed:<span class="w"> </span><span class="o">[</span>bruce<span class="o">]</span>
+changed:<span class="w"> </span><span class="o">[</span>freddie<span class="o">]</span>
+
+PLAY<span class="w"> </span>RECAP<span class="w"> </span>***********************************************************************************************************************************************************************************************************************************
+bruce<span class="w">                 </span>:<span class="w"> </span><span class="nv">ok</span><span class="o">=</span><span class="m">7</span><span class="w">    </span><span class="nv">changed</span><span class="o">=</span><span class="m">6</span><span class="w">    </span><span class="nv">unreachable</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">failed</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">skipped</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">rescued</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">ignored</span><span class="o">=</span><span class="m">0</span>
+freddie<span class="w">               </span>:<span class="w"> </span><span class="nv">ok</span><span class="o">=</span><span class="m">7</span><span class="w">    </span><span class="nv">changed</span><span class="o">=</span><span class="m">6</span><span class="w">    </span><span class="nv">unreachable</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">failed</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">skipped</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">rescued</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">ignored</span><span class="o">=</span><span class="m">0</span>
+</pre></div>
+
+<p>Next, I will run the aix_oslevel_check.yml playbook again and see that
+the systems are all on AIX 7.2 TL5 SP2.</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>ansible-playbook<span class="w"> </span>aix_oslevel_check.yml
+
+PLAY<span class="w"> </span><span class="o">[</span>AIX<span class="w"> </span>oslevel<span class="w"> </span>checking<span class="w"> </span>playbook<span class="w"> </span><span class="o">]</span><span class="w"> </span>*****************************************************************************************************************************************************************************************************************
+
+TASK<span class="w"> </span><span class="o">[</span>Gathering<span class="w"> </span>Facts<span class="o">]</span><span class="w"> </span>***********************************************************************************************************************************************************************************************************************
+ok:<span class="w"> </span><span class="o">[</span>bruce<span class="o">]</span>
+ok:<span class="w"> </span><span class="o">[</span>freddie<span class="o">]</span>
+ok:<span class="w"> </span><span class="o">[</span>nim01<span class="o">]</span>
+
+TASK<span class="w"> </span><span class="o">[</span>Gather<span class="w"> </span>LPP<span class="w"> </span>Facts<span class="o">]</span><span class="w"> </span>**********************************************************************************************************************************************************************************************************************
+changed:<span class="w"> </span><span class="o">[</span>freddie<span class="o">]</span>
+changed:<span class="w"> </span><span class="o">[</span>bruce<span class="o">]</span>
+changed:<span class="w"> </span><span class="o">[</span>nim01<span class="o">]</span>
+
+TASK<span class="w"> </span><span class="o">[</span>Print<span class="w"> </span>the<span class="w"> </span>oslevel<span class="o">]</span><span class="w"> </span>*********************************************************************************************************************************************************************************************************************
+ok:<span class="w"> </span><span class="o">[</span>nim01<span class="o">]</span><span class="w"> </span><span class="o">=</span>&gt;
+<span class="w">  </span>msg:<span class="w"> </span>nim01<span class="w"> </span>has<span class="w"> </span>the<span class="w"> </span>AIX<span class="w"> </span>oslevel<span class="w"> </span>of<span class="w"> </span><span class="m">7200</span>-05-02-2114
+ok:<span class="w"> </span><span class="o">[</span>bruce<span class="o">]</span><span class="w"> </span><span class="o">=</span>&gt;
+<span class="w">  </span>msg:<span class="w"> </span>bruce<span class="w"> </span>has<span class="w"> </span>the<span class="w"> </span>AIX<span class="w"> </span>oslevel<span class="w"> </span>of<span class="w"> </span><span class="m">7200</span>-05-02-2114
+ok:<span class="w"> </span><span class="o">[</span>freddie<span class="o">]</span><span class="w"> </span><span class="o">=</span>&gt;
+<span class="w">  </span>msg:<span class="w"> </span>freddie<span class="w"> </span>has<span class="w"> </span>the<span class="w"> </span>AIX<span class="w"> </span>oslevel<span class="w"> </span>of<span class="w"> </span><span class="m">7200</span>-05-02-2114
+
+PLAY<span class="w"> </span>RECAP<span class="w"> </span>***********************************************************************************************************************************************************************************************************************************
+nim01<span class="w">                  </span>:<span class="w"> </span><span class="nv">ok</span><span class="o">=</span><span class="m">3</span><span class="w">    </span><span class="nv">changed</span><span class="o">=</span><span class="m">1</span><span class="w">    </span><span class="nv">unreachable</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">failed</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">skipped</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">rescued</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">ignored</span><span class="o">=</span><span class="m">0</span>
+bruce<span class="w">                  </span>:<span class="w"> </span><span class="nv">ok</span><span class="o">=</span><span class="m">3</span><span class="w">    </span><span class="nv">changed</span><span class="o">=</span><span class="m">1</span><span class="w">    </span><span class="nv">unreachable</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">failed</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">skipped</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">rescued</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">ignored</span><span class="o">=</span><span class="m">0</span>
+freddie<span class="w">                </span>:<span class="w"> </span><span class="nv">ok</span><span class="o">=</span><span class="m">3</span><span class="w">    </span><span class="nv">changed</span><span class="o">=</span><span class="m">1</span><span class="w">    </span><span class="nv">unreachable</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">failed</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">skipped</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">rescued</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">ignored</span><span class="o">=</span><span class="m">0</span>
+</pre></div>
+
+<h3>Conclusion</h3>
+<p>As you can see from this example, Ansible provides a lot of value in
+automating AIX operations. For additional information, see the
+documentation for the supported Collection available from
+<a href="https://cloud.redhat.com/ansible/automation-hub/repo/published/ibm/power_aix">Automation Hub</a>.
+This Collection is also available to the community from
+<a href="https://galaxy.ansible.com/ibm/power_aix">Ansible Galaxy</a>.</p>
+</div>
+    <aside class="postpromonav"><nav><ul class="pager hidden-print">
+<li class="previous">
+                <a href="../bullhorn-29/" rel="prev" title="Bullhorn #29">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../ansible-and-matrix/" rel="next" title="Ansible and Matrix">Next post</a>
+            </li>
+        </ul></nav></aside></article><!--End of body content-->
+</div>
+        <div class="content-slim redhat-footer">
+      <div class="footer-left">
+        <ul class="footer-left-links">
+<li>
+            <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-SA 4.0</a>
+          </li>
+          <li>
+            <a href="https://www.redhat.com/en/about/privacy-policy" target="_blank">Privacy policy</a>
+          </li>
+          <li>
+            <a href="https://docs.ansible.com/ansible/latest/community/code_of_conduct.html" target="_blank">Code of conduct</a>
+          </li>
+        </ul>
+</div>
+      <div class="footer-right">
+        <span class="redhat">Powered by</span>
+        <span class="redhat-logo">
+          <a href="https://www.redhat.com/en/technologies/management/ansible" target="_blank">
+            <img src="../../assets/images/redhat_reversed.svg" alt="Red Hat logo." width="96" height="28"></a>
+        </span>
+      </div>
+    </div>
+
+</div>
+
+            <script src="../../assets/js/jquery.min.js"></script><script src="../../assets/js/popper.min.js"></script><script src="../../assets/js/bootstrap.min.js"></script><script src="../../assets/js/baguetteBox.min.js"></script><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+</script><script src="../../assets/js/clipboard.min.js" type="text/javascript"></script><script src="../../assets/js/clipboard.js" type="text/javascript"></script>
+</body>
+</html>

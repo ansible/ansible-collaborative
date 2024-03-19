@@ -1,0 +1,66 @@
+<p><img alt="Ansible Bullhorn banner" src="/images/bullhorn-banner-mango.png"></p>
+<h2>The Bullhorn</h2>
+<p><em>A Newsletter for the Ansible Developer Community</em>
+<em>Issue #32, 2021-08-19 (<a href="https://us19.campaign-archive.com/home/?u=56d874e027110e35dea0e03c1&amp;id=d6635f5420">Past Issues</a>)</em></p>
+<p>Welcome to the Bullhorn, our newsletter for the Ansible developer community. If you have any questions or content you’d like to share, please reach out to us at the-bullhorn@redhat.com, or comment on this <a href="https://github.com/ansible/community/issues/546">GitHub issue</a>.</p>
+<!-- TEASER_END -->
+
+<p><strong>KEY DATES</strong></p>
+<ul>
+<li>2021-08-25: <a href="https://github.com/ansible/community/issues/539">community IRC meeting</a>, 18:00 UTC (propose topics <a href="https://github.com/ansible-community/community-topics/issues">here</a>)</li>
+<li>2021-08-31: <a href="https://docs.ansible.com/ansible/devel/roadmap/COLLECTIONS_4.html">ETA for Ansible 4.5.0 release</a></li>
+<li>2021-08-31: <a href="https://github.com/ansible/community/issues/546">Bullhorn #33 content deadline</a></li>
+<li>2021-09-01: <a href="https://github.com/ansible/community/issues/539">community IRC meeting</a>, 18:00 UTC (propose topics <a href="https://github.com/ansible-community/community-topics/issues">here</a>)</li>
+<li>2021-09-02: <a href="https://github.com/ansible/community/issues/577">D&amp;I working group meeting</a>, 19:00 UTC</li>
+<li>2021-09-13: ETA for Ansible-Core 2.11.5 and Ansible-Base 2.10.14 release</li>
+<li>2021-09-28: <a href="https://ansiblecs202109.eventbrite.com/?aff=bullhorn">Contributor Summit 2021.09</a> - Day 1 💾📅</li>
+<li>2021-09-29/30: <a href="https://www.ansible.com/ansiblefest">AnsibleFest 2021</a> 💾📅</li>
+<li>2021-10-01: <a href="https://hackmd.io/@ansible-community/contrib-summit-202109">Contributor Summit 2021.09</a> - Day 2 💾📅</li>
+</ul>
+<p><strong>ANSIBLE 4.4.0 RELEASED</strong></p>
+<p>The Ansible Community team announced the availability of Ansible 4.4.0 on August 10th. This update contains bugfixes and new, backwards compatible features in the contained collections. The release makes use of Ansible-core-2.11.</p>
+<p>For what's new in this release and how to get it, please see <a href="https://groups.google.com/g/ansible-announce/c/C6NgzAIHgG4">Toshio Kuratomi’s email to the ansible-announce list</a>.</p>
+<p><strong>ANSIBLE-CORE 2.11.4, ANSIBLE-BASE 2.10.13, AND ANSIBLE 2.9.25 RELEASED</strong></p>
+<p>The Ansible Core team announced the maintenance releases of Ansible-Core 2.11.4, Ansible-Base 2.10.13, and Ansible 2.9.25 on August 18th. Follow <a href="https://groups.google.com/g/ansible-devel/c/vaI6IeusQDQ">this link</a> for Rick Elrod’s email to the ansible-devel mailing list, to obtain details on what’s new, installation instructions, and schedule for future releases.</p>
+<p><strong>ANSIBLE CONTRIBUTOR SUMMIT</strong> </p>
+<p>The <a href="https://hackmd.io/@ansible-community/contrib-summit-202109">next Contributor Summit</a> will be on September 28th and October 1st, alongside <a href="https://www.ansible.com/ansiblefest">AnsibleFest</a>. Registration is open! Please register on <a href="https://ansiblecs202109.eventbrite.com/?aff=bullhorn">Eventbrite</a> to stay informed of updates to the event. Note that the AnsibleFest registration is separate from the Contributor Summit.</p>
+<p>The first day (Tuesday, 28/9) is aimed at new contributors and people who want to understand what is involved in contributing. Day two (Friday, 1/10) will contain the usual interactive discussions with more technical details. If you'd like to help with the planning (especially with the content for day 1), please see this <a href="https://github.com/ansible-community/community-topics/issues/30">issue</a>.</p>
+<p><strong>NEW/UPDATED COMMUNITY COLLECTIONS</strong></p>
+<ul>
+<li>Community RouterOS Collection - <a href="https://galaxy.ansible.com/community/routeros">community.routeros</a> 2.0.0-a1 has been released; there's a breaking change in the behavior of the <code>community.routeros.api</code> module with respect to error handling. If you are using this collection / module, please check out the prerelease to ensure you will not be surprised by the 2.0.0 release.</li>
+<li>Docker Community Collection - <a href="https://galaxy.ansible.com/community/docker">community.docker</a> 1.9.0 has been released with a new connection plugin (<code>community.docker.nsenter</code>), new features, and bugfixes.</li>
+<li>Ansible Community Crypto Collection - <a href="https://galaxy.ansible.com/community/crypto">community.crypto</a> 1.8.0 has been released.</li>
+<li>Community General Collection - <a href="https://galaxy.ansible.com/community/general">community.general</a> 2.5.5 and 3.5.0 have been released.</li>
+<li>MySQL collection for Ansible - <a href="https://galaxy.ansible.com/community/mysql">community.mysql</a> 1.4.2, 2.1.1, and 2.2.0-a1 have been released.</li>
+<li>Ansible POSIX Collection - <a href="https://galaxy.ansible.com/ansible/posix">ansible.posix</a> <a href="https://github.com/ansible-collections/ansible.posix/blob/main/CHANGELOG.rst#v1-3-0">1.3.0</a> has been released.</li>
+<li>ProxySQL collection for Ansible - <a href="https://galaxy.ansible.com/community/proxysql">community.proxysql</a> <a href="https://github.com/ansible-collections/community.proxysql/blob/main/CHANGELOG.rst#v1-2-0">1.2.0</a> has been released.</li>
+<li>Ansible Podman Collection - <a href="https://galaxy.ansible.com/containers/podman">containers.podman</a> <a href="https://github.com/containers/ansible-podman-collections/blob/master/CHANGELOG.rst#v1-7-0">1.7.0</a> has been released, with new module <a href="https://github.com/containers/ansible-podman-collections/blob/master/plugins/modules/podman_secret.py">podman_secret</a> for management of Podman secrets. (More info can be found <a href="https://www.redhat.com/sysadmin/new-podman-secrets-command">here</a>.)</li>
+</ul>
+<p><strong>ANSIBLE COMMUNITY AND MATRIX</strong></p>
+<p>The <a href="https://docs.ansible.com/ansible/latest/community/index.html">Ansible community</a> has <a href="https://github.com/ansible-community/community-topics/issues/36#issuecomment-892890140">adopted Matrix</a> as an official place to chat (bridged to IRC). Documentation has been <a href="https://docs.ansible.com/ansible/devel/community/communication.html#ansible-community-on-matrix">merged to devel</a>, and all our rooms have aliases already - you can join <a href="https://matrix.to/#/#community:ansible.im">#community:ansible.im</a>, or add "ansible.im" to your directory search for the whole list (or join <a href="https://matrix.to/#/#space:ansible.im">#space:ansible.im</a> if you're in the <a href="https://matrix.org/blog/2021/05/17/the-matrix-space-beta">Matrix Space beta</a>). See you there!</p>
+<p><strong>ANSIBLE GALAXY MAINTENANCE</strong></p>
+<p>There is a planned maintenance for Ansible Galaxy on August 24th at 11:00 UTC, with up to 3 hours of downtime to move galaxy.ansible.com to a new and improved cluster.</p>
+<p><strong>COLLECTION INCLUSION CANDIDATES FOR ANSIBLE 5.0</strong></p>
+<p>We are working towards adding new collections into Ansible 5.0.0, and you can track the progress of the various collections in this <a href="https://github.com/ansible-community/community-topics/issues/32">GitHub issue</a>.</p>
+<p><strong>CONTENT FROM THE ANSIBLE COMMUNITY</strong></p>
+<ul>
+<li><a href="https://github.com/rndmh3ro">Sebastian Gumprich</a> created a first version of <a href="https://github.com/rndmh3ro/antsichaut">antsichaut</a>, a tool that tries to automate the creation of collection changelogs by filling <code>changelog.yaml</code> (used by antsibull-changelog) with data from GitHub Pull Requests.</li>
+<li>ara 1.5.7 has been released, and <a href="https://twitter.com/dmsimard">David Moreau Simard</a> wrote a <a href="https://ara.recordsansible.org/blog/2021/08/02/announcing-the-release-of-ara-1.5.7/">blog post</a> with the highlights.</li>
+</ul>
+<p><strong>THE ANSIBLE TEAM IS HIRING</strong></p>
+<p>We're looking for Senior Software Engineers to join us as we take the Ansible Automation Platform to the next level and help the world automate solutions for anything and everything you might imagine. Please check the job descriptions in the links and apply!</p>
+<ul>
+<li><a href="https://global-redhat.icims.com/jobs/86822/senior-software-engineer--ansible/job">Senior Software Engineer - Ansible</a> - Remote CZ</li>
+<li><a href="https://global-redhat.icims.com/jobs/88229/senior-software-engineer---ansible/job">Senior Software Engineer - Ansible</a> - Remote IT</li>
+<li><a href="https://global-redhat.icims.com/jobs/88230/senior-software-engineer---ansible/job">Senior Software Engineer - Ansible</a> - Remote ES</li>
+<li><a href="https://us-redhat.icims.com/jobs/86519/senior-software-engineer---ansible-controller-api/job">Senior Software Engineer - Ansible Controller API</a> - Remote US NC</li>
+</ul>
+<p>In addition, we're also looking for a <a href="https://us-redhat.icims.com/jobs/88164/senior-product-marketing-manager/job">Technical Marketing Manager, Ansible Automation</a> - worldwide, remote. In this role, you will have significant technical sales enablement responsibilities, including the development of technical content for presentations, demonstrations, videos, e-books, conference talks, and sales tools that will be used by thousands of solutions architects, consultants, and partner presales associates.</p>
+<p><strong>ANSIBLE VIRTUAL MEETUPS</strong></p>
+<p>The following virtual meetup(s) are being held in the Ansible community over the next month:</p>
+<ul>
+<li>Wed, Aug 25 · 10:00 AM SST - <a href="https://www.meetup.com/Ansible-Singapore/events/280143374/">Ansible Singapore</a> - Red Hat Ansible Automates Virtual Event 2021</li>
+<li>Tue, Aug 31 · 5:30 PM EEST - <a href="https://www.meetup.com/ansible-ireland/events/279464896/">Ansible Ireland</a> - Ansible Ireland meetup #2</li>
+</ul>
+<p><strong>FEEDBACK</strong></p>
+<p>Have any questions you’d like to ask, or issues you’d like to see covered? Please send us an email at the-bullhorn@redhat.com.</p>

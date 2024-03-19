@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Ansible Collaborative (Posts by Branden Pleines)</title><link>https://ansible.com/</link><description></description><atom:link href="https://ansible.com/authors/branden-pleines.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2024 &lt;a href="mailto:website@ansible.community"&gt;Ansible Collaborative, et al&lt;/a&gt; </copyright><lastBuildDate>Mon, 18 Mar 2024 19:47:35 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Ansible and Infoblox Roles Deep Dive</title><link>https://ansible.com/blog/ansible-and-infoblox-roles-deep-dive/</link><dc:creator>Branden Pleines</dc:creator><description>&lt;h2&gt;Ansible and Infoblox Roles Deep Dive&lt;/h2&gt;
+&lt;p&gt;As Sean Cavanaugh mentioned in his earlier Infoblox blog
+post, the release of Ansible
+2.5 introduced a lookup plugin, a dynamic inventory script, and five
+modules that allow for Infoblox automation. A combination of these
+modules and lookups in a role provides a powerful DNS automation
+framework.&lt;/p&gt;
+&lt;h3&gt;Summary&lt;/h3&gt;
+&lt;p&gt;Today we are going to demonstrate how automating Infoblox Core Network
+Services using Ansible can help make managing IP addresses and routing
+traffic across your network easy, quick, and reliable. Your network
+systems for virtualization and cloud require rapid provisioning life
+cycles; Infoblox helps you manage those lifecycles. When paired with
+Infoblox, Ansible lets you automate that work. Ansible's integration
+with Infoblox is flexible and powerful: you can automate Infoblox tasks
+with modules or with direct calls to the Infoblox WAPI REST API.&lt;/p&gt;
+&lt;p&gt;This post will walk you through six real-world scenarios where Ansible
+and Infoblox can streamline your network tasks:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Creating a provider in one place that is reusable across a collection of roles.&lt;/li&gt;
+&lt;li&gt;Expanding your network by creating a new subnet with a forward DNS zone. Ansible modules for Infoblox make this common two-part task
+    simple.&lt;/li&gt;
+&lt;li&gt;Creating a reverse DNS zone, for example, to flag email from any IP
+    addresses that don't have an associated address name. You must do
+    this task with calls to the Infoblox API for older versions of
+    Ansible, but this is now supported functionality in the
+    &lt;code&gt;nios_zone&lt;/code&gt; module as
+    of Ansible v2.7.&lt;/li&gt;
+&lt;li&gt;Reserving a host record for the gateway address of your new subnet
+    with Ansible's powerful Jinja2 templates.&lt;/li&gt;
+&lt;li&gt;Creating additional hosts in the subnet using a loop and
+    &lt;code&gt;host_count&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Managing Infoblox Grids to automate your network at scale, where one
+    Infoblox appliance may not be enough. Grids physically separate your
+    managed network and eliminate single points of failure.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;To follow along with these examples on your own Infoblox devices, you'll
+need to install the
+&lt;a href="https://github.com/network-automation/dynamic-infoblox"&gt;dynamic-infoblox Roles&lt;/a&gt; and set
+up your Infoblox credentials as a provider.&lt;/p&gt;
+&lt;h4&gt;Infoblox credentials and the nios_provider&lt;/h4&gt;
+&lt;p&gt;[Any time you use Ansible with Infoblox, invoking an Infoblox
+&lt;a href="https://docs.ansible.com/ansible/latest/plugins/lookup.html"&gt;lookup&lt;/a&gt; or
+&lt;a href="https://docs.ansible.com/ansible/latest/modules/list_of_net_tools_modules.html#nios"&gt;module&lt;/a&gt;,
+you must specify the Infoblox IP, username, and the user's password.
+&lt;a href="https://github.com/network-automation/dynamic-infoblox"&gt;Our Roles&lt;/a&gt; call
+these credentials, taken together, the
+&lt;code&gt;nios_provider&lt;/code&gt;. By
+creating a &lt;code&gt;nios_provider&lt;/code&gt;
+dictionary as a group variable, you can apply these values consistently
+in all your playbooks and roles, referring to them in a single line
+whenever you need them.&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;group_vars&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;all&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;main&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;yml&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;
+
+&lt;span class="n"&gt;nios_provider&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;   &lt;/span&gt;&lt;span class="c1"&gt;#Infoblox out-of-the-box defaults specified here&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="n"&gt;host&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mf"&gt;192.168&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mf"&gt;1.2&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="n"&gt;username&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;admin&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="n"&gt;password&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;infoblox&lt;/span&gt;
+&lt;span class="n"&gt;wapi_version&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;“&lt;/span&gt;&lt;span class="n"&gt;v2&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;7&lt;/span&gt;&lt;span class="err"&gt;”&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h4&gt;Using modules to set up a subnet and forward DNS zone&lt;/h4&gt;
+&lt;p&gt;Once you've got your credentials ready, you can run a playbook that
+leverages the
+&lt;a href="https://github.com/network-automation/dynamic-infoblox/tree/master/roles/dynamicInfoblox"&gt;dynamic Infoblox&lt;/a&gt;
+Role to create a subnet and a forward DNS zone; Ansible modules take
+care of this with ease. Creating a subnet is a common network project:
+subnets allow an administrator to expand the network, responding to a
+new company branch, office, or line of business. Forward DNS zones
+establish the single direction mapping of address names to IP addresses.
+A new DNS zone may be required for a business to expand its global reach
+into an additional country (e.g. .uk) or respond to a merger. The tasks
+shown here define &lt;code&gt;ansible_subnet&lt;/code&gt; and &lt;code&gt;ansible_zone&lt;/code&gt; as
+variables, so you can override them each time you create a new subnet.&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="x"&gt;- name: Create a test network subnet&lt;/span&gt;
+&lt;span class="x"&gt;  nios_network:&lt;/span&gt;
+&lt;span class="x"&gt;     network: "&lt;/span&gt;&lt;span class="cp"&gt;{{&lt;/span&gt; &lt;span class="nv"&gt;ansible_subnet&lt;/span&gt; &lt;span class="cp"&gt;}}&lt;/span&gt;&lt;span class="x"&gt;"&lt;/span&gt;
+&lt;span class="x"&gt;     comment: Test network subnet to add host records to&lt;/span&gt;
+&lt;span class="x"&gt;     state: present&lt;/span&gt;
+&lt;span class="x"&gt;     provider: "&lt;/span&gt;&lt;span class="cp"&gt;{{&lt;/span&gt; &lt;span class="nv"&gt;nios_provider&lt;/span&gt; &lt;span class="cp"&gt;}}&lt;/span&gt;&lt;span class="x"&gt;"&lt;/span&gt;
+
+&lt;span class="x"&gt;- name: "Create a forward DNS zone called &lt;/span&gt;&lt;span class="cp"&gt;{{&lt;/span&gt; &lt;span class="nv"&gt;ansible_zone&lt;/span&gt; &lt;span class="cp"&gt;}}&lt;/span&gt;&lt;span class="x"&gt;"&lt;/span&gt;
+&lt;span class="x"&gt;  nios_zone:&lt;/span&gt;
+&lt;span class="x"&gt;     name: "&lt;/span&gt;&lt;span class="cp"&gt;{{&lt;/span&gt; &lt;span class="nv"&gt;ansible_zone&lt;/span&gt; &lt;span class="cp"&gt;}}&lt;/span&gt;&lt;span class="x"&gt;"&lt;/span&gt;
+&lt;span class="x"&gt;     comment: local DNS zone&lt;/span&gt;
+&lt;span class="x"&gt;     state: present&lt;/span&gt;
+&lt;span class="x"&gt;     provider: "&lt;/span&gt;&lt;span class="cp"&gt;{{&lt;/span&gt; &lt;span class="nv"&gt;nios_provider&lt;/span&gt; &lt;span class="cp"&gt;}}&lt;/span&gt;&lt;span class="x"&gt;"&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;In this example, we've used the default Infoblox View. Infoblox allows
+multiple Views within a single DNS zone. If you want to route internal
+traffic to on-premise servers and route external traffic to public cloud
+servers, you can do that by designing a DNS zone with two DNS Views.
+This type of setup ensures that traffic to your employee intranet does
+not burden the servers your customers use, providing better geographic
+coverage and higher levels of around-the-clock coverage for customers.
+However, for the simple example above (and subsequent examples), we've
+stuck to using the default View.&lt;/p&gt;
+&lt;h4&gt;Using the Infoblox API to set up a reverse DNS zone&lt;/h4&gt;
+&lt;p&gt;So far you've seen how to use Ansible modules to automate Infoblox
+changes. Our next example shows how to use the Infoblox WAPI REST API to
+automate a task that may not be available in your current version of
+Ansible. Reverse DNS zones allow a client to look up an address name if
+they know the equivalent IP address. The importance of reverse zones can
+be illustrated with a common example: email servers. Incoming traffic
+from an IP address that does not have an associated address name through
+reverse DNS can often be flagged as spam. Reverse zones can also help
+with other use cases, like gathering authentic data about other
+businesses that visit your websites.&lt;/p&gt;
+&lt;p&gt;The &lt;code&gt;nios_zone&lt;/code&gt; module can
+already create a forward DNS zone, but it can only create reverse zones
+with the latest version of Ansible. However, you can still automate this
+task in older versions of Ansible - just use Ansible to make calls
+directly to the WAPI API. You can do this with either the uri module or
+a shell script. We recommend the uri module, since it helps capture the
+integration more descriptively and enables idempotent calls leveraging
+standard REST return codes. Here the uri module serves as a umbrella
+module to succinctly capture a single WAPI call within the Ansible
+module ecosystem. It is worth noting that the WAPI API operates much
+like Ansible modules: JSON in and JSON out. If you express the body of
+the API call in yaml, it is easy to use a Jinja2 filter (a topic we will
+revisit in depth) to convert it to JSON at runtime.&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Create&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;reverse&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;DNS&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;zone&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;to&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;complement&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;forward&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;zone&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="n"&gt;uri&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="n"&gt;url&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;https&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="p"&gt;{{&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;nios_provider&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;host&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;}}&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;wapi&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="p"&gt;{{&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;wapi_version&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;}}&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;zone_auth&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="n"&gt;method&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;POST&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="n"&gt;user&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"{{ nios_provider.username }}"&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="n"&gt;password&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"{{ nios_provider.password }}"&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="n"&gt;body&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"{{ reverse_zone_yml | to_json }}"&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="c1"&gt;#201 signifies successful creation&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="c1"&gt;#400 signifies existing entry&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="c1"&gt;#both signify a successful WAPI call&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="n"&gt;status_code&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;201&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;400&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="n"&gt;headers&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="n"&gt;Content&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;Type&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"application/json"&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="n"&gt;validate_certs&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;no&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="n"&gt;register&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;reverse_dns_create&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="n"&gt;changed_when&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;reverse_dns_create&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;status&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;==&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;201&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="n"&gt;vars&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="n"&gt;reverse_zone_yml&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="n"&gt;fqdn&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"{{ ansible_subnet }}"&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="n"&gt;zone_format&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"IPV4"&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;If you establish the subnet, forward zone, and reverse zone before
+creating any host records, each host record you create in that forward
+zone automatically creates the corresponding reverse zone entry! With a
+network, forward zone, and reverse zone defined, the stage is set to
+start creating host records for your new subnet.&lt;/p&gt;
+&lt;h4&gt;Using a Jinja2 template to reserve the gateway address&lt;/h4&gt;
+&lt;p&gt;When you start creating host records, you want to reserve the first (or
+last) host record in the zone as the gateway address, the address that
+forwards packets of data destined for an IP address outside of the
+immediate network. As mentioned earlier, you can use Jinja2 filters to
+manipulate data by calling a short python function on it; the Jinja2
+filter syntax effectively acts as a
+&lt;a href="http://www.linfo.org/pipes.html"&gt;linux pipe&lt;/a&gt;. Jinja2 filters are a way to
+quickly manipulate data and in this case we use two of them (see example
+below) to adhere to Infoblox gateway address naming conventions. It is
+important to note that defining the gateway address name relative to the
+subnet avoids gateway address name overwrites because it is common for
+each subnet to have its own gateway address.&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Create&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;a&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;host&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;record&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;for&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;the&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;gateway&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;address&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nx"&gt;nios_host_record&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;     &lt;/span&gt;&lt;span class="nx"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;“&lt;/span&gt;&lt;span class="nx"&gt;gateway&lt;/span&gt;&lt;span class="p"&gt;{{&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;ansible_subnet&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;ipaddr&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="err"&gt;‘&lt;/span&gt;&lt;span class="nx"&gt;first_usable&lt;/span&gt;&lt;span class="err"&gt;’&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nx"&gt;replace&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"."&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="s"&gt;"_"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;}}.{{&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;ansible_zone&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;}}&lt;/span&gt;&lt;span class="err"&gt;”&lt;/span&gt;
+&lt;span class="w"&gt;     &lt;/span&gt;&lt;span class="nx"&gt;ipv4&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;address&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"{{ gateway_address }}"&lt;/span&gt;
+&lt;span class="w"&gt;     &lt;/span&gt;&lt;span class="nx"&gt;state&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;present&lt;/span&gt;
+&lt;span class="w"&gt;     &lt;/span&gt;&lt;span class="nx"&gt;provider&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"{{ nios_provider }}"&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;This task builds your gateway host name step by step with this complex
+Jinja2 expression. The Ansible-packaged
+&lt;a href="https://docs.ansible.com/ansible/latest/user_guide/playbooks_filters_ipaddr.html#converting-subnet-masks-to-cidr-notation"&gt;ipaddr filter&lt;/a&gt;
+is versatile - it is capable of achieving a larger number of routine IP
+address manipulations. For example, if your IP range is 192.168.1.0/24
+and your &lt;code&gt;ansible_zone&lt;/code&gt; is
+ansible.local, the filter in the task above creates a name in a single
+line:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Expression starts with "gateway"&lt;/li&gt;
+&lt;li&gt;The section in the does a few things:
+    a. Retrieves the templated value of ansible_subnet
+    &lt;code&gt;ansible_subnet =&amp;gt; 198.168.1.0/24&lt;/code&gt;
+    b. Uses the retrieved ansible_subnet value and supplies it to the
+    ipaddr('first_usable') filter plugin to obtain first usable IP
+    &lt;code&gt;192.168.1.0/24 | ipaddr('first_usable') =&amp;gt; 192.168.1.1&lt;/code&gt;
+    c. Formats the resulting IP with underscores instead of dots
+    &lt;code&gt;192.168.1.1 | replace('.', '_') =&amp;gt; 192_168_1_1&lt;/code&gt;
+    d. Adds a &lt;code&gt;.&lt;/code&gt; separator before the subnet value
+    e. Retrieves the templated value of ansible_zone
+    &lt;code&gt;ansible_zone =&amp;gt; ansible.local&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;The gateway host name, passing the values listed above through the
+example template, would be:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;gateway192_168_1_1.ansible.local
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Jinja2 filters are a complex Ansible topic; you should have a solid
+Ansible foundation before building your own Jinja2 filters. As you start
+creating filters, you can test expected values locally, or leverage
+&lt;a href="https://ansible.sivel.net/test/"&gt;Sivel's Ansible Template Tester&lt;/a&gt; to
+see the results of your filters before you use them in a playbook or
+role. &lt;/p&gt;
+&lt;p&gt;&lt;img alt="Infoblox-Roles-Deep-Dive-Ansible-Template-Tester" src="https://ansible.com/images/posts/archive/Infoblox-Roles-Deep-Dive-Ansible-Template-Tester.png"&gt;&lt;/p&gt;
+&lt;h4&gt;Using loops and host_count to generate host records&lt;/h4&gt;
+&lt;p&gt;Once your gateway address is reserved, you can use a loop to generate a
+known number of additional host records. In a real-world scenario, you
+would probably generate groups of servers within the subnet (for
+example, database servers, application servers, etc.). For this simple
+demo, you can define a loop that will dynamically generate generic host
+records based on a user-supplied &lt;code&gt;host_count&lt;/code&gt; value. This
+demo shows the power of &lt;code&gt;nios_next_ip&lt;/code&gt; lookup
+plugin, which can obtain a single next available IP or a range of next
+available IPs to assign. In a Playbook with both tasks (the one above
+that creates a host record for the gateway address and the one below
+that generates host records), if you don't define a
+&lt;code&gt;host_count&lt;/code&gt;, the playbook won't create any additional host records;
+just the gateway address will be created.&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="c1"&gt;#Generating records this way should be for demo purposes&lt;/span&gt;
+&lt;span class="c1"&gt;#Normal scenario would be to iterate over a dictionary/list of hosts or populate via a static csv file&lt;/span&gt;
+&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;“Dynamically generate {{ host_count }} host records at next available ip in {{ ansible_subnet }}”&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;include_tasks&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;host_record_generation.yml&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;loop_control&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;     &lt;/span&gt;&lt;span class="nt"&gt;loop_var&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;count&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;with_sequence&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;start=1 end={{ host_count }}&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;when&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;host_count is defined&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;If you generate host records with Ansible based on a user-supplied host
+count, wouldn't looping through a host count potentially cause indexing
+issues on a second run? Unfortunately it does, but keeping a total count
+of generated hosts solves this problem. One approach is to maintain a
+static total host count file on the control node viewed as a source of
+truth. By leveraging Ansible's lookup plugin feature to retrieve its
+contents, each time a host is generated the count in this file is
+incremented so consequent role executions (especially those automated in
+different subnets) do not overwrite each other's records!&lt;/p&gt;
+&lt;p&gt;Generating host records this way is different than generating them with
+naming conventions like most enterprises do, but it is an easy
+out-of-the-box method using the &lt;code&gt;nios_next_ip&lt;/code&gt; lookup to
+create some records across different zones and/or subnets. Infoblox also
+supports a csv record import feature for static records.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Infoblox-Roles-Deep-Dive-Records" src="https://ansible.com/images/posts/archive/Infoblox-Roles-Deep-Dive-Records.png"&gt;&lt;/p&gt;
+&lt;h4&gt;Predefine Infoblox Grids with Ansible&lt;/h4&gt;
+&lt;p&gt;In the first four scenarios, you've seen how Ansible works with Infoblox
+at the level of hosts and subnets. What can Ansible do with Infoblox at
+scale? Automating a single Infoblox instance provides value, but
+production Infoblox systems are often designed in a Grid. The Infoblox
+website explains the full power of Infoblox Grid technology. The
+Infoblox Grid establishes a distributed relationship between individual
+or paired appliances to remove single points of failure and other
+operational risks inherent in legacy DNS, DHCP, and IP Address
+Management infrastructure. Each Grid contains one Grid Master and a
+varying number of additional Grid Members and/or Grid Master candidates.
+Grid Members only contain a portion of the Infoblox database needed to
+do their job. Grid Master Candidates, on the other hand, have a
+real-time full copy of the Grid Master's database to provide disaster
+recovery functionality. You can use our Ansible Roles to predefine new
+Grid Master Candidates and Grid Members like this:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Predefine&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;a&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;new&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Grid&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Master&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Candidate&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nx"&gt;hosts&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;localhost&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nx"&gt;connection&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;local&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nx"&gt;roles&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nx"&gt;role&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;predefineGridmasterCandidate&lt;/span&gt;
+&lt;span class="w"&gt;       &lt;/span&gt;&lt;span class="nx"&gt;master_candidate_name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;gmc&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;ansible&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;local&lt;/span&gt;
+&lt;span class="w"&gt;       &lt;/span&gt;&lt;span class="nx"&gt;master_candidate_address&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m m-Double"&gt;192.168.2.2&lt;/span&gt;
+&lt;span class="w"&gt;       &lt;/span&gt;&lt;span class="nx"&gt;master_candidate_gateway&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m m-Double"&gt;192.168.2.254&lt;/span&gt;
+&lt;span class="w"&gt;       &lt;/span&gt;&lt;span class="nx"&gt;master_candidate_subnet_mask&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m m-Double"&gt;255.255.255.0&lt;/span&gt;
+
+&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Predefine&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;a&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;new&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Grid&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Member&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nx"&gt;hosts&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;localhost&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nx"&gt;connection&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;local&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nx"&gt;roles&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nx"&gt;role&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;predefineGridMember&lt;/span&gt;
+&lt;span class="w"&gt;       &lt;/span&gt;&lt;span class="nx"&gt;member_name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;m3&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;ansible&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;local&lt;/span&gt;
+&lt;span class="w"&gt;       &lt;/span&gt;&lt;span class="nx"&gt;member_address&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m m-Double"&gt;192.168.2.3&lt;/span&gt;
+&lt;span class="w"&gt;       &lt;/span&gt;&lt;span class="nx"&gt;member_gateway&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m m-Double"&gt;192.168.2.254&lt;/span&gt;
+&lt;span class="w"&gt;       &lt;/span&gt;&lt;span class="nx"&gt;member_subnet_mask&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m m-Double"&gt;255.255.255.0&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img alt="Infoblox-Roles-Deep-Dive-Members" src="https://ansible.com/images/posts/archive/Infoblox-Roles-Deep-Dive-Members.png"&gt;&lt;/p&gt;
+&lt;p&gt;As you can see from these five examples, Ansible and Infoblox work
+together to manage your network infrastructure and the traffic it
+carries quickly, easily, and reliably. Ansible builds on the robust
+capabilities of the Infoblox WAPI API. Using Ansible modules and direct
+calls to the WAPI API, you can write reusable Ansible Roles and
+Playbooks that can be quickly adapted to handle separate networks. If
+you'd like, you can start by customizing the roles in the
+&lt;a href="https://github.com/network-automation/dynamic-infoblox"&gt;ansible-networking repository&lt;/a&gt;,
+which connect all of the Ansible concepts discussed in today's post.&lt;/p&gt;</description><guid>https://ansible.com/blog/ansible-and-infoblox-roles-deep-dive/</guid><pubDate>Tue, 02 Oct 2018 00:00:00 GMT</pubDate></item></channel></rss>

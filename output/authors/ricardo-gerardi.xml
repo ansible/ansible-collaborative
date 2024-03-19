@@ -1,0 +1,733 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Ansible Collaborative (Posts by Ricardo Gerardi)</title><link>https://ansible.com/</link><description></description><atom:link href="https://ansible.com/authors/ricardo-gerardi.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2024 &lt;a href="mailto:website@ansible.community"&gt;Ansible Collaborative, et al&lt;/a&gt; </copyright><lastBuildDate>Mon, 18 Mar 2024 19:47:35 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Developing and Testing Ansible Roles with Molecule and Podman - Part 2</title><link>https://ansible.com/blog/developing-and-testing-ansible-roles-with-molecule-and-podman-part-2/</link><dc:creator>Ricardo Gerardi</dc:creator><description>&lt;h2&gt;Developing and Testing Ansible Roles with Molecule and Podman - Part 2&lt;/h2&gt;
+&lt;p&gt;Molecule is a complete testing framework that helps you develop and test
+Ansible roles, which allows you to focus on role content instead of
+focusing on managing testing infrastructure. In the first
+part of this series, we've successfully installed, configured and used
+Molecule to set up new testing instances.&lt;/p&gt;
+&lt;p&gt;Now that the instances are running, let's start developing the new role
+and apply Molecule to ensure it runs according to the specifications.&lt;/p&gt;
+&lt;p&gt;This basic role deploys a web application supported by the Apache web
+server. It must support Red Hat Enterprise Linux (RHEL) 8 and Ubuntu
+20.04.&lt;/p&gt;
+&lt;h3&gt;Developing the Ansible Role with Molecule&lt;/h3&gt;
+&lt;p&gt;Molecule helps in the development stage by allowing you to "converge"
+the instances with the role content. You can test each step without
+worrying about managing the instances and test environment. It provides
+quick feedback, allowing you to focus on the role content, ensuring it
+works in all platforms.&lt;/p&gt;
+&lt;p&gt;In the first part of this series, we initialized a new role "mywebapp". If you're not
+there yet, switch to the role directory "mywebapp" and add the first
+task, installing the Apache package "httpd" using the "package" Ansible
+module. Edit the file "tasks/main.yaml" and include this task:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;$ vi tasks/main.yml&lt;/span&gt;
+&lt;span class="nn"&gt;---&lt;/span&gt;
+&lt;span class="c1"&gt;# tasks file for mywebapp&lt;/span&gt;
+&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;Ensure httpd installed&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;package&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"httpd"&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;state&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;present&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Save the file and "converge" the instances by running "molecule
+converge". The "converge" command applies the current version of the
+role to all the running container instances. Molecule "converge" does
+not restart the instances if they are already running. It tries to
+converge those instances by making their configuration match the desired
+state described by the role currently testing.&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;$&lt;span class="w"&gt; &lt;/span&gt;molecule&lt;span class="w"&gt; &lt;/span&gt;converge
+...&lt;span class="w"&gt; &lt;/span&gt;TRUNCATED&lt;span class="w"&gt; &lt;/span&gt;OUTPUT&lt;span class="w"&gt; &lt;/span&gt;...
+&lt;span class="w"&gt;   &lt;/span&gt;TASK&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;mywebapp&lt;span class="w"&gt; &lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;Ensure&lt;span class="w"&gt; &lt;/span&gt;httpd&lt;span class="w"&gt; &lt;/span&gt;installed&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;***************************************
+&lt;span class="w"&gt;    &lt;/span&gt;Saturday&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;27&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;June&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;2020&lt;/span&gt;&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="m"&gt;08&lt;/span&gt;:45:01&lt;span class="w"&gt; &lt;/span&gt;-0400&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;:00:00.060&lt;span class="o"&gt;)&lt;/span&gt;&lt;span class="w"&gt;       &lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;:00:04.277&lt;span class="w"&gt; &lt;/span&gt;*********
+fatal:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;ubuntu&lt;span class="o"&gt;]&lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;FAILED!&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&amp;gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;{&lt;/span&gt;&lt;span class="s2"&gt;"changed"&lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;false,&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"msg"&lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"No package matching 'httpd' is available"&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;changed:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;rhel8&lt;span class="o"&gt;]&lt;/span&gt;
+...&lt;span class="w"&gt; &lt;/span&gt;TRUNCATED&lt;span class="w"&gt; &lt;/span&gt;OUTPUT&lt;span class="w"&gt; &lt;/span&gt;...
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Notice that the current version worked well on the RHEL8 instance, but
+failed for the Ubuntu instance. By using Molecule, you can quickly
+evaluate the result of your tasks in all platforms and verify if the
+role works according to the requirements! In this example however, the
+tasks failed because Ubuntu does not have a package named "httpd". For
+that platform, the package name is "apache2".&lt;/p&gt;
+&lt;p&gt;So let's modify the role to include variables with the correct package
+name for each platform. Start with RHEL8 by adding a file "RedHat.yaml"
+under the "vars" sub-directory with this content:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;$ vi vars/RedHat.yaml&lt;/span&gt;
+&lt;span class="nn"&gt;---&lt;/span&gt;
+&lt;span class="nt"&gt;httpd_package&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;httpd&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Save this file and add the corresponding file "vars/Debian.yaml" for
+Ubuntu:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;$ vi vars/Debian.yaml&lt;/span&gt;
+&lt;span class="nn"&gt;---&lt;/span&gt;
+&lt;span class="nt"&gt;httpd_package&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;apache2&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Save this file and modify the "tasks/main.yaml" file to include these
+variable files according to the OS family identified by Ansible via the
+&lt;a href="https://docs.ansible.com/ansible/devel/user_guide/playbooks_vars_facts.html"&gt;system fact variable&lt;/a&gt;
+"ansible_os_family". We also have to include a task to update the
+package cache for systems in the "Debian" family since their package
+manager caches results otherwise. Last, we update the install task to
+use the variable "httpd_package" that you defined in the variables
+files:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;$ vi tasks/main.yml&lt;/span&gt;
+&lt;span class="l l-Scalar l-Scalar-Plain"&gt;- name&lt;/span&gt;&lt;span class="p p-Indicator"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;Include OS-specific variables.&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;include_vars&lt;/span&gt;&lt;span class="p p-Indicator"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"{{&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;ansible_os_family&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;}}.yaml"&lt;/span&gt;
+
+&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;Ensure package cache up-to-date&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;apt&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;update_cache&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;yes&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;cache_valid_time&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;3600&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;when&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;ansible_os_family == "Debian"&lt;/span&gt;
+
+&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;Ensure httpd installed&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;package&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"{{&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;httpd_package&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;}}"&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;state&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;present&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Save this file, and "converge" the instances again to ensure it works
+this time:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;$&lt;span class="w"&gt; &lt;/span&gt;molecule&lt;span class="w"&gt; &lt;/span&gt;converge
+...&lt;span class="w"&gt; &lt;/span&gt;TRUNCATED&lt;span class="w"&gt; &lt;/span&gt;OUTPUT&lt;span class="w"&gt; &lt;/span&gt;...
+&lt;span class="w"&gt;   &lt;/span&gt;TASK&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;mywebapp&lt;span class="w"&gt; &lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;Ensure&lt;span class="w"&gt; &lt;/span&gt;httpd&lt;span class="w"&gt; &lt;/span&gt;installed&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;***************************************
+&lt;span class="w"&gt;    &lt;/span&gt;Saturday&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;27&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;June&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;2020&lt;/span&gt;&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="m"&gt;08&lt;/span&gt;:59:13&lt;span class="w"&gt; &lt;/span&gt;-0400&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;:00:07.338&lt;span class="o"&gt;)&lt;/span&gt;&lt;span class="w"&gt;       &lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;:00:12.925&lt;span class="w"&gt; &lt;/span&gt;*********
+&lt;span class="w"&gt;    &lt;/span&gt;ok:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;rhel8&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;changed:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;ubuntu&lt;span class="o"&gt;]&lt;/span&gt;
+...&lt;span class="w"&gt; &lt;/span&gt;TRUNCATED&lt;span class="w"&gt; &lt;/span&gt;OUTPUT&lt;span class="w"&gt; &lt;/span&gt;...
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Because the package was already installed in the RHEL8 instance, Ansible
+returned the status "OK" and it did not make any changes. It installed
+the package correctly in the Ubuntu instance this time.&lt;/p&gt;
+&lt;p&gt;We have installed the package - but the naming problem also exists with
+the service itself: they are named differently in RHEL and Ubuntu. So we
+add service name variables to the playbooks and variable files. Start
+with RHEL8:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;$ vi vars/RedHat.yaml&lt;/span&gt;
+&lt;span class="nn"&gt;---&lt;/span&gt;
+&lt;span class="nt"&gt;httpd_package&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;httpd&lt;/span&gt;
+&lt;span class="nt"&gt;httpd_service&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;httpd&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Save this file and then edit the file "vars/Debian.yaml" for Ubuntu:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;$ vi vars/Debian.yaml&lt;/span&gt;
+&lt;span class="nn"&gt;---&lt;/span&gt;
+&lt;span class="nt"&gt;httpd_package&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;apache2&lt;/span&gt;
+&lt;span class="nt"&gt;httpd_service&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;apache2&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Save the file and add the new task at the end of the "tasks/main.yml"
+file:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;$ vi tasks/main.yml&lt;/span&gt;
+&lt;span class="l l-Scalar l-Scalar-Plain"&gt;- name&lt;/span&gt;&lt;span class="p p-Indicator"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;Ensure httpd svc started&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;service&lt;/span&gt;&lt;span class="p p-Indicator"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"{{&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;httpd_service&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;}}"&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;state&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;started&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;enabled&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;yes&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Save the file and "converge" the instances again to start the Apache
+httpd service:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;$&lt;span class="w"&gt; &lt;/span&gt;molecule&lt;span class="w"&gt; &lt;/span&gt;converge
+...&lt;span class="w"&gt; &lt;/span&gt;TRUNCATED&lt;span class="w"&gt; &lt;/span&gt;OUTPUT&lt;span class="w"&gt; &lt;/span&gt;...
+&lt;span class="w"&gt;   &lt;/span&gt;TASK&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;mywebapp&lt;span class="w"&gt; &lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;Ensure&lt;span class="w"&gt; &lt;/span&gt;httpd&lt;span class="w"&gt; &lt;/span&gt;svc&lt;span class="w"&gt; &lt;/span&gt;started&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;*************************************
+&lt;span class="w"&gt;    &lt;/span&gt;Saturday&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;27&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;June&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;2020&lt;/span&gt;&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="m"&gt;09&lt;/span&gt;:34:38&lt;span class="w"&gt; &lt;/span&gt;-0400&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;:00:06.776&lt;span class="o"&gt;)&lt;/span&gt;&lt;span class="w"&gt;       &lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;:00:17.233&lt;span class="w"&gt; &lt;/span&gt;*********
+&lt;span class="w"&gt;    &lt;/span&gt;changed:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;ubuntu&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;changed:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;rhel8&lt;span class="o"&gt;]&lt;/span&gt;
+...&lt;span class="w"&gt; &lt;/span&gt;TRUNCATED&lt;span class="w"&gt; &lt;/span&gt;OUTPUT&lt;span class="w"&gt; &lt;/span&gt;...
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Let's add a final task to create some content for the web application.
+Each platform requires the HTML files owned by different groups. Add new
+variables to each variable file to define the group name:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;$ vi vars/RedHat.yaml&lt;/span&gt;
+&lt;span class="nn"&gt;---&lt;/span&gt;
+&lt;span class="nt"&gt;httpd_package&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;httpd&lt;/span&gt;
+&lt;span class="nt"&gt;httpd_service&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;httpd&lt;/span&gt;
+&lt;span class="nt"&gt;httpd_group&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;apache&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Save this file then edit the file "vars/Debian.yaml" for Ubuntu:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;$ vi vars/Debian.yaml&lt;/span&gt;
+&lt;span class="nn"&gt;---&lt;/span&gt;
+&lt;span class="nt"&gt;httpd_package&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;apache2&lt;/span&gt;
+&lt;span class="nt"&gt;httpd_service&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;apache2&lt;/span&gt;
+&lt;span class="nt"&gt;httpd_group&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;www-data&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Save the file and add the new task at the end of the "tasks/main.yml"
+file:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;$ vi tasks/main.yml&lt;/span&gt;
+&lt;span class="l l-Scalar l-Scalar-Plain"&gt;- name&lt;/span&gt;&lt;span class="p p-Indicator"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;Ensure HTML Index&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;copy&lt;/span&gt;&lt;span class="p p-Indicator"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;dest&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;/var/www/html/index.html&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;mode&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;0644&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;owner&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;root&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;group&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"{{&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;httpd_group&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;}}"&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;content&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"{{&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;web_content&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;}}"&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;This task allows the role user to specify the content by using the
+variable "web_content" when calling the role. Add a default value to
+this variable in case the user does not specify it:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;$ vi defaults/main.yml&lt;/span&gt;
+&lt;span class="nn"&gt;---&lt;/span&gt;
+&lt;span class="c1"&gt;# defaults file for mywebapp&lt;/span&gt;
+&lt;span class="nt"&gt;web_content&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;There's a web server here&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Save this file and "converge" the instances one more time to add the
+content:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;$&lt;span class="w"&gt; &lt;/span&gt;molecule&lt;span class="w"&gt; &lt;/span&gt;converge
+...&lt;span class="w"&gt; &lt;/span&gt;TRUNCATED&lt;span class="w"&gt; &lt;/span&gt;OUTPUT&lt;span class="w"&gt; &lt;/span&gt;...
+&lt;span class="w"&gt;   &lt;/span&gt;TASK&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;mywebapp&lt;span class="w"&gt; &lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;Ensure&lt;span class="w"&gt; &lt;/span&gt;HTML&lt;span class="w"&gt; &lt;/span&gt;Index&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;********************************************
+&lt;span class="w"&gt;    &lt;/span&gt;Saturday&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;27&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;June&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;2020&lt;/span&gt;&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="m"&gt;09&lt;/span&gt;:50:11&lt;span class="w"&gt; &lt;/span&gt;-0400&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;:00:03.261&lt;span class="o"&gt;)&lt;/span&gt;&lt;span class="w"&gt;       &lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;:00:17.753&lt;span class="w"&gt; &lt;/span&gt;*********
+&lt;span class="w"&gt;    &lt;/span&gt;changed:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;rhel8&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;changed:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;ubuntu&lt;span class="o"&gt;]&lt;/span&gt;
+...&lt;span class="w"&gt; &lt;/span&gt;TRUNCATED&lt;span class="w"&gt; &lt;/span&gt;OUTPUT&lt;span class="w"&gt; &lt;/span&gt;...
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;At this time, both instances are converged. Manually verify that the
+role worked by using the molecule login command to log into one of the
+instances and running the "curl" command to get the content:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;$&lt;span class="w"&gt; &lt;/span&gt;molecule&lt;span class="w"&gt; &lt;/span&gt;login&lt;span class="w"&gt; &lt;/span&gt;-h&lt;span class="w"&gt; &lt;/span&gt;rhel8
+&lt;span class="o"&gt;[&lt;/span&gt;root@2ce0a0ea8692&lt;span class="w"&gt; &lt;/span&gt;/&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="c1"&gt;# curl http://localhost&lt;/span&gt;
+There&lt;span class="err"&gt;'&lt;/span&gt;s&lt;span class="w"&gt; &lt;/span&gt;a&lt;span class="w"&gt; &lt;/span&gt;web&lt;span class="w"&gt; &lt;/span&gt;server&lt;span class="w"&gt; &lt;/span&gt;here
+&lt;span class="o"&gt;[&lt;/span&gt;root@2ce0a0ea8692&lt;span class="w"&gt; &lt;/span&gt;/&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="c1"&gt;# exit&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;You used Molecule to aid with the role development by ensuring that it
+is working properly across multiple platforms for each step of the way.&lt;/p&gt;
+&lt;p&gt;Next, let's automate the verification process.&lt;/p&gt;
+&lt;h3&gt;Verifying the Role with Molecule&lt;/h3&gt;
+&lt;p&gt;In addition to helping you converge the instance to aid with the role
+development, Molecule can also automate the testing process by executing
+a verification task. To verify the results of your playbook, Molecule
+can use either the "testinfra" framework or it can use Ansible itself. &lt;/p&gt;
+&lt;p&gt;Let's use an Ansible Playbook to verify the results of this new role. By
+default, Molecule provides a basic verifier playbook
+"molecule/default/verify.yml" as a starting point. This playbook
+contains the basic required structure but does not do any useful
+verification. Update this playbook to test this role result by using the
+Ansible's "uri" module to obtain the content from the running web server
+and the "assert" module to ensure it's the correct content:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;$ vi molecule/default/verify.yml&lt;/span&gt;
+&lt;span class="nn"&gt;---&lt;/span&gt;
+&lt;span class="c1"&gt;# This is an example playbook to execute Ansible tests.&lt;/span&gt;
+
+&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;Verify&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;hosts&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;all&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;vars&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;expected_content&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"There's&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;a&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;web&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;server&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;here"&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;tasks&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;Get index.html&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;uri&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;url&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;http://localhost&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;return_content&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;yes&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;register&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;this&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;failed_when&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"expected_content&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;not&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;in&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;this.content"&lt;/span&gt;
+
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;Ensure content type is text/html&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;assert&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;that&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"'text/html'&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;in&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;this.content_type"&lt;/span&gt;
+
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;Debug results&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;debug&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;var&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;this.content&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Save and close this file. Verify the results by running "molecule
+verify":&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;$&lt;span class="w"&gt; &lt;/span&gt;molecule&lt;span class="w"&gt; &lt;/span&gt;verify
+...&lt;span class="w"&gt; &lt;/span&gt;TRUNCATED&lt;span class="w"&gt; &lt;/span&gt;OUTPUT&lt;span class="w"&gt; &lt;/span&gt;...
+&lt;span class="w"&gt;   &lt;/span&gt;TASK&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;Ensure&lt;span class="w"&gt; &lt;/span&gt;content&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nb"&gt;type&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;is&lt;span class="w"&gt; &lt;/span&gt;text/html&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;****************************************
+&lt;span class="w"&gt;    &lt;/span&gt;Saturday&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;27&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;June&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;2020&lt;/span&gt;&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="m"&gt;10&lt;/span&gt;:03:18&lt;span class="w"&gt; &lt;/span&gt;-0400&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;:00:03.131&lt;span class="o"&gt;)&lt;/span&gt;&lt;span class="w"&gt;       &lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;:00:07.255&lt;span class="w"&gt; &lt;/span&gt;*********
+&lt;span class="w"&gt;    &lt;/span&gt;ok:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;rhel8&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&amp;gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;{&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="s2"&gt;"changed"&lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;false,
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="s2"&gt;"msg"&lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"All assertions passed"&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;ok:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;ubuntu&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&amp;gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;{&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="s2"&gt;"changed"&lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;false,
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="s2"&gt;"msg"&lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"All assertions passed"&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;
+...&lt;span class="w"&gt; &lt;/span&gt;TRUNCATED&lt;span class="w"&gt; &lt;/span&gt;OUTPUT&lt;span class="w"&gt; &lt;/span&gt;...
+Verifier&lt;span class="w"&gt; &lt;/span&gt;completed&lt;span class="w"&gt; &lt;/span&gt;successfully.
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Molecule runs the verifier playbook against all instances ensuring the
+results match the expected values.&lt;/p&gt;
+&lt;p&gt;You can change the default values for the test by editing the converge
+playbook to update the "web_content" variable:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;$ vi molecule/default/converge.yml&lt;/span&gt;
+&lt;span class="nn"&gt;---&lt;/span&gt;
+&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;Converge&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;hosts&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;all&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;tasks&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"Include&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;mywebapp"&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;include_role&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"mywebapp"&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;vars&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;         &lt;/span&gt;&lt;span class="nt"&gt;web_content&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"New&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;content&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;for&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;testing&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;only"&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Then, update the "expected_content" variable in the verifier playbook:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;$ vi molecule/default/verify.yml&lt;/span&gt;
+&lt;span class="nn"&gt;---&lt;/span&gt;
+&lt;span class="c1"&gt;# This is an example playbook to execute Ansible tests.&lt;/span&gt;
+
+&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;Verify&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;hosts&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;all&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;vars&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;expected_content&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"New&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;content&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;for&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;testing&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;only"&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;tasks&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Converge the instances one more time to update the web server content,
+then verify the results:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;$&lt;span class="w"&gt; &lt;/span&gt;molecule&lt;span class="w"&gt; &lt;/span&gt;converge
+...&lt;span class="w"&gt; &lt;/span&gt;TRUNCATED&lt;span class="w"&gt; &lt;/span&gt;OUTPUT&lt;span class="w"&gt; &lt;/span&gt;...
+&lt;span class="w"&gt;   &lt;/span&gt;TASK&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;mywebapp&lt;span class="w"&gt; &lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;Ensure&lt;span class="w"&gt; &lt;/span&gt;HTML&lt;span class="w"&gt; &lt;/span&gt;Index&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;********************************************
+&lt;span class="w"&gt;    &lt;/span&gt;Saturday&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;27&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;June&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;2020&lt;/span&gt;&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="m"&gt;10&lt;/span&gt;:09:34&lt;span class="w"&gt; &lt;/span&gt;-0400&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;:00:03.331&lt;span class="o"&gt;)&lt;/span&gt;&lt;span class="w"&gt;       &lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;:00:19.607&lt;span class="w"&gt; &lt;/span&gt;*********
+&lt;span class="w"&gt;    &lt;/span&gt;changed:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;rhel8&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;changed:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;ubuntu&lt;span class="o"&gt;]&lt;/span&gt;
+...&lt;span class="w"&gt; &lt;/span&gt;TRUNCATED&lt;span class="w"&gt; &lt;/span&gt;OUTPUT&lt;span class="w"&gt; &lt;/span&gt;...
+$&lt;span class="w"&gt; &lt;/span&gt;molecule&lt;span class="w"&gt; &lt;/span&gt;verify
+...&lt;span class="w"&gt; &lt;/span&gt;TRUNCATED&lt;span class="w"&gt; &lt;/span&gt;OUTPUT&lt;span class="w"&gt; &lt;/span&gt;...
+&lt;span class="w"&gt;   &lt;/span&gt;TASK&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;Debug&lt;span class="w"&gt; &lt;/span&gt;results&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;***********************************************************
+&lt;span class="w"&gt;    &lt;/span&gt;Saturday&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;27&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;June&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;2020&lt;/span&gt;&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="m"&gt;10&lt;/span&gt;:10:15&lt;span class="w"&gt; &lt;/span&gt;-0400&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;:00:00.299&lt;span class="o"&gt;)&lt;/span&gt;&lt;span class="w"&gt;       &lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;:00:10.142&lt;span class="w"&gt; &lt;/span&gt;*********
+&lt;span class="w"&gt;    &lt;/span&gt;ok:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;rhel8&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&amp;gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;{&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="s2"&gt;"this.content"&lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"New content for testing only"&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;ok:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;ubuntu&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&amp;gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;{&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="s2"&gt;"this.content"&lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"New content for testing only"&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;
+...&lt;span class="w"&gt; &lt;/span&gt;TRUNCATED&lt;span class="w"&gt; &lt;/span&gt;OUTPUT&lt;span class="w"&gt; &lt;/span&gt;...
+Verifier&lt;span class="w"&gt; &lt;/span&gt;completed&lt;span class="w"&gt; &lt;/span&gt;successfully.
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Using the verifier, you can define a playbook to execute checks and
+ensure the role produces the required results.&lt;/p&gt;
+&lt;p&gt;In the final step, let's put it all together with automated tests.&lt;/p&gt;
+&lt;h3&gt;Automating the Complete Test Workflow&lt;/h3&gt;
+&lt;p&gt;Now that all of the pieces are together, automate the complete testing
+process workflow using the command "molecule test".&lt;/p&gt;
+&lt;p&gt;Unlike the "molecule converge", which aided with role development, the
+goal with "molecule test" is to provide an automated and repeatable
+environment to ensure the role works according to its specifications.
+Therefore, the test process destroys and re-creates the instances for
+every test.&lt;/p&gt;
+&lt;p&gt;By default, "molecule test" executes these steps in order:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Install required dependencies&lt;/li&gt;
+&lt;li&gt;Lint the project&lt;/li&gt;
+&lt;li&gt;Destroy existing instances&lt;/li&gt;
+&lt;li&gt;Run a syntax check&lt;/li&gt;
+&lt;li&gt;Create instances&lt;/li&gt;
+&lt;li&gt;Prepare instances (if required)&lt;/li&gt;
+&lt;li&gt;Converge instances by applying the role tasks&lt;/li&gt;
+&lt;li&gt;Check the role for idempotence&lt;/li&gt;
+&lt;li&gt;Verify the results using the defined verifier&lt;/li&gt;
+&lt;li&gt;Destroy the instances&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;You can change these steps by adding the "test_sequence" dictionary with
+the required steps to the Molecule configuration file. For additional
+information, consult the official
+&lt;a href="https://molecule.readthedocs.io/en/latest/configuration.html#scenario"&gt;documentation&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Execute the test scenario:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;$&lt;span class="w"&gt; &lt;/span&gt;molecule&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nb"&gt;test&lt;/span&gt;
+...&lt;span class="w"&gt; &lt;/span&gt;TRUNCATED&lt;span class="w"&gt; &lt;/span&gt;OUTPUT&lt;span class="w"&gt; &lt;/span&gt;...
+--&amp;gt;&lt;span class="w"&gt; &lt;/span&gt;Test&lt;span class="w"&gt; &lt;/span&gt;matrix
+
+└──&lt;span class="w"&gt; &lt;/span&gt;default
+&lt;span class="w"&gt;    &lt;/span&gt;├──&lt;span class="w"&gt; &lt;/span&gt;dependency
+&lt;span class="w"&gt;    &lt;/span&gt;├──&lt;span class="w"&gt; &lt;/span&gt;lint
+&lt;span class="w"&gt;    &lt;/span&gt;├──&lt;span class="w"&gt; &lt;/span&gt;cleanup
+&lt;span class="w"&gt;    &lt;/span&gt;├──&lt;span class="w"&gt; &lt;/span&gt;destroy
+&lt;span class="w"&gt;    &lt;/span&gt;├──&lt;span class="w"&gt; &lt;/span&gt;syntax
+&lt;span class="w"&gt;    &lt;/span&gt;├──&lt;span class="w"&gt; &lt;/span&gt;create
+&lt;span class="w"&gt;    &lt;/span&gt;├──&lt;span class="w"&gt; &lt;/span&gt;prepare
+&lt;span class="w"&gt;    &lt;/span&gt;├──&lt;span class="w"&gt; &lt;/span&gt;converge
+&lt;span class="w"&gt;    &lt;/span&gt;├──&lt;span class="w"&gt; &lt;/span&gt;idempotence
+&lt;span class="w"&gt;    &lt;/span&gt;├──&lt;span class="w"&gt; &lt;/span&gt;side_effect
+&lt;span class="w"&gt;    &lt;/span&gt;├──&lt;span class="w"&gt; &lt;/span&gt;verify
+&lt;span class="w"&gt;    &lt;/span&gt;├──&lt;span class="w"&gt; &lt;/span&gt;cleanup
+&lt;span class="w"&gt;    &lt;/span&gt;└──&lt;span class="w"&gt; &lt;/span&gt;destroy
+
+--&amp;gt;&lt;span class="w"&gt; &lt;/span&gt;Scenario:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;'default'&lt;/span&gt;
+...&lt;span class="w"&gt; &lt;/span&gt;TRUNCATED&lt;span class="w"&gt; &lt;/span&gt;OUTPUT&lt;span class="w"&gt; &lt;/span&gt;...
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;If the test workflow fails at any point, the command returns a status
+code different than zero. You can use that return code to automate the
+process or integrate Molecule with CI/CD workflows.&lt;/p&gt;
+&lt;h3&gt;Conclusion&lt;/h3&gt;
+&lt;p&gt;Now that you've successfully applied Molecule to develop and test a role
+that is well written and works reliably across different environments,
+you can integrate it into your development cycle to produce high
+standard roles consistently without worrying about the testing
+infrastructure.&lt;/p&gt;
+&lt;p&gt;Molecule helps during the role development process by providing constant
+feedback, which ensures your role works as designed each step of the
+way.&lt;/p&gt;
+&lt;p&gt;For more advanced scenarios, Molecule supports additional drivers that
+allow you to test roles with different platforms, virtualization and
+cloud providers.&lt;/p&gt;
+&lt;p&gt;Finally, you can integrate Molecule with CI/CD workflows to automate the
+complete testing process for your Ansible roles.&lt;/p&gt;</description><guid>https://ansible.com/blog/developing-and-testing-ansible-roles-with-molecule-and-podman-part-2/</guid><pubDate>Thu, 17 Sep 2020 00:00:00 GMT</pubDate></item><item><title>Developing and Testing Ansible Roles with Molecule and Podman - Part 1</title><link>https://ansible.com/blog/developing-and-testing-ansible-roles-with-molecule-and-podman-part-1/</link><dc:creator>Ricardo Gerardi</dc:creator><description>&lt;h2&gt;Developing and Testing Ansible Roles with Molecule and Podman - Part 1&lt;/h2&gt;
+&lt;p&gt;One of the beauties of the Red Hat Ansible Automation Platform is that
+the language to describe automation is readable not only by a few
+dedicated experts, but by almost anyone across the IT ecosystem. That
+means all IT professionals can take part in the automation, enabling
+cross team collaboration and really drive automation as a culture inside
+an organization. With so many people contributing to the automation, it
+is crucial to test the automation content in-depth. So when you're
+developing new Ansible Content like playbooks, roles and collections,
+it's a good idea to test the content in a test environment before using
+it to automate production infrastructure. Testing ensures the automation
+works as designed and avoids unpleasant surprises down the road. &lt;/p&gt;
+&lt;p&gt;Testing automation content is often a challenge, since it requires the
+deployment of specific testing infrastructure as well as setting up the
+testing conditions to ensure the tests are relevant. Molecule is a
+complete testing framework that helps you develop and test Ansible
+roles, which allows you to focus on the content instead of focusing on
+managing testing infrastructure.&lt;/p&gt;
+&lt;p&gt;According to its official
+&lt;a href="https://molecule.readthedocs.io/en/latest/index.html#"&gt;documentation&lt;/a&gt;,
+Molecule is a project:&lt;/p&gt;
+&lt;p&gt;"designed to aid in the development and testing of Ansible roles. It
+encourages an approach that results in consistently developed roles that
+are well-written, easily understood and maintained."&lt;/p&gt;
+&lt;p&gt;Molecule allows you to test your role with many instances, ensuring it
+works properly across different combinations of operating systems and
+virtualization environments. Without it, you would have to provision and
+maintain a testing environment separately. You would also have to
+configure connectivity to those instances and ensure they are clean and
+ready before every test. Molecule manages those aspects for you in an
+automated and repeatable manner.&lt;/p&gt;
+&lt;p&gt;In this two part series, we will use Molecule to develop and test a new
+Ansible role. The first article will guide you through installing and
+configuring Molecule. In Part 2, we will use Molecule to aid with the
+role development.&lt;/p&gt;
+&lt;p&gt;If this role is part of a Collection, use this approach to develop and
+"unit" test the role. In a future article, we'll see how to use Molecule
+to run integrated tests in a Collection.&lt;/p&gt;
+&lt;p&gt;Molecule uses drivers to provision testing instances using different
+technologies, including Linux containers, virtual machines and cloud
+providers. By default, it comes with three drivers pre-installed: Docker
+and Podman drivers to manage containers, and Delegated that allows you
+to customize your integration. Drivers for other providers are available
+through the open source community.&lt;/p&gt;
+&lt;p&gt;In this article, we will use the &lt;a href="https://podman.io/"&gt;Podman&lt;/a&gt; driver to
+develop and test a new role using Linux containers. Podman is a
+lightweight container engine for Linux that does not require a running
+daemon, and allows execution of containers in "rootless" mode for
+increased security. &lt;/p&gt;
+&lt;p&gt;By using Molecule with the Podman driver, we will develop and test a new
+Ansible role from scratch. This basic role deploys a web application
+supported by the Apache web server. It must run on Red Hat Enterprise
+Linux (RHEL) 8 or Ubuntu 20.04 operating systems.&lt;/p&gt;
+&lt;p&gt;This example shows a common scenario where a role is expected to work on
+different versions of operating systems. Using Podman and Linux
+containers allows us to create many instances to test the role with the
+specific required versions. Since containers are lightweight, they also
+allow us to quickly iterate over the role functionality while developing
+it. Using containers for testing roles is applicable in this situation
+because the role is configuring the running Linux instances only. To
+test other provisioning scenarios or cloud infrastructure, we can use
+the delegated driver or another appropriate driver provided by the
+community.&lt;/p&gt;
+&lt;h3&gt;What do you need?&lt;/h3&gt;
+&lt;p&gt;To follow this tutorial, use a physical or virtual machine running Linux
+with Python 3 and Podman installed. For these examples, we're running
+RHEL 8.2. You also need Podman configured to run rootless containers.
+The installation of Podman is out of the scope of this blog, so please
+refer to the official
+&lt;a href="https://podman.io/getting-started/installation"&gt;documentation&lt;/a&gt; for more
+information. To install Podman on RHEL 8, you can also check the RHEL 8
+&lt;a href="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html-single/building_running_and_managing_containers/index#getting-container-tools_building-running-and-managing-containers"&gt;container
+documentation&lt;/a&gt;.&lt;/p&gt;
+&lt;h3&gt;Getting Started&lt;/h3&gt;
+&lt;p&gt;Molecule is available as a Python package and thus can be installed via
+pip. As a first step, we create a dedicated Python environment for our
+Molecule installation, and install it there:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;$&lt;span class="w"&gt; &lt;/span&gt;mkdir&lt;span class="w"&gt; &lt;/span&gt;molecule-blog
+$&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nb"&gt;cd&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;molecule-blog
+$&lt;span class="w"&gt; &lt;/span&gt;python3&lt;span class="w"&gt; &lt;/span&gt;-m&lt;span class="w"&gt; &lt;/span&gt;venv&lt;span class="w"&gt; &lt;/span&gt;molecule-venv
+$&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nb"&gt;source&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;molecule-venv/bin/activate
+&lt;span class="o"&gt;(&lt;/span&gt;molecule-venv&lt;span class="o"&gt;)&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;$&lt;span class="w"&gt; &lt;/span&gt;pip&lt;span class="w"&gt; &lt;/span&gt;install&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"molecule[lint]"&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Note that we installed Molecule with the "lint" option. By using this
+option, pip also installed the "yamllint" and "ansible-lint" tools that
+allow you to use Molecule to  perform static code analysis of your role,
+ensuring it complies with Ansible coding standards.&lt;/p&gt;
+&lt;p&gt;The installation downloads all of the dependencies from the Internet,
+including Ansible. Verify the installed version:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;$&lt;span class="w"&gt; &lt;/span&gt;molecule&lt;span class="w"&gt; &lt;/span&gt;--version
+molecule&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;3&lt;/span&gt;.0.4
+&lt;span class="w"&gt;   &lt;/span&gt;&lt;span class="nv"&gt;ansible&lt;/span&gt;&lt;span class="o"&gt;==&lt;/span&gt;&lt;span class="m"&gt;2&lt;/span&gt;.9.10&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;python&lt;/span&gt;&lt;span class="o"&gt;==&lt;/span&gt;&lt;span class="m"&gt;3&lt;/span&gt;.6
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Next, let's use the "molecule" command to initialize a new Ansible role.&lt;/p&gt;
+&lt;h3&gt;Initializing a New Ansible Role&lt;/h3&gt;
+&lt;p&gt;Generally speaking, when developing a new Ansible role, you initialize
+it by running the "ansible-galaxy role init" command. In this case,
+instead use "molecule" to initialize the new role. By doing this, you'll
+have the same role structure provided by the "ansible-galaxy" command
+and the basic boilerplate code required to run Molecule tests.&lt;/p&gt;
+&lt;p&gt;By default, Molecule uses the Docker driver to execute tests. Since we
+want to execute tests using "podman", we need to specify the driver name
+using the option &lt;code&gt;--driver-name=podman&lt;/code&gt; when initializing the role with
+"molecule". &lt;/p&gt;
+&lt;p&gt;Switch back to the "molecule-blog" directory and initialize the new role
+"mywebapp" with this command: &lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;$&lt;span class="w"&gt; &lt;/span&gt;molecule&lt;span class="w"&gt; &lt;/span&gt;init&lt;span class="w"&gt; &lt;/span&gt;role&lt;span class="w"&gt; &lt;/span&gt;mywebapp&lt;span class="w"&gt; &lt;/span&gt;--driver-name&lt;span class="o"&gt;=&lt;/span&gt;podman
+--&amp;gt;&lt;span class="w"&gt; &lt;/span&gt;Initializing&lt;span class="w"&gt; &lt;/span&gt;new&lt;span class="w"&gt; &lt;/span&gt;role&lt;span class="w"&gt; &lt;/span&gt;mywebapp...
+Initialized&lt;span class="w"&gt; &lt;/span&gt;role&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;in&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;/home/ricardo/molecule-blog/mywebapp&lt;span class="w"&gt; &lt;/span&gt;successfully.
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Molecule created the structure for your new role in a directory named
+"mywebapp". Switch into this directory and check the content created by
+Molecule:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;$&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nb"&gt;cd&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;mywebapp
+$&lt;span class="w"&gt; &lt;/span&gt;tree
+.
+├──&lt;span class="w"&gt; &lt;/span&gt;defaults
+│&lt;span class="w"&gt;   &lt;/span&gt;└──&lt;span class="w"&gt; &lt;/span&gt;main.yml
+├──&lt;span class="w"&gt; &lt;/span&gt;files
+├──&lt;span class="w"&gt; &lt;/span&gt;handlers
+│&lt;span class="w"&gt;   &lt;/span&gt;└──&lt;span class="w"&gt; &lt;/span&gt;main.yml
+├──&lt;span class="w"&gt; &lt;/span&gt;meta
+│&lt;span class="w"&gt;   &lt;/span&gt;└──&lt;span class="w"&gt; &lt;/span&gt;main.yml
+├──&lt;span class="w"&gt; &lt;/span&gt;molecule
+│&lt;span class="w"&gt;   &lt;/span&gt;└──&lt;span class="w"&gt; &lt;/span&gt;default
+│&lt;span class="w"&gt;       &lt;/span&gt;├──&lt;span class="w"&gt; &lt;/span&gt;converge.yml
+│&lt;span class="w"&gt;       &lt;/span&gt;├──&lt;span class="w"&gt; &lt;/span&gt;INSTALL.rst
+│&lt;span class="w"&gt;       &lt;/span&gt;├──&lt;span class="w"&gt; &lt;/span&gt;molecule.yml
+│&lt;span class="w"&gt;       &lt;/span&gt;└──&lt;span class="w"&gt; &lt;/span&gt;verify.yml
+├──&lt;span class="w"&gt; &lt;/span&gt;README.md
+├──&lt;span class="w"&gt; &lt;/span&gt;tasks
+│&lt;span class="w"&gt;   &lt;/span&gt;└──&lt;span class="w"&gt; &lt;/span&gt;main.yml
+├──&lt;span class="w"&gt; &lt;/span&gt;templates
+├──&lt;span class="w"&gt; &lt;/span&gt;tests
+│&lt;span class="w"&gt;   &lt;/span&gt;├──&lt;span class="w"&gt; &lt;/span&gt;inventory
+│&lt;span class="w"&gt;   &lt;/span&gt;└──&lt;span class="w"&gt; &lt;/span&gt;test.yml
+└──&lt;span class="w"&gt; &lt;/span&gt;vars
+&lt;span class="w"&gt;    &lt;/span&gt;└──&lt;span class="w"&gt; &lt;/span&gt;main.yml
+
+&lt;span class="m"&gt;10&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;directories,&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;12&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;files
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Molecule includes its configuration files under the "molecule"
+subdirectory. When initializing a new role, Molecule adds a single
+scenario named "default". Later, you can add more scenarios to test
+different conditions. For this tutorial, we'll use the "default"
+scenario.&lt;/p&gt;
+&lt;p&gt;Verify the basic configuration in the file &lt;code&gt;molecule/default/molecule.yml&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;$&lt;span class="w"&gt; &lt;/span&gt;cat&lt;span class="w"&gt; &lt;/span&gt;molecule/default/molecule.yml
+---
+dependency:
+&lt;span class="w"&gt;  &lt;/span&gt;name:&lt;span class="w"&gt; &lt;/span&gt;galaxy
+driver:
+&lt;span class="w"&gt;  &lt;/span&gt;name:&lt;span class="w"&gt; &lt;/span&gt;podman
+platforms:
+&lt;span class="w"&gt;  &lt;/span&gt;-&lt;span class="w"&gt; &lt;/span&gt;name:&lt;span class="w"&gt; &lt;/span&gt;instance
+&lt;span class="w"&gt;    &lt;/span&gt;image:&lt;span class="w"&gt; &lt;/span&gt;docker.io/pycontribs/centos:7
+&lt;span class="w"&gt;    &lt;/span&gt;pre_build_image:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nb"&gt;true&lt;/span&gt;
+provisioner:
+&lt;span class="w"&gt;  &lt;/span&gt;name:&lt;span class="w"&gt; &lt;/span&gt;ansible
+verifier:
+&lt;span class="w"&gt;  &lt;/span&gt;name:&lt;span class="w"&gt; &lt;/span&gt;ansible
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;As per our requirements, this file specifies the Podman driver for
+tests. It also defines a default platform "instance" using the container
+image &lt;code&gt;docker.io/pycontribs/centos:7&lt;/code&gt; that you'll change later.&lt;/p&gt;
+&lt;p&gt;Unlike Molecule v2, Molecule v3 does not specify a linter by default.
+Open the configuration file &lt;code&gt;molecule/default/molecule.yml&lt;/code&gt; using your
+favorite editor to include the lint configuration at the end:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;$&lt;span class="w"&gt; &lt;/span&gt;vi&lt;span class="w"&gt; &lt;/span&gt;molecule/default/molecule.yml
+...
+verifier:
+&lt;span class="w"&gt;  &lt;/span&gt;name:&lt;span class="w"&gt; &lt;/span&gt;ansible
+lint:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nb"&gt;set&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;-e
+&lt;span class="w"&gt;  &lt;/span&gt;yamllint&lt;span class="w"&gt; &lt;/span&gt;.
+&lt;span class="w"&gt;  &lt;/span&gt;ansible-lint&lt;span class="w"&gt; &lt;/span&gt;.
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Save and close the configuration file. Run "molecule lint" from the
+project root to lint the entire project:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;$&lt;span class="w"&gt; &lt;/span&gt;molecule&lt;span class="w"&gt; &lt;/span&gt;lint
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;This command returns a few errors because the file "meta/main.yml" is
+missing some required values. Fix these issues by editing the file
+"meta/main.yml" and adding "author", "company", "license", "platforms",
+and removing the blank line at the end. Without comments - for brevity -
+the "meta/main.yaml" looks like this:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;$ vi meta/main.yml&lt;/span&gt;
+&lt;span class="l l-Scalar l-Scalar-Plain"&gt;galaxy_info&lt;/span&gt;&lt;span class="p p-Indicator"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;author&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;Ricardo Gerardi&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;description&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;Mywebapp role deploys a sample web app&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;company&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;Red Hat&lt;/span&gt;
+
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;license&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;MIT&lt;/span&gt;
+
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;min_ansible_version&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;2.9&lt;/span&gt;
+
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;platforms&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;rhel&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;versions&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;8&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;ubuntu&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;versions&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;20.04&lt;/span&gt;
+
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;galaxy_tags&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p p-Indicator"&gt;[]&lt;/span&gt;
+
+&lt;span class="nt"&gt;dependencies&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p p-Indicator"&gt;[]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Now re-lint the project and verify that there are no errors this time.&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;$&lt;span class="w"&gt; &lt;/span&gt;molecule&lt;span class="w"&gt; &lt;/span&gt;lint
+--&amp;gt;&lt;span class="w"&gt; &lt;/span&gt;Test&lt;span class="w"&gt; &lt;/span&gt;matrix
+
+└──&lt;span class="w"&gt; &lt;/span&gt;default
+&lt;span class="w"&gt;    &lt;/span&gt;├──&lt;span class="w"&gt; &lt;/span&gt;dependency
+&lt;span class="w"&gt;    &lt;/span&gt;└──&lt;span class="w"&gt; &lt;/span&gt;lint
+
+--&amp;gt;&lt;span class="w"&gt; &lt;/span&gt;Scenario:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;'default'&lt;/span&gt;
+--&amp;gt;&lt;span class="w"&gt; &lt;/span&gt;Action:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;'dependency'&lt;/span&gt;
+Skipping,&lt;span class="w"&gt; &lt;/span&gt;missing&lt;span class="w"&gt; &lt;/span&gt;the&lt;span class="w"&gt; &lt;/span&gt;requirements&lt;span class="w"&gt; &lt;/span&gt;file.
+Skipping,&lt;span class="w"&gt; &lt;/span&gt;missing&lt;span class="w"&gt; &lt;/span&gt;the&lt;span class="w"&gt; &lt;/span&gt;requirements&lt;span class="w"&gt; &lt;/span&gt;file.
+--&amp;gt;&lt;span class="w"&gt; &lt;/span&gt;Scenario:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;'default'&lt;/span&gt;
+--&amp;gt;&lt;span class="w"&gt; &lt;/span&gt;Action:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;'lint'&lt;/span&gt;
+--&amp;gt;&lt;span class="w"&gt; &lt;/span&gt;Executing:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nb"&gt;set&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;-e
+yamllint&lt;span class="w"&gt; &lt;/span&gt;.
+ansible-lint&lt;span class="w"&gt; &lt;/span&gt;.
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The role is initialized and the basic molecule configuration is in place.
+Let's set up the test instances next.&lt;/p&gt;
+&lt;h3&gt;Setting up Instances&lt;/h3&gt;
+&lt;p&gt;By default, Molecule defines a single instance named "instance" using
+the "Centos:7" image. According to our requirements, we want to ensure
+our role works with RHEL 8 and Ubuntu 20.04. In addition, because this
+role starts the Apache web server as a system service, we need to use
+container images that enable "systemd".&lt;/p&gt;
+&lt;p&gt;Red Hat provides an official &lt;a href="https://www.redhat.com/en/blog/introducing-red-hat-universal-base-image"&gt;Universal Base Image&lt;/a&gt;
+for RHEL 8, which enables "systemd": &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;registry.access.redhat.com/ubi8/ubi-init&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;For Ubuntu, there's no official "systemd" enabled images so we'll use an
+image maintained by Jeff Geerling from the Ansible open-source
+community:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;geerlingguy/docker-ubuntu2004-ansible&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;To enable the "systemd" instances, modify the
+"molecule/default/molecule.yml" configuration file, remove the
+"centos:7" instance and add the two new instances.&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;$&lt;span class="w"&gt; &lt;/span&gt;vi&lt;span class="w"&gt; &lt;/span&gt;molecule/default/molecule.yml
+---
+dependency:
+&lt;span class="w"&gt;  &lt;/span&gt;name:&lt;span class="w"&gt; &lt;/span&gt;galaxy
+driver:
+&lt;span class="w"&gt;  &lt;/span&gt;name:&lt;span class="w"&gt; &lt;/span&gt;podman
+platforms:
+&lt;span class="w"&gt;  &lt;/span&gt;-&lt;span class="w"&gt; &lt;/span&gt;name:&lt;span class="w"&gt; &lt;/span&gt;rhel8
+&lt;span class="w"&gt;    &lt;/span&gt;image:&lt;span class="w"&gt; &lt;/span&gt;registry.access.redhat.com/ubi8/ubi-init
+&lt;span class="w"&gt;    &lt;/span&gt;tmpfs:
+&lt;span class="w"&gt;      &lt;/span&gt;-&lt;span class="w"&gt; &lt;/span&gt;/run
+&lt;span class="w"&gt;      &lt;/span&gt;-&lt;span class="w"&gt; &lt;/span&gt;/tmp
+&lt;span class="w"&gt;    &lt;/span&gt;volumes:
+&lt;span class="w"&gt;      &lt;/span&gt;-&lt;span class="w"&gt; &lt;/span&gt;/sys/fs/cgroup:/sys/fs/cgroup:ro
+&lt;span class="w"&gt;    &lt;/span&gt;capabilities:
+&lt;span class="w"&gt;      &lt;/span&gt;-&lt;span class="w"&gt; &lt;/span&gt;SYS_ADMIN
+&lt;span class="w"&gt;    &lt;/span&gt;command:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"/usr/sbin/init"&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;pre_build_image:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nb"&gt;true&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;-&lt;span class="w"&gt; &lt;/span&gt;name:&lt;span class="w"&gt; &lt;/span&gt;ubuntu
+&lt;span class="w"&gt;    &lt;/span&gt;image:&lt;span class="w"&gt; &lt;/span&gt;geerlingguy/docker-ubuntu2004-ansible
+&lt;span class="w"&gt;    &lt;/span&gt;tmpfs:
+&lt;span class="w"&gt;      &lt;/span&gt;-&lt;span class="w"&gt; &lt;/span&gt;/run
+&lt;span class="w"&gt;      &lt;/span&gt;-&lt;span class="w"&gt; &lt;/span&gt;/tmp
+&lt;span class="w"&gt;    &lt;/span&gt;volumes:
+&lt;span class="w"&gt;      &lt;/span&gt;-&lt;span class="w"&gt; &lt;/span&gt;/sys/fs/cgroup:/sys/fs/cgroup:ro
+&lt;span class="w"&gt;    &lt;/span&gt;capabilities:
+&lt;span class="w"&gt;      &lt;/span&gt;-&lt;span class="w"&gt; &lt;/span&gt;SYS_ADMIN
+&lt;span class="w"&gt;    &lt;/span&gt;command:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"/lib/systemd/systemd"&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;pre_build_image:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nb"&gt;true&lt;/span&gt;
+provisioner:
+&lt;span class="w"&gt;  &lt;/span&gt;name:&lt;span class="w"&gt; &lt;/span&gt;ansible
+verifier:
+&lt;span class="w"&gt;  &lt;/span&gt;name:&lt;span class="w"&gt; &lt;/span&gt;ansible
+lint:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nb"&gt;set&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;-e
+&lt;span class="w"&gt;  &lt;/span&gt;yamllint&lt;span class="w"&gt; &lt;/span&gt;.
+&lt;span class="w"&gt;  &lt;/span&gt;ansible-lint&lt;span class="w"&gt; &lt;/span&gt;.
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;With these parameters, we're mounting the temporary filesystem "/run"
+and "/tmp", as well as the "cgroup" volume for each instance. We're also
+enabling the "SYS_ADMIN" capability, as they are required to run a
+container with Systemd.&lt;/p&gt;
+&lt;p&gt;Also, if you're following this tutorial on a RHEL 8 machine with SELinux
+enabled - as it should - you need to set the "container_manage_cgroup"
+boolean to true to allow containers to run Systemd. See the RHEL 8
+&lt;a href="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html-single/building_running_and_managing_containers/index#starting_services_within_a_container_using_systemd"&gt;documentation&lt;/a&gt;
+for more details:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;setsebool&lt;span class="w"&gt; &lt;/span&gt;-P&lt;span class="w"&gt; &lt;/span&gt;container_manage_cgroup&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Molecule uses an Ansible Playbook to provision these instances. Modify
+and add parameters for provisioning by modifying the "provisioner"
+dictionary in the "molecule/default/molecule.yml" configuration file. It
+accepts the same configuration options provided in an Ansible
+configuration file "ansible.cfg". For example, update the provisioner
+configuration by adding a "defaults" section. Set the Python interpreter
+to "auto_silent" to prevent warnings. Enable the "profile_tasks",
+"timer", and "yaml" callback plugins to output profiling information
+with the playbook output. Then, add the "ssh_connection" section and
+disable SSH pipelining because it does not work with Podman:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="nt"&gt;provisioner&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;ansible&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;config_options&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;defaults&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;interpreter_python&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;auto_silent&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;callback_whitelist&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;profile_tasks, timer, yaml&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;ssh_connection&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;pipelining&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;false&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Save the configuration file and create the instances by running
+"molecule create" from the role root directory:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;$&lt;span class="w"&gt; &lt;/span&gt;molecule&lt;span class="w"&gt; &lt;/span&gt;create
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Molecule runs the provisioning playbook and creates both instances. You
+can check the instances by running "molecule list":&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;$&lt;span class="w"&gt; &lt;/span&gt;molecule&lt;span class="w"&gt; &lt;/span&gt;list
+Instance&lt;span class="w"&gt; &lt;/span&gt;Name&lt;span class="w"&gt;    &lt;/span&gt;Driver&lt;span class="w"&gt; &lt;/span&gt;Name&lt;span class="w"&gt;    &lt;/span&gt;Provisioner&lt;span class="w"&gt; &lt;/span&gt;Name&lt;span class="w"&gt;    &lt;/span&gt;Scenario&lt;span class="w"&gt; &lt;/span&gt;Name&lt;span class="w"&gt;    &lt;/span&gt;Created&lt;span class="w"&gt;    &lt;/span&gt;Converged
+---------------&lt;span class="w"&gt;  &lt;/span&gt;-------------&lt;span class="w"&gt;  &lt;/span&gt;------------------&lt;span class="w"&gt;  &lt;/span&gt;---------------&lt;span class="w"&gt;  &lt;/span&gt;---------&lt;span class="w"&gt;  &lt;/span&gt;-----------
+rhel8&lt;span class="w"&gt;            &lt;/span&gt;podman&lt;span class="w"&gt;         &lt;/span&gt;ansible&lt;span class="w"&gt;             &lt;/span&gt;default&lt;span class="w"&gt;          &lt;/span&gt;&lt;span class="nb"&gt;true&lt;/span&gt;&lt;span class="w"&gt;       &lt;/span&gt;&lt;span class="nb"&gt;false&lt;/span&gt;
+ubuntu&lt;span class="w"&gt;           &lt;/span&gt;podman&lt;span class="w"&gt;         &lt;/span&gt;ansible&lt;span class="w"&gt;             &lt;/span&gt;default&lt;span class="w"&gt;          &lt;/span&gt;&lt;span class="nb"&gt;true&lt;/span&gt;&lt;span class="w"&gt;       &lt;/span&gt;&lt;span class="nb"&gt;false&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;You can also verify that both containers are running in Podman:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;$&lt;span class="w"&gt; &lt;/span&gt;podman&lt;span class="w"&gt; &lt;/span&gt;ps
+CONTAINER&lt;span class="w"&gt; &lt;/span&gt;ID&lt;span class="w"&gt;  &lt;/span&gt;IMAGE&lt;span class="w"&gt;                                                   &lt;/span&gt;COMMAND&lt;span class="w"&gt;               &lt;/span&gt;CREATED&lt;span class="w"&gt;             &lt;/span&gt;STATUS&lt;span class="w"&gt;                 &lt;/span&gt;PORTS&lt;span class="w"&gt;  &lt;/span&gt;NAMES
+2e2f14eaa37b&lt;span class="w"&gt;  &lt;/span&gt;docker.io/geerlingguy/docker-ubuntu2004-ansible:latest&lt;span class="w"&gt;  &lt;/span&gt;/lib/systemd/syst...&lt;span class="w"&gt;  &lt;/span&gt;About&lt;span class="w"&gt; &lt;/span&gt;a&lt;span class="w"&gt; &lt;/span&gt;minute&lt;span class="w"&gt; &lt;/span&gt;ago&lt;span class="w"&gt;  &lt;/span&gt;Up&lt;span class="w"&gt; &lt;/span&gt;About&lt;span class="w"&gt; &lt;/span&gt;a&lt;span class="w"&gt; &lt;/span&gt;minute&lt;span class="w"&gt; &lt;/span&gt;ago&lt;span class="w"&gt;         &lt;/span&gt;ubuntu
+2ce0a0ea8692&lt;span class="w"&gt;  &lt;/span&gt;registry.access.redhat.com/ubi8/ubi-init:latest&lt;span class="w"&gt;         &lt;/span&gt;/usr/sbin/init&lt;span class="w"&gt;        &lt;/span&gt;About&lt;span class="w"&gt; &lt;/span&gt;a&lt;span class="w"&gt; &lt;/span&gt;minute&lt;span class="w"&gt; &lt;/span&gt;ago&lt;span class="w"&gt;  &lt;/span&gt;Up&lt;span class="w"&gt; &lt;/span&gt;About&lt;span class="w"&gt; &lt;/span&gt;a&lt;span class="w"&gt; &lt;/span&gt;minute&lt;span class="w"&gt; &lt;/span&gt;ago&lt;span class="w"&gt;         &lt;/span&gt;rhel8
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;While developing the role, Molecule uses the running instances to test
+it. In case a test fails, or an error causes an irreversible change that
+requires you to start over, delete these instances by running "molecule
+destroy" and recreate them with "molecule create" at any time.&lt;/p&gt;</description><guid>https://ansible.com/blog/developing-and-testing-ansible-roles-with-molecule-and-podman-part-1/</guid><pubDate>Tue, 25 Aug 2020 00:00:00 GMT</pubDate></item></channel></rss>

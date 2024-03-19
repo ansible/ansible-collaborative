@@ -1,0 +1,151 @@
+<p><img alt="Ansible Bullhorn banner" src="/images/bullhorn-banner-mango.png"></p>
+<p><em>A Newsletter for the Ansible Developer Community</em>
+<em>Issue #83, 2022-12-02 (<a href="https://us19.campaign-archive.com/home/?u=56d874e027110e35dea0e03c1&amp;id=d6635f5420">Past Issues</a>)</em></p>
+<p>Welcome to <a href="https://github.com/ansible/community/wiki/News#the-bullhorn">The Bullhorn</a>, our newsletter for the Ansible developer community. If you have any questions or content you’d like to share, you're welcome to chat with us in the <a href="https://matrix.to/#/#social:ansible.com">Ansible Social room on Matrix</a>, and mention <a href="https://matrix.to/#/@newsbot:ansible.im"><code>newsbot</code></a> to have your news item tagged for review for the next weekly issue!</p>
+<!-- TEASER_END -->
+
+<h2>KEY DATES ⏱️</h2>
+<p><a href="https://matrix.to/#/@cybette:ansible.im">cybette</a> said</p>
+<blockquote>
+<ul>
+<li>2022-12-05: <a href="https://groups.google.com/g/ansible-devel/c/IQ7VPnw9yS8">ETA for Ansible-Core 2.14.1 and 2.13.7 releases</a></li>
+<li>2022-12-06: <a href="https://docs.ansible.com/ansible/devel/roadmap/COLLECTIONS_6.html">ETA for Ansible 6.7.0 release</a>, the final Ansible 6.x release</li>
+<li>2022-12-06: <a href="https://docs.ansible.com/ansible/devel/roadmap/COLLECTIONS_7.html">ETA for Ansible 7.1.0 release</a></li>
+<li>2022-12-06: <a href="https://github.com/ansible/community/issues/643">DaWGs meeting</a>, 16:00 UTC</li>
+<li>2022-12-07: <a href="https://github.com/ansible/community/issues/645">Community WG meeting</a>, 19:00 UTC (propose topics <a href="https://github.com/ansible-community/community-topics/issues">here</a>)</li>
+<li>2022-12-08: <a href="https://github.com/ansible/community/wiki/News#the-bullhorn">Bullhorn #84 content deadline</a>, 18:00 UTC</li>
+</ul>
+</blockquote>
+<h2>GENERAL NEWS UPDATES 🔈️</h2>
+<p><a href="https://matrix.to/#/@samccann:ansible.im">samccann</a> shared</p>
+<blockquote>
+<p>Ansible EOL docs for version 2.5 have been archived <a href="https://docs.ansible.com/archive/ansible/2.5/">here</a>. Update any bookmarks you have. We will redirect all traffic from the old 2.5 site to <code>/latest/</code> starting next week.</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@felixfontein:libera.chat">felixfontein</a> contributed</p>
+<blockquote>
+<p>If you are using GHA to run tests on collections, you might have noticed strange failures when using ansible-test's <code>--docker</code> option when using <code>ubuntu-latest</code>. Read more about this and how to fix this in this <a href="https://github.com/ansible-collections/news-for-maintainers/issues/28">issue</a>.</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@cybette:ansible.im">cybette</a> contributed</p>
+<blockquote>
+<p><a href="https://groups.google.com/g/ansible-devel/c/IQ7VPnw9yS8">Ansible-Core holiday release schedule</a> - due the the holiday season, the Dec 26/Jan 2 ansible-core release window will be skipped. Ansible-core 2.13.7 and 2.14.1 will be released on December 5, and the next releases will be at the end of January 2023.</p>
+</blockquote>
+<h2>MAJOR NEW RELEASES 🏆️</h2>
+<h3>Ansible <a href="https://github.com/ansible-collections">↗</a> 📦️</h3>
+<p>The <code>Ansible</code> package includes <code>ansible-core</code> and is a batteries-included package that provides a curated set of Ansible collections. See the <a href="https://docs.ansible.com/ansible/devel/roadmap/ansible_roadmap_index.html">Ansible roadmaps</a> for future release plans.</p>
+<p><a href="https://matrix.to/#/@ompragash:ansible.im">ompragash</a> said</p>
+<blockquote>
+<p>Ansible 7 PPA package is available for the Ubuntu jammy (22.04LTS) &amp; kinetic (22.10) releases!🎉</p>
+<p>Contributors are welcome to test the package and provide us feedback!❤️</p>
+<p>Follow the instructions to install and test Ansible 7 on ubuntu:jammy docker container 🚀</p>
+<p>```</p>
+<h1>docker run --name=test-ansible7 -td ubuntu:jammy bash</h1>
+<h1>docker exec -it test-ansible7 bash</h1>
+<p>root@ed6c0c4e2adc:/# TZ=America/New_York &amp;&amp; ln -snf /usr/share/zoneinfo/$TZ /etc/localtime &amp;&amp; echo $TZ &gt; /etc/timezone
+root@ed6c0c4e2adc:/# apt-get update &amp;&amp; apt -y install software-properties-common
+root@ed6c0c4e2adc:/# add-apt-repository ppa:ansible/testing-ansible-7 -y &amp;&amp; apt-get update
+root@ed6c0c4e2adc:/# apt install ansible -y
+```</p>
+<p>☕️ If you run into installation issues or technical errors, kindly report it on the ansible-community/ppa repo <a href="https://github.com/ansible-community/ppa/issues/new">here</a>.</p>
+</blockquote>
+<h3>AWX Project <a href="https://github.com/ansible/awx">↗</a></h3>
+<p>AWX provides a web-based user interface, REST API, and task engine built on top of Ansible.</p>
+<p><a href="https://matrix.to/#/@lyasin:matrix.org">Lila Yasin</a> shared</p>
+<blockquote>
+<p>We're happy to announce that the next release of AWX, version 21.10.0 is now available!
+Some notable features include:
+* Add multiple asset export for awx cli
+* Allow setting max forks and max concurrent jobs per container/instance group</p>
+<p>In addition, AWX Operator version 1.1.1 has also been released!</p>
+<p>Please see the releases pages for more details:
+* AWX: <a href="https://github.com/ansible/awx/releases/tag/21.10.0">https://github.com/ansible/awx/releases/tag/21.10.0</a>
+* Operator: <a href="https://github.com/ansible/awx-operator/releases/tag/1.1.1">https://github.com/ansible/awx-operator/releases/tag/1.1.1</a></p>
+</blockquote>
+<h2>PROJECT UPDATES 🛠️</h2>
+<p><a href="https://matrix.to/#/@dmsimard:matrix.org">dmsimard</a> contributed</p>
+<blockquote>
+<p>The long overdue release of ara 1.6.0 should come out next week!</p>
+<p>There will be a blog post about the highlights but in the meantime, you can find the full changelog for the latest release candidate on <a href="https://github.com/ansible-community/ara/releases/tag/1.6.0rc2">GitHub</a>.</p>
+<p>If you'd like to test it out ahead of the release: check out the <a href="https://demo.recordsansible.org">live demo</a> or read the upgrade notes in the changelog, find the <a href="https://github.com/ansible-community/ara#getting-started">getting started guide</a> and use <code>pip install --pre ara[server]</code> when installing from PyPI or the tag <code>centos9-source-latest</code> instead of <code>latest</code> when using container images.</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@ipvsean:matrix.org">Sean Cavanaugh</a> contributed</p>
+<blockquote>
+<p><a href="https://www.ansible.com/blog/walking-on-clouds-with-ansible">New blog post</a> out on ansible.com for the new fully certified collection cloud.terraform, thanks to Nuno Martins for writing this one up.</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@jonnyfiveiq:matrix.org">John Hardy</a> shared</p>
+<blockquote>
+<p><a href="https://www.ansible.com/blog/importing/exporting-collections-in-automation-hubs">NEW blog post</a> - How to import/export collections in Automation Hub from CLI, API or UI for Connected or Disconnected environments.</p>
+</blockquote>
+<h2>COLLECTION UPDATES 🪄</h2>
+<p><a href="https://matrix.to/#/@felixfontein:libera.chat">felixfontein</a> shared</p>
+<blockquote>
+<p>community.sops 1.5.0 (<a href="https://github.com/ansible-collections/community.sops/blob/main/CHANGELOG.rst#v1-5-0">changelog</a>) has been released with a role for installing sops, and two playbooks for installing sops on localhost and remote targets. This makes it easier to use community.sops in Execution Environments.</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@sdodsley:matrix.org">Simon Dodsley</a> shared</p>
+<blockquote>
+<p>purestorage.fusion 1.2.0 (<a href="https://github.com/Pure-Storage-Ansible/Fusion-Collection/blob/master/CHANGELOG.rst#v1-2-0">changelog</a>) has been released.</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@adhawkins:libera.chat">adhawkins</a> contributed</p>
+<blockquote>
+<p>adhawkins.borgbase 1.0.1 (<a href="https://github.com/adhawkins/ansible-borgbase/releases/tag/v1.0.1">release info</a>) has been released with a couple of fixes - one which prevented creating new repos.</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@amhatre:matrix.org">Ashwini Mhatre</a> said</p>
+<blockquote>
+<p>We're happy to announce the following networking collection updates:
+* <a href="https://github.com/ansible-collections/ansible.utils/releases/tag/2.8.0">ansible.utils 2.8.0</a> has been released with new features (<a href="https://github.com/ansible-collections/ansible.utils/blob/2.8.0/CHANGELOG.rst">changelog</a>)
+* <a href="https://github.com/ansible-collections/cisco.iosxr/releases/tag/4.0.3">cisco.iosxr 4.0.3</a> has been released with bugfixes (<a href="https://github.com/ansible-collections/cisco.iosxr/blob/4.0.3/CHANGELOG.rst">changelog</a>)
+* <a href="https://github.com/ansible-collections/cisco.nxos/releases/tag/4.0.1">cisco.nxos 4.0.1</a> has been released with bugfixes (<a href="https://github.com/ansible-collections/cisco.nxos/blob/4.0.1/CHANGELOG.rst">changelog</a>)
+* <a href="https://github.com/ansible-collections/junipernetworks.junos/releases/tag/4.1.0">junipernetworks.junos 4.1.0</a> has been released with new features (<a href="https://github.com/ansible-collections/junipernetworks.junos/blob/4.1.0/CHANGELOG.rst">changelog</a>)</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@felixfontein:libera.chat">felixfontein</a> contributed</p>
+<blockquote>
+<p>community.crypto 2.9.0 (<a href="https://github.com/ansible-collections/community.crypto/blob/main/CHANGELOG.rst#v2-9-0">changelog</a>) has been released with a new feature for <code>community.crypto.x509_certificate_info</code>.</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@andersson007_:matrix.org">andersson007_</a> said</p>
+<blockquote>
+<p>The community.postgresql collection version 2.3.1 has been released (<a href="https://github.com/ansible-collections/community.postgresql/blob/main/CHANGELOG.rst">changelog</a>). Thanks to <a href="https://github.com/vonschultz">vonschultz</a> and <a href="https://github.com/hunleyd">hunleyd</a>!</p>
+</blockquote>
+<h3>Collection Removal</h3>
+<p><a href="https://matrix.to/#/@mariolenz:matrix.org">mariolenz</a> said</p>
+<blockquote>
+<p>It looks like the <a href="https://github.com/ansible-collections/community.google">community.google</a> collection is effectively unmaintained. According to the current <a href="https://github.com/ansible-collections/overview/blob/main/removal_from_ansible.rst#unmaintained-collections">community guidelines for collections</a>, we consider removing it in a future version of the Ansible community package. Please see <a href="https://github.com/ansible-community/community-topics/issues/160">Unmaintained collection: community.google</a> for more information or to announce that you’re interested in taking over the maintenance of <code>community.google</code>.</p>
+<p>At least one month after this announcement appears here and in the <a href="https://github.com/ansible-collections/community.google/issues/21">collection’s issue tracker</a>, the Ansible Community Steering Committee will vote on whether this collection is considered unmaintained and will be removed, or whether it will be kept. If it will be removed, this will happen earliest in Ansible 9.0.0. Please note that you can still manually install the collection with <code>ansible-galaxy collection install community.google</code> even when it has been removed from Ansible.</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@mariolenz:matrix.org">mariolenz</a> said</p>
+<blockquote>
+<p>It looks like the <a href="https://github.com/ansible-collections/community.fortios">community.fortios</a> collection is effectively unmaintained. According to the current <a href="https://github.com/ansible-collections/overview/blob/main/removal_from_ansible.rst#unmaintained-collections">community guidelines for collections</a>, we consider removing it in a future version of the Ansible community package. Please see <a href="https://github.com/ansible-community/community-topics/issues/162">Unmaintained collection: community.fortios</a> for more information or to announce that you’re interested in taking over the maintenance of (a fork of) <code>community.fortios</code>.</p>
+<p>At least one month after this announcement appears here and in the <a href="https://github.com/ansible-collections/community.fortios/issues/19">collection’s issue tracker</a>, the Ansible Community Steering Committee will vote on whether this collection is considered unmaintained and will be removed, or whether it will be kept. If it will be removed, this will happen earliest in Ansible 9.0.0. Please note that you can still manually install the collection with <code>ansible-galaxy collection install community.fortios</code> even when it has been removed from Ansible.</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@gotmax:matrix.org">gotmax (He/Him)</a> shared</p>
+<blockquote>
+<p>cyberark.pas is subject to removal from version 9 of the Ansible community package due to unresolved <a href="https://github.com/ansible-collections/overview/blob/main/collection_requirements.rst">Collection Requirements</a> violations. Please see <a href="https://github.com/ansible-community/community-topics/issues/168">community-topics#168</a> for more information.</p>
+</blockquote>
+<h2>FEEDBACK WANTED</h2>
+<p><a href="https://matrix.to/#/@mwester:matrix.org">mwester</a> shared</p>
+<blockquote>
+<h3>Ansible Modules for configuring SentinelOne Management Consoles</h3>
+<p>Hey Ansible Community! Colleagues and I developed some Ansible Modules for configuring SentinelOne Management Consoles and we bundled them into an Ansible collection sva.sentinelone. We would like to have some community feedback and maybe some of you have SentinelOne in use and would like to manage your environment with our collection. You can find the collection on <a href="https://galaxy.ansible.com/sva/sentinelone">Ansible Galaxy</a> or <a href="https://github.com/svalabs/ansible-collection-sva.sentinelone">Github</a>.</p>
+</blockquote>
+<h2>PROPOSALS - DISCUSS AND VOTE! 🗳️</h2>
+<p><a href="https://matrix.to/#/@mariolenz:matrix.org">mariolenz</a> contributed</p>
+<blockquote>
+<p>As mentioned in <a href="https://mailchi.mp/redhat/the-bullhorn-79">The Bullhorn #79</a>, we consider <code>cisco.nso</code> an effectively unmaintained collection. Therefore, we've opened a community / steering committee <a href="https://github.com/ansible-community/community-topics/discussions/165">vote</a> on removing it from the Ansible 9 community package.</p>
+</blockquote>
+<h2>COMMUNITY UPDATES 👂️</h2>
+<p><a href="https://matrix.to/#/@cybette:ansible.im">cybette</a> shared</p>
+<blockquote>
+<h3>Ansible Contributor Survey</h3>
+<p>Feedback is really important to us so we can keep on improving the Contributor Experience for our wonderful Ansible Community. Please take a few minutes to fill in the <a href="https://www.surveymonkey.co.uk/r/7PK28F8">Contributor Survey</a> that we have put together, and thanks to those who've already done so!</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@cybette:ansible.im">cybette</a> contributed</p>
+<blockquote>
+<p>The Ansible Community Team has a presence on Mastodon as <a href="https://fosstodon.org/@ansible">@ansible@fosstodon.org</a> - we look forward to sharing news and engaging with the community in the fediverse!</p>
+</blockquote>
+<h2>COMMUNITY EVENTS AND MEETUPS 📅</h2>
+<p><a href="https://matrix.to/#/@cybette:ansible.im">cybette</a> said</p>
+<blockquote>
+<h3>Cfgmgmtcamp 2023 and Ansible Contributor Summit</h3>
+<p>Join us Feb 6-8, 2023 in Ghent for <a href="https://cfgmgmtcamp.eu/ghent2023/">CfgMgmtCamp</a>. Check out the <a href="https://cfp.cfgmgmtcamp.org/2023/cfp">CFP</a> looking for presentations, workshops, and fringes. The Dec 6 deadline is fast approaching!</p>
+<p>We will have Ansible Contributor Summit as part of Cfgmgmtcamp on Feb 8, 2023. More details to follow!</p>
+</blockquote>
+<h2>THAT'S ALL FOR NOW!</h2>
+<p>Have any questions you’d like to ask, or issues you’d like to see covered? Please ask in <a href="https://matrix.to/#/#social:ansible.com">#social:ansible.com</a>! See you next time!</p>

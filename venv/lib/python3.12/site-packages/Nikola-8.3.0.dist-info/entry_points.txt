@@ -1,0 +1,2 @@
+[console_scripts]
+nikola = nikola.__main__:main

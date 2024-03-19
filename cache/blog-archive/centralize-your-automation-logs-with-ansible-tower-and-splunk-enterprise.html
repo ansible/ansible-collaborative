@@ -1,0 +1,228 @@
+<h1>Centralize your Automation Logs with Ansible Tower and Splunk Enterprise</h1>
+<p>For many IT teams, automation is a core component these days. But
+automation is not something on it's own - it is a part of a puzzle and
+needs to interact with the surrounding IT. So one way to grade
+automation is how well it integrates with other tooling of the IT
+ecosystem - like the central logging infrastructure. After all, through
+the central logging the IT team can quickly survey what is happening,
+where, and what the state of it is.</p>
+<p>The Red Hat Ansible Automation Platform is a solution to build and
+operate automation at scale. As part of the platform, Ansible Tower
+integrates well with external logging solutions, such as Splunk, and it
+is easy to set that up. In this blog post we will demonstrate how to
+perform the necessary configurations in both Splunk and Ansible Tower to
+let them work well together.</p>
+<h2>Setup of Splunk</h2>
+<p>The first step is to get Splunk up and running. You can download a
+Splunk RPM after you register yourself at the <a href="https://www.splunk.com/en_us">Splunk home
+page</a>.</p>
+<p>After the registration, download the rpm and perform the installation:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>rpm<span class="w"> </span>-ivh<span class="w"> </span>splunk-8.0.3-a6754d8441bf-linux-2.6-x86_64.rpm
+warning:<span class="w"> </span>splunk-8.0.3-a6754d8441bf-linux-2.6-x86_64.rpm:<span class="w"> </span>Header<span class="w"> </span>V4<span class="w"> </span>RSA/SHA256<span class="w"> </span>Signature,<span class="w"> </span>key<span class="w"> </span>ID<span class="w"> </span>b3cd4420:<span class="w"> </span>NOKEY
+Verifying...<span class="w">                    </span><span class="c1">################################# [100%]</span>
+Preparing...<span class="w">                    </span><span class="c1">################################# [100%]</span>
+Updating<span class="w"> </span>/<span class="w"> </span>installing...
+<span class="w">   </span><span class="m">1</span>:splunk-8.0.3-a6754d8441bf<span class="w">  </span><span class="c1">################################# [100%]</span>
+<span class="nb">complete</span>
+</pre></div>
+
+<p>After the installation is complete, execute the command below to start
+the service and make the necessary settings.</p>
+<div class="code"><pre class="code literal-block">$<span class="w">  </span>/opt/splunk/bin/splunk<span class="w"> </span>start<span class="w"> </span>-accept-license
+</pre></div>
+
+<p>Accept the terms, set the username and password, and wait for the
+service to start.</p>
+<div class="code"><pre class="code literal-block">All<span class="w"> </span>preliminary<span class="w"> </span>checks<span class="w"> </span>passed.
+
+Starting<span class="w"> </span>splunk<span class="w"> </span>server<span class="w"> </span>daemon<span class="w"> </span><span class="o">(</span>splunkd<span class="o">)</span>...
+Done
+<span class="w">                                                        </span><span class="o">[</span><span class="w">  </span>OK<span class="w">  </span><span class="o">]</span>
+
+Waiting<span class="w"> </span><span class="k">for</span><span class="w"> </span>web<span class="w"> </span>server<span class="w"> </span>at<span class="w"> </span>http://127.0.0.1:8000<span class="w"> </span>to<span class="w"> </span>be<span class="w"> </span>available...<span class="w"> </span>Done
+
+
+If<span class="w"> </span>you<span class="w"> </span>get<span class="w"> </span>stuck,<span class="w"> </span>we<span class="err">&#39;</span>re<span class="w"> </span>here<span class="w"> </span>to<span class="w"> </span>help.
+Look<span class="w"> </span><span class="k">for</span><span class="w"> </span>answers<span class="w"> </span>here:<span class="w"> </span>http://docs.splunk.com
+
+The<span class="w"> </span>Splunk<span class="w"> </span>web<span class="w"> </span>interface<span class="w"> </span>is<span class="w"> </span>at<span class="w"> </span>http://splunk-server:8000
+</pre></div>
+
+<p>Access the web interface and enter the username and password. </p>
+<h2>Configuring Data Input with Red Hat Ansible Content Collections</h2>
+<p>To receive the Ansible Tower logs in Splunk, we need to create a Data
+Input TCP. To do that we will use the <a href="https://cloud.redhat.com/ansible/automation-hub/splunk/es">Splunk Enterprise Security
+Content
+Collection</a>
+available on Automation Hub as part of the Red Hat-Maintained Content
+Collections release.</p>
+<p>This Collection has been created to support Splunk Enterprise Security,
+a security product delivered as an add-on application for Splunk
+Enterprise and extends that to deliver Security Information and Event
+Management (SIEM) functionalities. Splunk Enterprise Security leverages
+many capabilities of the underlying platform hence, despite having been
+developed for security automation use cases, most of the modules in this
+Collection can be used to support Day 0 and  Day 1 IT Operations use
+cases as well. If you want to read more about how Ansible Content
+Collections developed as part of the Ansible security automation
+initiative can help to overcome security operation challenges, check out
+our blog post "Getting started with Ansible security automation: investigation enrichment"
+from our Roland Wolters.</p>
+<p>The Splunk Enterprise Security Content Collection has the following
+modules as of today:</p>
+<ul>
+<li><code>adaptive_response_notable_event</code> - Manage Splunk Enterprise Security Notable Event Adaptive Responses</li>
+<li><code>correlation_search</code> - Manage Splunk Enterprise Security Correlation Searches</li>
+<li><code>correlation_search_info</code> - Manage Splunk Enterprise Security Correlation Searches</li>
+<li><code>data_input_monitor</code> - Manage Splunk Data Inputs of type Monitor</li>
+<li><code>data_input_network</code> - Manage Splunk Data Inputs of type TCP or UDP</li>
+</ul>
+<p>If you want to learn more about collections in general and how to get
+started with them, check out our blog post "Hands on with Ansible
+collections" from our Ajay Chenampara.</p>
+<p>Coming back to our use case, we will use the data_input_network module.
+First let's install the Collection <code>splunk.es</code>:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>ansible-galaxy<span class="w"> </span>collection<span class="w"> </span>install<span class="w"> </span>splunk.es
+Process<span class="w"> </span>install<span class="w"> </span>dependency<span class="w"> </span>map
+Starting<span class="w"> </span>collection<span class="w"> </span>install<span class="w"> </span>process
+Installing<span class="w"> </span><span class="s1">&#39;splunk.es:1.0.0&#39;</span><span class="w"> </span>to<span class="w"> </span><span class="s1">&#39;/root/.ansible/collections/ansible_collections/splunk/es&#39;</span>
+</pre></div>
+
+<p>After the installation of the Collection, the next step is to create our inventory:</p>
+<div class="code"><pre class="code literal-block"><span class="k">[splunk]</span>
+<span class="na">splunk.customer.com</span>
+
+<span class="k">[splunk:vars]</span>
+<span class="na">ansible_network_os</span><span class="o">=</span><span class="s">splunk.es.splunk</span>
+<span class="na">ansible_user</span><span class="o">=</span><span class="s">USER</span>
+<span class="na">ansible_httpapi_pass</span><span class="o">=</span><span class="s">PASS</span>
+<span class="na">ansible_httpapi_port</span><span class="o">=</span><span class="s">8089</span>
+<span class="na">ansible_httpapi_use_ssl</span><span class="o">=</span><span class="s">yes</span>
+<span class="na">ansible_httpapi_validate_certs</span><span class="o">=</span><span class="s">True</span>
+<span class="na">ansible_connection</span><span class="o">=</span><span class="s">httpapi</span>
+</pre></div>
+
+<p>Note that we set the connection type to httpapi: the communication with
+Splunk Enterprise Security takes place via REST API. Also, remember to
+adjust the authentication, port and certificate data according to your
+environment.</p>
+<p>Next let's create the playbook which will set up the input network:</p>
+<div class="code"><pre class="code literal-block"><span class="nn">---</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Splunk Data Input</span>
+<span class="w">  </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">splunk</span>
+<span class="w">  </span><span class="nt">gather_facts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span>
+<span class="w">  </span><span class="nt">collections</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">splunk.es</span>
+
+<span class="w">  </span><span class="nt">tasks</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">create splunk_data_input_network</span>
+<span class="w">      </span><span class="nt">splunk.es.data_input_network</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;9199&quot;</span>
+<span class="w">        </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;tcp&quot;</span>
+<span class="w">        </span><span class="nt">source</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;http:tower_logging_collections&quot;</span>
+<span class="w">        </span><span class="nt">sourcetype</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;httpevent&quot;</span>
+<span class="w">        </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;present&quot;</span>
+</pre></div>
+
+<p>Let's run the playbook to create the input network:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>ansible-playbook<span class="w"> </span>-i<span class="w"> </span>inventory.ini<span class="w"> </span>splunk_with_collections.yml
+</pre></div>
+
+<h2>Validating Data Input</h2>
+<p>To validate if our data input was created, in the Splunk web interface,
+click on <strong>Settings -&gt; Data inputs -&gt; TCP</strong>. Verify that the TCP port is
+listed as a source type "httpevent" like in the screenshot below:</p>
+<p><img alt="Splunk blog one" src="/images/posts/archive/splunk-blog-one.png"></p>
+<p>We can also validate the data input by checking if the port 9199 is open
+and does receive connections:</p>
+<div class="code"><pre class="code literal-block">$<span class="w">  </span>telnet<span class="w"> </span>splunk.customer.com<span class="w"> </span><span class="m">9199</span>
+Trying<span class="w"> </span><span class="m">1</span>.2.3.4...
+Connected<span class="w"> </span>to<span class="w"> </span>splunk.customer.com.
+Escape<span class="w"> </span>character<span class="w"> </span>is<span class="w"> </span><span class="s1">&#39;^]&#39;</span>.
+</pre></div>
+
+<h2>Configuring Ansible Tower</h2>
+<p>The activity stream logs in Ansible Tower provide information on
+creating and deleting objects, such as logging activities within the
+Ansible Tower, for more information and details, check out <a href="https://docs.ansible.com/ansible-tower/latest/html/administration/logging.html">the
+documentation</a>.</p>
+<p>After Splunk is all set up, let's dive into Ansible Tower, and connect
+both tools with each other! First we are going to configure Ansible
+Tower to send logs to Data Input  in Splunk. For this, we enter the
+Ansible Tower Settings: there, pick "System" and click  "Logging". This
+opens an overview of the logging configuration of Ansible Tower as shown
+below. In there, we specify the URL for Splunk as well as the URL
+context <code>/services/collector/event</code>. Also, we have to provide the
+port, here 9199, and select the right aggregator type, here Splunk. Now
+select protocol TCP, and click first the "Save" button and then, to
+verify our configuration, the "Test" button.</p>
+<p><img alt="Splunk blog two" src="/images/posts/archive/splunk-blog-two.png"></p>
+<h2>Viewing the logs in Splunk</h2>
+<p>Now that Ansible Tower is all set up, let's head back to Splunk and
+check if the logs are making their way there. In Splunk home, click on
+"Search &amp; Reporting". In "What to Search" pick "Data Summary". A window
+will open up, where you can click on the "Sources" column:</p>
+<p><img alt="Splunk blog three" src="/images/posts/archive/splunk-blog-three.png"></p>
+<p>Click on the source http:tower_logging_collection, this will take us to
+the Search screen, where it is possible to view the records received
+from Ansible Tower:</p>
+<p><img alt="splunk blog" src="/images/posts/archive/splunk-blog-four.png"></p>
+<p>If all is working fine, you should see the last log events received from
+Ansible Tower, showing that the two tools are now properly connected.
+Congratulations!</p>
+<p>But we don't want to stop there: after all, logging is all about
+analyzing the incoming information and making sense of it. So let's
+create a filter: click on the field you'd like to filter, to be filtered
+and then pick "Add to search".</p>
+<p><img alt="splunk blog five" src="/images/posts/archive/splunk-blog-five.png"></p>
+<p>After that, the search field will be filled with our ﬁlter.</p>
+<p><img alt="splunk blog six" src="/images/posts/archive/splunk-blog-six.png"></p>
+<h2>Creating a simple dashboard</h2>
+<p>In this example, we will create a simple graph of the events generated
+by Ansible Tower.</p>
+<p>We will use the previous step on how to create a filter, but this time
+we will filter the event field and in the search field we will leave it
+this way:</p>
+<div class="code"><pre class="code literal-block"><span class="nv">source</span><span class="o">=</span><span class="s2">&quot;http:tower_logging_collection&quot;</span><span class="p">|</span><span class="w"> </span>spath<span class="w"> </span>event<span class="w"> </span><span class="p">|</span><span class="w"> </span>search<span class="w"> </span><span class="nv">event</span><span class="o">=</span>*
+</pre></div>
+
+<p>With <code>event = *</code> all events are filtered.  After that click on the
+"All Fields" button on the left side menu, select the event field and
+click on exit. That done, click on Visualization and then select the
+Pivot option, in the window select "Selected Fields (1)" and click OK.</p>
+<p><img alt="splunk blog seven" src="/images/posts/archive/splunk-blog-seven.png"></p>
+<p>In this window, we will keep the filters as "All time", in "Split
+Columns" select event and then "Add To Table", after that we can
+already have a view of the information separated in columns with the
+name of the column being the event and their number of appearances in
+the logs.</p>
+<p><img alt="splunk blog eight" src="/images/posts/archive/splunk-blog-eight.png"></p>
+<p>After viewing the information in columns, click "Save As" and select
+"Dashboard Panel".  In "Dashboard" select "New", in "Dashboard
+Title" define the name you want for the Dashboard, this name will
+generate the Dashboard ID, in Panel Title and Model Title, define the
+name of this search, for example all_events and click Save and then View
+Dashboard.</p>
+<p><img alt="splunk blog nine" src="/images/posts/archive/splunk-blog-nine.png"></p>
+<p>In the following screen, click on Edit in the upper right menu then in
+the all_events panel click on "Select Visualization", choose the
+visualization you want, in this example we select "Bar Chart" and click
+"Save".</p>
+<p><img alt="splunk blog ten" src="/images/posts/archive/splunk-blog-ten.png"></p>
+<p>Now that we have our dashboard with a chart listing all events, repeat
+the process of creating filters and in saving the search, select an
+existing dashboard to add new panels to the dashboard we created.</p>
+<p>After creating some panels and adding them to the existing dashboard, we
+will have a visualization like this:</p>
+<p><img alt="splunk blog eleven" src="/images/posts/archive/splunk-blog-eleven.png"></p>
+<p>To use more advanced features of integrating Ansible Tower with Splunk,
+see the Collection
+<a href="https://cloud.redhat.com/ansible/automation-hub/splunk/enterprise_security">Splunk_enterprise_security,</a>
+which will allow you to configure Data Inputs and search correlation
+options, among other features.</p>
+<h2>Takeaways and where to go next</h2>
+<p>In this post, we demonstrate how to send the Ansible Tower usage logs to
+Splunk to enable a centralized view of all events generated by Ansible
+Tower. That way we can create graphs from various information, such as
+the number of playbooks that failed or succeeded, modules most used in
+the executed playbooks and so on.</p>

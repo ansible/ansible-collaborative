@@ -1,0 +1,293 @@
+<h1>Ansible and Infoblox Roles Deep Dive</h1>
+<p>As Sean Cavanaugh mentioned in his earlier Infoblox blog
+post, the release of Ansible
+2.5 introduced a lookup plugin, a dynamic inventory script, and five
+modules that allow for Infoblox automation. A combination of these
+modules and lookups in a role provides a powerful DNS automation
+framework.</p>
+<h2>Summary</h2>
+<p>Today we are going to demonstrate how automating Infoblox Core Network
+Services using Ansible can help make managing IP addresses and routing
+traffic across your network easy, quick, and reliable. Your network
+systems for virtualization and cloud require rapid provisioning life
+cycles; Infoblox helps you manage those lifecycles. When paired with
+Infoblox, Ansible lets you automate that work. Ansible's integration
+with Infoblox is flexible and powerful: you can automate Infoblox tasks
+with modules or with direct calls to the Infoblox WAPI REST API.</p>
+<p>This post will walk you through six real-world scenarios where Ansible
+and Infoblox can streamline your network tasks:</p>
+<ol>
+<li>Creating a provider in one place that is reusable across a collection of roles.</li>
+<li>Expanding your network by creating a new subnet with a forward DNS zone. Ansible modules for Infoblox make this common two-part task
+    simple.</li>
+<li>Creating a reverse DNS zone, for example, to flag email from any IP
+    addresses that don't have an associated address name. You must do
+    this task with calls to the Infoblox API for older versions of
+    Ansible, but this is now supported functionality in the
+    <code>nios_zone</code> module as
+    of Ansible v2.7.</li>
+<li>Reserving a host record for the gateway address of your new subnet
+    with Ansible's powerful Jinja2 templates.</li>
+<li>Creating additional hosts in the subnet using a loop and
+    <code>host_count</code>.</li>
+<li>Managing Infoblox Grids to automate your network at scale, where one
+    Infoblox appliance may not be enough. Grids physically separate your
+    managed network and eliminate single points of failure.</li>
+</ol>
+<p>To follow along with these examples on your own Infoblox devices, you'll
+need to install the
+<a href="https://github.com/network-automation/dynamic-infoblox">dynamic-infoblox Roles</a> and set
+up your Infoblox credentials as a provider.</p>
+<h3>Infoblox credentials and the nios_provider</h3>
+<p>[Any time you use Ansible with Infoblox, invoking an Infoblox
+<a href="https://docs.ansible.com/ansible/latest/plugins/lookup.html">lookup</a> or
+<a href="https://docs.ansible.com/ansible/latest/modules/list_of_net_tools_modules.html#nios">module</a>,
+you must specify the Infoblox IP, username, and the user's password.
+<a href="https://github.com/network-automation/dynamic-infoblox">Our Roles</a> call
+these credentials, taken together, the
+<code>nios_provider</code>. By
+creating a <code>nios_provider</code>
+dictionary as a group variable, you can apply these values consistently
+in all your playbooks and roles, referring to them in a single line
+whenever you need them.</p>
+<div class="code"><pre class="code literal-block"><span class="o">*</span><span class="n">group_vars</span><span class="o">/</span><span class="n">all</span><span class="o">/</span><span class="n">main</span><span class="o">.</span><span class="n">yml</span><span class="o">*</span>
+
+<span class="n">nios_provider</span><span class="p">:</span>
+<span class="w">   </span><span class="c1">#Infoblox out-of-the-box defaults specified here</span>
+<span class="w">    </span><span class="n">host</span><span class="p">:</span><span class="w"> </span><span class="mf">192.168</span><span class="o">.</span><span class="mf">1.2</span>
+<span class="w">    </span><span class="n">username</span><span class="p">:</span><span class="w"> </span><span class="n">admin</span>
+<span class="w">    </span><span class="n">password</span><span class="p">:</span><span class="w"> </span><span class="n">infoblox</span>
+<span class="n">wapi_version</span><span class="p">:</span><span class="w"> </span><span class="err">“</span><span class="n">v2</span><span class="o">.</span><span class="mi">7</span><span class="err">”</span>
+</pre></div>
+
+<h3>Using modules to set up a subnet and forward DNS zone</h3>
+<p>Once you've got your credentials ready, you can run a playbook that
+leverages the
+<a href="https://github.com/network-automation/dynamic-infoblox/tree/master/roles/dynamicInfoblox">dynamic Infoblox</a>
+Role to create a subnet and a forward DNS zone; Ansible modules take
+care of this with ease. Creating a subnet is a common network project:
+subnets allow an administrator to expand the network, responding to a
+new company branch, office, or line of business. Forward DNS zones
+establish the single direction mapping of address names to IP addresses.
+A new DNS zone may be required for a business to expand its global reach
+into an additional country (e.g. .uk) or respond to a merger. The tasks
+shown here define <code>ansible_subnet</code> and <code>ansible_zone</code> as
+variables, so you can override them each time you create a new subnet.</p>
+<div class="code"><pre class="code literal-block"><span class="x">- name: Create a test network subnet</span>
+<span class="x">  nios_network:</span>
+<span class="x">     network: &quot;</span><span class="cp">{{</span> <span class="nv">ansible_subnet</span> <span class="cp">}}</span><span class="x">&quot;</span>
+<span class="x">     comment: Test network subnet to add host records to</span>
+<span class="x">     state: present</span>
+<span class="x">     provider: &quot;</span><span class="cp">{{</span> <span class="nv">nios_provider</span> <span class="cp">}}</span><span class="x">&quot;</span>
+
+<span class="x">- name: &quot;Create a forward DNS zone called </span><span class="cp">{{</span> <span class="nv">ansible_zone</span> <span class="cp">}}</span><span class="x">&quot;</span>
+<span class="x">  nios_zone:</span>
+<span class="x">     name: &quot;</span><span class="cp">{{</span> <span class="nv">ansible_zone</span> <span class="cp">}}</span><span class="x">&quot;</span>
+<span class="x">     comment: local DNS zone</span>
+<span class="x">     state: present</span>
+<span class="x">     provider: &quot;</span><span class="cp">{{</span> <span class="nv">nios_provider</span> <span class="cp">}}</span><span class="x">&quot;</span>
+</pre></div>
+
+<p>In this example, we've used the default Infoblox View. Infoblox allows
+multiple Views within a single DNS zone. If you want to route internal
+traffic to on-premise servers and route external traffic to public cloud
+servers, you can do that by designing a DNS zone with two DNS Views.
+This type of setup ensures that traffic to your employee intranet does
+not burden the servers your customers use, providing better geographic
+coverage and higher levels of around-the-clock coverage for customers.
+However, for the simple example above (and subsequent examples), we've
+stuck to using the default View.</p>
+<h3>Using the Infoblox API to set up a reverse DNS zone</h3>
+<p>So far you've seen how to use Ansible modules to automate Infoblox
+changes. Our next example shows how to use the Infoblox WAPI REST API to
+automate a task that may not be available in your current version of
+Ansible. Reverse DNS zones allow a client to look up an address name if
+they know the equivalent IP address. The importance of reverse zones can
+be illustrated with a common example: email servers. Incoming traffic
+from an IP address that does not have an associated address name through
+reverse DNS can often be flagged as spam. Reverse zones can also help
+with other use cases, like gathering authentic data about other
+businesses that visit your websites.</p>
+<p>The <code>nios_zone</code> module can
+already create a forward DNS zone, but it can only create reverse zones
+with the latest version of Ansible. However, you can still automate this
+task in older versions of Ansible - just use Ansible to make calls
+directly to the WAPI API. You can do this with either the uri module or
+a shell script. We recommend the uri module, since it helps capture the
+integration more descriptively and enables idempotent calls leveraging
+standard REST return codes. Here the uri module serves as a umbrella
+module to succinctly capture a single WAPI call within the Ansible
+module ecosystem. It is worth noting that the WAPI API operates much
+like Ansible modules: JSON in and JSON out. If you express the body of
+the API call in yaml, it is easy to use a Jinja2 filter (a topic we will
+revisit in depth) to convert it to JSON at runtime.</p>
+<div class="code"><pre class="code literal-block"><span class="o">-</span><span class="w"> </span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="n">Create</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">reverse</span><span class="w"> </span><span class="n">DNS</span><span class="w"> </span><span class="n">zone</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">complement</span><span class="w"> </span><span class="n">forward</span><span class="w"> </span><span class="n">zone</span>
+<span class="w">  </span><span class="n">uri</span><span class="p">:</span>
+<span class="w">    </span><span class="n">url</span><span class="p">:</span><span class="w"> </span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="p">{{</span><span class="w"> </span><span class="n">nios_provider</span><span class="o">.</span><span class="n">host</span><span class="w"> </span><span class="p">}}</span><span class="o">/</span><span class="n">wapi</span><span class="o">/</span><span class="p">{{</span><span class="w"> </span><span class="n">wapi_version</span><span class="w"> </span><span class="p">}}</span><span class="o">/</span><span class="n">zone_auth</span>
+<span class="w">    </span><span class="n">method</span><span class="p">:</span><span class="w"> </span><span class="n">POST</span>
+<span class="w">    </span><span class="n">user</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{{ nios_provider.username }}&quot;</span>
+<span class="w">    </span><span class="n">password</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{{ nios_provider.password }}&quot;</span>
+<span class="w">    </span><span class="n">body</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{{ reverse_zone_yml | to_json }}&quot;</span>
+<span class="w">    </span><span class="c1">#201 signifies successful creation</span>
+<span class="w">    </span><span class="c1">#400 signifies existing entry</span>
+<span class="w">    </span><span class="c1">#both signify a successful WAPI call</span>
+<span class="w">    </span><span class="n">status_code</span><span class="p">:</span><span class="w"> </span><span class="mi">201</span><span class="p">,</span><span class="mi">400</span>
+<span class="w">    </span><span class="n">headers</span><span class="p">:</span>
+<span class="w">        </span><span class="n">Content</span><span class="o">-</span><span class="n">Type</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;application/json&quot;</span>
+<span class="w">    </span><span class="n">validate_certs</span><span class="p">:</span><span class="w"> </span><span class="n">no</span>
+<span class="w">  </span><span class="n">register</span><span class="p">:</span><span class="w"> </span><span class="n">reverse_dns_create</span>
+<span class="w">  </span><span class="n">changed_when</span><span class="p">:</span><span class="w"> </span><span class="n">reverse_dns_create</span><span class="o">.</span><span class="n">status</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">201</span>
+<span class="w">  </span><span class="n">vars</span><span class="p">:</span>
+<span class="w">    </span><span class="n">reverse_zone_yml</span><span class="p">:</span>
+<span class="w">      </span><span class="n">fqdn</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{{ ansible_subnet }}&quot;</span>
+<span class="w">      </span><span class="n">zone_format</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;IPV4&quot;</span>
+</pre></div>
+
+<p>If you establish the subnet, forward zone, and reverse zone before
+creating any host records, each host record you create in that forward
+zone automatically creates the corresponding reverse zone entry! With a
+network, forward zone, and reverse zone defined, the stage is set to
+start creating host records for your new subnet.</p>
+<h3>Using a Jinja2 template to reserve the gateway address</h3>
+<p>When you start creating host records, you want to reserve the first (or
+last) host record in the zone as the gateway address, the address that
+forwards packets of data destined for an IP address outside of the
+immediate network. As mentioned earlier, you can use Jinja2 filters to
+manipulate data by calling a short python function on it; the Jinja2
+filter syntax effectively acts as a
+<a href="http://www.linfo.org/pipes.html">linux pipe</a>. Jinja2 filters are a way to
+quickly manipulate data and in this case we use two of them (see example
+below) to adhere to Infoblox gateway address naming conventions. It is
+important to note that defining the gateway address name relative to the
+subnet avoids gateway address name overwrites because it is common for
+each subnet to have its own gateway address.</p>
+<div class="code"><pre class="code literal-block"><span class="o">-</span><span class="w"> </span><span class="nx">name</span><span class="p">:</span><span class="w"> </span><span class="nx">Create</span><span class="w"> </span><span class="nx">a</span><span class="w"> </span><span class="nx">host</span><span class="w"> </span><span class="nx">record</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">gateway</span><span class="w"> </span><span class="nx">address</span>
+<span class="w">  </span><span class="nx">nios_host_record</span><span class="p">:</span>
+<span class="w">     </span><span class="nx">name</span><span class="p">:</span><span class="w"> </span><span class="err">“</span><span class="nx">gateway</span><span class="p">{{</span><span class="w"> </span><span class="nx">ansible_subnet</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nx">ipaddr</span><span class="p">(</span><span class="err">‘</span><span class="nx">first_usable</span><span class="err">’</span><span class="p">)</span><span class="w"> </span><span class="o">|</span>
+<span class="w">  </span><span class="nx">replace</span><span class="p">(</span><span class="s">&quot;.&quot;</span><span class="p">,</span><span class="s">&quot;_&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">}}.{{</span><span class="w"> </span><span class="nx">ansible_zone</span><span class="w"> </span><span class="p">}}</span><span class="err">”</span>
+<span class="w">     </span><span class="nx">ipv4</span><span class="p">:</span>
+<span class="w">        </span><span class="o">-</span><span class="w"> </span><span class="nx">address</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{ gateway_address }}&quot;</span>
+<span class="w">     </span><span class="nx">state</span><span class="p">:</span><span class="w"> </span><span class="nx">present</span>
+<span class="w">     </span><span class="nx">provider</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{ nios_provider }}&quot;</span>
+</pre></div>
+
+<p>This task builds your gateway host name step by step with this complex
+Jinja2 expression. The Ansible-packaged
+<a href="https://docs.ansible.com/ansible/latest/user_guide/playbooks_filters_ipaddr.html#converting-subnet-masks-to-cidr-notation">ipaddr filter</a>
+is versatile - it is capable of achieving a larger number of routine IP
+address manipulations. For example, if your IP range is 192.168.1.0/24
+and your <code>ansible_zone</code> is
+ansible.local, the filter in the task above creates a name in a single
+line:</p>
+<ol>
+<li>Expression starts with "gateway"</li>
+<li>The section in the does a few things:
+    a. Retrieves the templated value of ansible_subnet
+    <code>ansible_subnet =&gt; 198.168.1.0/24</code>
+    b. Uses the retrieved ansible_subnet value and supplies it to the
+    ipaddr('first_usable') filter plugin to obtain first usable IP
+    <code>192.168.1.0/24 | ipaddr('first_usable') =&gt; 192.168.1.1</code>
+    c. Formats the resulting IP with underscores instead of dots
+    <code>192.168.1.1 | replace('.', '_') =&gt; 192_168_1_1</code>
+    d. Adds a <code>.</code> separator before the subnet value
+    e. Retrieves the templated value of ansible_zone
+    <code>ansible_zone =&gt; ansible.local</code></li>
+</ol>
+<p>The gateway host name, passing the values listed above through the
+example template, would be:</p>
+<div class="code"><pre class="code literal-block">gateway192_168_1_1.ansible.local
+</pre></div>
+
+<p>Jinja2 filters are a complex Ansible topic; you should have a solid
+Ansible foundation before building your own Jinja2 filters. As you start
+creating filters, you can test expected values locally, or leverage
+<a href="https://ansible.sivel.net/test/">Sivel's Ansible Template Tester</a> to
+see the results of your filters before you use them in a playbook or
+role. </p>
+<p><img alt="Infoblox-Roles-Deep-Dive-Ansible-Template-Tester" src="/images/posts/archive/Infoblox-Roles-Deep-Dive-Ansible-Template-Tester.png"></p>
+<h3>Using loops and host_count to generate host records</h3>
+<p>Once your gateway address is reserved, you can use a loop to generate a
+known number of additional host records. In a real-world scenario, you
+would probably generate groups of servers within the subnet (for
+example, database servers, application servers, etc.). For this simple
+demo, you can define a loop that will dynamically generate generic host
+records based on a user-supplied <code>host_count</code> value. This
+demo shows the power of <code>nios_next_ip</code> lookup
+plugin, which can obtain a single next available IP or a range of next
+available IPs to assign. In a Playbook with both tasks (the one above
+that creates a host record for the gateway address and the one below
+that generates host records), if you don't define a
+<code>host_count</code>, the playbook won't create any additional host records;
+just the gateway address will be created.</p>
+<div class="code"><pre class="code literal-block"><span class="c1">#Generating records this way should be for demo purposes</span>
+<span class="c1">#Normal scenario would be to iterate over a dictionary/list of hosts or populate via a static csv file</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">“Dynamically generate {{ host_count }} host records at next available ip in {{ ansible_subnet }}”</span>
+<span class="w">  </span><span class="nt">include_tasks</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">host_record_generation.yml</span>
+<span class="w">  </span><span class="nt">loop_control</span><span class="p">:</span>
+<span class="w">     </span><span class="nt">loop_var</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">count</span>
+<span class="w">  </span><span class="nt">with_sequence</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">start=1 end={{ host_count }}</span>
+<span class="w">  </span><span class="nt">when</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">host_count is defined</span>
+</pre></div>
+
+<p>If you generate host records with Ansible based on a user-supplied host
+count, wouldn't looping through a host count potentially cause indexing
+issues on a second run? Unfortunately it does, but keeping a total count
+of generated hosts solves this problem. One approach is to maintain a
+static total host count file on the control node viewed as a source of
+truth. By leveraging Ansible's lookup plugin feature to retrieve its
+contents, each time a host is generated the count in this file is
+incremented so consequent role executions (especially those automated in
+different subnets) do not overwrite each other's records!</p>
+<p>Generating host records this way is different than generating them with
+naming conventions like most enterprises do, but it is an easy
+out-of-the-box method using the <code>nios_next_ip</code> lookup to
+create some records across different zones and/or subnets. Infoblox also
+supports a csv record import feature for static records.</p>
+<p><img alt="Infoblox-Roles-Deep-Dive-Records" src="/images/posts/archive/Infoblox-Roles-Deep-Dive-Records.png"></p>
+<h3>Predefine Infoblox Grids with Ansible</h3>
+<p>In the first four scenarios, you've seen how Ansible works with Infoblox
+at the level of hosts and subnets. What can Ansible do with Infoblox at
+scale? Automating a single Infoblox instance provides value, but
+production Infoblox systems are often designed in a Grid. The Infoblox
+website explains the full power of Infoblox Grid technology. The
+Infoblox Grid establishes a distributed relationship between individual
+or paired appliances to remove single points of failure and other
+operational risks inherent in legacy DNS, DHCP, and IP Address
+Management infrastructure. Each Grid contains one Grid Master and a
+varying number of additional Grid Members and/or Grid Master candidates.
+Grid Members only contain a portion of the Infoblox database needed to
+do their job. Grid Master Candidates, on the other hand, have a
+real-time full copy of the Grid Master's database to provide disaster
+recovery functionality. You can use our Ansible Roles to predefine new
+Grid Master Candidates and Grid Members like this:</p>
+<div class="code"><pre class="code literal-block"><span class="o">-</span><span class="w"> </span><span class="nx">name</span><span class="p">:</span><span class="w"> </span><span class="nx">Predefine</span><span class="w"> </span><span class="nx">a</span><span class="w"> </span><span class="nx">new</span><span class="w"> </span><span class="nx">Grid</span><span class="w"> </span><span class="nx">Master</span><span class="w"> </span><span class="nx">Candidate</span>
+<span class="w">  </span><span class="nx">hosts</span><span class="p">:</span><span class="w"> </span><span class="nx">localhost</span>
+<span class="w">  </span><span class="nx">connection</span><span class="p">:</span><span class="w"> </span><span class="nx">local</span>
+<span class="w">  </span><span class="nx">roles</span><span class="p">:</span>
+<span class="w">    </span><span class="o">-</span><span class="w">  </span><span class="nx">role</span><span class="p">:</span><span class="w"> </span><span class="nx">predefineGridmasterCandidate</span>
+<span class="w">       </span><span class="nx">master_candidate_name</span><span class="p">:</span><span class="w"> </span><span class="nx">gmc</span><span class="p">.</span><span class="nx">ansible</span><span class="p">.</span><span class="nx">local</span>
+<span class="w">       </span><span class="nx">master_candidate_address</span><span class="p">:</span><span class="w"> </span><span class="m m-Double">192.168.2.2</span>
+<span class="w">       </span><span class="nx">master_candidate_gateway</span><span class="p">:</span><span class="w"> </span><span class="m m-Double">192.168.2.254</span>
+<span class="w">       </span><span class="nx">master_candidate_subnet_mask</span><span class="p">:</span><span class="w"> </span><span class="m m-Double">255.255.255.0</span>
+
+<span class="o">-</span><span class="w"> </span><span class="nx">name</span><span class="p">:</span><span class="w"> </span><span class="nx">Predefine</span><span class="w"> </span><span class="nx">a</span><span class="w"> </span><span class="nx">new</span><span class="w"> </span><span class="nx">Grid</span><span class="w"> </span><span class="nx">Member</span>
+<span class="w">  </span><span class="nx">hosts</span><span class="p">:</span><span class="w"> </span><span class="nx">localhost</span>
+<span class="w">  </span><span class="nx">connection</span><span class="p">:</span><span class="w"> </span><span class="nx">local</span>
+<span class="w">  </span><span class="nx">roles</span><span class="p">:</span>
+<span class="w">    </span><span class="o">-</span><span class="w">  </span><span class="nx">role</span><span class="p">:</span><span class="w"> </span><span class="nx">predefineGridMember</span>
+<span class="w">       </span><span class="nx">member_name</span><span class="p">:</span><span class="w"> </span><span class="nx">m3</span><span class="p">.</span><span class="nx">ansible</span><span class="p">.</span><span class="nx">local</span>
+<span class="w">       </span><span class="nx">member_address</span><span class="p">:</span><span class="w"> </span><span class="m m-Double">192.168.2.3</span>
+<span class="w">       </span><span class="nx">member_gateway</span><span class="p">:</span><span class="w"> </span><span class="m m-Double">192.168.2.254</span>
+<span class="w">       </span><span class="nx">member_subnet_mask</span><span class="p">:</span><span class="w"> </span><span class="m m-Double">255.255.255.0</span>
+</pre></div>
+
+<p><img alt="Infoblox-Roles-Deep-Dive-Members" src="/images/posts/archive/Infoblox-Roles-Deep-Dive-Members.png"></p>
+<p>As you can see from these five examples, Ansible and Infoblox work
+together to manage your network infrastructure and the traffic it
+carries quickly, easily, and reliably. Ansible builds on the robust
+capabilities of the Infoblox WAPI API. Using Ansible modules and direct
+calls to the WAPI API, you can write reusable Ansible Roles and
+Playbooks that can be quickly adapted to handle separate networks. If
+you'd like, you can start by customizing the roles in the
+<a href="https://github.com/network-automation/dynamic-infoblox">ansible-networking repository</a>,
+which connect all of the Ansible concepts discussed in today's post.</p>

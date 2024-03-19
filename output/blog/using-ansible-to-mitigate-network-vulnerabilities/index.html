@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html prefix="
+og: http://ogp.me/ns# article: http://ogp.me/ns/article#
+" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="Red Hat Ansible Engine can be used to quickly automate mitigation of CVEs based on instructions from networking vendors.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Using Ansible to Mitigate Network Vulnerabilities | Ansible Collaborative</title>
+<link href="../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/baguetteBox.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/rst.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/code.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/theme.css" rel="stylesheet" type="text/css">
+<!-- Red Hat fonts --><link rel="stylesheet" href="https://static.redhat.com/libs/redhat/redhat-font/2.0.0/webfonts/red-hat-font.css">
+<!-- Font Awesome --><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+<!-- Fork Awesome --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css" integrity="sha256-XoaMnoYC5TH6/+ihMEnospgm0J1PM/nioxbOUdnM8HY=" crossorigin="anonymous">
+<!-- Sass compiled css  --><link rel="stylesheet" href="../../assets/css/main.css">
+<link rel="stylesheet" href="../../assets/css/redhat-footer.css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://ansible.com/blog/using-ansible-to-mitigate-network-vulnerabilities/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Sean Cavanaugh">
+<link rel="prev" href="../enable-self-healing-applications-with-ansible-and-dynatrace/" title="Enable self-healing applications with Ansible and Dynatrace" type="text/html">
+<link rel="next" href="../connecting-to-a-windows-host/" title="Connecting to a Windows Host" type="text/html">
+<meta property="og:site_name" content="Ansible Collaborative">
+<meta property="og:title" content="Using Ansible to Mitigate Network Vulnerabilities">
+<meta property="og:url" content="https://ansible.com/blog/using-ansible-to-mitigate-network-vulnerabilities/">
+<meta property="og:description" content="Red Hat Ansible Engine can be used to quickly automate mitigation of CVEs based on instructions from networking vendors.">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2018-04-16T00:00:00Z">
+</head>
+<body id="top">
+
+<div class="global-container" id="content" role="main">
+<!-- Start menubar -->
+<nav class="navbar navbar-expand-lg static-top mb-4 navbar-padding full-width-bg   navbar-dark   bg-pool   "><div class="masthead">
+    <!-- This keeps the margins nice -->
+    <a class="navbar-brand" href="../../">
+        <img src="../../images/ansible_logo-small-15.png" alt="Ansible community logo" id="logo" class="d-inline-block align-top" width="50" height="50"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon nav-toggle-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="bs-navbar">
+      <ul class="navbar-nav mr-auto"></ul>
+<ul class="navbar-nav navbar-right">
+<li class="nav-item dropdown">
+	        <a href="#" class="nav-link nav-link-color dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <i class=""></i> Documentation
+                </a>
+		<div class="dropdown-menu dropdown-menu-border">
+	    
+                    <a href="https://docs.ansible.com/" class="dropdown-item">
+		        <i class=""></i> Project documentation
+                    </a>
+                    <a href="https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/" class="dropdown-item">
+		        <i class=""></i> Ansible Automation Platform documentation
+                    </a>
+            </div>
+                 </li>
+<li class="nav-item">
+		     <a href="https://galaxy.ansible.com/" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Galaxy
+		     </a>
+		 </li>
+                 <li class="nav-item">
+		     <a href="https://forum.ansible.com/" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Forum
+		     </a>
+		 </li>
+            <li class="nav-item dropdown">
+	        <a href="#" class="nav-link nav-link-color dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <i class=""></i> Resources
+                </a>
+		<div class="dropdown-menu dropdown-menu-border">
+	    
+                    <a href="../../how-ansible-works/" class="dropdown-item">
+		        <i class=""></i> How Ansible works
+                    </a>
+                    <a href="../../ecosystem/" class="dropdown-item">
+		        <i class=""></i> Ansible ecosystem
+                    </a>
+                    <a href="../archive.html" class="dropdown-item">
+		        <i class=""></i> Blog
+                    </a>
+                    <a href="../../faq/" class="dropdown-item">
+		        <i class=""></i> Frequently asked questions
+                    </a>
+                    <a href="../../ansible-community-training/" class="dropdown-item">
+		        <i class=""></i> Ansible community training
+                    </a>
+                    <a href="../../contact-us/" class="dropdown-item">
+		        <i class=""></i> Contact us
+                    </a>
+            </div>
+                 </li>
+<li class="nav-item">
+		     <a href="https://www.redhat.com/en/technologies/management/ansible?sc_cid=7015Y000003szaKQAQ" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Ansible Automation Platform
+		     </a>
+		 </li>
+
+        
+      </ul>
+</div>
+    <!-- /.navbar-collapse -->
+  </div>
+  <!-- /.container -->
+</nav><!-- End default Menubar --><div class="body-content center-band">
+        <!--Body content-->
+        
+  <article class="post-text h-entry hentry postpage ansible-content" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Using Ansible to Mitigate Network Vulnerabilities</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard p-author h-card"><span class="byline-name fn p-name" itemprop="author">
+                    <a class="u-url" href="../../authors/sean-cavanaugh/">Sean Cavanaugh</a>
+            </span></p>
+            <p class="dateline">
+            <a href="." rel="bookmark">
+            <time class="published dt-published" datetime="2018-04-16T00:00:00Z" itemprop="datePublished" title="2018-04-16 00:00">2018-04-16 00:00</time></a>
+            </p>
+                    <p class="sourceline"><a href="index.md" class="sourcelink">Source</a></p>
+
+        </div>
+        
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+<h2>Using Ansible to Mitigate Network Vulnerabilities</h2>
+<h3>Even Networks Aren't Immune</h3>
+<p>Just like with Windows and Linux servers, networking devices can be
+exploited by vulnerabilities found in their operating systems. Many IT
+organizations do not have a comprehensive strategy for mitigating
+security vulnerabilities that span multiple teams (networking, servers,
+storage, etc.). Since the majority of network operations is still
+manual, the need to mitigate quickly and reliably across multiple
+platforms consisting of hundreds of network devices becomes extremely
+important.</p>
+<p>In Cisco's <em>March 2018 Semiannual Cisco IOS and IOS XE Software Security
+Advisory Bundled Publication</em>, 22 vulnerabilities were detailed. While
+Red Hat does not report or keep track of individual networking vendors
+CVEs, <a href="../../products/engine">Red Hat Ansible Engine</a> can be used to quickly
+automate mitigation of CVEs based on instructions from networking
+vendors.</p>
+<p>In this blog post we are going to walk through
+<a href="https://tools.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-20180328-smi2">CVE-2018-0171</a>
+which is titled "Cisco IOS and IOS XE Software Smart Install Remote Code
+Execution Vulnerability." This CVE is labeled as critical by Cisco, with
+the following headline summary:</p>
+<blockquote>
+<p><em>"...a vulnerability in the Smart Install feature of Cisco IOS
+Software and Cisco IOS XE Software could allow an unauthenticated,
+remote attacker to trigger a reload of an affected device, resulting
+in a denial of service (DoS) condition, or to execute arbitrary code
+on an affected device."</em></p>
+</blockquote>
+<h3>Gathering Information from Networks</h3>
+<p>Users leverage Ansible modules to access devices, retrieve information,
+execute commands and handle systems using specific keywords. One of the
+first things a CVE requires is collection of inventory. To mitigate a
+CVE, the networking platform and specific version of code is required.
+CVE-2018-0171 affects the IOS and IOS-XE network operating systems and
+Ansible can obtain this information easily. Let's use the <a href="http://docs.ansible.com/ansible/latest/modules/ios_facts_module.html">ios_facts
+module</a>
+which returns key-value pairs for use in subsequent tasks. For example:
+<code>ansible_net_model</code> returns the model, and <code>ansible_net_image</code> returns
+the image file the device is running. For a full list see the ios_facts
+module
+<a href="http://docs.ansible.com/ansible/latest/modules/ios_facts_module.html">documentation</a>
+page.</p>
+<div class="code"><pre class="code literal-block"><span class="x">- name: gather facts for ios platforms</span>
+<span class="x">  ios_facts:</span>
+<span class="x">    gather_subset: all</span>
+
+<span class="x">- name: output facts to terminal window</span>
+<span class="x">  debug:</span>
+<span class="x">    msg: &gt;</span>
+<span class="x">      Device </span><span class="cp">{{</span><span class="nv">ansible_net_hostname</span><span class="cp">}}</span><span class="x">, model</span>
+<span class="cp">{{</span><span class="nv">ansible_net_model</span><span class="cp">}}</span><span class="x">, running </span><span class="cp">{{</span><span class="nv">ansible_net_version</span><span class="cp">}}</span>
+</pre></div>
+
+<p>When executing the playbook we get nice output like this:</p>
+<div class="code"><pre class="code literal-block"><span class="nl">ok</span><span class="p">:</span><span class="w"> </span><span class="o">[</span><span class="n">rtr1</span><span class="o">]</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="err">{</span>
+<span class="w">    </span><span class="ss">"msg"</span><span class="err">:</span><span class="w"> </span><span class="ss">"Device rtr1, model CSR1000V, running 16.05.02\n"</span>
+<span class="err">}</span>
+<span class="nl">ok</span><span class="p">:</span><span class="w"> </span><span class="o">[</span><span class="n">rtr2</span><span class="o">]</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="err">{</span>
+<span class="w">    </span><span class="ss">"msg"</span><span class="err">:</span><span class="w"> </span><span class="ss">"Device rtr2, model CSR1000V, running 16.05.02\n"</span>
+<span class="err">}</span>
+<span class="nl">ok</span><span class="p">:</span><span class="w"> </span><span class="o">[</span><span class="n">switch</span><span class="o">]</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="err">{</span>
+<span class="w">    </span><span class="ss">"msg"</span><span class="err">:</span><span class="w"> </span><span class="ss">"Device c3850-1, model WS-C3850-24T, running 16.06.01\n"</span>
+<span class="err">}</span>
+</pre></div>
+
+<p>This allows us to quickly grab useful information about our network, and
+check it against Cisco Security Advisory. In a demo on the <a href="https://github.com/network-automation/ansible_inventory_report">GitHub
+network-automation
+project</a>
+we show how to use network facts to quickly build a nice HTML report.</p>
+<p>The vulnerability CVE-2018-0171 specifies that to see if a device is
+vulnerable we must run the <code>show vstack config</code> command. In my network,
+I have three devices running IOS-XE, two are CSR1000V devices, and one
+device is a 3850. The two CSR devices don't have the command, while the
+3850 switch does. To make my playbook robust enough to handle errors
+when a command doesn't exist, I can use the <code>ignore_errors</code> parameter.
+Otherwise, the playbook would fail and exit when a target network node
+doesn't have the ability to use that command. Alternatively, I could run
+the playbook only on switches by <a href="http://docs.ansible.com/ansible/devel/user_guide/playbooks_best_practices.html#top-level-playbooks-are-separated-by-role">using a
+limit</a>.
+For this example, let's assume we are running the Cisco 3850 which has
+the <code>show vstack config</code> command.</p>
+<div class="code"><pre class="code literal-block"><span class="o">-</span><span class="w"> </span><span class="nl">name:</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="n">show</span><span class="w"> </span><span class="n">vstack</span><span class="w"> </span><span class="n">config</span>
+<span class="w">    </span><span class="nl">ios_command:</span>
+<span class="w">      </span><span class="nl">commands:</span>
+<span class="w">        </span><span class="o">-</span><span class="w"> </span><span class="n">show</span><span class="w"> </span><span class="n">vstack</span><span class="w"> </span><span class="n">config</span>
+<span class="w">    </span><span class="nl">register:</span><span class="w"> </span><span class="n">showvstack</span>
+</pre></div>
+
+<p>In the playbook above I used the <code>register: showvstack</code>. The
+<code>showvstack</code> is a user defined term (I chose it, it is not reserved). By
+registering this I can use the output from the <code>show vstack config</code>
+later in the playbook. We can use the debug module to look at the
+<code>showvstack</code> variable to see how it's formatted:</p>
+<div class="code"><pre class="code literal-block"><span class="nl">ok</span><span class="p">:</span><span class="w"> </span><span class="o">[</span><span class="n">switch</span><span class="o">]</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="err">{</span>
+<span class="w">    </span><span class="ss">"showvstack"</span><span class="err">:</span><span class="w"> </span><span class="err">{</span>
+<span class="w">        </span><span class="ss">"changed"</span><span class="err">:</span><span class="w"> </span><span class="k">false</span><span class="p">,</span>
+<span class="w">        </span><span class="ss">"failed"</span><span class="err">:</span><span class="w"> </span><span class="k">false</span><span class="p">,</span>
+<span class="w">        </span><span class="ss">"stdout"</span><span class="err">:</span><span class="w"> </span><span class="o">[</span>
+<span class="n">            "Capability: Director | Client\n Oper Mode: Disabled\n Role: NA\n Vstack Director IP address: 0.0.0.0\n\n *** Following configurations will be effective only on director ***\n Vstack default management vlan: 1\n Vstack start-up management vlan: 1\n Vstack management Vlans: none\n Join Window Details:\n\t Window: Open (default)\n\t Operation Mode: auto (default)\n Vstack Backup Details:\n\t Mode: On (default)\n\t Repository:"</span>
+<span class="n">        </span><span class="o">]</span><span class="p">,</span>
+
+<span class="o">&lt;&lt;</span><span class="n">rest</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="k">output</span><span class="w"> </span><span class="n">removed</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">brevity</span><span class="o">&gt;&gt;</span>
+</pre></div>
+
+<p>There is a stdout and a stdout_lines. To read more on the common return
+values refer to the
+<a href="http://docs.ansible.com/ansible/latest/reference_appendices/common_return_values.html#stdout">documentation</a>.
+Next, we will use my new favorite module, the <a href="http://docs.ansible.com/ansible/latest/modules/assert_module.html">assert
+module</a>.
+This enables us to check if given expressions are true, failing the task
+if they are not. Cisco provides two outputs that we need to check for in
+the result of the <code>show vstack config</code> command:</p>
+<div class="code"><pre class="code literal-block">switch1#<span class="w"> </span>show<span class="w"> </span>vstack<span class="w"> </span>config
+Role:<span class="w"> </span>Client<span class="w"> </span><span class="o">(</span>SmartInstall<span class="w"> </span>enabled<span class="o">)</span>
+</pre></div>
+
+<p>or</p>
+<div class="code"><pre class="code literal-block">switch2#<span class="w"> </span>show<span class="w"> </span>vstack<span class="w"> </span>config
+Capability:<span class="w"> </span>Client
+Oper<span class="w"> </span>Mode:<span class="w"> </span>Enabled
+Role:<span class="w"> </span>Client
+</pre></div>
+
+<p>We can use the assert module to check the text we saved in the <code>showvstack</code> variable:</p>
+<div class="code"><pre class="code literal-block">- name: Check to make sure Cisco's Smart Install Client Feature is not enabled (1/2)
+  assert:
+    that:
+      - "'SmartInstall enabled' not in showvstack.stdout"
+      - "'Role' not in showvstack.stdout"
+      - "'Client' not in showvstack.stdout"
+</pre></div>
+
+<p>Each line in the assert module that is added means there is an implicit
+AND, meaning all three need to be true for the task to pass.</p>
+<p>Similarly we can check the second statement:</p>
+<div class="code"><pre class="code literal-block">- name: Check to make sure Cisco's Smart Install Client Feature is not enabled (1/1)
+  assert:
+    that:
+      - "'Oper Mode' not in showvstack.stdout"
+      - "'Enabled' not in showvstack.stdout"
+      - "'Role' not in showvstack.stdout"
+      - "'Client' not in showvstack.stdout"
+</pre></div>
+
+<p>For this particular CVE it lists that there are no workarounds
+available. On some CVEs we could use the ios_command or ios_config
+modules to mitigate the CVE based on the instructions the vendor
+provided. For this particular CVE it links to the documentation on how
+to disable vstack using the command no vstack which could be sent using
+the ios_command module. It also recommends for older releases to block
+traffic on TCP port 4786, which could be pushed using the ios_config
+module. Since no workaround is provided on the CVE, a network operator
+needs to make an educated decision based on their environment.
+Alternatively, for <a href="https://tools.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-20180328-xesc#workarounds">CVE-2018-0150</a>
+there is a workaround provided, and the ios_config could simply send
+<code>no username cisco</code> to mitigate the CVE.</p>
+<p>Red Hat Ansible Engine and Red Hat Ansible Tower can be used to help
+network operators and administrators scale repetitive tasks like
+checking these dozens of CVEs and make sure their network is safe from
+vulnerabilities. On the server side, when system administrators are
+using <a href="https://www.redhat.com/en/technologies/management/insights">Red Hat Insights</a>,
+they can automatically <a href="https://access.redhat.com/documentation/en-us/red_hat_insights/1.0/html/creating_insights_maintenance_plans_with_ansible_playbook_integration/running_a_playbook#running_ansible_playbook">generate playbooks</a>
+for Red Hat Enterprise Linux to help with vulnerabilities and
+proactively identify threats to security, performance, and stability.
+Ansible can be the common way to execute tasks across your entire IT
+infrastructure.</p>
+</div>
+    <aside class="postpromonav"><nav><ul class="pager hidden-print">
+<li class="previous">
+                <a href="../enable-self-healing-applications-with-ansible-and-dynatrace/" rel="prev" title="Enable self-healing applications with Ansible and Dynatrace">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../connecting-to-a-windows-host/" rel="next" title="Connecting to a Windows Host">Next post</a>
+            </li>
+        </ul></nav></aside></article><!--End of body content-->
+</div>
+        <div class="content-slim redhat-footer">
+      <div class="footer-left">
+        <ul class="footer-left-links">
+<li>
+            <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-SA 4.0</a>
+          </li>
+          <li>
+            <a href="https://www.redhat.com/en/about/privacy-policy" target="_blank">Privacy policy</a>
+          </li>
+          <li>
+            <a href="https://docs.ansible.com/ansible/latest/community/code_of_conduct.html" target="_blank">Code of conduct</a>
+          </li>
+        </ul>
+</div>
+      <div class="footer-right">
+        <span class="redhat">Powered by</span>
+        <span class="redhat-logo">
+          <a href="https://www.redhat.com/en/technologies/management/ansible" target="_blank">
+            <img src="../../assets/images/redhat_reversed.svg" alt="Red Hat logo." width="96" height="28"></a>
+        </span>
+      </div>
+    </div>
+
+</div>
+
+            <script src="../../assets/js/jquery.min.js"></script><script src="../../assets/js/popper.min.js"></script><script src="../../assets/js/bootstrap.min.js"></script><script src="../../assets/js/baguetteBox.min.js"></script><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+</script><script src="../../assets/js/clipboard.min.js" type="text/javascript"></script><script src="../../assets/js/clipboard.js" type="text/javascript"></script>
+</body>
+</html>

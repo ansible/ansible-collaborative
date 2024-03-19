@@ -1,0 +1,15 @@
+{% extends "base.tmpl" %}
+{% block hero_content %}
+  <div class="hero-container">
+    {% include "base_nav.tmpl" %}
+    {% include "homepage-banner-band.tmpl" %}
+  </div>
+{% endblock hero_content %}
+{% block homepage_content %}
+  {% include "homepage-ansible-band.tmpl" %}
+  {% include "homepage-learn-band.tmpl" %}
+  {% include "homepage-platform-band.tmpl" %}
+  {% include "homepage-collection-band.tmpl" %}
+  {% include "homepage-adoption-band.tmpl" %}
+  {% include "homepage-ecosystem-band.tmpl" %}
+{% endblock homepage_content %}

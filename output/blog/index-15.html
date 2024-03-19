@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html prefix="
+og: http://ogp.me/ns# article: http://ogp.me/ns/article#
+" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="Ansible Collaborative Website">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ansible Collaborative (old posts, page 15) | Ansible Collaborative</title>
+<link href="../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="../assets/css/baguetteBox.min.css" rel="stylesheet" type="text/css">
+<link href="../assets/css/rst.css" rel="stylesheet" type="text/css">
+<link href="../assets/css/code.css" rel="stylesheet" type="text/css">
+<link href="../assets/css/theme.css" rel="stylesheet" type="text/css">
+<!-- Red Hat fonts --><link rel="stylesheet" href="https://static.redhat.com/libs/redhat/redhat-font/2.0.0/webfonts/red-hat-font.css">
+<!-- Font Awesome --><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+<!-- Fork Awesome --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css" integrity="sha256-XoaMnoYC5TH6/+ihMEnospgm0J1PM/nioxbOUdnM8HY=" crossorigin="anonymous">
+<!-- Sass compiled css  --><link rel="stylesheet" href="../assets/css/main.css">
+<link rel="stylesheet" href="../assets/css/redhat-footer.css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../rss.xml">
+<link rel="canonical" href="https://ansible.com/blog/index-15.html">
+<link rel="prev" href="index-16.html" type="text/html">
+<link rel="next" href="index-14.html" type="text/html">
+<!--[if lt IE 9]><script src="../assets/js/html5.js"></script><![endif]-->
+</head>
+<body id="top">
+
+<div class="global-container" id="content" role="main">
+<!-- Start menubar -->
+<nav class="navbar navbar-expand-lg static-top mb-4 navbar-padding full-width-bg   navbar-dark   bg-pool   "><div class="masthead">
+    <!-- This keeps the margins nice -->
+    <a class="navbar-brand" href="../">
+        <img src="../images/ansible_logo-small-15.png" alt="Ansible community logo" id="logo" class="d-inline-block align-top" width="50" height="50"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon nav-toggle-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="bs-navbar">
+      <ul class="navbar-nav mr-auto"></ul>
+<ul class="navbar-nav navbar-right">
+<li class="nav-item dropdown">
+	        <a href="#" class="nav-link nav-link-color dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <i class=""></i> Documentation
+                </a>
+		<div class="dropdown-menu dropdown-menu-border">
+	    
+                    <a href="https://docs.ansible.com/" class="dropdown-item">
+		        <i class=""></i> Project documentation
+                    </a>
+                    <a href="https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/" class="dropdown-item">
+		        <i class=""></i> Ansible Automation Platform documentation
+                    </a>
+            </div>
+                 </li>
+<li class="nav-item">
+		     <a href="https://galaxy.ansible.com/" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Galaxy
+		     </a>
+		 </li>
+                 <li class="nav-item">
+		     <a href="https://forum.ansible.com/" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Forum
+		     </a>
+		 </li>
+            <li class="nav-item dropdown">
+	        <a href="#" class="nav-link nav-link-color dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <i class=""></i> Resources
+                </a>
+		<div class="dropdown-menu dropdown-menu-border">
+	    
+                    <a href="../how-ansible-works/" class="dropdown-item">
+		        <i class=""></i> How Ansible works
+                    </a>
+                    <a href="../ecosystem/" class="dropdown-item">
+		        <i class=""></i> Ansible ecosystem
+                    </a>
+                    <a href="archive.html" class="dropdown-item">
+		        <i class=""></i> Blog
+                    </a>
+                    <a href="../faq/" class="dropdown-item">
+		        <i class=""></i> Frequently asked questions
+                    </a>
+                    <a href="../ansible-community-training/" class="dropdown-item">
+		        <i class=""></i> Ansible community training
+                    </a>
+                    <a href="../contact-us/" class="dropdown-item">
+		        <i class=""></i> Contact us
+                    </a>
+            </div>
+                 </li>
+<li class="nav-item">
+		     <a href="https://www.redhat.com/en/technologies/management/ansible?sc_cid=7015Y000003szaKQAQ" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Ansible Automation Platform
+		     </a>
+		 </li>
+
+        
+      </ul>
+</div>
+    <!-- /.navbar-collapse -->
+  </div>
+  <!-- /.container -->
+</nav><!-- End default Menubar --><div class="body-content center-band">
+        <!--Body content-->
+        
+    
+  <div class="postindex ansible-content">
+      <article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title">
+            <a href="continuous-detection-and-mitigation-cdm/" class="u-url">Continuous Detection and Mitigation (CDM)</a>
+          </h1>
+          <div class="metadata">
+            <p class="byline author vcard">
+              <span class="byline-name fn" itemprop="author">
+                  <a href="../authors/ajay-chenampara/">Ajay Chenampara</a>
+              </span>
+            </p>
+            <p class="dateline">
+              <a href="continuous-detection-and-mitigation-cdm/" rel="bookmark">
+                <time class="published dt-published" datetime="2022-05-09T00:00:00Z" itemprop="datePublished" title="2022-05-09 00:00">2022-05-09 00:00</time></a>
+            </p>
+          </div>
+        </header><div class="p-summary entry-summary">
+            <h2>Continuous Detection and Mitigation (CDM)</h2>
+<p>Per
+<a href="https://www.nascio.org/resource-center/resources/state-cio-top-ten-policy-and-technology-priorities-for-2022/">NASCIO</a>,
+the top priority for state CIOs is cybersecurity and risk management. A
+key focus for this initiative is to leverage <a href="https://cisa.gov/cdm">the Continuous Diagnostics
+and Mitigation (CDM) framework</a> provided by the
+Cybersecurity and Infrastructure Security Agency (CISA). In this blog
+post we will explore a high level view of the CDM framework, review
+Ansible's role in security automation and finally understand how Ansible
+can help agencies with Day 0 through Day 2 tasks while working with the
+CDM framework.</p>
+<h3>What is CDM?</h3>
+<p>Today more than ever, cyber threats mean that securing and defending our
+networks are of utmost importance. A <a href="https://www.nlc.org/wp-content/uploads/2019/10/CS-Cybersecurity-Report-Final_0.pdf">recent
+report</a>
+published by the National League of Cities revealed that an astonishing
+44% of local governments report they experience a cyberattack daily or
+even hourly. So it is not surprising to see that cybersecurity and risk
+management is the number one priority for our state CIOs. With that
+background, let's understand the CDM program.</p>
+<p><img alt="CDM program diagram" src="../images/posts/archive/cdm-diagram.png"></p>
+<p>Source: https://www.cisa.gov/cdm-training</p>
+<p>The CDM framework is defined by CISA. CDM provides capabilities and
+tools that help identify cybersecurity risks on an ongoing basis,
+prioritize these risks and enable cybersecurity personnel to mitigate
+them based on priority.</p>
+<p>At its core it provides tools and dashboards that enable cybersecurity
+professionals to understand what is on the network, who is on the
+network, and what's happening on the network. CISA's CDM is leading that
+effort to reduce cyber risk by delivering tools to federal/state
+agencies to strengthen their ability to monitor and manage the threat of cyber vulnerabilities.</p>
+<h3>The CDM model</h3>
+<p>The CDM framework provides an opinionated four layer architecture. The
+first layer, layer A, consists of sensors and scanners that are deployed
+in the network. These scanners and sensors continuously collect data
+that match against fingerprints and send it up to the second layer,
+layer B, or the integration layer. </p>
+<p><img alt="CDM model layer a" src="../images/posts/archive/cdm-model-a.png"></p>
+<p>The second layer, Layer B, normalizes the data sent in by the Layer A sensors and scanners. This serves as the correlation point.</p>
+<p><img alt="CDM model layer b" src="../images/posts/archive/cdm-model-b.png"></p>
+<p>After normalization, the data is fed up into the C&amp;D layers that consist of agency level and federal level dashboards.</p>
+<p><img alt="CDM model layer c" src="../images/posts/archive/cdm-model-c.png"></p>
+<p><strong>Source:</strong> <a href="https://www.youtube.com/watch?v=BPR_sTWgjPc">CISA's YouTube channel</a></p>
+<p>Agency security personnel then reviews the dashboards and makes decisions on prioritizing and mitigating the alerts.</p>
+<h3>Ansible for security automation</h3>
+<p>Ansible has been a leader in the infrastructure automation domain for
+years now. The value that Ansible brings to the infrastructure domain
+easily translates into the security automation space, including:</p>
+<ul>
+<li>
+<strong>Increases speed:</strong> Reduce the number of manual steps and
+    GUI-clicks. Enables the integration between numerous security
+    solutions at the agency.</li>
+<li>
+<strong>Reduces human errors:</strong> Minimizes risk with automated workflows
+    and human operator errors in time-sensitive, stressful situations.</li>
+<li>
+<strong>Enforces consistency:</strong> Enables auditable and verifiable security
+    processes by using a single framework across multiple security
+    tools.</li>
+</ul>
+<p>The scale and complexity of the modern infrastructure that needs to be
+protected in combination with the challenge of speed brought by modern
+cyberattacks using automation themselves require technology to support
+human operators. The challenges for cybersecurity teams is managing
+multiple security tools within the CDM architecture,integrating between
+the tools and using the tool data to effectively manage changes to their
+end-points.</p>
+<h3>Ansible for the CDM use case</h3>
+<p>CDM has an opinionated architecture and an <a href="https://www.gsa.gov/technology/technology-products-services/it-security/continuous-diagnostics-mitigation-cdm/buy-continuous-diagnostics-and-mitigation-tools">approved product
+list</a>
+of over 240,000 products that agencies can use. You can imagine the
+integration needs for CDM implementations across agencies for the
+different products involved. Red Hat Ansible Automation Platform is one
+of the approved products sanctioned for the CDM use case. So where does
+Ansible fit in this four layered CDM model? Let's take a look at layer A
+that consists of sensor and scanners:</p>
+<p><img alt="CDM Ansible" src="../images/posts/archive/cdm-ansible-fit.png"></p>
+<p>The two use cases that are immediately apparent for this layer are:</p>
+<ol>
+<li>Log enrichment</li>
+<li>Fingerprint/signature updates</li>
+</ol>
+<p>Each time the security operations center (SOC) needs to triage an
+incident, they might need increased verbosity of logs from the sensors
+or from the endpoint themselves. Typically this eliminates potential
+false positives. Doing this manually means SOC personnel have to log in
+and make these configuration changes. Doing this at scale across an
+agency can be manually intensive and prone to human error. And of course
+after investigation these log levels need to be reset to standard! Using
+Ansible to automatically turn on log enrichment during the investigation
+and subsequently turn off the verbosity at scale is an effective use
+case for the CDM layer A sensors and scanners. </p>
+<p>Scanners and sensors that make up layer A will need timely updates to
+fingerprints based on newer attack vectors. Imagine having to manually
+update these fingerprints across thousands of sensors! Ansible can be a
+good solution to automate this Day 2 operational task needed for layer A.</p>
+<p>What about layer B? If you recall, layer B collates the logs from layer
+A and normalizes the data along with correlating it.</p>
+<p><img alt="CDM model layer b with Ansible" src="../images/posts/archive/cdm-model-b-ansible.png"></p>
+<p>These devices are servers, which are subject to all the traditional Day
+2 operations that automation can help, such as patching, OS upgrades,
+and software updates. </p>
+<p>Finally, the C and D layers serve dashboards that a SOC personnel
+reviews and acts on. </p>
+<p><img alt="CDM dashboard with Ansible" src="../images/posts/archive/cdm-dash-ansible.png"></p>
+<p>Having Ansible Playbooks to mitigate known vulnerabilities could be
+leveraged at this layer with API integration with automation controller
+. Ansible is a proven multi-vendor automation platform. Agencies could
+adopt automated mitigation for known vulnerabilities by firing off an
+automation request to Ansible. Another use case is automating some
+aspects of triage coordination. For example, if multiple teams are
+needed to look into a certain alert, Ansible could fire off tickets
+automatically to the appropriate teams who can then start their triage
+(and even use Ansible for that triage process).</p>
+<h3>Summary</h3>
+<p>In summary, CDM is an opinionated security framework laid out by CISA
+and adopted by agencies as a way to address cybersecurity and threat
+response. CDM prescribes an approved list of products, which include
+Ansible Automation Platform, that agencies can leverage. Ansible
+Automation Platform can be a valuable platform for automating the
+different layers of CDM. Benefits include:</p>
+<ol>
+<li>
+<p>Sensors and scanners: </p>
+<ul>
+<li>Log enrichment</li>
+<li>Update signatures</li>
+</ul>
+</li>
+<li>
+<p>Integration layer: </p>
+<ul>
+<li>Patching</li>
+<li>Day 2 Operations</li>
+</ul>
+</li>
+<li>
+<p>Mitigation</p>
+<ul>
+<li>Automated mitigation</li>
+<li>Triage coordination</li>
+</ul>
+</li>
+</ol>
+</div>
+      </article><br><hr>
+<br><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title">
+            <a href="bullhorn-57/" class="u-url">Bullhorn #57</a>
+          </h1>
+          <div class="metadata">
+            <p class="byline author vcard">
+              <span class="byline-name fn" itemprop="author">
+                  <a href="../authors/ansible-collaborative-et-al/">Ansible Collaborative, et al</a>
+              </span>
+            </p>
+            <p class="dateline">
+              <a href="bullhorn-57/" rel="bookmark">
+                <time class="published dt-published" datetime="2022-05-06T12:40:00Z" itemprop="datePublished" title="2022-05-06 12:40">2022-05-06 12:40</time></a>
+            </p>
+          </div>
+        </header><div class="p-summary entry-summary">
+            <div>
+<p><img alt="Ansible Bullhorn banner" src="../images/bullhorn-banner-mango.png"></p>
+<p><em>A Newsletter for the Ansible Developer Community</em>
+<em>Issue #57, 2022-05-06 (<a href="https://us19.campaign-archive.com/home/?u=56d874e027110e35dea0e03c1&amp;id=d6635f5420">Past Issues</a>)</em></p>
+<p>Welcome to <a href="https://github.com/ansible/community/wiki/News#the-bullhorn">The Bullhorn</a>, our newsletter for the Ansible developer community. If you have any questions or content you’d like to share, you're welcome to chat with us in the <a href="https://matrix.to/#/#social:ansible.com">Ansible Social room on Matrix</a>, and mention <a href="https://matrix.to/#/@newsbot:ansible.im"><code>newsbot</code></a> to have your news item tagged for review for the next weekly issue!</p>
+</div>
+          </div>
+      </article><br><hr>
+<br><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title">
+            <a href="bullhorn-56/" class="u-url">Bullhorn #56</a>
+          </h1>
+          <div class="metadata">
+            <p class="byline author vcard">
+              <span class="byline-name fn" itemprop="author">
+                  <a href="../authors/ansible-collaborative-et-al/">Ansible Collaborative, et al</a>
+              </span>
+            </p>
+            <p class="dateline">
+              <a href="bullhorn-56/" rel="bookmark">
+                <time class="published dt-published" datetime="2022-04-29T12:30:00Z" itemprop="datePublished" title="2022-04-29 12:30">2022-04-29 12:30</time></a>
+            </p>
+          </div>
+        </header><div class="p-summary entry-summary">
+            <div>
+<p><img alt="Ansible Bullhorn banner" src="../images/bullhorn-banner-mango.png"></p>
+<p><em>A Newsletter for the Ansible Developer Community</em>
+<em>Issue #56, 2022-04-29 (<a href="https://us19.campaign-archive.com/home/?u=56d874e027110e35dea0e03c1&amp;id=d6635f5420">Past Issues</a>)</em></p>
+<p>Welcome to <a href="https://github.com/ansible/community/wiki/News#the-bullhorn">The Bullhorn</a>, our newsletter for the Ansible developer community. If you have any questions or content you’d like to share, you're welcome to chat with us in the <a href="https://matrix.to/#/#social:ansible.com">Ansible Social room on Matrix</a>, and mention <a href="https://matrix.to/#/@newsbot:ansible.im"><code>newsbot</code></a> to have your news item tagged for review for the next weekly issue!</p>
+</div>
+          </div>
+      </article><br><hr>
+<br><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title">
+            <a href="bullhorn-55/" class="u-url">Bullhorn #55</a>
+          </h1>
+          <div class="metadata">
+            <p class="byline author vcard">
+              <span class="byline-name fn" itemprop="author">
+                  <a href="../authors/ansible-collaborative-et-al/">Ansible Collaborative, et al</a>
+              </span>
+            </p>
+            <p class="dateline">
+              <a href="bullhorn-55/" rel="bookmark">
+                <time class="published dt-published" datetime="2022-04-22T13:00:00Z" itemprop="datePublished" title="2022-04-22 13:00">2022-04-22 13:00</time></a>
+            </p>
+          </div>
+        </header><div class="p-summary entry-summary">
+            <div>
+<p><img alt="Ansible Bullhorn banner" src="../images/bullhorn-banner-mango.png"></p>
+<p><em>A Newsletter for the Ansible Developer Community</em>
+<em>Issue #55, 2022-04-21 (<a href="https://us19.campaign-archive.com/home/?u=56d874e027110e35dea0e03c1&amp;id=d6635f5420">Past Issues</a>)</em></p>
+<p>Welcome to <a href="https://github.com/ansible/community/wiki/News#the-bullhorn">The Bullhorn</a>, our newsletter for the Ansible developer community. If you have any questions or content you’d like to share, you're welcome to chat with us in the <a href="https://matrix.to/#/#social:ansible.com">Ansible Social room on Matrix</a>, and mention <a href="https://matrix.to/#/@newsbot:ansible.im"><code>newsbot</code></a> to have your news item tagged for review for the next weekly issue!</p>
+</div>
+          </div>
+      </article><br><hr>
+<br><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title">
+            <a href="deep-dive-on-ansible-vscode-extension/" class="u-url">Deep dive on Ansible VScode extension</a>
+          </h1>
+          <div class="metadata">
+            <p class="byline author vcard">
+              <span class="byline-name fn" itemprop="author">
+                  <a href="../authors/ganesh-nalawade/">Ganesh Nalawade</a>
+              </span>
+            </p>
+            <p class="dateline">
+              <a href="deep-dive-on-ansible-vscode-extension/" rel="bookmark">
+                <time class="published dt-published" datetime="2022-04-18T00:00:00Z" itemprop="datePublished" title="2022-04-18 00:00">2022-04-18 00:00</time></a>
+            </p>
+          </div>
+        </header><div class="p-summary entry-summary">
+            <h2>Deep dive on Ansible VScode extension</h2>
+<p>Ansible as part of the Red Hat Ansible Automation Platform continues to
+grow and mature. Recent enhancements include Ansible Content Collections,
+automation execution environments,
+and an increasing list of integrations using plugins and modules. It is
+more important than ever that both new and experienced content creators
+have access to tools that help them write better content faster. The
+newly created Ansible Devtools initiative focuses on developing and
+enhancing tools like <code>ansible-navigator</code>, <a href="https://marketplace.visualstudio.com/items?itemName=redhat.ansible">Ansible VScode extension</a>,
+<a href="https://pypi.org/project/ansible-lint/">ansible-lint</a> and so on to help
+ease the Ansible automation content creator experience. In this blog, we
+will do a deep dive into the Ansible VSCode extension, giving an
+overview of how it works and the initial setup required to get it
+working after installation.</p>
+<h3>Evolution</h3>
+<p>The <a href="https://marketplace.visualstudio.com/items?itemName=redhat.ansible">Ansible VSCode
+extension</a>
+was initially a fork of <a href="https://github.com/tomaciazek">Tomasz Maciążek</a>'s VSCode extension.
+After the fork, the server and client-side code were decoupled into their own separate repositories to allow independent releases for both server and client.</p>
+<ol>
+<li><a href="https://github.com/ansible/ansible-language-server">Ansible language
+    server</a></li>
+<li>
+<a href="https://github.com/ansible/vscode-ansible">Ansible VSCode
+    extension</a> </li>
+</ol>
+<p>The Ansible Language Server is released as a node module on the <a href="https://www.npmjs.com/package/@ansible/ansible-language-server">npm
+repository</a>,
+allowing it to be reused by other editors supporting language server
+protocol, while the VSCode extension client was released on the
+<a href="https://marketplace.visualstudio.com/items?itemName=redhat.ansible">marketplace</a>
+with many additional features.</p>
+<p>Tomasz continues to be a core contributor to the Ansible extension and
+we would like to thank him and all the other community members for their
+contributions to help make the extension better for Ansible content
+creators with every new release.</p>
+<h3>Introduction to the language server protocol (LSP)</h3>
+<p>The Ansible Language Server implements <a href="https://microsoft.github.io/language-server-protocol/">language server
+protocol</a> (LSP),
+which is an open, <a href="https://www.jsonrpc.org/specification">JSON-RPC</a>
+based protocol that is used between source code editors, integrated
+development environments (IDEs) and servers that provide programming
+language-specific features. The goal of the protocol is to allow
+programming language support to be implemented and distributed
+independently of any given editor or IDE.</p>
+<p><img alt="LSP diagram" src="../images/posts/archive/lsp-diagram.png"></p>
+<p>Source: https://code.visualstudio.com/api/language-extensions/language-server-extension-guide</p>
+<p>As seen from the above diagram, the language server protocol allows a
+single language server implementation to be reused by multiple code
+editors or IDEs, thus avoiding the need to duplicate language-related
+support for each editor as in the case of no LSP. The language server
+runs as a separate process and the development tools like VSCode
+communicate with the server using the language protocol over JSON-RPC.
+For more details refer to the <a href="https://microsoft.github.io/language-server-protocol/overviews/lsp/overview/">language server specification</a>.</p>
+<h3>Ansible Language Server</h3>
+<p><img alt="Ansible language server diagram" src="../images/posts/archive/ansible-language-server-diagram.png"></p>
+<p>The Ansible Language Server provides features like:</p>
+<ul>
+<li>Code completion</li>
+<li>Hover (display keyword description on hover)</li>
+<li>Goto definition (for modules)</li>
+<li>Diagnostics and so on</li>
+</ul>
+<p>It serves the JSON-RPC request sent by the development tool (client).
+The language server runs Ansible commands like ansible-config,
+ansible-playbook and so on to support these features and thus requires
+an Ansible<a href="https://pypi.org/project/ansible/"> package</a> or
+<a href="https://pypi.org/project/ansible-core/">ansible-core</a> installed locally
+or within an automation execution environment. In addition, the language
+server relies on <a href="https://pypi.org/project/ansible-lint/">ansible-lint</a>
+for providing diagnostic information if installed and enabled (default).
+While running with an automation execution environment, ansible-core and
+optionally ansible-lint should be included.</p>
+<h3>Extension installation</h3>
+<p>In the VSCode Extensions tab, search and install the <strong>Ansible VS Code Extension</strong>.</p>
+<p>Note: </p>
+<ul>
+<li>When the extension is installed for the first time, the "Runtime Status" is "Not yet activated" which indicates that the extension is not yet running.
+The status will be activated only after a file is opened in the editor and the language identified for the file is "<strong>Ansible</strong>".</li>
+<li>For Windows users, the extension works with WSL2 and not on native Windows.</li>
+</ul>
+<h3>Ansible extension settings</h3>
+<p>The Ansible extension supports multiple configuration options allowing,
+for instance, to change the executable path for Ansible, ansible-lint,
+python interpreter and so on. There is also an option to enable the
+automation execution environment and users can choose the container
+engine, image name, pull policy and more. To see and change the
+configuration options in the VSCode window, go to
+<strong>Code-&gt;Preference-&gt;Settings</strong> and in the Search settings box type
+"<strong>ansible</strong>" as shown in the below snapshot.</p>
+<p><img alt="vscode extension screenshot" src="../images/posts/archive/ansible-vscode-ext-screenshot.png"></p>
+<p>The preferences can be set for a given user or workspace, and depending
+on the environment, also for remote type and workspace folder. Settings
+in the user scope will be applied globally for any instance of VSCode
+that is opened. Workspace scoped settings will be stored inside your
+workspace and only apply when the current workspace is opened. For more
+information refer to the VSCode documentation
+<a href="https://code.visualstudio.com/docs/getstarted/settings">here</a>.
+Alternatively, for workspace settings, you can also provide the Ansible
+settings by editing the <strong>.vscode/settings.json</strong> file within the
+workspace root folder as shown below.</p>
+<p><img alt="vscode extension screenshot" src="../images/posts/archive/ansible-vscode-ext-screenshot-one.png"></p>
+<h3>Activating and using Ansible extension</h3>
+<p>As stated above, the
+<a href="https://marketplace.visualstudio.com/items?itemName=redhat.ansible">vscode-ansible</a>
+extension depends on the <a href="https://www.npmjs.com/package/@ansible/ansible-language-server">ansible-language-server</a>running
+as a background process to provide features for Ansible Playbooks and
+task files like auto-completion, hover, diagnostics, goto and more. The
+extension also depends on the Red Hat
+<a href="https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml">vscode-yaml</a>
+extension to provide auto-completion and diagnostics information of
+other related files like Ansible vars file, ansible-navigator settings
+file,  ansible-galaxy requirements and metafiles, ansible-lint
+configuration file and other YAML files. The extension uses file pattern
+match to associate the file with the YAML language. For details about
+the file pattern and associated schema file used by the <a href="https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml">vscode-yaml</a>extension,
+read more
+<a href="https://github.com/ansible/vscode-ansible/blob/v0.8.1/package.json#L54-L125">here</a>.</p>
+<p>With this context set, you can now go ahead and open the root of your Ansible project in the VSCode window.
+That folder will be a root of your workspace, also treated as the current working directory by the Ansible Language Server while executing Ansible commands in the background.
+If you try to open an Ansible file without first setting up a workspace, the plugin might not be able to determine the context (such as CWD) correctly.</p>
+<p>After an Ansible file is opened in the VSCode window, it might not be
+identified correctly as an <strong>Ansible</strong> language type as seen in the
+below snapshot. Most likely, the file will be identified as "<strong>YAML</strong>"
+language since Ansible files have either "<strong>yaml</strong>" or "<strong>yml</strong>"
+extension and installing the
+<a href="http://ketplace.visualstudio.com/items?itemName=redhat.ansible">vscode-ansible</a>
+extension, in turn, installs the <a href="https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml">vscode-yaml</a>extension.</p>
+<p><img alt="vscode extension screenshot" src="../images/posts/archive/ansible-vscode-ext-screenshot-two.png"></p>
+<p>Hovering the cursor on the language identified (YAML in this case) in
+the bottom right corner you will see "Select Language Mode". By clicking
+on the identified language name (YAML) it will open a drop-down menu;
+type "<strong>Ansible</strong>" in the tab and then select it. After doing this, you
+will notice the identified language for the file is changed to
+"<strong>Ansible</strong>" as shown in the below snapshot.</p>
+<p><img alt="vscode extension screenshot" src="../images/posts/archive/ansible-vscode-ext-screenshot-three.png"></p>
+<p>When the file language is identified as Ansible for the first time, the
+<strong>vscode-ansible</strong> extension will be activated and the extension will
+run the <strong>ansible-language-server</strong> process in the background which
+provides auto-completion, hover and diagnostics information as you type
+and/or hover within the file. The diagnostics information will be
+available in the <strong>PROBLEMS</strong> tab. If it's installed and enabled, the
+language server will run <strong>ansible-lint</strong> by default to generate
+diagnostics information on the open file. If <strong>ansible-lint</strong> is not
+installed, the server will run <strong>ansible-playbook --syntax-check</strong> to
+generate diagnostics information.</p>
+<p>Instead of changing the language for each file, you can set the file
+associations setting by clicking on "<strong>Code -&gt; Preferences -&gt;
+Settings</strong>" and typing "<strong>file associations</strong>" in the search box. Add an
+item to associate the extension with the language type as shown in the
+below snapshot.</p>
+<p><img alt="vscode extension screenshot" src="../images/posts/archive/ansible-vscode-ext-screenshot-four.png"></p>
+<p>For more information on file associations, refer to the document
+<a href="https://code.visualstudio.com/docs/languages/identifiers">here</a>.</p>
+<h3>Using automation execution environments</h3>
+<p>To see the automation execution environments supported by extension, you
+can go to settings (Code -&gt; Preferences -&gt; Settings) and type
+"<strong>ansible.execution environment</strong>".</p>
+<p><img alt="vscode extension screenshot" src="../images/posts/archive/ansible-vscode-ext-screenshot-five.png"></p>
+<p>After enabling the execution environment (EE), the extension will pull
+the "<strong>quay.io/ansible/creator-ee:latest</strong>" image by default, if it is
+not present locally. The value of the image can be changed by providing
+the intended value for "ansible.executionEnvironment.image" setting.
+After the EE pull is successful, the Ansible extension will copy the
+plugins docs from within EE to the local cache folder and it will be
+used to provide auto-completion, hover and goto functionality. Since the
+"creator-ee" image has "<strong>ansible-lint</strong>" bundled, the Ansible extension
+and <strong>ansible-language-server</strong> will volume mount the entire workspace
+within the EE and run "<strong>ansible-lint</strong>" or <strong>"ansible-playbook
+---syntax-check</strong>" based on settings to provide diagnostics information
+in editor.</p>
+<p><img alt="vscode extension screenshot" src="../images/posts/archive/ansible-vscode-ext-screenshot-six.png"></p>
+<p>Note: </p>
+<ul>
+<li>If auto-completion and other features are not working after enabling
+    the execution environment, you can reload VS Code by opening the
+    command palette ("<strong>view -&gt; Command Palette</strong>") and executing the
+    "<strong>Developer: Reload Window</strong>" command, which also restarts the
+    "<strong>ansible-language-server</strong>" process running in the background.</li>
+<li>If the extension is not working as expected, you can follow the
+    debug steps shown
+    <a href="https://www.youtube.com/watch?v=vfIbIIbtQYI">here</a>. If it is still
+    not working, please do raise an issue
+    <a href="https://github.com/ansible/vscode-ansible/issues">here</a>. </li>
+</ul>
+<p>The auto-completions will now provide suggestions for plugins that are
+part of the given execution environment image name.</p>
+<p><img alt="vscode extension screenshot" src="../images/posts/archive/ansible-vscode-ext-screenshot-seven.png"></p>
+<p>The "trigger suggest" key depends on the keyboard shortcut. To view the
+associated keys, go to <strong>Code -&gt; Preferences -&gt; Keyboard Shortcuts</strong>.</p>
+<p><img alt="vscode extension screenshot" src="../images/posts/archive/ansible-vscode-ext-screenshot-eight.png"></p>
+<h3>Ansible Playbook run entry point</h3>
+<p>The extension also provides an option to run an Ansible Playbook from
+within the extension either using "<strong>ansible-navigator run</strong>" or
+"<strong>ansible-playbook</strong>" command as shown in the below snapshot.</p>
+<p><img alt="vscode extension screenshot" src="../images/posts/archive/ansible-vscode-ext-screenshot-nine.png"></p>
+          </div>
+      </article><br><hr>
+<br><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title">
+            <a href="bullhorn-54/" class="u-url">Bullhorn #54</a>
+          </h1>
+          <div class="metadata">
+            <p class="byline author vcard">
+              <span class="byline-name fn" itemprop="author">
+                  <a href="../authors/ansible-collaborative-et-al/">Ansible Collaborative, et al</a>
+              </span>
+            </p>
+            <p class="dateline">
+              <a href="bullhorn-54/" rel="bookmark">
+                <time class="published dt-published" datetime="2022-04-14T21:30:00Z" itemprop="datePublished" title="2022-04-14 21:30">2022-04-14 21:30</time></a>
+            </p>
+          </div>
+        </header><div class="p-summary entry-summary">
+            <div>
+<p><img alt="Ansible Bullhorn banner" src="../images/bullhorn-banner-mango.png"></p>
+<p><em>A Newsletter for the Ansible Developer Community</em>
+<em>Issue #54, 2022-04-14 (<a href="https://us19.campaign-archive.com/home/?u=56d874e027110e35dea0e03c1&amp;id=d6635f5420">Past Issues</a>)</em></p>
+<p>Welcome to <a href="https://github.com/ansible/community/wiki/News#the-bullhorn">The Bullhorn</a>, our newsletter for the Ansible developer community. If you have any questions or content you’d like to share, you're welcome to chat with us in the <a href="https://matrix.to/#/#social:ansible.com">Ansible Social room on Matrix</a>, and mention <a href="https://matrix.to/#/@newsbot:ansible.im"><code>newsbot</code></a> to have your news item tagged for review for the next weekly issue!</p>
+</div>
+          </div>
+      </article><br><hr>
+<br><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title">
+            <a href="bullhorn-53/" class="u-url">Bullhorn #53</a>
+          </h1>
+          <div class="metadata">
+            <p class="byline author vcard">
+              <span class="byline-name fn" itemprop="author">
+                  <a href="../authors/ansible-collaborative-et-al/">Ansible Collaborative, et al</a>
+              </span>
+            </p>
+            <p class="dateline">
+              <a href="bullhorn-53/" rel="bookmark">
+                <time class="published dt-published" datetime="2022-04-08T10:00:00Z" itemprop="datePublished" title="2022-04-08 10:00">2022-04-08 10:00</time></a>
+            </p>
+          </div>
+        </header><div class="p-summary entry-summary">
+            <div>
+<p><img alt="Ansible Bullhorn banner" src="../images/bullhorn-banner-mango.png"></p>
+<p><em>A Newsletter for the Ansible Developer Community</em>
+<em>Issue #53, 2022-04-08 (<a href="https://us19.campaign-archive.com/home/?u=56d874e027110e35dea0e03c1&amp;id=d6635f5420">Past Issues</a>)</em></p>
+<p>Welcome to <a href="https://github.com/ansible/community/wiki/News#the-bullhorn">The Bullhorn</a>, our newsletter for the Ansible developer community. If you have any questions or content you’d like to share, you're welcome to chat with us in the <a href="https://matrix.to/#/#social:ansible.com">Ansible Social room on Matrix</a>, and mention <a href="https://matrix.to/#/@newsbot:ansible.im"><code>newsbot</code></a> to have your news item tagged for review for the next weekly issue!</p>
+</div>
+          </div>
+      </article><br><hr>
+<br><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title">
+            <a href="bullhorn-52/" class="u-url">Bullhorn #52</a>
+          </h1>
+          <div class="metadata">
+            <p class="byline author vcard">
+              <span class="byline-name fn" itemprop="author">
+                  <a href="../authors/ansible-collaborative-et-al/">Ansible Collaborative, et al</a>
+              </span>
+            </p>
+            <p class="dateline">
+              <a href="bullhorn-52/" rel="bookmark">
+                <time class="published dt-published" datetime="2022-03-31T22:00:00Z" itemprop="datePublished" title="2022-03-31 22:00">2022-03-31 22:00</time></a>
+            </p>
+          </div>
+        </header><div class="p-summary entry-summary">
+            <div>
+<p><img alt="Ansible Bullhorn banner" src="../images/bullhorn-banner-mango.png"></p>
+<p><em>A Newsletter for the Ansible Developer Community</em>
+<em>Issue #52, 2022-03-31 (<a href="https://us19.campaign-archive.com/home/?u=56d874e027110e35dea0e03c1&amp;id=d6635f5420">Past Issues</a>)</em></p>
+<p>Welcome to <a href="https://github.com/ansible/community/wiki/News#the-bullhorn">The Bullhorn</a>, our newsletter for the Ansible developer community. If you have any questions or content you’d like to share, you're welcome to chat with us in the <a href="https://matrix.to/#/#social:ansible.com">Ansible Social room on Matrix</a>, and mention <a href="https://matrix.to/#/@newsbot:ansible.im"><code>newsbot</code></a> to have your news item tagged for review for the next weekly issue!</p>
+</div>
+          </div>
+      </article><br><hr>
+<br><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title">
+            <a href="bullhorn-51/" class="u-url">Bullhorn #51</a>
+          </h1>
+          <div class="metadata">
+            <p class="byline author vcard">
+              <span class="byline-name fn" itemprop="author">
+                  <a href="../authors/ansible-collaborative-et-al/">Ansible Collaborative, et al</a>
+              </span>
+            </p>
+            <p class="dateline">
+              <a href="bullhorn-51/" rel="bookmark">
+                <time class="published dt-published" datetime="2022-03-25T01:15:00Z" itemprop="datePublished" title="2022-03-25 01:15">2022-03-25 01:15</time></a>
+            </p>
+          </div>
+        </header><div class="p-summary entry-summary">
+            <div>
+<p><img alt="Ansible Bullhorn banner" src="../images/bullhorn-banner-mango.png"></p>
+<p><em>A Newsletter for the Ansible Developer Community</em>
+<em>Issue #51, 2022-03-24 (<a href="https://us19.campaign-archive.com/home/?u=56d874e027110e35dea0e03c1&amp;id=d6635f5420">Past Issues</a>)</em></p>
+<p>Welcome to <a href="https://github.com/ansible/community/wiki/News#the-bullhorn">The Bullhorn</a>, our newsletter for the Ansible developer community. If you have any questions or content you’d like to share, you're welcome to chat with us in the <a href="https://matrix.to/#/#social:ansible.com">Ansible Social room on Matrix</a>, and mention <a href="https://matrix.to/#/@newsbot:ansible.im"><code>newsbot</code></a> to have your news item tagged for review for the next weekly issue!</p>
+</div>
+          </div>
+      </article><br><hr>
+<br><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title">
+            <a href="bullhorn-50/" class="u-url">Bullhorn #50</a>
+          </h1>
+          <div class="metadata">
+            <p class="byline author vcard">
+              <span class="byline-name fn" itemprop="author">
+                  <a href="../authors/ansible-collaborative-et-al/">Ansible Collaborative, et al</a>
+              </span>
+            </p>
+            <p class="dateline">
+              <a href="bullhorn-50/" rel="bookmark">
+                <time class="published dt-published" datetime="2022-03-18T04:30:00Z" itemprop="datePublished" title="2022-03-18 04:30">2022-03-18 04:30</time></a>
+            </p>
+          </div>
+        </header><div class="p-summary entry-summary">
+            <div>
+<p><img alt="Ansible Bullhorn banner" src="../images/bullhorn-banner-mango.png"></p>
+<p><em>A Newsletter for the Ansible Developer Community</em>
+<em>Issue #50, 2022-03-17 (<a href="https://us19.campaign-archive.com/home/?u=56d874e027110e35dea0e03c1&amp;id=d6635f5420">Past Issues</a>)</em></p>
+<p>Welcome to <a href="https://github.com/ansible/community/wiki/News#the-bullhorn">The Bullhorn</a>, our newsletter for the Ansible developer community. If you have any questions or content you’d like to share, you're welcome to chat with us in the <a href="https://matrix.to/#/#social:ansible.com">Ansible Social room on Matrix</a>, and mention <a href="https://matrix.to/#/@newsbot:ansible.im"><code>newsbot</code></a> to have your news item tagged for review for the next weekly issue!</p>
+</div>
+          </div>
+      </article><br><hr>
+<br>
+</div>
+          <ul class="pager postindexpager clearfix">
+<li class="previous"><a href="index-16.html" rel="prev">Newer posts</a></li>
+            <li class="next"><a href="index-14.html" rel="next">Older posts</a></li>
+        </ul>
+<!--End of body content-->
+</div>
+        <div class="content-slim redhat-footer">
+      <div class="footer-left">
+        <ul class="footer-left-links">
+<li>
+            <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-SA 4.0</a>
+          </li>
+          <li>
+            <a href="https://www.redhat.com/en/about/privacy-policy" target="_blank">Privacy policy</a>
+          </li>
+          <li>
+            <a href="https://docs.ansible.com/ansible/latest/community/code_of_conduct.html" target="_blank">Code of conduct</a>
+          </li>
+        </ul>
+</div>
+      <div class="footer-right">
+        <span class="redhat">Powered by</span>
+        <span class="redhat-logo">
+          <a href="https://www.redhat.com/en/technologies/management/ansible" target="_blank">
+            <img src="../assets/images/redhat_reversed.svg" alt="Red Hat logo." width="96" height="28"></a>
+        </span>
+      </div>
+    </div>
+
+</div>
+
+            <script src="../assets/js/jquery.min.js"></script><script src="../assets/js/popper.min.js"></script><script src="../assets/js/bootstrap.min.js"></script><script src="../assets/js/baguetteBox.min.js"></script><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+</script><script src="../assets/js/clipboard.min.js" type="text/javascript"></script><script src="../assets/js/clipboard.js" type="text/javascript"></script>
+</body>
+</html>

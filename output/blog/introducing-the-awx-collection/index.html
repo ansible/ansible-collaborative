@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html prefix="
+og: http://ogp.me/ns# article: http://ogp.me/ns/article#
+" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="The AWX Collection allows Ansible Playbooks to interact with AWX and Ansible Tower.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Introducing the AWX and Ansible Tower Collections | Ansible Collaborative</title>
+<link href="../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/baguetteBox.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/rst.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/code.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/theme.css" rel="stylesheet" type="text/css">
+<!-- Red Hat fonts --><link rel="stylesheet" href="https://static.redhat.com/libs/redhat/redhat-font/2.0.0/webfonts/red-hat-font.css">
+<!-- Font Awesome --><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+<!-- Fork Awesome --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css" integrity="sha256-XoaMnoYC5TH6/+ihMEnospgm0J1PM/nioxbOUdnM8HY=" crossorigin="anonymous">
+<!-- Sass compiled css  --><link rel="stylesheet" href="../../assets/css/main.css">
+<link rel="stylesheet" href="../../assets/css/redhat-footer.css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://ansible.com/blog/introducing-the-awx-collection/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Bianca Henderson">
+<link rel="prev" href="../ansible-linting-with-github-actions/" title="Ansible Linting with GitHub Actions" type="text/html">
+<link rel="next" href="../red-hat-ansible-tower-monitoring-using-prometheus-node-exporter-grafana/" title="Red Hat Ansible Tower Monitoring Using Prometheus, Node Exporter, and Grafana" type="text/html">
+<meta property="og:site_name" content="Ansible Collaborative">
+<meta property="og:title" content="Introducing the AWX and Ansible Tower Collections">
+<meta property="og:url" content="https://ansible.com/blog/introducing-the-awx-collection/">
+<meta property="og:description" content="The AWX Collection allows Ansible Playbooks to interact with AWX and Ansible Tower.">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2020-05-04T00:00:00Z">
+</head>
+<body id="top">
+
+<div class="global-container" id="content" role="main">
+<!-- Start menubar -->
+<nav class="navbar navbar-expand-lg static-top mb-4 navbar-padding full-width-bg   navbar-dark   bg-pool   "><div class="masthead">
+    <!-- This keeps the margins nice -->
+    <a class="navbar-brand" href="../../">
+        <img src="../../images/ansible_logo-small-15.png" alt="Ansible community logo" id="logo" class="d-inline-block align-top" width="50" height="50"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon nav-toggle-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="bs-navbar">
+      <ul class="navbar-nav mr-auto"></ul>
+<ul class="navbar-nav navbar-right">
+<li class="nav-item dropdown">
+	        <a href="#" class="nav-link nav-link-color dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <i class=""></i> Documentation
+                </a>
+		<div class="dropdown-menu dropdown-menu-border">
+	    
+                    <a href="https://docs.ansible.com/" class="dropdown-item">
+		        <i class=""></i> Project documentation
+                    </a>
+                    <a href="https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/" class="dropdown-item">
+		        <i class=""></i> Ansible Automation Platform documentation
+                    </a>
+            </div>
+                 </li>
+<li class="nav-item">
+		     <a href="https://galaxy.ansible.com/" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Galaxy
+		     </a>
+		 </li>
+                 <li class="nav-item">
+		     <a href="https://forum.ansible.com/" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Forum
+		     </a>
+		 </li>
+            <li class="nav-item dropdown">
+	        <a href="#" class="nav-link nav-link-color dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <i class=""></i> Resources
+                </a>
+		<div class="dropdown-menu dropdown-menu-border">
+	    
+                    <a href="../../how-ansible-works/" class="dropdown-item">
+		        <i class=""></i> How Ansible works
+                    </a>
+                    <a href="../../ecosystem/" class="dropdown-item">
+		        <i class=""></i> Ansible ecosystem
+                    </a>
+                    <a href="../archive.html" class="dropdown-item">
+		        <i class=""></i> Blog
+                    </a>
+                    <a href="../../faq/" class="dropdown-item">
+		        <i class=""></i> Frequently asked questions
+                    </a>
+                    <a href="../../ansible-community-training/" class="dropdown-item">
+		        <i class=""></i> Ansible community training
+                    </a>
+                    <a href="../../contact-us/" class="dropdown-item">
+		        <i class=""></i> Contact us
+                    </a>
+            </div>
+                 </li>
+<li class="nav-item">
+		     <a href="https://www.redhat.com/en/technologies/management/ansible?sc_cid=7015Y000003szaKQAQ" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Ansible Automation Platform
+		     </a>
+		 </li>
+
+        
+      </ul>
+</div>
+    <!-- /.navbar-collapse -->
+  </div>
+  <!-- /.container -->
+</nav><!-- End default Menubar --><div class="body-content center-band">
+        <!--Body content-->
+        
+  <article class="post-text h-entry hentry postpage ansible-content" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Introducing the AWX and Ansible Tower Collections</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard p-author h-card"><span class="byline-name fn p-name" itemprop="author">
+                    <a class="u-url" href="../../authors/bianca-henderson/">Bianca Henderson</a>
+            </span></p>
+            <p class="dateline">
+            <a href="." rel="bookmark">
+            <time class="published dt-published" datetime="2020-05-04T00:00:00Z" itemprop="datePublished" title="2020-05-04 00:00">2020-05-04 00:00</time></a>
+            </p>
+                    <p class="sourceline"><a href="index.md" class="sourcelink">Source</a></p>
+
+        </div>
+        
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+<h2>Introducing the AWX and Ansible Tower Collections</h2>
+<p>Ansible Content Collections are a new way of distributing content,
+including modules, for Ansible. </p>
+<p>The AWX and Ansible Tower Collections allow Ansible Playbooks to
+interact with AWX and Ansible Tower. Much like interacting with AWX or
+Red Hat Ansible Tower via the web-based UI or the API, the modules
+provided by the AWX Collection are another way to create, update or
+delete objects as well as perform tasks such as run jobs, configure
+Ansible Tower and more. This article will discuss new updates regarding
+this collection, as well as an example playbook and details on how to
+run it successfully.</p>
+<p>The AWX Collection
+<a href="https://galaxy.ansible.com/awx/awx">awx.awx</a> is the
+upstream community distribution available on Ansible Galaxy.  The
+downstream supported Ansible Collection
+<a href="https://cloud.redhat.com/ansible/automation-hub/ansible/tower">ansible.tower</a>
+is available on Automation Hub alongside the release of Ansible Tower 3.7.</p>
+<p>This collection is a replacement for the
+<a href="https://docs.ansible.com/ansible/latest/modules/list_of_web_infrastructure_modules.html#ansible-tower">Ansible Tower web modules</a>
+which were previously housed and maintained directly in the
+<a href="https://github.com/ansible/ansible/tree/stable-2.9/lib/ansible/modules/web_infrastructure/ansible_tower">Ansible repo</a>.
+The modules were initially <a href="https://github.com/ansible/awx/pull/4701">added to the AWX source</a> in October of 2019,
+when collections work began; the <code>tower_*</code> modules in Ansible Core were
+<a href="https://github.com/ansible/ansible/pull/67233">marked for official migration</a>
+shortly after. </p>
+<h3>Improvements in the AWX Collection</h3>
+<p>The modules delivered by Ansible Core and the initial versions of the
+AWX Collection had a dependency on libraries provided by the
+<a href="https://github.com/ansible/tower-cli">tower-cli</a> project.  Due to the
+deprecation of tower-cli, there is work currently being done to remove
+that dependency. This has led to a major update to the AWX Collection.</p>
+<p>During the removal of tower-cli, we have tried to keep the modules
+backwards-compatible with their corresponding version that shipped in
+Ansible Core. This way, if you have already leveraged the <code>tower_*</code>
+modules from Ansible Core, there should be very little work required
+when switching to the AWX Collection. For more information, see the
+<a href="https://docs.google.com/document/d/1HCPVLmLmNVX59MiAWlOAmnJUMKYfQed6pd64sr3tOLg/edit#heading=h.rfgzmyttyslb">Deprecation Updates</a>
+section below.</p>
+<p>In addition, we have standardized the modules' operational logic, thus
+making the collections modules more uniform. Previously, each module was
+written individually (sometimes by different authors). This caused
+subtle differences of behavior for the individual modules. The modules
+distributed in the AWX Collection follow a standard pattern, which
+provides consistency even if written by different authors.</p>
+<p>The syncing of the collection to the Red Hat Ansible Tower versions also
+allows the modules' parameters to be kept in sync with the options
+available within the web UI and API. As part of the recent changes, we
+have added some new
+<a href="https://github.com/ansible/awx/tree/devel/awx_collection/tools">tooling</a>
+as well as updated many of the modules to now include parameters for
+functionality which have been added to Ansible Tower since the modules
+were initially released.</p>
+<p>The collection now also provides better support for idempotency as well
+as check_mode. In previous versions using check_mode, older modules
+would simply ensure that they could connect to the Ansible Tower server
+but not indicate if they would have actually made a change to an Ansible
+Tower object. The AWX Collections modules will now more accurately
+indicate if they would have changed a Tower object via check_mode. </p>
+<h3>Using the AWX Collection</h3>
+<p>It's very easy to get started with AWX Collection; all you need to do is
+install the collection from <a href="https://galaxy.ansible.com/awx/awx">Ansible
+Galaxy</a> in order to interact with
+Ansible Tower. This can be done with the command:</p>
+<div class="code"><pre class="code literal-block">ansible-galaxy<span class="w"> </span>collection<span class="w"> </span>install<span class="w"> </span>awx.awx
+</pre></div>
+
+<p>Once the collection is installed, we can begin writing playbooks to
+manage your instance of Ansible Tower.</p>
+<p><strong>Note:</strong> In order to communicate with your Red Hat Ansible Tower
+environment, you need to have an instance of it running, with a
+dedicated Ansible Tower host address.  </p>
+<h4>Setting Up Authentication</h4>
+<p>The first thing we need to do in order to interact with Red Hat Ansible
+Tower is provide authentication. This can be done in several ways, all
+of which are backwards-compatible with the old version of the modules.
+The following authentication options are available for use:</p>
+<ul>
+<li>Specify the connection information as module parameters</li>
+<li>Provide environment variables with the connection information</li>
+<li>Reference an old tower_cli.cfg file that contains the connection
+    information</li>
+</ul>
+<p>Below is an example of a tower_cli.cfg file:</p>
+<div class="code"><pre class="code literal-block"><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">$HOST_ADDRESS</span><span class="p p-Indicator">]</span>
+<span class="nt">verify_ssl</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span>
+<span class="nt">tower_username</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">$TOWER_USERNAME</span><span class="p p-Indicator">]</span>
+<span class="nt">tower_password</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">$TOWER_PASSWORD</span><span class="p p-Indicator">]</span>
+<span class="nt">oauth_token</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">$OAUTH_TOKEN</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">(if using oauth instead of a password)</span>
+</pre></div>
+
+<h4>Creating a Playbook</h4>
+<p>Once you have the AWX Collection installed and your authentication
+method decided upon, we can begin <a href="https://docs.ansible.com/ansible/latest/user_guide/playbooks_intro.html">writing a
+playbook</a>
+to interact with Ansible Tower. In order to activate the collection, the
+following code snippet is required at the play level of your playbook:</p>
+<div class="code"><pre class="code literal-block"><span class="w">  </span><span class="nt">collections</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">awx.awx</span>
+</pre></div>
+
+<p>Even if you are running on a version of Ansible that still ships with
+the <code>tower_*</code> modules, this will cause Ansible to load the modules from
+the AWXCollection instead of the versions shipped in Ansible Core. The
+rest of your playbook would look identical to a playbook that did not
+use the collection. </p>
+<p>In the example playbook below, the authentication information is not
+specified in the tasks and would be loaded either from the environment
+variables or a <code>tower_cli.cfg</code> file:</p>
+<div class="code"><pre class="code literal-block"><span class="nn">---</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Playbook for Using a Variety of Tower Modules</span>
+<span class="w">  </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">localhost</span>
+<span class="w">  </span><span class="nt">gather_facts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">collections</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">awx.awx</span>
+
+<span class="w">  </span><span class="nt">tasks</span><span class="p">:</span>
+
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Create a new organization</span>
+<span class="w">    </span><span class="nt">tower_organization</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">"New</span><span class="nv"> </span><span class="s">Org"</span>
+<span class="w">      </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">"test</span><span class="nv"> </span><span class="s">org"</span>
+<span class="w">      </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">present</span>
+
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Create an Inventory</span>
+<span class="w">    </span><span class="nt">tower_inventory</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">"New</span><span class="nv"> </span><span class="s">Inventory"</span>
+<span class="w">      </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">"test</span><span class="nv"> </span><span class="s">inv"</span>
+<span class="w">      </span><span class="nt">organization</span><span class="p">:</span><span class="w"> </span><span class="s">"New</span><span class="nv"> </span><span class="s">Org"</span>
+<span class="w">      </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">present</span>
+
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Create a Host</span>
+<span class="w">    </span><span class="nt">tower_host</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">"New</span><span class="nv"> </span><span class="s">Host"</span>
+<span class="w">      </span><span class="nt">inventory</span><span class="p">:</span><span class="w"> </span><span class="s">"New</span><span class="nv"> </span><span class="s">Inventory"</span>
+<span class="w">      </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">present</span>
+<span class="w">      </span><span class="nt">variables</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">foo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">bar</span>
+
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Create a Project</span>
+<span class="w">    </span><span class="nt">tower_project</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">"New</span><span class="nv"> </span><span class="s">Project"</span>
+<span class="w">      </span><span class="nt">organization</span><span class="p">:</span><span class="w"> </span><span class="s">"New</span><span class="nv"> </span><span class="s">Org"</span>
+<span class="w">      </span><span class="nt">scm_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">git</span>
+<span class="w">      </span><span class="nt">scm_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://github.com/ansible/test-playbooks.git</span>
+
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Create a Team</span>
+<span class="w">    </span><span class="nt">tower_team</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">"Test</span><span class="nv"> </span><span class="s">Team"</span>
+<span class="w">      </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">"test</span><span class="nv"> </span><span class="s">team"</span>
+<span class="w">      </span><span class="nt">organization</span><span class="p">:</span><span class="w"> </span><span class="s">"New</span><span class="nv"> </span><span class="s">Org"</span>
+<span class="w">      </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">present</span>
+<span class="w">      </span><span class="nt">validate_certs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Create a Job Template</span>
+<span class="w">    </span><span class="nt">tower_job_template</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">"Job</span><span class="nv"> </span><span class="s">Template</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">Launch"</span>
+<span class="w">      </span><span class="nt">project</span><span class="p">:</span><span class="w"> </span><span class="s">"New</span><span class="nv"> </span><span class="s">Project"</span>
+<span class="w">      </span><span class="nt">inventory</span><span class="p">:</span><span class="w"> </span><span class="s">"New</span><span class="nv"> </span><span class="s">Inventory"</span>
+<span class="w">      </span><span class="nt">playbook</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">debug.yml</span>
+<span class="w">      </span><span class="nt">ask_extra_vars</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">yes</span>
+
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Launch the Job Template (w/ extra_vars)!</span>
+<span class="w">    </span><span class="nt">tower_job_launch</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">job_template</span><span class="p">:</span><span class="w"> </span><span class="s">"Job</span><span class="nv"> </span><span class="s">Template</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">Launch"</span>
+<span class="w">      </span><span class="nt">extra_vars</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">var1</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">My First Variable</span>
+<span class="w">        </span><span class="nt">var2</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">My Second Variable</span>
+<span class="w">        </span><span class="nt">var3</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">My Third Variable</span>
+</pre></div>
+
+<p><strong>Note:</strong> Another way to tell Ansible to use a module from a collection
+is to fully qualify the modules' name with the collection namespace, as
+in this example below:</p>
+<div class="code"><pre class="code literal-block"><span class="w"> </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Launch the Job Template (w/ extra_vars)</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">awx.awx.tower_job_launch</span><span class="p p-Indicator">:</span>
+<span class="w">      </span><span class="nt">job_template</span><span class="p">:</span><span class="w"> </span><span class="s">"Job</span><span class="nv"> </span><span class="s">Template</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">Launch"</span>
+<span class="w">      </span><span class="nt">extra_vars</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">var1</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">My First Variable</span>
+<span class="w">        </span><span class="nt">var2</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">My Second Variable</span>
+<span class="w">        </span><span class="nt">var3</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">My Third Variable</span>
+</pre></div>
+
+<h4>Executing the Playbook</h4>
+<p>Assuming that the playbook above was saved in your current directory as
+a file named configure_tower.yml, the following command would run this
+playbook:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>ansible-playbook<span class="w"> </span>-i<span class="w"> </span>localhost<span class="w"> </span>configure_tower.yml
+</pre></div>
+
+<p><strong>Note:</strong> If you have issues with Python on your machine, changing the
+ansible-playbook command to the following might help:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>ansible-playbook<span class="w"> </span>-i<span class="w"> </span>localhost<span class="w"> </span>-e<span class="w"> </span><span class="nv">ansible_python_interpreter</span><span class="o">=</span><span class="k">$(</span>which<span class="w"> </span>python<span class="k">)</span><span class="w"> </span>configure_tower.yml
+</pre></div>
+
+<p>With a properly-installed collection, configured authentication setup
+and a correctly-formatted playbook, you should see output similar to
+this:</p>
+<p><img alt="ansible-blog-screenshot-awx-collection" src="../../images/posts/archive/ansible-blog-screenshot-awx-collection.png"></p>
+<p>Upon completion of the playbook, If you navigate to the web UI of your
+Red Hat Ansible Tower server, you should be able to see that the
+following objects were created:</p>
+<ul>
+<li>An organization called "New Org"</li>
+<li>An inventory called "New Inventory" and host called "New Host" within that inventory</li>
+<li>A project called "New Project"</li>
+<li>A team called "New Team"</li>
+<li>A job template called "Job Template to Launch"</li>
+</ul>
+<p>In addition, you can see on the Jobs page that the playbook invoked the
+job template with the specified extra_vars.  See below:</p>
+<p><img alt="bianca collections tower ui" src="../../images/posts/archive/tower-ui-bianca-collections.png"></p>
+<h3>Deprecation Updates</h3>
+<p>During the removal of tower-cli, we attempted to keep the modules as
+similar as possible to ease the transition from the old Core modules to
+the new collection. Inevitably, some minor changes had to be made;
+details of these changes can be found in the "Release and Upgrade"
+section of the AWX Collections
+<a href="https://github.com/ansible/awx/blob/devel/awx_collection/README.md#release-and-upgrade-notes">README.md</a>
+file. Some changes to mention include:</p>
+<ul>
+<li>extra_vars parameters no longer support load of variables from a
+    file by specifying a <code>@&lt;file name&gt;</code> notation. Instead, they now take
+    dictionaries. If you were previously loading a file, please use the
+    lookup plugin to load the file instead.</li>
+<li>Some modules no longer return values the way they used to. All
+    returns have been unified across the modules and primarily return
+    the ID of the object modified.</li>
+</ul>
+<h3>Conclusion</h3>
+<p>It is quite simple and straightforward to get up and running with the
+AWX Collection.  Amongst other things, collections enable users to store
+their most frequently-used tasks inside of different playbooks, which
+can be easily shared as needed.  In a follow-up blog post, we will
+discuss contribution and development, as well as how to test any new or
+updated modules you may want to add to the collection.</p>
+</div>
+    <aside class="postpromonav"><nav><ul class="pager hidden-print">
+<li class="previous">
+                <a href="../ansible-linting-with-github-actions/" rel="prev" title="Ansible Linting with GitHub Actions">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../red-hat-ansible-tower-monitoring-using-prometheus-node-exporter-grafana/" rel="next" title="Red Hat Ansible Tower Monitoring Using Prometheus, Node Exporter, and Grafana">Next post</a>
+            </li>
+        </ul></nav></aside></article><!--End of body content-->
+</div>
+        <div class="content-slim redhat-footer">
+      <div class="footer-left">
+        <ul class="footer-left-links">
+<li>
+            <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-SA 4.0</a>
+          </li>
+          <li>
+            <a href="https://www.redhat.com/en/about/privacy-policy" target="_blank">Privacy policy</a>
+          </li>
+          <li>
+            <a href="https://docs.ansible.com/ansible/latest/community/code_of_conduct.html" target="_blank">Code of conduct</a>
+          </li>
+        </ul>
+</div>
+      <div class="footer-right">
+        <span class="redhat">Powered by</span>
+        <span class="redhat-logo">
+          <a href="https://www.redhat.com/en/technologies/management/ansible" target="_blank">
+            <img src="../../assets/images/redhat_reversed.svg" alt="Red Hat logo." width="96" height="28"></a>
+        </span>
+      </div>
+    </div>
+
+</div>
+
+            <script src="../../assets/js/jquery.min.js"></script><script src="../../assets/js/popper.min.js"></script><script src="../../assets/js/bootstrap.min.js"></script><script src="../../assets/js/baguetteBox.min.js"></script><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+</script><script src="../../assets/js/clipboard.min.js" type="text/javascript"></script><script src="../../assets/js/clipboard.js" type="text/javascript"></script>
+</body>
+</html>

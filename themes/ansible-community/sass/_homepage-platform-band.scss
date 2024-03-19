@@ -1,0 +1,74 @@
+.homepage-platform-band {
+  background-image: url(/images/ansible-collaborative-gray-bkg.png);
+  background-size:cover;
+}
+
+.platform-row {
+  grid-column: span 2;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 40px;
+  min-height:364px;
+  transform:translatex(0px) translatey(0px);
+  padding-top:16px;
+  padding-bottom:0px;
+}
+
+.platform-box-left {
+  display: flex;
+  flex-direction: column;
+  margin-top: 0rem;
+  align-items: left;
+  
+  p {
+    font-size:16px;
+  }
+  h2 {
+    font-size: $font-xl;
+    font-weight: 600;
+    text-transform: none;
+    color: $cyan;
+  }
+  h3 {
+    font-size: 30px;
+    font-weight: 600;
+    text-transform: none;
+    color: $cyan;
+    color:#000000
+  }
+  h4 {
+    font-size: $font-md;
+  }
+  img {
+    width:200px;
+    height:67px;
+  }
+}
+
+.platform-box-right {
+  display: flex;
+  flex-direction: column;
+  margin-top: 0rem;
+  align-items: left;
+  transform:translatex(0px) translatey(0px);
+  p {
+    font-size: $font-md;
+  }
+  img {
+    max-width:501px;
+    min-height:364px;
+    transform:translatex(0px) translatey(0px);
+    position:relative;
+    left:-41px;
+    top:1px;
+    width:330px;
+  }
+}
+
+@media (min-width:1171px) {
+  /* Platform */
+  #platform {
+   padding-top:16px;
+   padding-bottom:0px;
+  }
+}

@@ -1,0 +1,1007 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Ansible Collaborative</title><link>https://ansible.com/</link><description>Ansible Collaborative Website</description><atom:link href="https://ansible.com/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2024 &lt;a href="mailto:website@ansible.community"&gt;Ansible Collaborative, et al&lt;/a&gt; </copyright><lastBuildDate>Mon, 18 Mar 2024 19:47:36 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Ansible Contributor Summit, Durham 2023</title><link>https://ansible.com/blog/ansible-contributor-summit-durham-2023/</link><dc:creator>The Ansible Community Team</dc:creator><description>&lt;h2&gt;Ansible Contributor Summit, Durham 2023&lt;/h2&gt;
+&lt;p&gt;&lt;img alt="Ansible contributor summit logo" src="https://ansible.com/images/posts/archive/contributor_summit_202310-durham.png"&gt;&lt;/p&gt;
+&lt;p&gt;The Ansible Contributor Summit is a full day working session for
+community contributors to interact with one another and meet with the
+Ansible development teams behind the projects like AWX, Galaxy NG,
+Molecule, Ansible Lint and Event-Driven Ansible. We will discuss
+important issues affecting the Ansible Community and help shape the
+future of collaboration.&lt;/p&gt;
+&lt;p&gt;We are happy to have the opportunity to do a second Contributor Summit
+this year, and this time it will be part of DjangoCon US 2023 in Durham,
+NC. Our previous experience co-locating the Contributor Summit with
+another related event was in February in Ghent, Belgium as part of
+CfgMgmtCamp 2023. It was so successful, we wanted to do it again with
+another great match.&lt;/p&gt;
+&lt;h3&gt;Hello, Durham!&lt;/h3&gt;
+&lt;p&gt;We will be meeting in the "Bull City", the home of Ansible itself and
+the inspiration for our beloved mascot, Ansibull. In case you didn't
+know, the Ansible office overlooks the Durham Bulls Athletic Park, and
+this mixed with Ansible word play is why you might see mentions of bulls
+and Ansibulls in Ansible land.&lt;/p&gt;
+&lt;p&gt;If you can't attend the event in person in Durham, worry not! Ansible
+Contributor Summit is a hybrid event, so you will be able to join
+online. Details will follow later on how to do it, but we will have both
+streaming for the presentations and communication channels to
+participate in the hackathons or sprints. Check how to register for the
+online event below.&lt;/p&gt;
+&lt;h3&gt;Make the Contributor Summit yours&lt;/h3&gt;
+&lt;p&gt;What would &lt;strong&gt;you&lt;/strong&gt; like to hear about at the Ansible Contributor Summit?
+Are there topics you'd like to discuss or parts of the project you'd
+like to hack on? Propose your ideas
+&lt;a href="https://forum.ansible.com/t/ansible-contributor-summit-durham-2023/28"&gt;in the following topic&lt;/a&gt;
+in the new Ansible Community Forum. Please do it by Friday, October 6,
+so we can prepare the agenda for the event. &lt;/p&gt;
+&lt;p&gt;Provide the following information:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Name of the speaker/facilitator&lt;/li&gt;
+&lt;li&gt;Topic&lt;/li&gt;
+&lt;li&gt;Details or abstract&lt;/li&gt;
+&lt;li&gt;Type: Presentation, Discussion, Hacking or Other&lt;/li&gt;
+&lt;li&gt;Estimated duration&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;There is no need to have a presentation or slides ready at submission
+time. If you have an idea, propose it! We would love to hear about it.&lt;/p&gt;
+&lt;h3&gt;How to attend: Register now, it's free!&lt;/h3&gt;
+&lt;h4&gt;Ansible Contributor Summit will be part of DjangoCon US 2023&lt;/h4&gt;
+&lt;p&gt;For this new edition we are joining forces with DjangoCon US, so you can
+expect some extra discussions and topics around Python and Django in the
+Ansible projects. If you are interested in contributing to AWX (upstream
+of automation controller, formerly Red Hat Ansible Tower) or Galaxy NG
+(upstream of Ansible automation hub), this might be a great
+opportunity. &lt;/p&gt;
+&lt;p&gt;To join in-person:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Date: Thursday, October 19, 2023&lt;/li&gt;
+&lt;li&gt;Location: Durham Convention Center, NC 27701&lt;/li&gt;
+&lt;li&gt;Room: Meeting room 1-2 (sessions), Meeting room 3-4 (lunch)&lt;/li&gt;
+&lt;li&gt;Registration: Please &lt;a href="https://ti.to/defna/djangocon-us-2023/discount/ansible"&gt;register here&lt;/a&gt;and select the ticket for Ansible Contributor Summit + Sprint (Thursday, October 19). The Ansible Contributor Summit ticket is free.&lt;/li&gt;
+&lt;li&gt;Let the community know you are participating by replying &lt;a href="https://forum.ansible.com/t/ansible-contributor-summit-durham-2023/28"&gt;to this Forum topic&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;To join online:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Registration: Please &lt;a href="https://ti.to/defna/djangocon-us-2023/discount/ansible"&gt;register here&lt;/a&gt; and select the ticket for Ansible Contributor Summit + Sprint &lt;strong&gt;Online&lt;/strong&gt; (Thursday, October 19). The Ansible Contributor Summit ticket is free.&lt;/li&gt;
+&lt;li&gt;Online chat: &lt;a href="https://matrix.to/#/#summit:ansible.com"&gt;https://matrix.to/#/#summit:ansible.com&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Forum topic: &lt;a href="https://forum.ansible.com/t/ansible-contributor-summit-durham-2023/28"&gt;https://forum.ansible.com/t/ansible-contributor-summit-durham-2023/28&lt;/a&gt; &lt;/li&gt;
+&lt;li&gt;More information (such as live streams) will be provided closer to the event&lt;/li&gt;
+&lt;li&gt;Let the community know you are participating by replying &lt;a href="https://forum.ansible.com/t/ansible-contributor-summit-durham-2023/28"&gt;to this Forum topic&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;COVID-19 Policy&lt;/h3&gt;
+&lt;p&gt;Please refer to DjangoCon's &lt;a href="https://2023.djangocon.us/covid/"&gt;COVID-19 In-Person Policy&lt;/a&gt;.
+As we are part of DjangonCon's Sprints, we will adhere to the same policy.
+DjangoCon will provide masks and test kits on-site if you are unable to obtain them in advance.&lt;/p&gt;
+&lt;h3&gt;Code of Conduct&lt;/h3&gt;
+&lt;p&gt;For Ansible community events, we adhere to the &lt;a href="https://docs.ansible.com/ansible/latest/community/code_of_conduct.html"&gt;Ansible Community Code of Conduct&lt;/a&gt;. &lt;/p&gt;</description><guid>https://ansible.com/blog/ansible-contributor-summit-durham-2023/</guid><pubDate>Fri, 29 Sep 2023 00:00:00 GMT</pubDate></item><item><title>New Ansible Galaxy</title><link>https://ansible.com/blog/new-ansible-galaxy/</link><dc:creator>John Hardy</dc:creator><description>&lt;h2&gt;New Ansible Galaxy&lt;/h2&gt;
+&lt;p&gt;For awhile, the Red Hat Ansible team behind the components Ansible automation hub and Ansible cloud automation hub at console.redhat.com have been on a special ops mission to enhance the &lt;a href="https://github.com/ansible/galaxy_ng/"&gt;galaxy_ng&lt;/a&gt; code base that serves the aforementioned components to also serve galaxy.ansible.com, with the intention of replacing galaxy.ansible.com with a fresh code base.&lt;/p&gt;
+&lt;h3&gt;Galaxy, a legacy far far away…&lt;/h3&gt;
+&lt;p&gt;The current Galaxy service has been running at galaxy.ansible.com for many years and is hugely successful in the community. It drives and nurtures Ansible adoption by sharing prebuilt Ansible content that solves many automation challenges.&lt;/p&gt;
+&lt;p&gt;One of the statistics we are most proud of are the contributions of 33,965 individual automation answers by the community in either Ansible Content Collections or Ansible Roles. Some of the top ranking automation content includes AWS, VMware, Linux, and Windows. Community users are able to download content for free, self-supported and interact with authors via GitHub for any further help or enhancements.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;We are excited to announce that the &lt;a href="https://github.com/ansible/galaxy_ng/"&gt;galaxy.ansible.com&lt;/a&gt; code base is being updated with a host of exciting new features that the Ansible community can look forward to. Brought to you by the Red Hat Ansible team behind Ansible Automation Hub and Ansible Cloud Automation Hub on console.redhat.com, this new version will enhance the galaxy_ng code base that also serves the above listed components.
+As galaxy.ansible.com ages, the frameworks it sits on requires consistent maintenance for security vulnerabilities, including frequent patching. The team is committed to keeping Galaxy secure and high-functioning, so we set out to enable Galaxy with an automation hub, otherwise known as the &lt;a href="https://github.com/ansible/galaxy_ng/"&gt;galaxy_ng&lt;/a&gt; codebase.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;New Generation&lt;/h3&gt;
+&lt;p&gt;The &lt;a href="https://github.com/ansible/galaxy_ng/"&gt;galaxy_ng&lt;/a&gt; code base was always started with the intent to replace the original Galaxy at some point, and also serve as the same code base for the Ansible automation hub component found in Red Hat Ansible Automation Platform. Clearly maintaining one code base for more than one presentation has engineering and architecture benefits for Red Hat and the community, but also the community benefits from more QE, more usage of the code base and adoption of the various uses by organizations. This is a win for everyone. &lt;/p&gt;
+&lt;p&gt;It's been a long road to get here. We have had to continue with the progression of an automation hub at the same time as delivering community-only features into the code base, likesocial authentication for GitHub being required in Galaxy but not in the automation hub. &lt;/p&gt;
+&lt;p&gt;We are now at the point where we should make the switch and start the new journey on the &lt;a href="https://github.com/ansible/galaxy_ng/"&gt;galaxy_ng&lt;/a&gt; code base, together.&lt;/p&gt;
+&lt;h3&gt;The Switch&lt;/h3&gt;
+&lt;p&gt;The new galaxy service has been running since the beginning of the year on a URL known as beta-galaxy.ansible.com. This URL has hosted many community members and some institutions, who have helped interact with us on the service. The old galaxy.ansible.com service has been running as per usual; we have a sync between the two to make sure the beta-galaxy.ansible.com site is up to date.&lt;/p&gt;
+&lt;p&gt;We already have a URL called old-galaxy.ansible.com pointing to a read-only version of the galaxy.ansible.com service as it is today.&lt;/p&gt;
+&lt;p&gt;On September 30, we will switch the IP records used by galaxy.ansible.com to use the records that beta-galaxy.ansible.com uses. &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Summary: https://old-galaxy.ansible.com/ will point to old Galaxy&lt;/li&gt;
+&lt;li&gt;https://galaxy.ansible.com/ will point to new &lt;a href="https://github.com/ansible/galaxy_ng/"&gt;galaxy_ng&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;https://beta-galaxy.ansible.com/ will point to new &lt;a href="https://github.com/ansible/galaxy_ng/"&gt;galaxy_ng&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This means if the switch is not successful, we can easily switch back or ask the community to try the older service. But we have tested a lot, so everything should go to plan.&lt;/p&gt;
+&lt;h3&gt;After the Switch&lt;/h3&gt;
+&lt;p&gt;@rochacbruno has written up this awesome &lt;a href="https://github.com/ansible/galaxy_ng/discussions/1729"&gt;table&lt;/a&gt; to show what was in Galaxy vs the new beta Galaxy site. You will notice not everything has been reimplemented into &lt;a href="https://github.com/ansible/galaxy_ng/"&gt;galaxy_ng&lt;/a&gt; due to time constraints, but we are open to discussions on &lt;a href="https://forum.ansible.com"&gt;forum.ansible.com&lt;/a&gt; if something should come back, and more importantly, we wish for the community to help design new features to be introduced. &lt;/p&gt;
+&lt;p&gt;A good example of features that have not yet been reformulated is the current scoring system. We are retaining the old scores, so nobody loses out on the kudos they have earned already, however, we feel that a new scoring system needs to be implemented,and we’d love to begin soliciting community contributions for how we can improve it.&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Feature&lt;/th&gt;
+&lt;th&gt;Galaxy&lt;/th&gt;
+&lt;th&gt;Beta Galaxy&lt;/th&gt;
+&lt;th&gt;Reason&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Sign in/up via GitHub&lt;/td&gt;
+&lt;td&gt;✔️&lt;/td&gt;
+&lt;td&gt;✔️&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;API Key&lt;/td&gt;
+&lt;td&gt;✔️&lt;/td&gt;
+&lt;td&gt;✔️&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;E-mail/App Notifications&lt;/td&gt;
+&lt;td&gt;✔️&lt;/td&gt;
+&lt;td&gt;❌&lt;/td&gt;
+&lt;td&gt;Low usage&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Following authors and content&lt;/td&gt;
+&lt;td&gt;✔️&lt;/td&gt;
+&lt;td&gt;❌&lt;/td&gt;
+&lt;td&gt;Low usage&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Multiple e-mail address per account&lt;/td&gt;
+&lt;td&gt;✔️&lt;/td&gt;
+&lt;td&gt;❌&lt;/td&gt;
+&lt;td&gt;Low usage&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Search with filters&lt;/td&gt;
+&lt;td&gt;✔️&lt;/td&gt;
+&lt;td&gt;✔️&lt;/td&gt;
+&lt;td&gt;Improved on Beta&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Download Count&lt;/td&gt;
+&lt;td&gt;✔️&lt;/td&gt;
+&lt;td&gt;✔️&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Popular Tags&lt;/td&gt;
+&lt;td&gt;✔️&lt;/td&gt;
+&lt;td&gt;TBD&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Platform mark&lt;/td&gt;
+&lt;td&gt;✔️&lt;/td&gt;
+&lt;td&gt;❌&lt;/td&gt;
+&lt;td&gt;Feature replaced by tags&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Content Score&lt;/td&gt;
+&lt;td&gt;✔️&lt;/td&gt;
+&lt;td&gt;TBD&lt;/td&gt;
+&lt;td&gt;Read only data will be kept, &lt;br&gt; scoring system will be redesigned&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Content list and search&lt;/td&gt;
+&lt;td&gt;✔️&lt;/td&gt;
+&lt;td&gt;✔️&lt;/td&gt;
+&lt;td&gt;Improved on beta&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Content docs&lt;/td&gt;
+&lt;td&gt;✔️&lt;/td&gt;
+&lt;td&gt;✔️&lt;/td&gt;
+&lt;td&gt;Improved on beta&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Upload new collections&lt;/td&gt;
+&lt;td&gt;✔️&lt;/td&gt;
+&lt;td&gt;✔️&lt;/td&gt;
+&lt;td&gt;Improved on beta&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Import logs&lt;/td&gt;
+&lt;td&gt;✔️&lt;/td&gt;
+&lt;td&gt;✔️&lt;/td&gt;
+&lt;td&gt;Improved on beta&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;List my namespaces&lt;/td&gt;
+&lt;td&gt;✔️&lt;/td&gt;
+&lt;td&gt;✔️&lt;/td&gt;
+&lt;td&gt;Simplified on beta&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Admin namespace access for contributors&lt;/td&gt;
+&lt;td&gt;✔️&lt;/td&gt;
+&lt;td&gt;✔️&lt;/td&gt;
+&lt;td&gt;Simplified on beta&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Add multiple provider namespaces for collections&lt;/td&gt;
+&lt;td&gt;✔️&lt;/td&gt;
+&lt;td&gt;❌&lt;/td&gt;
+&lt;td&gt;Was not being used&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;UI to Import Role from Github&lt;/td&gt;
+&lt;td&gt;✔️&lt;/td&gt;
+&lt;td&gt;❌&lt;/td&gt;
+&lt;td&gt;Recommendation is to publish collections instead, &lt;br&gt; existing roles can still be maintainer via CLI&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Task Management&lt;/td&gt;
+&lt;td&gt;❌&lt;/td&gt;
+&lt;td&gt;✔️&lt;/td&gt;
+&lt;td&gt;User can watch tasks spawned,&lt;br&gt; useful for watching status of CLI imports&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3&gt;The Future&lt;/h3&gt;
+&lt;p&gt;With the new service running on &lt;a href="https://github.com/ansible/galaxy_ng/"&gt;galaxy_ng&lt;/a&gt;, we have a lot of new capabilities we can look to introduce going forward. Here are some to think about.&lt;/p&gt;
+&lt;p&gt;Zero downtime for Galaxy service with A-B deployments
+Execution environment image hosting, serving.
+Execution environment image introspection.
+Improved NetFlix style dashboards for content.
+Image building from content
+Notification integrations
+Global searches
+The single code base means we can be more agile, more responsive and more receptive to the community around the Galaxy service. We hope you'll enjoy it.&lt;/p&gt;
+&lt;h3&gt;Call to Action&lt;/h3&gt;
+&lt;p&gt;Saturday September 30th 2023 is the switch over date.&lt;/p&gt;
+&lt;p&gt;If you wish to participate in future enhancements by way of discussions or pull requests, you can find galaxy_ng &lt;a href="https://github.com/ansible/galaxy_ng/"&gt;here&lt;/a&gt;. We warmly invite all contributors to provide their valuable feedback on &lt;a href="https://forum.ansible.com"&gt;forum.ansible.com&lt;/a&gt;, utilizing the galaxy tag.&lt;/p&gt;
+&lt;p&gt;If you are having issues with the new Ansible Galaxy, please check out this forum topic for known issues, links for fixes, where to track updates, how to ask for help, and more.&lt;/p&gt;</description><category>galaxy</category><guid>https://ansible.com/blog/new-ansible-galaxy/</guid><pubDate>Tue, 26 Sep 2023 13:00:00 GMT</pubDate></item><item><title>Welcome to the new Ansible Community Forum</title><link>https://ansible.com/blog/welcome-to-the-new-ansible-community-forum/</link><dc:creator>The Ansible Community Team</dc:creator><description>&lt;h2&gt;Welcome to the new Ansible Community Forum&lt;/h2&gt;
+&lt;p&gt;Today, we're delighted to announce the launch of the new
+&lt;a href="https://forum.ansible.com/"&gt;Ansible Community Forum&lt;/a&gt; - a single starting point
+for questions and help, development discussions, events, and much more.
+Everyone is invited, whether you are an Ansible user, contributor or
+developer, we are all community! &lt;a href="https://forum.ansible.com/signup?"&gt;Register here to join us&lt;/a&gt;!&lt;/p&gt;
+&lt;h3&gt;Hello Discourse!&lt;/h3&gt;
+&lt;p&gt;Here is a screenshot of the forum's main page:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="screenshot" src="https://ansible.com/images/posts/archive/forum-main-page-screenshot.png"&gt;&lt;/p&gt;
+&lt;p&gt;For those who are familiar with forums, we hope you'll feel right at
+home. For those who may be new, please don't worry! We have a list of
+&lt;a href="https://forum.ansible.com/tag/forum-tips"&gt;tips &amp;amp; tricks here&lt;/a&gt;, and
+you're always welcome to check the guides and post in the
+&lt;a href="https://forum.ansible.com/c/forum-guide-feedback/"&gt;feedback section&lt;/a&gt; to help us
+shape our online community.&lt;/p&gt;
+&lt;p&gt;Forums are only successful if they are used. To make that happen, the
+Ansible Community Team is looking to make this the real home of the
+Ansible Community - a place for users to &lt;a href="https://forum.ansible.com/c/help/6"&gt;get help&lt;/a&gt;,
+to &lt;a href="https://forum.ansible.com/c/events/8"&gt;find an event or local meetup&lt;/a&gt;,
+and a jumping-off point for &lt;a href="https://forum.ansible.com/c/project/7"&gt;development and contribution discussions&lt;/a&gt;.
+That means we need &lt;strong&gt;you&lt;/strong&gt; to come and participate! Tell us what you're up to, post your
+thoughts or your questions, sign up for an event or two. &lt;/p&gt;
+&lt;p&gt;The Ansible Community is global, and we are proud to include a section
+in the forum aimed at supporting our &lt;a href="https://forum.ansible.com/c/other-languages/10"&gt;international communities&lt;/a&gt;
+who would like to have a space where they can write in their own language. If you
+speak any languages other than English, you are welcome to join and
+collaborate in your own language. We think this section will be
+particularly useful for those who do local meetups, so if you are part
+of one, please make use of it to communicate.&lt;/p&gt;
+&lt;p&gt;This new community space is based on &lt;a href="http://discourse.org/"&gt;Discourse&lt;/a&gt;,
+which is fast becoming the industry standard for web forums - you need
+only look to Python, Kubernetes, Fedora, and other open source
+communities. It's powerful enough to meet our needs, flexible enough to
+deal with the wider variety of projects and teams we have, has solid
+accessibility and translations, works well on mobile devices, and (if
+you prefer) can be interacted with by email. &lt;/p&gt;
+&lt;h3&gt;Dive In!&lt;/h3&gt;
+&lt;p&gt;We in the Ansible Community Team are very excited about this, and we hope you are too.
+So &lt;a href="https://forum.ansible.com/signup?"&gt;sign up&lt;/a&gt;, head to this post to &lt;a href="https://forum.ansible.com/t/introduce-yourself/15/25"&gt;introduce yourself&lt;/a&gt; and tell us your thoughts. See you there! &lt;/p&gt;</description><guid>https://ansible.com/blog/welcome-to-the-new-ansible-community-forum/</guid><pubDate>Mon, 11 Sep 2023 00:00:00 GMT</pubDate></item><item><title>Ansible Community Day, Berlin 2023</title><link>https://ansible.com/blog/ansible-community-day-berlin-2023/</link><dc:creator>The Ansible Community Team</dc:creator><description>&lt;h2&gt;Ansible Community Day, Berlin 2023&lt;/h2&gt;
+&lt;p&gt;&lt;img alt="Ansible community day logo" src="https://ansible.com/images/posts/archive/community-day-berliin-20230824.png"&gt; &lt;/p&gt;
+&lt;p&gt;The Ansible Community Day is a new initiative by the Ansible Community
+Team at Red Hat to connect with the people using, contributing to, and
+developing the Ansible project worldwide. This new event complements the
+Ansible Contributor Summit, to put the users of Ansible in all their
+shapes and forms front and center.&lt;/p&gt;
+&lt;p&gt;In the last Ansible Community Day in Boston, the day right before
+AnsibleFest 2023, the community had the opportunity to meet in-person
+and get to know each other, learn a few things and share their knowledge
+using Ansible. It was such a great experience that we couldn't wait to
+have another. And here it is!&lt;/p&gt;
+&lt;h3&gt;Guten Tag Berlin!&lt;/h3&gt;
+&lt;p&gt;After two very successful Ansible Community Day events this year, the
+first in Pune, India in February and the next in Boston in May, our
+third event for 2023 will be held in Berlin, Germany!&lt;/p&gt;
+&lt;p&gt;Registration for Ansible Community Day Berlin 2023 is now open! If you'd
+like to attend, please check out the following
+&lt;a href="https://ansible-community-day-berlin-2023.eventbrite.com/"&gt;Eventbrite page for specific details and registration.&lt;/a&gt; &lt;/p&gt;
+&lt;p&gt;The event is set for Wednesday, September 20, 2023.
+We will meet in c-base (Rungestraße 20, Berlin, Germany)&lt;/p&gt;
+&lt;p&gt;What can you expect from (or bring to!) the upcoming Ansible Community Day?&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Ansible community recap of previous announcements, status and
+    what's new!&lt;/li&gt;
+&lt;li&gt;User stories: Sharing of achievements and challenges using Ansible&lt;/li&gt;
+&lt;li&gt;Live (and recorded) demos: It's showtime! &lt;/li&gt;
+&lt;li&gt;Ansible Content Collections: how to create, contribute or use them
+    to automate everything!&lt;/li&gt;
+&lt;li&gt;Better together: Integrating Ansible with other tools or platforms
+    (e.g. Kubernetes, Terraform, Dynatrace, Grafana, Jenkins, etc.)&lt;/li&gt;
+&lt;li&gt;Learn about the Ansible ecosystem (e.g. AWX, devtools, Event-Driven
+    Ansible) and how you can contribute to these open source projects to
+    jumpstart your career&lt;/li&gt;
+&lt;li&gt;And last but not least: community networking!&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;If any of those above caught your attention and you are thinking "I
+could talk about that", check the &lt;strong&gt;Call for Proposals&lt;/strong&gt; below!&lt;/p&gt;
+&lt;h3&gt;Call for Proposals (CFP)&lt;/h3&gt;
+&lt;p&gt;We are looking for speakers!&lt;/p&gt;
+&lt;p&gt;If you have something to share with the Ansible community of users and
+contributors, you can &lt;a href="https://www.papercall.io/ansible-community-day-berlin-2023"&gt;submit your proposal&lt;/a&gt;
+before September 4 at 23:59 (UTC).&lt;/p&gt;
+&lt;p&gt;Presentations don't need to be ready upon submission, we are only
+requesting a title and abstract at this time. Any of the topics above
+are valid submissions, but that's not an exhaustive list. Feel free to
+submit any idea or proposal involving Ansible, and we will let you know
+if it works for the current event.&lt;/p&gt;
+&lt;p&gt;Have questions? Doubts? You can reach out to us in our &lt;a href="https://matrix.to/#/#social:ansible.com"&gt;Social Room&lt;/a&gt;
+(&lt;code&gt;#social:ansible.com&lt;/code&gt;) in the Ansible Matrix space or email the Ansible Community Team at
+&lt;a href="mailto:ansible-community@redhat.com"&gt;ansible-community@redhat.com&lt;/a&gt;.&lt;/p&gt;
+&lt;h3&gt;Code of Conduct&lt;/h3&gt;
+&lt;p&gt;For Ansible community events, we adhere to the &lt;a href="https://docs.ansible.com/ansible/latest/community/code_of_conduct.html"&gt;Ansible Community Code of Conduct&lt;/a&gt;.&lt;/p&gt;</description><guid>https://ansible.com/blog/ansible-community-day-berlin-2023/</guid><pubDate>Thu, 24 Aug 2023 00:00:00 GMT</pubDate></item><item><title>Ansible data manipulation with a Filter</title><link>https://ansible.com/blog/ansible-data-manipulation-with-a-filter/</link><dc:creator>Sean Sullivan</dc:creator><description>&lt;p&gt;This year at Summit, an attendee posed a question about how to work with setting facts and changing data in Ansible. Many times we’ve come across people using task after task to manipulate data, to turn items into lists, filter our options, trying to do heavy data manipulation and to turn data from one source into another. Trying to make these programmatic changes using a mixture of YAML and Jinja inside of roles and playbooks is a headache of its own. While many of these options will work, they aren’t very efficient or easy to implement. Ansible Playbooks were never meant for programming.&lt;/p&gt;
+&lt;p&gt;One solution that is usually overlooked is to do the manipulation in Python inside of a module or a filter. This article will detail how to create a filter to manipulate data. In addition, &lt;a href="https://github.com/sean-m-sullivan/ansible_data_manipulation_examples"&gt;a repository for all code referenced&lt;/a&gt; in this article has been created.&lt;/p&gt;
+&lt;p&gt;This example was first developed as a module. However after review, it was determined that these data transformations are best done as filters. Filters can take multiple data inputs, do the programmatic operations, and then can be used in line where they are used as input or set as a fact. In addition, this runs locally and not at the host level, so it can be faster and avoid unnecessary connections.&lt;/p&gt;
+&lt;h2&gt;Starting Point&lt;/h2&gt;
+&lt;p&gt;To begin, we need a dataset to work on. For this we used data from the automation controller API, workflows; it gives nested data on the nodes in each workflow to loop around. The variable file used in this case &lt;a href="https://github.com/sean-m-sullivan/ansible_data_manipulation_examples/blob/main/workflows.yml"&gt;can be found in the repo&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The goal is to find what is being used in the automation controller looping over nested lists. While this is not a very practical example, it does give a starting point for creating a filter to manipulate any dataset.&lt;/p&gt;
+&lt;h2&gt;Filter Basics&lt;/h2&gt;
+&lt;p&gt;The bones of this filter were taken from &lt;a href="https://github.com/ansible-collections/ansible.netcommon/blob/main/plugins/filter/pop_ace.py"&gt;ansible.netcommon.pop_ace&lt;/a&gt;. The start of every filter has some required options, such as FilterModule, and in addition AnsibleFilterError is good for troubleshooting.&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;ansible.errors&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;AnsibleFilterError&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The class invocation sets the code as a filter, and invokes the function to use for the filter. This sets the filter called "used" in the playbook, and the function to invoke. Note that the function and the filter name do not need to match.&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;FilterModule&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;object&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;filters&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s2"&gt;"example_filter"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;workflow_manip&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Then there is the documentation section: This can contain inputs, examples and other metadata. This is also how the ansible-docs are populated.&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="n"&gt;EXAMPLES&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="sa"&gt;r&lt;/span&gt;&lt;span class="s2"&gt;"""&lt;/span&gt;
+&lt;span class="s2"&gt;    - name: Transform Data&lt;/span&gt;
+&lt;span class="s2"&gt;        ansible.builtin.set_fact:&lt;/span&gt;
+&lt;span class="s2"&gt;        data_out: "{{ workflow_job_templates | example_filter }}"&lt;/span&gt;
+&lt;span class="s2"&gt;    """&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;For the most part this should be standard information. While the documentation field is not required for filters, it is best practice to include it. While not shown here, the &lt;a href="https://github.com/sean-m-sullivan/ansible_data_manipulation_examples/blob/main/filter_plugins/example_filter.py"&gt;linked example&lt;/a&gt; also includes commented out expected output, which is great for going back and troubleshooting in the future.&lt;/p&gt;
+&lt;h2&gt;Setting things up&lt;/h2&gt;
+&lt;p&gt;The first thing to do is set the filter arguments for data coming in. In our case the variable data_in, and that the input is of type dict. It is also best to set the return variable as empty here and any other defaults that need defined.&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;example_filter&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;data_in&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;dict&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="n"&gt;workflow_data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{}&lt;/span&gt;
+        &lt;span class="n"&gt;workflow_data&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;"workflows"&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[]&lt;/span&gt;
+        &lt;span class="n"&gt;workflow_data&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;"job_templates"&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[]&lt;/span&gt;
+        &lt;span class="n"&gt;workflow_data&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;"inventory_sources"&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[]&lt;/span&gt;
+        &lt;span class="n"&gt;workflow_data&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;"approval_nodes"&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The next step is to do the actual data manipulation.&lt;/p&gt;
+&lt;h2&gt;In the thick of it&lt;/h2&gt;
+&lt;p&gt;This is where we get to what we actually want to do, take data from a source, loop through it, and extract the data needed. As the data is contained in nested lists, there is an inner and outer loop to go through.&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;workflow&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;data_in&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="n"&gt;workflow_data&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;"workflows"&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;append&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;workflow&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;"name"&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+        &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;node&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;workflow&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;"related"&lt;/span&gt;&lt;span class="p"&gt;][&lt;/span&gt;&lt;span class="s2"&gt;"workflow_nodes"&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt;
+            &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;node&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;"unified_job_template"&lt;/span&gt;&lt;span class="p"&gt;][&lt;/span&gt;&lt;span class="s2"&gt;"type"&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s2"&gt;"inventory_source"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+                &lt;span class="n"&gt;workflow_data&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;"inventory_sources"&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;append&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+                        &lt;span class="n"&gt;node&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;"unified_job_template"&lt;/span&gt;&lt;span class="p"&gt;][&lt;/span&gt;&lt;span class="s2"&gt;"name"&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+                &lt;span class="p"&gt;)&lt;/span&gt;
+            &lt;span class="k"&gt;elif&lt;/span&gt; &lt;span class="n"&gt;node&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;"unified_job_template"&lt;/span&gt;&lt;span class="p"&gt;][&lt;/span&gt;&lt;span class="s2"&gt;"type"&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s2"&gt;"job_template"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+                &lt;span class="n"&gt;workflow_data&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;"job_templates"&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;append&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+                    &lt;span class="n"&gt;node&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;"unified_job_template"&lt;/span&gt;&lt;span class="p"&gt;][&lt;/span&gt;&lt;span class="s2"&gt;"name"&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+                &lt;span class="p"&gt;)&lt;/span&gt;
+            &lt;span class="k"&gt;elif&lt;/span&gt; &lt;span class="n"&gt;node&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;"unified_job_template"&lt;/span&gt;&lt;span class="p"&gt;][&lt;/span&gt;&lt;span class="s2"&gt;"type"&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s2"&gt;"workflow_approval"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+                &lt;span class="n"&gt;workflow_data&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;"approval_nodes"&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;append&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+                    &lt;span class="n"&gt;node&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;"unified_job_template"&lt;/span&gt;&lt;span class="p"&gt;][&lt;/span&gt;&lt;span class="s2"&gt;"name"&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+                &lt;span class="p"&gt;)&lt;/span&gt;
+            &lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+                &lt;span class="k"&gt;raise&lt;/span&gt; &lt;span class="n"&gt;AnsibleFilterError&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+                    &lt;span class="s2"&gt;"Failed to find valid node: &lt;/span&gt;&lt;span class="si"&gt;{0}&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;workflow&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+                &lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The first loop is to find the workflow name field and append it to the workflow list. The next loop goes through each workflow node, finds what type it is, and appends it to the appropriate list.&lt;/p&gt;
+&lt;p&gt;At the end is the error message, which should not be hit with valid data, however it is a useful bit of code to insert elsewhere when building or troubleshooting modules to force output to console in order to figure out what is going on. At the end of our manipulations, return with the result variable. The alternative would be &lt;a href="https://github.com/sean-m-sullivan/ansible_data_manipulation_examples/blob/main/data_manip_facts.yaml"&gt;three tasks&lt;/a&gt;, of which two would use loops, to achieve the same results. By using an actual programming language, its available libraries, and internalized loops, it simplifies the playbook, and provides better logic then what could be cobbled together using YAML and Jinja2 alone.&lt;/p&gt;
+&lt;h2&gt;Summary&lt;/h2&gt;
+&lt;p&gt;Hopefully this article provides a starting point for creating filters and simplifying tasks in playbooks. Just like everything in Ansible, there is not a single solution, there are 10 options to choose from. Not every solution fits the situation at hand. Hopefully this provides another better option to work with.&lt;/p&gt;</description><category>developer</category><category>filters</category><category>playbook</category><guid>https://ansible.com/blog/ansible-data-manipulation-with-a-filter/</guid><pubDate>Thu, 03 Aug 2023 13:00:00 GMT</pubDate></item><item><title>Welcome to the Ansible Lightspeed with IBM Watson Code Assistant Technical Preview</title><link>https://ansible.com/blog/welcome-to-the-ansible-lightspeed-technical-preview/</link><dc:creator>Craig Brandt</dc:creator><description>&lt;h2&gt;Welcome to the Ansible Lightspeed with IBM Watson Code Assistant Technical Preview&lt;/h2&gt;
+&lt;p&gt;At Red Hat Summit and AnsibleFest 2023, we &lt;a href="https://www.redhat.com/en/about/press-releases/red-hat-introduces-ansible-lightspeed-ai-driven-it-automation"&gt;announced Ansible Lightspeed with IBM Watson Code Assistant&lt;/a&gt;, a new generative AI service for Ansible automation.
+Today, we are thrilled to announce the Ansible Lightspeed technical preview launch.&lt;/p&gt;
+&lt;p&gt;In this blog, we'll walk through the steps to access the Ansible
+Lightspeed with IBM Watson Code Assistant technical preview service and
+get it up and running in your Visual Studio Code environment. Then we'll
+share more about what you can expect from the experience and how to
+generate your first Ansible tasks with generative AI.&lt;/p&gt;
+&lt;p&gt;This is exciting stuff, so let's dive right in.&lt;/p&gt;
+&lt;h3&gt;Technical Preview: Empowering Ansible Users with AI&lt;/h3&gt;
+&lt;p&gt;Ansible Lightspeed with IBM Watson Code Assistant is a purpose-built
+generative AI tool that aims to streamline the creation of Ansible
+content. This capability is natively integrated into your VS Code editor
+via the &lt;a href="https://marketplace.visualstudio.com/items?itemName=redhat.ansible"&gt;Ansible VS Code extension&lt;/a&gt;.
+The AI capabilities are powered by Watson Code Assistant, a foundation
+model trained on Ansible Galaxy, GitHub, and other open sources of
+data.&lt;/p&gt;
+&lt;p&gt;The technical preview is open and available, free of charge, to all
+Ansible users. As more users engage with Ansible Lightspeed, the model
+recommendations will continuously improve, thanks to the valuable input
+and engagement from the community.&lt;/p&gt;
+&lt;h3&gt;Getting Connected: Installation and Configuration&lt;/h3&gt;
+&lt;p&gt;You'll need &lt;a href="https://code.visualstudio.com/download"&gt;Visual Studio Code&lt;/a&gt; and Ansible installed on
+your workstation and a GitHub account to access the Ansible Lightspeed
+service. Let's get started!&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Install the &lt;a href="https://marketplace.visualstudio.com/items?itemName=redhat.ansible"&gt;Ansible VS Code extension&lt;/a&gt; from the Visual Studio Code Marketplace by
+    searching for "&lt;em&gt;ansible&lt;/em&gt;" and selecting the extension published by Red Hat.&lt;/li&gt;
+&lt;li&gt;Enable the Ansible Lightspeed service within the extension by accessing the "&lt;em&gt;Extension Settings&lt;/em&gt;" via the gear icon.&lt;/li&gt;
+&lt;li&gt;In the settings, enable both "&lt;em&gt;Ansible Lightspeed enabled&lt;/em&gt;" and "&lt;em&gt;Enable Ansible Lightspeed with Watson Code Assistant inline suggestions&lt;/em&gt;" checkboxes.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Note: You can enable Ansible Lightspeed in the "[User]" or "[Workspace]"
+settings, based on your preference. More information on VS Code User and
+Workspace settings can be found in their
+&lt;a href="https://code.visualstudio.com/docs/getstarted/settings#"&gt;documentation&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Installing the Ansible Visual Studio Code extension.&lt;/em&gt;
+&lt;img alt="Installing the Ansible Visual Studio Code extension" src="https://ansible.com/images/posts/archive/lightspeed-blog-launching.gif"&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Click on the Ansible "A" in the VS Code activity bar on the
+    left-hand side of your editor to open the extension.&lt;/li&gt;
+&lt;li&gt;Click "&lt;em&gt;Connect&lt;/em&gt;" and follow the prompts to log into GitHub using
+    your credentials.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;em&gt;Log in using your GitHub credentials.&lt;/em&gt;
+&lt;img alt="Log in using your GitHub credentials" src="https://ansible.com/images/posts/archive/lightspeed-blog-login.gif"&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Read the Ansible Lightspeed technical preview terms and conditions and click "&lt;em&gt;Agree&lt;/em&gt;".&lt;/li&gt;
+&lt;li&gt;Next, authorize Ansible Lightspeed for VS Code by clicking "&lt;em&gt;Authorize&lt;/em&gt;".&lt;/li&gt;
+&lt;li&gt;Follow the browser prompts to redirect you back to VS Code, and, finally, click "&lt;em&gt;Open&lt;/em&gt;" in the VS Code confirmation dialog box.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;em&gt;Authorize Ansible Lightspeed.&lt;/em&gt;
+&lt;img alt="Authorize Ansible Lightspeed" src="https://ansible.com/images/posts/archive/lightspeed-blog-agree.gif"&gt;&lt;/p&gt;
+&lt;p&gt;Congratulations! You've successfully configured Ansible Lightspeed in VS
+Code.&lt;/p&gt;
+&lt;p&gt;You can confirm that Ansible Lightspeed is enabled by checking the VS
+Code status bar at the bottom of the editor window.&lt;/p&gt;
+&lt;p&gt;Please ensure a Python environment is selected and your Ansible YAML
+files are associated with the Ansible language. More information on VS
+Code languages can be found in their
+&lt;a href="https://code.visualstudio.com/docs/languages/overview#_change-the-language-for-the-selected-file"&gt;documentation&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Ansible Lightspeed status.&lt;/em&gt;
+&lt;img alt="Ansible Lightspeed status" src="https://ansible.com/images/posts/archive/lightspeed-blog-status.png"&gt;&lt;/p&gt;
+&lt;h3&gt;A Quick Tour of Ansible Lightspeed: Generating Your First Task&lt;/h3&gt;
+&lt;p&gt;Now that you are connected to Ansible Lightspeed, it's time to
+experience its AI-enhanced content creation experience.&lt;/p&gt;
+&lt;p&gt;Let's use an
+&lt;a href="https://github.com/craig-br/demos/blob/main/blogs/lightspeed_tech_preview_jun2023/deploy_monitoring.yml"&gt;example&lt;/a&gt;
+&lt;a href="https://github.com/craig-br/demos/blob/main/blogs/lightspeed_tech_preview_jun2023/deploy_monitoring.yml"&gt;Playbook&lt;/a&gt;
+to walk through asking Ansible Lightspeed for AI-generated task suggestions and also highlight some of what you can
+expect in the technical preview release. The example Playbook installs
+&lt;a href="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/managing_systems_using_the_rhel_9_web_console/index"&gt;Cockpit&lt;/a&gt;
+on a Red Hat Enterprise Linux system.&lt;/p&gt;
+&lt;p&gt;Note: As more users engage with Ansible Lightspeed, the breadth, depth, and quality of the recommendations generated by the model will improve. Therefore, the Ansible task suggestions in the examples below may differ from your results.&lt;/p&gt;
+&lt;h3&gt;How do I generate an Ansible Lightspeed suggestion?&lt;/h3&gt;
+&lt;p&gt;Let's use our first Playbook task in the
+&lt;a href="https://github.com/craig-br/demos/blob/main/blogs/lightspeed_tech_preview_jun2023/deploy_monitoring.yml"&gt;deploy_monitoring.yml&lt;/a&gt;
+example Playbook to demonstrate asking Ansible Lightspeed for an AI suggestion.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Move your cursor to the end of the  "&lt;em&gt;- name: Include redhat.rhel_system_roles.cockpit" task description.&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;Press "ENTER" to generate a suggestion.&lt;/li&gt;
+&lt;li&gt;Press "TAB" to accept the suggestion.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;em&gt;Generating an Ansible task.&lt;/em&gt;
+&lt;img alt="Generating an Ansible task" src="https://ansible.com/images/posts/archive/lightspeed-blog-generate.gif"&gt;&lt;/p&gt;
+&lt;p&gt;In this suggestion, we asked Ansible Lightspeed to include the
+"&lt;em&gt;cockpit&lt;/em&gt;" Role, part of the  &lt;a href="https://access.redhat.com/articles/3050101"&gt;Red Hat Enterprise Linux System Roles&lt;/a&gt; Certified Content Collection. The suggestion used the &lt;a href="https://docs.ansible.com/ansible/latest/collections_guide/collections_using_playbooks.html"&gt;Fully Qualified Collection Name&lt;/a&gt; (FQCN):
+&lt;a href="https://docs.ansible.com/ansible/latest/collections/ansible/builtin/include_role_module.html"&gt;&lt;code&gt;ansible.builtin.include_role&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Using FQCNs is a &lt;a href="https://docs.ansible.com/ansible/latest/porting_guides/porting_guide_2.10.html"&gt;recommended best practice&lt;/a&gt; and an example of the many unique post-processing capabilities we've baked into the Ansible Lightspeed service.&lt;/p&gt;
+&lt;p&gt;Let's move on to the next task.&lt;/p&gt;
+&lt;h3&gt;Ansible best practices. We've got you covered.&lt;/h3&gt;
+&lt;p&gt;&lt;em&gt;Ansible Lightspeed best practices example.&lt;/em&gt;
+&lt;img alt="Ansible Lightspeed best practices example" src="https://ansible.com/images/posts/archive/lightspeed-blog-best-practice.gif"&gt;&lt;/p&gt;
+&lt;p&gt;This Playbook task copies
+&lt;a href="https://github.com/craig-br/demos/blob/main/blogs/lightspeed_tech_preview_jun2023/files/cockpit.conf"&gt;cockpit.conf&lt;/a&gt; to the target host. Note that the recommendation included the "&lt;em&gt;mode:&lt;/em&gt;" module argument and set the Linux file permissions to &lt;code&gt;0*644*&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Ansible Lightspeed provided a robust example of setting file permissions
+for the &lt;a href="https://docs.ansible.com/ansible/latest/collections/ansible/builtin/copy_module.html"&gt;ansible.builtin.copy&lt;/a&gt; module, another recommended best practice.&lt;/p&gt;
+&lt;p&gt;We'll continue to expand on these natively integrated best practices as the service matures.&lt;/p&gt;
+&lt;h3&gt;Finalizing the Playbook&lt;/h3&gt;
+&lt;p&gt;Let's ask Ansible Lightspeed to generate suggestions for the remaining
+two Playbook tasks. The first task restarts the Cockpit service to apply our custom
+&lt;a href="https://github.com/craig-br/demos/blob/main/blogs/lightspeed_tech_preview_jun2023/files/cockpit.conf"&gt;cockpit.conf&lt;/a&gt;
+configuration file and the second task permits Cockpit service traffic through the firewall.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Generate remaining Ansible tasks.&lt;/em&gt;
+&lt;img alt="Generate remaining Ansible tasks" src="https://ansible.com/images/posts/archive/lightspeed-blog-generate-tasks.gif"&gt;&lt;/p&gt;
+&lt;h3&gt;Ansible Lightspeed with Watson Code Assistant and context&lt;/h3&gt;
+&lt;p&gt;Generating contextually aware, accurate Ansible content suggestions
+saves you time and helps you create efficiently. One of Ansible
+Lightspeed's superpowers is context.&lt;/p&gt;
+&lt;p&gt;Ansible Lightspeed uses the Ansible task description and YAML file
+content to generate suggestions suited to what you're automating. Let's
+use an example to illustrate this.&lt;/p&gt;
+&lt;p&gt;Imagine we want to set module defaults for the
+&lt;a href="https://docs.ansible.com/ansible/latest/collections/ansible/posix/firewalld_module.html"&gt;ansible.posix.firewalld&lt;/a&gt;
+module in the last Ansible task. Specifically, always
+making the firewall rule changes permanent. We can accomplish this by using the
+&lt;a href="https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_module_defaults.html"&gt;module_defaults&lt;/a&gt; Playbook keyword, illustrated below.&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="nt"&gt;module_defaults&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;ansible.posix.firewalld&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;permanent&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;true&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h4&gt;Ansible Playbook module_defaults section&lt;/h4&gt;
+&lt;p&gt;The module defaults section tells Ansible to always add "&lt;em&gt;permanent: true&lt;/em&gt;"
+to every "&lt;em&gt;ansible.posix.firewall&lt;/em&gt;" task in the Playbook. Let's
+ask Ansible Lightspeed for an updated suggestion with the module
+defaults.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Ansible Lightspeed context.&lt;/em&gt;
+&lt;img alt="Ansible Lightspeed context" src="https://ansible.com/images/posts/archive/lightspeed-blog-context.gif"&gt;&lt;/p&gt;
+&lt;p&gt;Note that it used the full Playbook context and provided a revised
+recommendation that excludes "&lt;em&gt;permanent: true&lt;/em&gt;". You can also apply
+this to other Playbook keywords, such as "&lt;em&gt;vars&lt;/em&gt;".&lt;/p&gt;
+&lt;h3&gt;Transparency and openness. Ansible Lightspeed Content Source Matching&lt;/h3&gt;
+&lt;p&gt;Last, and certainly not least, is Ansible Lightspeed Content Source
+Matching.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Ansible Lightspeed Content Source Matching.&lt;/em&gt;
+&lt;img alt="Ansible Lightspeed Content Source Matching" src="https://ansible.com/images/posts/archive/lightspeed-blog-source-matching.gif"&gt;&lt;/p&gt;
+&lt;p&gt;We transparently share the potential source, Author, and content license
+of the training data used for the recommendation. Building trust in the
+community and supporting the relationships between authors and
+contributors is part of Red Hat's DNA.  These suggestions came from the
+Ansible community; we don't want to hide that.&lt;/p&gt;
+&lt;h3&gt;Wrap-up&lt;/h3&gt;
+&lt;p&gt;Congratulations! You have successfully configured Ansible Lightspeed in
+VS Code and experienced its generative AI capabilities with just a few
+simple steps.&lt;/p&gt;
+&lt;p&gt;We encourage you to share your feedback on the technical preview
+experience and stay updated on the project by joining the
+&lt;a href="https://matrix.to/#/#lightspeed:ansible.com"&gt;Ansible Lightspeed Matrix room&lt;/a&gt;
+to ask questions and get the latest news. Please also
+visit the &lt;a href="http://www.redhat.com/ansible-lightspeed"&gt;Ansible Lightspeed landing page.&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;We'll update you with new resources to help you get the most out of your
+Ansible Lightspeed with Watson Code Assistant experience.&lt;/p&gt;
+&lt;p&gt;Happy automating...with AI!&lt;/p&gt;</description><guid>https://ansible.com/blog/welcome-to-the-ansible-lightspeed-technical-preview/</guid><pubDate>Mon, 26 Jun 2023 00:00:00 GMT</pubDate></item><item><title>What's New with Cloud Automation with amazon.aws 6.0.0</title><link>https://ansible.com/blog/whats-new-cloud-automation-with-amazon.aws-6.0.0/</link><dc:creator>Alina Buzachis</dc:creator><description>&lt;h2&gt;What's New with Cloud Automation with amazon.aws 6.0.0&lt;/h2&gt;
+&lt;p&gt;When it comes to Amazon Web Services (AWS) infrastructure automation,
+the latest release of the certified
+&lt;a href="https://console.redhat.com/ansible/automation-hub/repo/published/amazon/aws"&gt;amazon.aws&lt;/a&gt;
+Collection for Red Hat Ansible Automation Platform brings a number of
+enhancements to improve the overall user experience and speed up the
+process from development to production.&lt;/p&gt;
+&lt;p&gt;This blog post goes through changes and highlights what's new in the
+6.0.0 release of this Ansible Content Collection. We have included
+numerous bug fixes, features, and code quality improvements that further
+enhance the amazon.aws Collection. Let's go through some of them!&lt;/p&gt;
+&lt;h3&gt;Forward-looking Changes&lt;/h3&gt;
+&lt;h4&gt;New boto3/botocore Versioning&lt;/h4&gt;
+&lt;p&gt;The amazon.aws Collection has dropped support for
+&lt;code&gt;botocore&amp;lt;1.25.0&lt;/code&gt; and &lt;code&gt;boto3&amp;lt;1.22.0&lt;/code&gt;. Most modules
+will continue to work with older versions of the AWS Software
+Development Kit (SDK), however, compatibility with older versions of the
+AWS SDK is not guaranteed and will not be tested. When using older
+versions of the AWS SDK, a warning will be displayed by Ansible. Check
+out the module
+&lt;a href="https://docs.ansible.com/ansible/devel/collections/amazon/aws/index.html"&gt;documentation&lt;/a&gt;
+for the minimum required version for each module. &lt;/p&gt;
+&lt;h4&gt;New Python Support Policy&lt;/h4&gt;
+&lt;p&gt;On July 30, 2022, AWS
+&lt;a href="https://aws.amazon.com/blogs/developer/python-support-policy-updates-for-aws-sdks-and-tools/"&gt;announced&lt;/a&gt;
+that the AWS Command Line Interface (AWS CLI) v1 and AWS SDK for Python
+(&lt;a href="https://github.com/boto/boto3"&gt;boto3&lt;/a&gt; and
+&lt;a href="https://github.com/boto/botocore"&gt;botocore&lt;/a&gt;), will no longer support
+Python 3.6. To continue supporting Red Hat's customers with secure and
+maintainable tools, we will be aligning with these deprecations and we
+will deprecate support for Python versions less than 3.7 by this
+collection. However, support for Python versions less than 3.7 by this
+collection will be removed in release 7.0.0. Additionally, support for
+Python versions less than 3.8 is expected to be removed in a release
+after 2024-12-01 based on currently available
+&lt;a href="https://aws.amazon.com/blogs/developer/python-support-policy-updates-for-aws-sdks-and-tools/"&gt;schedules&lt;/a&gt;.&lt;/p&gt;
+&lt;h3&gt;Removed Features&lt;/h3&gt;
+&lt;p&gt;The following features have been removed from this collection release.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;ec2_vpc_endpoint_info&lt;/code&gt; - Support for the query parameter has been removed.
+  The &lt;code&gt;amazon.aws.ec2_vpc_endpoint_info&lt;/code&gt; module now only queries for endpoints.
+  Services can be queried using the amazon.aws.ec2_vpc_endpoint_service_info module.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;s3_object&lt;/code&gt; - Support for creating and deleting S3 buckets using the &lt;code&gt;amazon.aws.s3_object&lt;/code&gt; module has been removed.
+  S3 buckets can be created and deleted using the &lt;code&gt;amazon.aws.s3_bucket&lt;/code&gt; module.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Deprecated Features&lt;/h3&gt;
+&lt;p&gt;This collection release also introduces some deprecations. For
+consistency between the collection and AWS documentation, the
+&lt;code&gt;boto3_profile&lt;/code&gt; alias for the &lt;code&gt;profile&lt;/code&gt; option has been
+deprecated. Please use &lt;code&gt;profile&lt;/code&gt; instead.&lt;/p&gt;
+&lt;p&gt;The &lt;code&gt;amazon.aws.s3_object&lt;/code&gt; and &lt;code&gt;amazon.aws.s3_object_info&lt;/code&gt;
+modules have also undergone several deprecations.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Passing contemporarily &lt;code&gt;dualstack&lt;/code&gt; and &lt;code&gt;endpoint_url&lt;/code&gt; has been deprecated.
+    The &lt;code&gt;dualstack&lt;/code&gt; parameter is ignored when &lt;code&gt;endpoint_url&lt;/code&gt;  is passed.
+    Support will be removed in a release after 2024-12-01 .&lt;/li&gt;
+&lt;li&gt;Support for passing values of &lt;code&gt;overwrite&lt;/code&gt; other than &lt;code&gt;always&lt;/code&gt;, &lt;code&gt;never&lt;/code&gt;, &lt;code&gt;different&lt;/code&gt; or &lt;code&gt;last&lt;/code&gt; has been deprecated.
+    Boolean values should be replaced by the strings &lt;code&gt;always&lt;/code&gt; or &lt;code&gt;never&lt;/code&gt;.
+    Support will be removed in a release after 2024-12-01.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Code quality and CI improvement&lt;/h3&gt;
+&lt;p&gt;Part of the effort in this release was dedicated to improving the
+quality of the collection's code. We have adopted several linting and
+formatting tools that help enforce coding conventions and best
+practices, with all code following the same style and standards. The
+linting tools help detect and flag code that may not be optimal, such as
+unused variables or functions, unnecessary loops or conditions, detect
+security vulnerabilities, and other inefficiencies. Formatting tools
+help to automatically format and style the code to ensure consistency
+and readability. &lt;/p&gt;
+&lt;p&gt;Overall, this code quality improvement initiative aims to lead to more
+reliable, efficient and maintainable software that provides a better
+user experience and ultimately benefits both developers and end users.
+In addition, several plugins have undergone refactoring (e.g., removing
+duplicate code, simplifying complex logic and using design patterns
+where appropriate) to make the code more efficient and maintainable. We
+have also extended the coverage of unit tests so the code behaves as
+expected.&lt;/p&gt;
+&lt;p&gt;This initiative does not stop here. We have also decided to move to
+GitHub actions for CI from Zuul. This decision helps us simplify the CI
+pipeline as it is natively integrated with GitHub and improves
+scalability, collaboration, workflow management and the efficiency of
+the development process.&lt;/p&gt;
+&lt;p&gt;Because improving code quality is a continuous process that requires
+ongoing effort and attention, this work is ongoing and will be reflected
+in future releases.&lt;/p&gt;
+&lt;h3&gt;Renamings&lt;/h3&gt;
+&lt;p&gt;As naming might be generally tedious, a misleading module or option's
+name may complicate the user experience.&lt;/p&gt;
+&lt;p&gt;We decided to rename the &lt;code&gt;amazon.aws.aws_secret&lt;/code&gt; lookup plugin in this collection release.
+This decision is a follow up of the renaming initiative started in release 5.0.0 of this collection.
+Therefore, the &lt;code&gt;amazon.aws.aws_secret&lt;/code&gt; module has been renamed to &lt;code&gt;amazon.aws.secretsmanager_secret&lt;/code&gt;. &lt;/p&gt;
+&lt;p&gt;We have also decided to rename the &lt;code&gt;amazon.aws.aws_ssm&lt;/code&gt; lookup plugin to &lt;code&gt;amazon.aws.ssm_parameter&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;However, &lt;code&gt;aws_secret&lt;/code&gt; and &lt;code&gt;aws_ssm&lt;/code&gt; remain as aliases and they will be deprecated in the future. &lt;/p&gt;
+&lt;p&gt;For consistency amongst our plugins and modules, we renamed the following options:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;aws_profile&lt;/code&gt; renamed to &lt;code&gt;profile&lt;/code&gt; (&lt;code&gt;aws_profile&lt;/code&gt; remains as an alias)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;aws_access_key&lt;/code&gt; renamed to &lt;code&gt;access_key&lt;/code&gt; (&lt;code&gt;aws_access_key&lt;/code&gt; remains as an alias)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;aws_secret_key&lt;/code&gt; renamed to &lt;code&gt;secret_key&lt;/code&gt; (&lt;code&gt;aws_secret_key&lt;/code&gt;  remains as an alias)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;aws_security_token&lt;/code&gt; renamed to &lt;code&gt;security_token&lt;/code&gt; (&lt;code&gt;aws_security_token&lt;/code&gt; remains as an alias)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;These changes should not have observable effect for users outside the module/plugin documentation.&lt;/p&gt;
+&lt;h3&gt;New Modules&lt;/h3&gt;
+&lt;p&gt;This release brings a number of new base supported modules that
+implement AWS Backup capabilities. &lt;/p&gt;
+&lt;p&gt;AWS Backup is a fully managed backup service that enables you to
+centralize and automate the backup of data across AWS services and
+on-premises applications,  eliminating the need for custom scripts and
+manual processes. &lt;/p&gt;
+&lt;p&gt;With AWS Backup, you can create backup policies that define backup
+schedules and retention periods for your AWS resources, including Amazon
+EBS volumes, Amazon RDS databases, Amazon DynamoDB tables, Amazon EFS
+file systems, and Amazon EC2 instances. &lt;/p&gt;
+&lt;p&gt;The following table highlights the functionalities covered by these new
+Red Hat supported modules:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;backup_restore_job_info&lt;/code&gt; - Get detailed information about AWS Backup restore jobs initiated to restore a saved resource.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;backup_vault&lt;/code&gt; - Manage AWS Backup vaults.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;backup_vault_info&lt;/code&gt; - Get detailed information about an AWS Backup vault.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;backup_plan&lt;/code&gt; - Manage AWS Backup plans.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;backup_plan_info&lt;/code&gt; - Get detailed information about an AWS Backup Plan.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;backup_selection&lt;/code&gt; - Manages AWS Backup selections.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;backup_selection_info&lt;/code&gt; - Get detailed information about AWS Backup selections.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;backup_tag&lt;/code&gt; - Manage tags on an  AWS backup plan, AWS backup vault, AWS recovery point.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;backup_tag_info&lt;/code&gt; - List tags on AWS Backup resources.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4&gt;Automate backups of your AWS resources with the new AWS Backup supported modules&lt;/h4&gt;
+&lt;p&gt;In this example, I show you how to backup an RDS instance tagged &lt;code&gt;backup: "daily"&lt;/code&gt;. This example can
+be extended to all currently supported resource types (e.g., EC2, EFS, EBS, DynamoDB) which are tagged with
+&lt;code&gt;backup: "daily"&lt;/code&gt;. The following playbook shows the the steps necessary to achieve that:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Automated&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;backups&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;of&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;your&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;AWS&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;resources&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;with&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;AWS&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Backup&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nx"&gt;hosts&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;localhost&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nx"&gt;gather_facts&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kc"&gt;false&lt;/span&gt;
+
+
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nx"&gt;tasks&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Create&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;a&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;mariadb&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;instance&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;tagged&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;with&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;“&lt;/span&gt;&lt;span class="nx"&gt;backup&lt;/span&gt;&lt;span class="err"&gt;”&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;“&lt;/span&gt;&lt;span class="nx"&gt;daily&lt;/span&gt;&lt;span class="err"&gt;”&lt;/span&gt;
+&lt;span class="w"&gt;     &lt;/span&gt;&lt;span class="nx"&gt;amazon&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;aws&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;rds_instance&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;       &lt;/span&gt;&lt;span class="nx"&gt;id&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"demo-backup-rdsinstance"&lt;/span&gt;
+&lt;span class="w"&gt;       &lt;/span&gt;&lt;span class="nx"&gt;state&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;present&lt;/span&gt;
+&lt;span class="w"&gt;       &lt;/span&gt;&lt;span class="nx"&gt;engine&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;mariadb&lt;/span&gt;
+&lt;span class="w"&gt;       &lt;/span&gt;&lt;span class="nx"&gt;username&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;'&lt;/span&gt;&lt;span class="nx"&gt;test&lt;/span&gt;&lt;span class="err"&gt;'&lt;/span&gt;
+&lt;span class="w"&gt;       &lt;/span&gt;&lt;span class="nx"&gt;password&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;'&lt;/span&gt;&lt;span class="nx"&gt;test12345678&lt;/span&gt;&lt;span class="err"&gt;'&lt;/span&gt;
+&lt;span class="w"&gt;       &lt;/span&gt;&lt;span class="nx"&gt;db_instance_class&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;'&lt;/span&gt;&lt;span class="nx"&gt;db&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;t3&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;micro&lt;/span&gt;&lt;span class="err"&gt;'&lt;/span&gt;
+&lt;span class="w"&gt;       &lt;/span&gt;&lt;span class="nx"&gt;allocated_storage&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;20&lt;/span&gt;
+&lt;span class="w"&gt;       &lt;/span&gt;&lt;span class="nx"&gt;deletion_protection&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kc"&gt;true&lt;/span&gt;
+&lt;span class="w"&gt;       &lt;/span&gt;&lt;span class="nx"&gt;tags&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;         &lt;/span&gt;&lt;span class="nx"&gt;backup&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"daily"&lt;/span&gt;
+&lt;span class="w"&gt;     &lt;/span&gt;&lt;span class="nx"&gt;register&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;result&lt;/span&gt;
+
+
+&lt;span class="w"&gt;   &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Create&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;an&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;IAM&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Role&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;that&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;is&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;needed&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;for&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;AWS&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Backup&lt;/span&gt;
+&lt;span class="w"&gt;     &lt;/span&gt;&lt;span class="nx"&gt;community&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;aws&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;iam_role&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;       &lt;/span&gt;&lt;span class="nx"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"backup-role"&lt;/span&gt;
+&lt;span class="w"&gt;       &lt;/span&gt;&lt;span class="nx"&gt;assume_role_policy_document&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;'&lt;/span&gt;&lt;span class="p"&gt;{{&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;lookup&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"file"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"backup-policy.json"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;}}&lt;/span&gt;&lt;span class="err"&gt;'&lt;/span&gt;
+&lt;span class="w"&gt;       &lt;/span&gt;&lt;span class="nx"&gt;create_instance_profile&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;no&lt;/span&gt;
+&lt;span class="w"&gt;       &lt;/span&gt;&lt;span class="nx"&gt;description&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"Ansible AWS Backup Role"&lt;/span&gt;
+&lt;span class="w"&gt;       &lt;/span&gt;&lt;span class="nx"&gt;managed_policy&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;         &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"arn:aws:iam::aws:policy/service-role/AWSBackupServiceRolePolicyForBackup"&lt;/span&gt;
+&lt;span class="w"&gt;     &lt;/span&gt;&lt;span class="nx"&gt;register&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;iam_role&lt;/span&gt;
+
+
+&lt;span class="w"&gt;   &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Create&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;an&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;AWS&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Backup&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;vault&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;for&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;the&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;plan&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;to&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;target&lt;/span&gt;
+&lt;span class="w"&gt;     &lt;/span&gt;&lt;span class="err"&gt;#&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;The&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;AWS&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Backup&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;vault&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;is&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;the&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;data&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;store&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;for&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;the&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;backed&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;up&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;data&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;
+&lt;span class="w"&gt;     &lt;/span&gt;&lt;span class="nx"&gt;amazon&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;aws&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;backup_vault&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;       &lt;/span&gt;&lt;span class="nx"&gt;backup_vault_name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"demo-backup-vault"&lt;/span&gt;
+
+
+&lt;span class="w"&gt;   &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Get&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;detailed&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;information&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;about&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;the&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;AWS&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Backup&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;vault&lt;/span&gt;
+&lt;span class="w"&gt;     &lt;/span&gt;&lt;span class="nx"&gt;amazon&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;aws&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;backup_vault_info&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;       &lt;/span&gt;&lt;span class="nx"&gt;backup_vault_names&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;         &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"demo-backup-vault"&lt;/span&gt;
+&lt;span class="w"&gt;     &lt;/span&gt;&lt;span class="nx"&gt;register&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;_info&lt;/span&gt;
+
+
+&lt;span class="w"&gt;   &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Tag&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;the&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;AWS&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;backup&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;vault&lt;/span&gt;
+&lt;span class="w"&gt;     &lt;/span&gt;&lt;span class="nx"&gt;amazon&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;aws&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;backup_tag&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;       &lt;/span&gt;&lt;span class="nx"&gt;resource&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"{{ _info.backup_vaults.backup_vault_arn }}"&lt;/span&gt;
+&lt;span class="w"&gt;       &lt;/span&gt;&lt;span class="nx"&gt;tags&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;           &lt;/span&gt;&lt;span class="nx"&gt;environment&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;test&lt;/span&gt;
+
+
+&lt;span class="w"&gt;   &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Create&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;an&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;AWS&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Backup&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;plan&lt;/span&gt;
+&lt;span class="w"&gt;     &lt;/span&gt;&lt;span class="err"&gt;#&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;A&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;backup&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;plan&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;tells&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;AWS&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Backup&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;service&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;to&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;backup&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;resources&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;each&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;day&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;at&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;o&lt;/span&gt;&lt;span class="err"&gt;’&lt;/span&gt;&lt;span class="nx"&gt;clock&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;in&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;the&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;morning&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;In&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;the&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;backup&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;rules&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;we&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;specify&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;the&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;AWS&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Backup&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;vault&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;to&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;target&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;for&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;storing&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;recovery&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;points&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;
+&lt;span class="w"&gt;     &lt;/span&gt;&lt;span class="nx"&gt;amazon&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;aws&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;backup_plan&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;       &lt;/span&gt;&lt;span class="nx"&gt;backup_plan_name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"demo-backup-plan"&lt;/span&gt;
+&lt;span class="w"&gt;       &lt;/span&gt;&lt;span class="nx"&gt;rules&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;         &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;rule_name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;daily&lt;/span&gt;
+&lt;span class="w"&gt;           &lt;/span&gt;&lt;span class="nx"&gt;target_backup_vault_name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"demo-backup-vault"&lt;/span&gt;
+&lt;span class="w"&gt;           &lt;/span&gt;&lt;span class="nx"&gt;schedule_expression&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"cron(0 5 ? * * *)"&lt;/span&gt;
+&lt;span class="w"&gt;           &lt;/span&gt;&lt;span class="nx"&gt;start_window_minutes&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;60&lt;/span&gt;
+&lt;span class="w"&gt;           &lt;/span&gt;&lt;span class="nx"&gt;completion_window_minutes&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;1440&lt;/span&gt;
+&lt;span class="w"&gt;     &lt;/span&gt;&lt;span class="nx"&gt;register&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;backup_plan_create_result&lt;/span&gt;
+
+
+&lt;span class="w"&gt;   &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Get&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;detailed&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;information&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;about&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;the&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;AWS&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Backup&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;plan&lt;/span&gt;
+&lt;span class="w"&gt;     &lt;/span&gt;&lt;span class="nx"&gt;amazon&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;aws&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;backup_plan_info&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;       &lt;/span&gt;&lt;span class="nx"&gt;backup_plan_names&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;         &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"demo-backup-plan"&lt;/span&gt;
+&lt;span class="w"&gt;     &lt;/span&gt;&lt;span class="nx"&gt;register&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;backup_plan_info_result&lt;/span&gt;
+
+
+&lt;span class="w"&gt;   &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Create&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;an&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;AWS&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Backup&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;selection&lt;/span&gt;
+&lt;span class="w"&gt;     &lt;/span&gt;&lt;span class="err"&gt;#&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;AWS&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Backup&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;selection&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;supports&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;tag&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nx"&gt;based&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;resource&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;selection&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;This&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;means&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;that&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;resources&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;that&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;should&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;be&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;backed&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;up&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;by&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;the&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;AWS&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Backup&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;plan&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;needs&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;to&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;be&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;tagged&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;with&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;“&lt;/span&gt;&lt;span class="nx"&gt;backup&lt;/span&gt;&lt;span class="err"&gt;”&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;“&lt;/span&gt;&lt;span class="nx"&gt;daily&lt;/span&gt;&lt;span class="err"&gt;”&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;and&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;they&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;are&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;then&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;automatically&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;backed&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;up&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;by&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;AWS&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Backup&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;
+&lt;span class="w"&gt;     &lt;/span&gt;&lt;span class="nx"&gt;amazon&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;aws&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;backup_selection&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nx"&gt;selection_name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"demo-backup-selection"&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nx"&gt;backup_plan_name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"demo-backup-plan"&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nx"&gt;iam_role_arn&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"{{ iam_role.iam_role.arn }}"&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nx"&gt;list_of_tags&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;         &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;condition_type&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"STRINGEQUALS"&lt;/span&gt;
+&lt;span class="w"&gt;           &lt;/span&gt;&lt;span class="nx"&gt;condition_key&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"backup"&lt;/span&gt;
+&lt;span class="w"&gt;           &lt;/span&gt;&lt;span class="nx"&gt;condition_value&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"daily"&lt;/span&gt;
+&lt;span class="w"&gt;     &lt;/span&gt;&lt;span class="nx"&gt;register&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;backup_selection_create_result&lt;/span&gt;
+
+
+&lt;span class="w"&gt;   &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Get&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;detailed&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;information&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;about&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;the&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;AWS&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Backup&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;selection&lt;/span&gt;
+&lt;span class="w"&gt;     &lt;/span&gt;&lt;span class="nx"&gt;amazon&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;aws&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;backup_selection_info&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;       &lt;/span&gt;&lt;span class="nx"&gt;backup_plan_name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"demo-backup-plan"&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Once this playbook has finished the execution, AWS Backup will start to
+create daily backups of the resources tagged with
+&lt;code&gt;backup=daily&lt;/code&gt;. You can
+monitor the status of the backup service demo on the AWS console. If we
+go to Jobs, we see some backup jobs that have already been completed. A
+backup job is the result of an AWS Backup plan rule and resource
+selection. It will attempt to backup the selected resources, within the
+time window defined in the backup plan rule.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="screenshot" src="https://ansible.com/images/posts/archive/aws-backup-jobs.png"&gt;&lt;/p&gt;
+&lt;p&gt;If we're taking a look at the AWS Backup vault we created, you can see
+it contains the recovery points of the RDS instance. A recovery point is
+either a snapshot or a point-in-time recovery backup. The data inside a
+recovery point cannot be edited. Tags and retention period can be
+changed if the backup vault allows it. You can use the recovery point to
+restore data.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="screenshot" src="https://ansible.com/blog/whats-new-cloud-automation-with-amazon.aws-6.0.0/aws-recovery-points.png"&gt;&lt;/p&gt;
+&lt;p&gt;An AWS Backup restore job is used to restore data from backups taken
+with AWS Backup service. This release does not include the module that
+enables you to create an AWS backup restore job, but we are planning to
+include this feature in the future. However, in this release, we have
+included the &lt;code&gt;amazon.aws.backup_restore_job_info&lt;/code&gt; module to get
+information about the restore job.&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="x"&gt;- name: Get detailed information about the AWS Backup restore job&lt;/span&gt;
+&lt;span class="x"&gt;  amazon.aws.backup_restore_job_info:&lt;/span&gt;
+&lt;span class="x"&gt;    restore_job_id: "&lt;/span&gt;&lt;span class="cp"&gt;{{&lt;/span&gt; &lt;span class="nv"&gt;restore_job_id&lt;/span&gt; &lt;span class="cp"&gt;}}&lt;/span&gt;&lt;span class="x"&gt;"&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;</description><guid>https://ansible.com/blog/whats-new-cloud-automation-with-amazon.aws-6.0.0/</guid><pubDate>Thu, 22 Jun 2023 00:00:00 GMT</pubDate></item><item><title>Event-Driven Ansible is Here</title><link>https://ansible.com/blog/event-driven-ansible-is-here/</link><dc:creator>Joe Pisciotta</dc:creator><description>&lt;p&gt;As you may recall, we introduced Event-Driven Ansible in developer preview last fall at AnsibleFest. Since that time, much work has been done across the community, the Red Hat development teams, customers, and last but not least, Red Hat partners. Today, &lt;a href="https://www.redhat.com/en/about/press-releases/red-hat-accelerates-it-automation-event-driven-ansible"&gt;we are pleased to announce&lt;/a&gt; that Event-Driven Ansible will be concluding its developer preview and will become generally available as part of Red Hat Ansible Automation Platform 2.4.&lt;/p&gt;
+&lt;p&gt;If you are new to Event-Driven Ansible, check out the &lt;a href="https://www.ansible.com/blog/introducing-event-driven-ansible"&gt;developer preview blog&lt;/a&gt; I wrote last fall to learn the basics, and you may also be interested in this &lt;a href="https://www.youtube.com/watch?v=PtevBKX1SYI&amp;amp;list=PLdu06OJoEf2a3fFl6uaoyGV526ilwD97R&amp;amp;index=3"&gt;video on Ansible Rulebooks&lt;/a&gt;, as well as others in this playlist.&lt;/p&gt;
+&lt;h3&gt;Transform your work with Event-Driven Ansible&lt;/h3&gt;
+&lt;p&gt;For many IT teams, there is too much work to do and not enough time to get it all done. Event-Driven Ansible can help your team work smarter, not harder. How often are you doing routine tasks that get in the way of key priorities? How often are you needing to "drop everything" to respond to a ticket enrichment request or handle a user administration issue? Have you had to wake up at night to remediate an issue? How often are you adjusting applications and underlying technologies to support fluctuating workloads?&lt;/p&gt;
+&lt;p&gt;You will be happy to know there is a better way, and it is event-driven automation. Many pieces of recurring operational logic and processes can be automated by capturing them in Ansible Rulebooks, including issue remediation, fact gathering for service tickets, user administration tasks, and many more. But what are Ansible Rulebooks? Based on YAML, they are the basis of Event-Driven Ansible and contain conditional "if-this-then-that" logic.&lt;/p&gt;
+&lt;p&gt;Event-Driven Ansible can also be used with scalability logic, or using rulebooks to codify scalability actions for rapid and seamless response, such as adding capacity or adjusting buffer pool size when an application or workload calls for it, or scaling out hybrid-cloud solutions when certain conditions are met, and so on.&lt;/p&gt;
+&lt;p&gt;Event-driven patterns of automation make it faster to act on recurring events and also provide a simple way of distributing operational or scalability knowledge as an easy to read and verifiable structure. Event-Driven Ansible is accessible enough to be used by IT domain experts to solve a range of needs across use cases including infrastructure, networking, security, cloud and others.&lt;/p&gt;
+&lt;p&gt;When your organization adopts event-driven automation techniques, your entire team can execute in a consistent and accurate way. You gain new levels of efficiency and can better focus on the innovations that give your business an edge.&lt;/p&gt;
+&lt;h3&gt;New features and enhancements&lt;/h3&gt;
+&lt;p&gt;What can you expect from Event-Driven Ansible as part of this release? Several new components and features have been added.  These include:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Event-Driven Ansible controller&lt;/strong&gt;, which enables orchestration of multiple rulebooks and provides a single interface to manage and audit all responses across all event sources. These event sources are often third party monitoring and observability tools, but can be any source that provides intelligence about your IT environment.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Integration with automation controller in Ansible Automation Platform&lt;/strong&gt;, which allows you to call existing workflows that you’ve already built using the run_job_template action, thus extending existing, trusted automation into event-driven automation scenarios. This is an optional way to specify actions from within rulebooks. You can also call an existing Ansible Playbook within your rulebooks, if you prefer.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Event throttling&lt;/strong&gt;, which allows you to handle "event storms" using either a reactive approach with the once_within &lt;time&gt; condition or a passive approach with the once_after &lt;time&gt; condition. This allows greater control over when and how actions are executed in response to many events. The Event-Driven Ansible controller also allows default throttling mechanisms that limit scenarios which may result in a greater number of actions than anticipated.&lt;/time&gt;&lt;/time&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Event-Driven Ansible ecosystem integrations&lt;/h3&gt;
+&lt;p&gt;An ecosystem of Ansible Content Collections is important for Event-Driven Ansible because it works on the intelligence of changing IT conditions that come from event sources such as third party monitoring and observability tools. Ansible Content Collections are a variety of assets that help you jumpstart new automation projects. In the Event-Driven Ansible case, these assets typically are source plug-ins and rulebooks, but may also include other types of useful content. Red Hat Ansible Certified Content Collections are supported by Red Hat and/or partners and typically focus on the "how-to" of some type of automation. Ansible validated content focuses more on "what-to-do" scenarios, including best practices.&lt;/p&gt;
+&lt;p&gt;There has been extensive work done across the Event-Driven Ansible ecosystem in terms of new content, by both the community and third party Red Hat partners. The following is an overview of the work that has been done and what is to come:&lt;/p&gt;
+&lt;h4&gt;Certified and validated content&lt;/h4&gt;
+&lt;p&gt;The initial list of partners who are or will be certifying or validating content includes: Cisco ThousandEyes, CrowdStrike, CyberArk, Dynatrace, F5, IBM, Palo Alto Networks, and Zabbix and there are more to come. Red Hat has also developed key integrations including  Apache Kafka, webhooks, Red Hat Insights, Red Hat OpenShift, Cisco NX-OS and Model-Driven Telemetry, AWS and more. Refer to the image below. More integrations are coming soon, including ServiceNow, Microsoft Azure, Google Cloud Platform and others.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Certified Content for Event-Driven Ansible generally is  certified event source plugins, written in python, which connect an event source to Ansible Rulebooks. Validated Content for Event-Driven Ansible is generally Ansible Rulebooks which have been validated and contains best practices for common use cases.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h4&gt;Community- and custom-developed content&lt;/h4&gt;
+&lt;p&gt;Community and custom content is available either upstream or through private customer sources. Community-developed integrations have included gcp pubsub and syslogd, among others.&lt;/p&gt;
+&lt;p&gt;Whether you have homegrown monitoring tools or need a specific solution immediately, you can build your own plug-ins for Event-Driven Ansible. Once you build your plug-in, consider whether this can be contributed to the Ansible community.&lt;/p&gt;
+&lt;h3&gt;Getting Involved with Event-Driven Ansible&lt;/h3&gt;
+&lt;p&gt;Ready to start exploring Event-Driven Ansible? There are a number of ways to do this.  Visit &lt;a href="https://www.redhat.com/en/technologies/management/ansible/event-driven-ansible"&gt;Red Hat's Event-Driven Ansible page&lt;/a&gt; where you will find a series of free, self-paced interactive labs, information and analyst research.&lt;/p&gt;
+&lt;p&gt;You can also join a getting started with &lt;a href="https://www.redhat.com/en/events/webinar/work-smarter-using-event-driven-automation-across-IT-operations"&gt;Event-Driven Ansiblewebinar&lt;/a&gt; on June 20, 2023.&lt;/p&gt;
+&lt;h3&gt;Additional resources&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://www.redhat.com/en/about/press-releases/red-hat-accelerates-it-automation-event-driven-ansible"&gt;Press release: Red Hat Accelerates IT Automation with Event-Driven Ansible&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.redhat.com/en/technologies/management/ansible/event-driven-ansible"&gt;Web page: Event-Driven Ansible&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=PtevBKX1SYI"&gt;Video: Creating Ansible Rulebooks&lt;/a&gt;  and &lt;a href="https://www.youtube.com/watch?v=TH7_OqBmXD4&amp;amp;list=PLdu06OJoEf2a3fFl6uaoyGV526ilwD97R"&gt;Event-Driven Ansible playlist&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.redhat.com/en/events/webinar/work-smarter-using-event-driven-automation-across-IT-operations"&gt;Event-Driven Ansible webinar&lt;/a&gt;, June 20, 2023&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.redhat.com/en/engage/event-driven-ansible-20220907"&gt;Event-Driven Ansible self paced labs&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;451 Research paper: &lt;a href="https://www.redhat.com/en/resources/event-driven-impact-on-it-operations-analyst-material"&gt;The Impact of Event-Driven Automation&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.redhat.com/en/engage/build-innovation-automation-20230414"&gt;Event-driven automation e-book&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description><category>announcement</category><category>eda</category><category>event-driven-ansible</category><category>release</category><guid>https://ansible.com/blog/event-driven-ansible-is-here/</guid><pubDate>Tue, 23 May 2023 13:00:00 GMT</pubDate></item><item><title>YOU are the community</title><link>https://ansible.com/blog/you-are-the-community/</link><dc:creator>Walter Bentley</dc:creator><description>&lt;h2&gt;YOU are the community&lt;/h2&gt;
+&lt;p&gt;New year, new role, new strategy...2023 is officially the year when I
+return to my roots. Back in 2014, I officially became part of the
+Ansible community. Admittingly, back then my focus was solely on
+figuring out how to best demonstrate to my customers the power of having
+a OpenStack private cloud. Anyone who has ever stood up or experimented
+with OpenStack knows that this is a tall order. Imagine having to stand
+up that platform over and over again on a daily basis. My focus was to
+find a way---a tool---that could help me do that, so I could focus on
+helping solve the customers' true challenges. Fast forward to now, and
+the decision to do it with Ansible still stands as the best choice hands
+down.&lt;/p&gt;
+&lt;p&gt;Many of you have stories just like mine. You are seeking out a way to
+simplify your daily tasks, so you can focus on the business. Just like
+me, you have decided that Ansible is the tool to do it. Before I started
+in this new role, I did some reflecting on my experience as part of the
+community. I have so many encouraging, positive, and fun stories I could
+share. Our community is truly amazing. The level of collaboration and
+desire to help are out of this world. Even with all those positive
+vibes, at times I would question whether or not I was giving back on the
+appropriate level. &lt;/p&gt;
+&lt;p&gt;Looking back now, I understand better the dynamics of a community and
+understand that those of us who are consumers are just as valuable as
+the contributors. This realization sparked some further ideas about
+inclusiveness---the feeling of truly belonging. I asked myself the
+questions "Who makes up our community?" and "Do they know they are a
+pivotal part of the community?"&lt;/p&gt;
+&lt;p&gt;Hence the title of our blog today, YOU are the
+community. Each and every one of us who
+love and use Ansible are an integral part of the community, and I'd like
+to share a vision for our shared future. &lt;/p&gt;
+&lt;p&gt;That vision consists of:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;A strong and focused mission&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Rally the community around desired work streams by creating a
+centralized space to attract more community involvement and accelerate their impact.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Cultivation of inclusiveness&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Harvest the wide knowledge of the community to further create an
+environment of independence and assist in crafting ways of working that
+resolve disagreements and dissolve roadblocks quickly.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Inspiration, creativity, and collaboration&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Encourage sustained focus and shared problem-solving, remove boundaries,
+and support all ideas (no idea is too impossible).&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;An understanding that failure is not fatal&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Try new approaches, create new capabilities, and identify inflection
+points quickly---then pivot when needed.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;More frequent recognition of success&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Call out, reward, and celebrate the wins of the community members often.&lt;/p&gt;
+&lt;p&gt;We formed the strategy for the community from these tenets...big shout
+out to Greg Sutcliffe and Carol Chen for leading that charge. This
+strategy will help all of us stay focused to deliver the capabilities
+needed to uphold the vision. Over the next months, expect to see new
+tooling introduced to the community to foster better collaboration,
+increase overall upstream participation, and put the well-deserved
+spotlight on those of you who are doing great work on a daily basis. &lt;/p&gt;
+&lt;p&gt;While these capabilities are being put in place, it feels like a good
+time to remind each of you that your voice matters. We absolutely need
+and want you to have a seat at the table. Some of you may be asking
+yourself "How can I help?" or may even be doubting if you are actually
+part of the community. So I want to debunk any doubts early, right
+here...right now. YOU are the community...our community consists of many
+different personas, such as contributors, users (which very much
+includes customers), partners and vendors. Each persona brings different
+value.&lt;/p&gt;
+&lt;h3&gt;Contributors&lt;/h3&gt;
+&lt;p&gt;You know who you are. These are our keyboard warriors who are actively
+contributing to any of the many Ansible-focused projects. Whether it is
+a simple PR to suggest better execution output or something very complex
+like fixing a Core runtime error, you are all contributors.
+&lt;a href="https://docs.ansible.com/ansible/latest/community/contributor_path.html"&gt;Learn more about becoming a contributor&lt;/a&gt;.&lt;/p&gt;
+&lt;h3&gt;Users&lt;/h3&gt;
+&lt;p&gt;I was, and still very much am, in this category. There is no shame in
+that at all! For those of us who are using Ansible on a daily basis or
+rely heavily on it to solve some sort of business need, we are Ansible
+users. There is so much value in what users can offer to a contributor
+and vice versa. Red Hat Ansible Automation Platform users are also very
+much part of the active user community. Please know this, and I
+challenge you to connect with the contributors in the community. I think
+you will find a lot of benefit in that as you both are working through
+complex automation use cases.
+&lt;a href="https://docs.ansible.com/ansible/latest/community/how_can_I_help.html"&gt;Learn how you can help&lt;/a&gt;.&lt;/p&gt;
+&lt;h3&gt;Partners and vendors&lt;/h3&gt;
+&lt;p&gt;These are our long-standing and foundational members of the community.
+They have brought multiple levels of much-needed integration into the
+Ansible project. They also assist with customers to help drive
+automation adoption---and truly innovate. To our partners and vendors:
+your participation in the community brings a huge impact to the current
+community, and you open the pathway for those joining us in the future. &lt;/p&gt;
+&lt;p&gt;No matter which category you count yourself in, know that YOU are part
+of the Ansible community. Thank you for helping make Ansible what it is.
+I can't wait to see what the rest of 2023 has in store for all of us.&lt;/p&gt;
+&lt;p&gt;Also, be sure to subscribe to the
+&lt;a href="https://github.com/ansible/community/wiki/News#the-bullhorn"&gt;Bullhorn&lt;/a&gt;
+for live updates and our progress on developing a new community web
+presence. No matter what, know that we are all in this together. Let's
+"Automate as One." &lt;/p&gt;</description><guid>https://ansible.com/blog/you-are-the-community/</guid><pubDate>Mon, 22 May 2023 00:00:00 GMT</pubDate></item><item><title>Learn about Edge Automation at Red Hat Summit and AnsibleFest 2023</title><link>https://ansible.com/blog/learn-about-edge-automation-at-red-hat-summit-and-ansiblefest-2023/</link><dc:creator>Michele Null</dc:creator><description>&lt;h2&gt;Learn about Edge Automation at Red Hat Summit and AnsibleFest 2023&lt;/h2&gt;
+&lt;p&gt;As you may have heard,
+&lt;a href="https://events.experiences.redhat.com/widget/redhat/sum23/SessionCatalog2023?tab.day=20230524&amp;amp;search.track=16439120758070013sVo"&gt;AnsibleFest&lt;/a&gt;
+will be taking place at Red Hat Summit in Boston May 23-25. This change
+will allow you to harness everything that Red Hat technology has to
+offer in a single place and will give you even more tools to address
+your automation needs. Join Ansible and automation-focused audiences to
+hear from Red Hat and Ansible leaders, customers, and partners while
+getting the latest on the Red Hat Ansible Automation Platform product
+roadmap, community projects, and what's coming in IT
+automation.&lt;/p&gt;
+&lt;p&gt;Across every industry, automation at the
+edge is enabling emerging use cases by helping
+organizations drive the next wave of
+innovation as they explore and execute digital transformation
+initiatives. Organizations are looking to extend a consistent automation
+experience across cloud, datacenter, and edge with the ability to scale
+in heterogeneous environments. Red Hat Ansible provides a common
+platform where organizations can build, run, and manage the entirety of
+their highly distributed systems, even to remote locations where network
+connectivity may be intermittent.&lt;/p&gt;
+&lt;p&gt;Because we understand how important edge automation is to teams looking
+to automate their entire IT landscape with a single platform, we have
+lined up some great sessions at AnsibleFest and Red Hat
+Summit:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://events.experiences.redhat.com/widget/redhat/sum23/SessionCatalog2023/session/1677709648862001swWi"&gt;Success at the edge starts with automation&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://events.experiences.redhat.com/widget/redhat/sum23/SessionCatalog2023/session/1673475729540001xxrT"&gt;Bringing Red Hat Ansible Automation Platform to the industrial edge&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Red Hat: Modernizing the industrial manufacturing world&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://events.experiences.redhat.com/widget/redhat/sum23/SessionCatalog2023/session/1673473170182001o4VL"&gt;How to gain a sharper business edge at UPS scale&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://events.experiences.redhat.com/widget/redhat/sum23/SessionCatalog2023/session/1672844922319001Yzxz"&gt;Building the next-generation Rail Server at the edge with Swiss Federal Railway&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://events.experiences.redhat.com/widget/redhat/sum23/SessionCatalog2023/session/1681496623436001bXzk"&gt;Streamlining edge operations with Ansible: An automation case study&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://events.experiences.redhat.com/widget/redhat/sum23/SessionCatalog2023/session/1673388836019001bZNy"&gt;Accelerating retail Day 2 operations with new Red Hat Enterprise Linux and Ansible Automation capabilities&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://events.experiences.redhat.com/widget/redhat/sum23/SessionCatalog2023/session/1681496623756001bBO4"&gt;Automating application delivery at the edge&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://events.experiences.redhat.com/widget/redhat/sum23/SessionCatalog2023/session/1681496623110001bX0t"&gt;Network and security automation at the edge&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://events.experiences.redhat.com/widget/redhat/sum23/SessionCatalog2023/session/1673472363105001Umqo"&gt;AI in manufacturing: Red Hat and Intel build a foundation for production-ready AI/ML environments&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://events.experiences.redhat.com/widget/redhat/sum23/SessionCatalog2023/session/1681847204207001zXQJ"&gt;5G and edge: Open networks transform industries&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://events.experiences.redhat.com/widget/redhat/sum23/SessionCatalog2023/session/1673467809207001WIfY"&gt;Deploy any workload on Red Hat Device Edge&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Do you have questions about edge automation with Ansible? Bring them to
+AnsibleFest and Red Hat Summit, and take advantage of the experts at the
+Ansible booth, the Edge booth, and the Ask the Expert
+area.&lt;/p&gt;
+&lt;p&gt;We will also be running different labs throughout the event, so this is
+the perfect opportunity to get hands-on experience while being able to
+ask questions in real time to Ansible experts. These labs
+include:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://events.experiences.redhat.com/widget/redhat/sum23/SessionCatalog2023/session/1673033833508001vF4D"&gt;Writing your first Ansible Playbook&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://events.experiences.redhat.com/widget/redhat/sum23/SessionCatalog2023/session/1673479592779001U7tP"&gt;Security-focused capabilities for edge device management&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://events.experiences.redhat.com/widget/redhat/sum23/SessionCatalog2023/session/1678287029268001yXLW"&gt;Event-Driven Ansible and NetOps automation&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://events.experiences.redhat.com/widget/redhat/sum23/SessionCatalog2023/session/1672824240939001LPfK"&gt;Advanced capabilities of automation controller in Red Hat Ansible Automation Platform&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Please refer to the
+&lt;a href="https://events.experiences.redhat.com/widget/redhat/sum23/SessionCatalog2023?tab.day=20230524&amp;amp;search.track=16439120758070013sVo"&gt;session catalog&lt;/a&gt;
+for the most up to date room assignments; sessions subject to change.&lt;/p&gt;
+&lt;p&gt;Looking for more edge automation content? We have you covered. Check
+out these resources to learn more about how network automation with
+Ansible can help you:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Experience &lt;a href="https://www.redhat.com/en/engage/redhat-ansible-automation-202108061218?extIdCarryOver=true&amp;amp;sc_cid=701f2000001OH7YAAW"&gt;self-paced interactive hands-on labs&lt;/a&gt; with Ansible Automation Platform&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://reg.experiences.redhat.com/flow/redhat/sum23/regGenAttendee/login?extIdCarryOver=true&amp;amp;sc_cid=701f2000001OH6uAAG"&gt;Register&lt;/a&gt; for AnsibleFest at Red Hat Summit&lt;/li&gt;
+&lt;li&gt;Read IDC paper: &lt;a href="https://www.redhat.com/en/engage/discover-automating-edge-20220510"&gt;Edge growth drives need for automating the last mile&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Check out the &lt;a href="https://www.youtube.com/playlist?list=PLdu06OJoEf2Y5CKPBy6toPs7uBuDxPxvc"&gt;Edge Automation playlist&lt;/a&gt; on YouTube&lt;/li&gt;
+&lt;/ul&gt;</description><guid>https://ansible.com/blog/learn-about-edge-automation-at-red-hat-summit-and-ansiblefest-2023/</guid><pubDate>Thu, 18 May 2023 00:00:00 GMT</pubDate></item></channel></rss>

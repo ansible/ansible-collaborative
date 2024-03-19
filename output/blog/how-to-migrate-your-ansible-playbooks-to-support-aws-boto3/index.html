@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html prefix="
+og: http://ogp.me/ns# article: http://ogp.me/ns/article#
+" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="Ansible Automation Platform can automate deployments, migrations and operational tasks for your public cloud.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How to Migrate your Ansible Playbooks to Support AWS boto3 | Ansible Collaborative</title>
+<link href="../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/baguetteBox.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/rst.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/code.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/theme.css" rel="stylesheet" type="text/css">
+<!-- Red Hat fonts --><link rel="stylesheet" href="https://static.redhat.com/libs/redhat/redhat-font/2.0.0/webfonts/red-hat-font.css">
+<!-- Font Awesome --><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+<!-- Fork Awesome --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css" integrity="sha256-XoaMnoYC5TH6/+ihMEnospgm0J1PM/nioxbOUdnM8HY=" crossorigin="anonymous">
+<!-- Sass compiled css  --><link rel="stylesheet" href="../../assets/css/main.css">
+<link rel="stylesheet" href="../../assets/css/redhat-footer.css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://ansible.com/blog/how-to-migrate-your-ansible-playbooks-to-support-aws-boto3/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Sean Cavanaugh">
+<link rel="prev" href="../bullhorn-48/" title="Bullhorn #48" type="text/html">
+<link rel="next" href="../bullhorn-49/" title="Bullhorn #49" type="text/html">
+<meta property="og:site_name" content="Ansible Collaborative">
+<meta property="og:title" content="How to Migrate your Ansible Playbooks to Support AWS boto3">
+<meta property="og:url" content="https://ansible.com/blog/how-to-migrate-your-ansible-playbooks-to-support-aws-boto3/">
+<meta property="og:description" content="Ansible Automation Platform can automate deployments, migrations and operational tasks for your public cloud.">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2022-03-07T00:00:00Z">
+</head>
+<body id="top">
+
+<div class="global-container" id="content" role="main">
+<!-- Start menubar -->
+<nav class="navbar navbar-expand-lg static-top mb-4 navbar-padding full-width-bg   navbar-dark   bg-pool   "><div class="masthead">
+    <!-- This keeps the margins nice -->
+    <a class="navbar-brand" href="../../">
+        <img src="../../images/ansible_logo-small-15.png" alt="Ansible community logo" id="logo" class="d-inline-block align-top" width="50" height="50"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon nav-toggle-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="bs-navbar">
+      <ul class="navbar-nav mr-auto"></ul>
+<ul class="navbar-nav navbar-right">
+<li class="nav-item dropdown">
+	        <a href="#" class="nav-link nav-link-color dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <i class=""></i> Documentation
+                </a>
+		<div class="dropdown-menu dropdown-menu-border">
+	    
+                    <a href="https://docs.ansible.com/" class="dropdown-item">
+		        <i class=""></i> Project documentation
+                    </a>
+                    <a href="https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/" class="dropdown-item">
+		        <i class=""></i> Ansible Automation Platform documentation
+                    </a>
+            </div>
+                 </li>
+<li class="nav-item">
+		     <a href="https://galaxy.ansible.com/" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Galaxy
+		     </a>
+		 </li>
+                 <li class="nav-item">
+		     <a href="https://forum.ansible.com/" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Forum
+		     </a>
+		 </li>
+            <li class="nav-item dropdown">
+	        <a href="#" class="nav-link nav-link-color dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <i class=""></i> Resources
+                </a>
+		<div class="dropdown-menu dropdown-menu-border">
+	    
+                    <a href="../../how-ansible-works/" class="dropdown-item">
+		        <i class=""></i> How Ansible works
+                    </a>
+                    <a href="../../ecosystem/" class="dropdown-item">
+		        <i class=""></i> Ansible ecosystem
+                    </a>
+                    <a href="../archive.html" class="dropdown-item">
+		        <i class=""></i> Blog
+                    </a>
+                    <a href="../../faq/" class="dropdown-item">
+		        <i class=""></i> Frequently asked questions
+                    </a>
+                    <a href="../../ansible-community-training/" class="dropdown-item">
+		        <i class=""></i> Ansible community training
+                    </a>
+                    <a href="../../contact-us/" class="dropdown-item">
+		        <i class=""></i> Contact us
+                    </a>
+            </div>
+                 </li>
+<li class="nav-item">
+		     <a href="https://www.redhat.com/en/technologies/management/ansible?sc_cid=7015Y000003szaKQAQ" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Ansible Automation Platform
+		     </a>
+		 </li>
+
+        
+      </ul>
+</div>
+    <!-- /.navbar-collapse -->
+  </div>
+  <!-- /.container -->
+</nav><!-- End default Menubar --><div class="body-content center-band">
+        <!--Body content-->
+        
+  <article class="post-text h-entry hentry postpage ansible-content" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">How to Migrate your Ansible Playbooks to Support AWS boto3</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard p-author h-card"><span class="byline-name fn p-name" itemprop="author">
+                    <a class="u-url" href="../../authors/sean-cavanaugh/">Sean Cavanaugh</a>
+            </span></p>
+            <p class="dateline">
+            <a href="." rel="bookmark">
+            <time class="published dt-published" datetime="2022-03-07T00:00:00Z" itemprop="datePublished" title="2022-03-07 00:00">2022-03-07 00:00</time></a>
+            </p>
+                    <p class="sourceline"><a href="index.md" class="sourcelink">Source</a></p>
+
+        </div>
+        
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+<h2>How to Migrate your Ansible Playbooks to Support AWS boto3</h2>
+<p>Red Hat Ansible Automation Platform is known for automating Linux,
+Windows and networking infrastructure. While both the community version
+of Ansible and our enterprise offering, Red Hat Ansible Automation
+Platform, are prominently known for configuration management, this is
+just a small piece of what you can really achieve with Ansible's
+automation. There are many other use-cases that Ansible Automation
+Platform is great at automating, such as your AWS, Azure or Google
+public cloud </p>
+<p><img alt="diagram of Ansible on public clouds" src="../../images/posts/archive/ansible-public-clouds.png"></p>
+<p>Ansible Automation Platform can automate deployments, migrations and
+operational tasks for your public cloud. This is extremely powerful
+because you can orchestrate your entire infrastructure
+<a href="https://docs.ansible.com/automation-controller/latest/html/userguide/workflows.html">workflow</a>,
+from cloud deployment, to instance configuration, to retirement, rather
+than requiring a point tool for each separate use-case. This also allows
+IT administrators to concentrate on automating business outcomes rather
+than individual technology silos.</p>
+<p>Specifically for this blog, I wanted to cover converting your Ansible
+Playbooks for provisioning an instance on AWS from the unsupported ec2
+module to the fully supported ec2_instance module. Amazon has deprecated
+their Software Development Kit (SDK) Boto in favor of the newer fully
+supported SDK Boto3. Alina Buzachis announced "What's New: The Ansible
+AWS Collection 2.0 Release" back in October 2021, which includes full
+support in our Red Hat Ansible Certified Content Collection for the
+amazon.aws.ec2_instance module, which uses Python 3 and Boto3.</p>
+<p>The supported ec2_instance module has existed for some time, but I had
+not adopted it for my use-case yet because we needed one last feature
+for parity with the older ec2 module.  Specifically, for demos and
+workshops, I required the exact_count parameter. This allows me to boot
+as many identical instances as I specify. For example, if I specify
+exact_count: 50, it will spin up 50 identical Red Hat Enterprise Linux 8
+instances.  </p>
+<p>Using exact_count can save hours of time versus using a loop, and I
+don't need a massive declarative file to represent my 50 servers; it's
+just a tweak of a single parameter to make identical copies. <a href="https://github.com/ansible-collections/amazon.aws/pull/539">Luckily we
+know that we have
+parameter</a>,
+so I started converting all workshops and demos that the technical
+marketing team uses to Boto3.</p>
+<p>Let's look at an older version of a task file from our technical
+workshops so I can show you how to convert from ec2 to
+<a href="https://docs.ansible.com/ansible/latest/collections/amazon/aws/ec2_instance_module.html#ansible-collections-amazon-aws-ec2-instance-module">ec2_instance</a>:</p>
+<div class="code"><pre class="code literal-block"><span class="nn">---</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Create EC2 instances for RHEL8</span>
+<span class="w">  </span><span class="nt">ec2</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">assign_public_ip</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">key_name</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">ec2_name_prefix</span><span class="nv"> </span><span class="s">}}-key"</span>
+<span class="w">    </span><span class="nt">group</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">ec2_security_group</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="w">    </span><span class="nt">instance_type</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">ec2_info[rhel8].size</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">node_ami_rhel.image_id</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="w">    </span><span class="nt">region</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">ec2_region</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="w">    </span><span class="nt">exact_count</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">student_total</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="w">    </span><span class="nt">count_tag</span><span class="p">:</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">Workshop_node1"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">ec2_name_prefix</span><span class="nv"> </span><span class="s">}}-node1"</span>
+<span class="w">    </span><span class="nt">instance_tags</span><span class="p">:</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">Workshop_node1"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">ec2_name_prefix</span><span class="nv"> </span><span class="s">}}-node1"</span>
+<span class="w">      </span><span class="nt">Workshop</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">ec2_name_prefix</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="w">      </span><span class="nt">Workshop_type</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">workshop_type</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="w">    </span><span class="nt">wait</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">ec2_wait</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="w">    </span><span class="nt">vpc_subnet_id</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">ec2_vpc_subnet_id</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="w">    </span><span class="nt">volumes</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">device_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/dev/sda1</span>
+<span class="w">        </span><span class="nt">volume_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gp2</span>
+<span class="w">        </span><span class="nt">volume_size</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">ec2_info[control_type].disk_space</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="w">        </span><span class="nt">delete_on_termination</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">control_output</span>
+</pre></div>
+
+<p>For booting an instance into AWS, there are only six required
+parameters. You need to specify a key (i.e. the SSH key to access the
+image), security group (virtual firewall for your ec2 instances),
+instance_type (e.g. t2.medium), a region (i.e. us-east-1), image (e.g.
+an AMI for RHEL8) and a network interface or VPC subnet id
+(vpc_subnet_id). </p>
+<p>The rest of the parameters in my task above are for:</p>
+<ul>
+<li>tweaking the instance</li>
+<li>adding a public IP address, increasing storage</li>
+<li>changing the module behavior<ul>
+<li>wait refers to waiting for the instance to reach running state,</li>
+<li>exact_count refers to provisioning multiple instances in
+    parallel</li>
+</ul>
+</li>
+<li>tagging, which is just adding key value tags to the instance so we
+    can filter on them in subsequent automation, or just sort easily in
+    the AWS web console.</li>
+</ul>
+<p>To convert this to ec2_instance, there are only a few small tweaks you
+need to make!</p>
+<table>
+<tr>
+<th>ec2:</th>
+    <th>ec2_instance:</th>
+  </tr>
+<tr>
+<td>
+      <pre><code>assign_public_ip: true</code></pre>
+    </td>
+    <td>
+      <pre><code>network:
+          assign_public_ip: true</code></pre>
+    </td>
+  </tr>
+<tr>
+<td>
+      <pre><code>group: "{{ ec2_security_group }}"</code></pre>
+    </td>
+    <td>
+      <pre><code>security_group: "{{ ec2_security_group }}"</code></pre>
+    </td>
+  </tr>
+<tr>
+<td>
+      <pre><code>image: "{{ node_ami_rhel.image_id }}"</code></pre>
+    </td>
+    <td>
+      <pre><code>image_id: "{{ node_ami_rhel.image_id }}"</code></pre>
+    </td>
+  </tr>
+<tr>
+<td>
+      <pre><code>count_tag:
+  Workshop_node1": "{{ ec2_name_prefix }}-node1"</code></pre>
+    </td>
+    <td>
+      <pre><code>filters:
+  "tag:Workshop_node1": "{{ ec2_name_prefix }}-node1"
+</code></pre>
+    </td>
+  </tr>
+<tr>
+<td>
+      <pre><code>instance_tags:</code></pre>
+    </td>
+    <td>
+      <pre><code>tags:</code></pre>
+    </td>
+  </tr>
+<tr>
+<td>
+      <pre><code>volumes:
+  - device_name: /dev/sda1
+  volume_type: gp2
+  volume_size: "{{ ec2_info[control_type].disk_space }}"
+  delete_on_termination: true</code></pre>
+    </td>
+    <td>
+      <pre><code>volumes:
+- device_name: /dev/sda1
+  ebs:
+  volume_type: gp2
+  volume_size: "{{ ec2_info[rhel].disk_space }}"
+  delete_on_termination: true</code></pre>
+    </td>
+  </tr>
+</table>
+<p>The entire modified task looks like the following:</p>
+<div class="code"><pre class="code literal-block"><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Create EC2 instances for node1</span>
+<span class="w">  </span><span class="nt">ec2_instance</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">key_name</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">ec2_name_prefix</span><span class="nv"> </span><span class="s">}}-key"</span>
+<span class="w">    </span><span class="nt">security_group</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">ec2_security_group</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="w">    </span><span class="nt">instance_type</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">ec2_info[rhel].size</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="w">    </span><span class="nt">image_id</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">node_ami_rhel.image_id</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="w">    </span><span class="nt">region</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">ec2_region</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="w">    </span><span class="nt">exact_count</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">student_total</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="w">    </span><span class="nt">network</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">assign_public_ip</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">filters</span><span class="p">:</span>
+<span class="w">      </span><span class="s">"tag:Workshop_node1"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">ec2_name_prefix</span><span class="nv"> </span><span class="s">}}-node1"</span>
+<span class="w">    </span><span class="nt">tags</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">Workshop_node1</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">ec2_name_prefix</span><span class="nv"> </span><span class="s">}}-node1"</span>
+<span class="w">      </span><span class="nt">Workshop</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">ec2_name_prefix</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="w">      </span><span class="nt">uuid</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">ec2_name_prefix</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="w">      </span><span class="nt">guid</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">ec2_name_prefix</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="w">      </span><span class="nt">Workshop_type</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">workshop_type</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="w">    </span><span class="nt">wait</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">ec2_wait</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="w">    </span><span class="nt">vpc_subnet_id</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">ec2_vpc_subnet_id</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="w">    </span><span class="nt">volumes</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">device_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/dev/sda1</span>
+<span class="w">        </span><span class="nt">ebs</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">volume_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gp2</span>
+<span class="w">          </span><span class="nt">volume_size</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">ec2_info[rhel].disk_space</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="w">          </span><span class="nt">delete_on_termination</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</pre></div>
+
+<p>While the task may look long, realize that optional tags are taking up
+seven lines... which is OK, and I am displaying many default values.
+Remember that there is no additional cost to add tags to cloud
+resources, and they help with subsequent automation and filtering. I
+once heard a colleague exclaim that you can never have too many tags!</p>
+<p>Looking at the task above, you will see that anything with the tag
+Workshop_node1: "-node1" will be used to verify whether existing
+instances match. It will make sure that exact_count of instances exist
+with the tag Workshop_node1. This can also be used in subsequent
+automation to filter and retrieve just the instances you want.</p>
+<div class="code"><pre class="code literal-block"><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">grab instance ids to tag rtr1</span>
+<span class="w">  </span><span class="nt">ec2_instance_info</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">region</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">ec2_region</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="w">    </span><span class="nt">filters</span><span class="p">:</span>
+<span class="w">      </span><span class="s">"tag:Workshop_node1"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">ec2_name_prefix</span><span class="nv"> </span><span class="s">}}-node1"</span>
+<span class="w">  </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">node1_output</span>
+</pre></div>
+
+<p>This will retrieve all instances with their common tag. You will also
+probably require unique tags for each instance. In that case, I
+recommend the ec2_tag module, where
+<a href="https://docs.ansible.com/ansible/latest/user_guide/playbooks_loops.html">looping</a>
+is less time intensive (versus looping with the ec2_instance module):</p>
+<div class="code"><pre class="code literal-block"><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Ensure tags are present for node1</span>
+<span class="w">  </span><span class="nt">ec2_tag</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">region</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">ec2_region</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="w">    </span><span class="nt">resource</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">item.1.instance_id</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="w">    </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">present</span>
+<span class="w">    </span><span class="nt">tags</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">Name</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">ec2_name_prefix</span><span class="nv"> </span><span class="s">}}-student{{</span><span class="nv"> </span><span class="s">item.0</span><span class="nv"> </span><span class="s">+</span><span class="nv"> </span><span class="s">1</span><span class="nv"> </span><span class="s">}}-node1"</span>
+<span class="w">      </span><span class="nt">Index</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">item[0]</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="w">      </span><span class="nt">Student</span><span class="p">:</span><span class="w"> </span><span class="s">"student{{</span><span class="nv"> </span><span class="s">item.0</span><span class="nv"> </span><span class="s">+</span><span class="nv"> </span><span class="s">1</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="w">      </span><span class="nt">launch_time</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">item.1.launch_time</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="w">  </span><span class="nt">with_indexed_items</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">node1_output.instances</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="w">  </span><span class="nt">when</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">node1_output.instances|length &gt; 0</span>
+</pre></div>
+
+<p>The ec2_tag module is great for when you need unique tags for a
+particular cloud resource. In the example above, the name, index,
+student identifier and launch time are unique for that resource. Again
+there is no time punishment or cost to additional tags, so tag as much
+as you want. So the workflow for provisioning a bunch of instances on
+AWS would look like the following:</p>
+<ol>
+<li>provisioning in bulk <code>exact_count</code> amount of instances</li>
+<li>register the output to a variable with either <code>ec2_instance</code> or <code>ec2_instance_info</code>
+</li>
+<li>for unique tags, loop over the instances with the <code>ec2_tag</code> module</li>
+</ol>
+<p>Thank you for reading through my blog and I hope this helped you on your Ansible cloud automation journey.</p>
+</div>
+    <aside class="postpromonav"><nav><ul class="pager hidden-print">
+<li class="previous">
+                <a href="../bullhorn-48/" rel="prev" title="Bullhorn #48">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../bullhorn-49/" rel="next" title="Bullhorn #49">Next post</a>
+            </li>
+        </ul></nav></aside></article><!--End of body content-->
+</div>
+        <div class="content-slim redhat-footer">
+      <div class="footer-left">
+        <ul class="footer-left-links">
+<li>
+            <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-SA 4.0</a>
+          </li>
+          <li>
+            <a href="https://www.redhat.com/en/about/privacy-policy" target="_blank">Privacy policy</a>
+          </li>
+          <li>
+            <a href="https://docs.ansible.com/ansible/latest/community/code_of_conduct.html" target="_blank">Code of conduct</a>
+          </li>
+        </ul>
+</div>
+      <div class="footer-right">
+        <span class="redhat">Powered by</span>
+        <span class="redhat-logo">
+          <a href="https://www.redhat.com/en/technologies/management/ansible" target="_blank">
+            <img src="../../assets/images/redhat_reversed.svg" alt="Red Hat logo." width="96" height="28"></a>
+        </span>
+      </div>
+    </div>
+
+</div>
+
+            <script src="../../assets/js/jquery.min.js"></script><script src="../../assets/js/popper.min.js"></script><script src="../../assets/js/bootstrap.min.js"></script><script src="../../assets/js/baguetteBox.min.js"></script><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+</script><script src="../../assets/js/clipboard.min.js" type="text/javascript"></script><script src="../../assets/js/clipboard.js" type="text/javascript"></script>
+</body>
+</html>

@@ -1,0 +1,175 @@
+<p><img alt="Ansible Bullhorn banner" src="/images/bullhorn-banner-mango.png"></p>
+<p><em>A Newsletter for the Ansible Developer Community</em>
+<em>Issue #97, 2023-04-04 (<a href="https://us19.campaign-archive.com/home/?u=56d874e027110e35dea0e03c1&amp;id=d6635f5420">Past Issues</a>)</em></p>
+<p>Welcome to <a href="https://github.com/ansible/community/wiki/News#the-bullhorn">The Bullhorn</a>, our newsletter for the Ansible developer community. If you have any questions or content you’d like to share, you're welcome to chat with us in the <a href="https://matrix.to/#/#social:ansible.com">Ansible Social room on Matrix</a>, and mention <a href="https://matrix.to/#/@newsbot:ansible.im"><code>newsbot</code></a> to have your news item tagged for review for the next weekly issue!</p>
+<!-- TEASER_END -->
+
+<h2>KEY DATES ⏱️</h2>
+<p><a href="https://matrix.to/#/@cybette:ansible.im">cybette</a> said</p>
+<blockquote>
+<ul>
+<li>2023-04-11: <a href="https://github.com/ansible/community/issues/678">DaWGs meeting</a>, 15:00 UTC</li>
+<li>2023-04-12: <a href="https://github.com/ansible/community/issues/679">Community WG meeting</a>, 18:00 UTC (propose topics <a href="https://github.com/ansible-community/community-topics/issues">here</a>)</li>
+<li>2023-04-13: <a href="https://github.com/ansible/community/wiki/News#the-bullhorn">Bullhorn #98 content deadline</a>, 18:00 UTC</li>
+<li>2023-04-24: ETA for Ansible-Core 2.14.5 and 2.15.0rc1</li>
+<li>2023-04-25: <a href="https://docs.ansible.com/ansible/devel/roadmap/COLLECTIONS_7.html">ETA for Ansible 7.5.0 release</a></li>
+</ul>
+</blockquote>
+<h2>GENERAL NEWS UPDATES 🔈️</h2>
+<p><a href="https://matrix.to/#/@gwmngilfen:ansible.im">Gwmngilfen</a> said</p>
+<blockquote>
+<h3>Contributor Summit &amp; Community survey results for Feb</h3>
+<p>After CfgMgmtCamp and Ansible Contributor Summit, we ran our usual post-event survey, which also asks more general questions about the state of the community.</p>
+<p>I've now closed the forms and done the analysis, and you can find the results <a href="https://connect.eng.ansible.com/content/9b71c2c7-6e08-4383-8c35-df149d4891ab">here</a>. In general it's fairly consistent with previous surveys (which you can find <a href="https://connect.eng.ansible.com/community_surveys/">here</a>).</p>
+<p>Overall we're seeing more of the themes we've already discussed in the <a href="https://emeraldreverie.org/2023/02/24/ansible_state_2023/">community strategy</a> so I hope the plans for the year ahead will positively impact that. Check it out, and let me know your thoughts!</p>
+<p><img alt="" src="https://i.imgur.com/puIUHWs.png"></p>
+</blockquote>
+<p><a href="https://matrix.to/#/@cybette:ansible.im">cybette</a> shared</p>
+<blockquote>
+<h3>Website Working Group</h3>
+<p>We welcome you to review the new <a href="https://hackmd.io/@ansible-community/new-website-concept">Ansible Community website concept</a> and give us some feedback! You can comment in the HackMD note, or drop by the <a href="https://matrix.to/#/#website:ansible.com">Website WG Matrix room</a> and chat with us. Look forward to hearing from you!</p>
+</blockquote>
+<h2>MAJOR NEW RELEASES 🏆️</h2>
+<h3>Ansible <a href="https://github.com/ansible-collections">↗</a> 📦️</h3>
+<p>The <code>Ansible</code> package includes <code>ansible-core</code> and is a batteries-included package that provides a curated set of Ansible collections. See the <a href="https://docs.ansible.com/ansible/devel/roadmap/ansible_roadmap_index.html">Ansible roadmaps</a> for future release plans.</p>
+<p><a href="https://matrix.to/#/@anwesha:ansible.im">anwesha</a> contributed</p>
+<blockquote>
+<p><a href="https://groups.google.com/g/ansible-announce/c/NuXPFzdT1i0">Ansible 7.4.0</a> is out! ❤️</p>
+<p>💽You can install it by running the following command or download the release tarball directly from <a href="https://pypi.python.org/packages/source/a/ansible/ansible-7.4.0.tar.gz">pypi</a>:</p>
+<p><code>pip install ansible==7.4.0 --user</code></p>
+<p>➡️ Check <a href="https://github.com/ansible-community/ansible-build-data/blob/main/7/CHANGELOG-v7.rst">Release Notes📦️🗒️</a> and <a href="https://docs.ansible.com/ansible/devel/porting_guides/porting_guide_7.html">Ansible 7 Porting Guide</a> for more details!</p>
+</blockquote>
+<h3>DevTools <a href="https://github.com/ansible/ansible-navigator">↗</a> ⛏️</h3>
+<p>Projects to make it easier to write and test Ansible Content. Includes <a href="https://github.com/ansible/vscode-ansible">VScode extension</a>, <a href="https://github.com/ansible/ansible-language-server">language server</a>, <a href="https://github.com/ansible-community/ansible-lint">ansible-lint</a>, <a href="https://github.com/ansible-community/molecule">molecule</a>, <a href="https://github.com/ansible/ansible-navigator">ansible-navigator</a> and potentially other development goodies. To see what's planned, and how you can help checkout the <a href="https://github.com/orgs/ansible/projects/86/views/4">foundation-devtools project board</a></p>
+<p><a href="https://matrix.to/#/@shatakshiiii:matrix.org">Shatakshi</a> contributed</p>
+<blockquote>
+<p>Ansible-Navigator version 3.0.0 is out! Dropping support for Python 3.8, couple of new features, and a long list of bug fixes.</p>
+<p>Some of the notable changes are:</p>
+<ol>
+<li>Adding json output support for images and collections subcommand.</li>
+<li>Adapting PEP 621 packaging.</li>
+<li>Easier prompt support with a new CLI parameter <code>enable_prompts</code> for run subcommand.</li>
+<li>Removing towncrier, related files and navigator's share directory.</li>
+<li>Adapting latest creator-ee updates.</li>
+<li>Adding more volume mount options.
+... and much more :)</li>
+</ol>
+<p>Please do check out the <a href="https://github.com/ansible/ansible-navigator/releases/tag/v3.0.0">release notes</a> for all the updates.</p>
+</blockquote>
+<h3>Antsibull <a href="https://github.com/ansible-community/antsibull">↗</a> 🐂</h3>
+<p>Tooling for building the <code>Ansible</code> package and collection documentation.</p>
+<p><a href="https://matrix.to/#/@felixfontein:libera.chat">felixfontein</a> said</p>
+<blockquote>
+<p><a href="https://github.com/ansible-community/antsibull-docs-parser/blob/main/CHANGELOG.rst#v0-2-0">antsibull-docs-parser 0.2.0</a> and <a href="https://github.com/ansible-community/antsibull-docs-ts/blob/main/CHANGELOG.rst#v0-2-0">antsibull-docs-ts 0.2.0</a> are out. These are dependency-less Python respectively TypeScript libraries that allow to process Ansible markup, including the new semantic markup.</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@felixfontein:libera.chat">felixfontein</a> shared</p>
+<blockquote>
+<p>antsibull-changelog 0.20.0 (<a href="https://github.com/ansible-community/antsibull-changelog/blob/0.20.0/CHANGELOG.rst#v0-20-0">changelog</a>) has been released. The main news is that we switched the build system from poetry-core to hatchling. This should not have any visible effect to users of antsibull-changelog.</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@felixfontein:libera.chat">felixfontein</a> contributed</p>
+<blockquote>
+<p>antsibull-docs 1.11.0 (<a href="https://github.com/ansible-community/antsibull-docs/blob/main/CHANGELOG.rst#v1-11-0">changelog</a>) has been released. It contains two new important features, first semantic markup support for roles (which was missing so far), and second a markup validator which validates classic and semantic Ansible markup. </p>
+</blockquote>
+<h3>AWX Project <a href="https://github.com/ansible/awx">↗</a></h3>
+<p>AWX provides a web-based user interface, REST API, and task engine built on top of Ansible.</p>
+<p><a href="https://matrix.to/#/@john-westcott-iv:ansible.im">john-westcott-iv</a> contributed</p>
+<blockquote>
+<p>We're happy to announce that the next release of AWX, version 21.14.0 is now available!
+Some notable features include:
+* Use ansible-runner change to get periodic keep-alive messages in K8S
+* Automatically build image for feature branch
+* Add scm_branch to inventory source and inventory update
+* [New Feature] Add Bulk add host and bulk job launch
+* Add instance groups roles
+* Adds support for a pseudolocalization and lang query params
+* Turn off auto completion on the login form
+* Don't use githubusercontent for containers.conf and podman-contianers.conf
+* [New Feature] Introducing tech preview of the new AWX UI
+* Expose execution node var for playbook
+* Expose SOCIAL_AUTH_USERNAME_IS_FULL_EMAIL</p>
+<p>In addition AWX Operator version 1.4.0 has also been released!
+Some notable features include:
+* Use sha1 instead of md5 to make the installer work in FIPS
+* Add loadbalancerip to spec file
+* Revert to using k8s_cp module to read backup files</p>
+<p>Please see the releases pages for more details: <a href="https://github.com/ansible/awx/releases/tag/21.14.0">AWX</a>, <a href="https://github.com/ansible/awx-operator/releases/tag/1.4.0">Operator</a>.</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@therealhaoliu:matrix.org">TheRealHaoLiu</a> said</p>
+<blockquote>
+<p>We're happy to announce that the next release of AWX, version 22.0.0 is now available!
+Some notable features include:
+* Allow soft deletion of HostMetrics and add usage collection utility
+* Allow TLS 1.2 for Receptor connections
+* Allow for using Ansible's <code>constructed</code> inventory plugin to dynamically group hosts from AWX inventories
+* Allow web and task container to be deployed in separate deployment on Kubernetes</p>
+<p>In addition AWX Operator version 2.0.0 has also been released!
+Some notable features include:
+* Allow TLS 1.2 for Receptor connections
+* Deploy web and task component in independent deployment</p>
+<p>Please see the releases pages for more details: <a href="https://github.com/ansible/awx/releases/tag/22.0.0">AWX</a>, <a href="https://github.com/ansible/awx-operator/releases/tag/2.0.0">Operator</a>.</p>
+</blockquote>
+<h2>PROJECT UPDATES 🛠️</h2>
+<h3>AWX Project <a href="https://github.com/ansible/awx">↗</a></h3>
+<p>AWX provides a web-based user interface, REST API, and task engine built on top of Ansible.</p>
+<p><a href="https://matrix.to/#/@lyasin:matrix.org">Lila Yasin</a> said</p>
+<blockquote>
+<p>Announcing AWX Web/Task Split Deployments for Kubernetes:
+* In the v22 release of AWX, the web/API backend and the task backend now live in separate Kubernetes deployments.
+* With the split deployments, we can now scale replicas separately or together.
+* To utilize this feature, you can edit your awx-operator spec to indicate the number of replicas you would like. 
+* You can scale replicas up or down for each deployment by using the <code>web_replicas</code> or <code>task_replicas</code> respectively. You can scale all pods across both deployments by using <code>replicas</code> as well. 
+  - If you specify the <code>replicas</code> field, the key passed will scale both the <code>web</code> and <code>task</code> replicas to the same number. 
+  - If <code>web_replicas</code> or <code>task_replicas</code> is ever passed, it will override the existing <code>replicas</code> field on the specific deployment with the new key value.
+* This enhancement not only allows for independent web and task scaling and replicas, it also paves the way for automatic scaling down the line.
+* We want your feedback! Do you find this feature helpful? Let us know <a href="https://red.ht/join-ansible">on Matrix</a>!
+* Find an issue?  Please report those <a href="https://github.com/ansible/awx/blob/devel/ISSUES.md">on GitHub</a>.</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@alancoding:matrix.org">alancoding</a> said</p>
+<blockquote>
+<p>We have merged the <a href="https://github.com/ansible/awx/pull/13448">constructed inventory feature</a> into AWX and it will go out in the next release. This is an alternative to smart inventory and addresses the key pain points like lack of groups, filtering on hostvars, and using general Ansible jinja2 templates for the user criteria.</p>
+</blockquote>
+<h3>DevTools <a href="https://github.com/ansible/vscode-ansible">↗</a> ⛏️</h3>
+<p>Projects to make it easier to write and test Ansible Content. Includes <a href="https://github.com/ansible/vscode-ansible">VScode extension</a>, <a href="https://github.com/ansible/ansible-language-server">language server</a>, <a href="https://github.com/ansible-community/ansible-lint">ansible-lint</a>, <a href="https://github.com/ansible-community/molecule">molecule</a>, <a href="https://github.com/ansible/ansible-navigator">ansible-navigator</a> and potentially other development goodies. To see what's planned, and how you can help checkout the <a href="https://github.com/orgs/ansible/projects/86/views/4">foundation-devtools project board</a></p>
+<p><a href="https://matrix.to/#/@cidrblock:matrix.org">cidrblock</a> said</p>
+<blockquote>
+<p>On behalf of the ansible devtools team: ansible-navigator verion v3.0.0 was just released. Included are a long list of bug fixes and the removal of python3.8 support. Have a look <a href="https://pypi.org/project/ansible-navigator/">here</a>.</p>
+<p>Thank you to all the devtools project contributors, including a first time contributor @eamigo.</p>
+</blockquote>
+<h2>COLLECTION UPDATES 🪄</h2>
+<p><a href="https://matrix.to/#/@felixfontein:libera.chat">felixfontein</a> shared</p>
+<blockquote>
+<p>community.general 6.5.0 (<a href="https://github.com/ansible-collections/community.general/blob/stable-6/CHANGELOG.rst">changelog</a>) has been released with new features, bugfixes, and new plugins. Note that the next minor 6.x.y release will be 6.6.0 on April 24th, and after that the next minor/major release will be 7.0.0 on May 8th. That is one week before May 15th, the feature freeze date for <a href="https://docs.ansible.com/ansible/devel/roadmap/COLLECTIONS_8.html#release-schedule">Ansible 8</a>.</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@briantist:libera.chat">briantist</a> contributed</p>
+<blockquote>
+<p><code>community.hashi_vault</code> <a href="https://github.com/ansible-collections/community.hashi_vault/releases/tag/4.2.0">version <code>4.2.0</code></a> [<a href="https://ansible-collections.github.io/community.hashi_vault/tag/4.2.0/collections/community/hashi_vault/docsite/CHANGELOG.html#v4-2-0">changelog</a>] has been released with a new KVv2 write module and a warning/deprecation for duplicated term string option use in the <code>hashi_vault</code> lookup.</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@mchappell:matrix.org">tremble</a> said</p>
+<blockquote>
+<p><a href="https://github.com/ansible-collections/amazon.aws/tree/5.4.0">amazon.aws 5.4.0</a> has been released with bugfixes for the ec2_metadata_facts, ec2_vol, rds_instance and route53_info modules, as well as feature enhancements for the ec2_spot_instance and route53_health_check modules - <a href="https://github.com/ansible-collections/amazon.aws/blob/5.4.0/CHANGELOG.rst">see changelog for details</a>.</p>
+<p><a href="https://github.com/ansible-collections/community.aws/tree/5.4.0">community.aws 5.4.0</a> has been released with feature enhancements for the ecs_service and sns modules - <a href="https://github.com/ansible-collections/community.aws/blob/5.4.0/CHANGELOG.rst">see changelog for details</a>.</p>
+</blockquote>
+<h2>HELP WANTED 🙏</h2>
+<p><a href="https://matrix.to/#/@andersson007_:matrix.org">andersson007_</a> contributed</p>
+<blockquote>
+<p>The <a href="https://github.com/ansible-collections/ansible-inclusion/discussions/categories/new-collection-reviews">new collection inclusion requests</a> are waiting for your <a href="https://github.com/ansible-collections/ansible-inclusion#review-process">reviews</a>. Please help the community extend the package!</p>
+</blockquote>
+<h2>COMMUNITY EVENTS AND MEETUPS 📅</h2>
+<p><a href="https://matrix.to/#/@anwesha:ansible.im">anwesha</a> shared</p>
+<blockquote>
+<p><strong>Ansible Kolkata</strong> Meetup group is rebooting its journey on <strong>8th April 2023</strong> at Indus Net Technologies, Kolkata, West Bengal. Learn about the Ansible Ecosystem and Automation with AWX from our Ansible Upstream. Book your slot now <a href="https://www.meetup.com/ansible-kolkata/events/292239211/">here</a>.</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@cybette:ansible.im">cybette</a> shared</p>
+<blockquote>
+<p><a href="https://www.meetup.com/ansible-meetup-dresden/"><strong>Ansible Dresden</strong></a> meetup group is having a session on <a href="https://www.meetup.com/ansible-meetup-dresden/events/291692249/">Dynamic Inventories or How to handle AWS, Azure and more</a>, Thursday <strong>April 13</strong> at 5:30 PM CEST. Check out the meetup page for details and RSVP!</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@cybette:ansible.im">cybette</a> shared</p>
+<blockquote>
+<p><a href="https://www.meetup.com/ansible-atlanta/"><strong>Ansible Atlanta</strong></a> meetup group is having a session on <a href="https://www.meetup.com/ansible-atlanta/events/292553848">Enterprise level Ansible Automation Overview</a>, Thursday <strong>April 20</strong> at 7:00 PM EDT. Check out the meetup page for details and RSVP!</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@resmo:libera.chat">resmo</a> contributed</p>
+<blockquote>
+<p>The 13th <strong>Ansible Zürich</strong> in person meetup is happening on <strong>May 31 2023</strong>, <a href="https://www.meetup.com/ansible-zurich/events/291951930/">details and RSVP</a>.</p>
+</blockquote>
+<h2>THAT'S ALL FOR NOW!</h2>
+<p>Have any questions you’d like to ask, or issues you’d like to see covered? Please ask in <a href="https://matrix.to/#/#social:ansible.com">#social:ansible.com</a>! See you next time!</p>

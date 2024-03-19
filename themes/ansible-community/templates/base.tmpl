@@ -1,0 +1,58 @@
+{#  -*- coding: utf-8 -*- #}
+{% import 'base_helper.tmpl' as base with context %}
+{% import 'annotation_helper.tmpl' as notes with context %}
+{% import 'base_footer.tmpl' as footer with context %}
+{{ set_locale(lang) }}
+{{ base.html_headstart() }}
+{% block extra_head %}
+  {#  Leave this block alone. #}
+{% endblock extra_head %}
+{{ template_hooks['extra_head']() }}
+{# djlint:off #}
+</head>
+<body id="top">
+
+<div class="global-container" id="content" role="main">
+  {% if permalink == '/' %}
+    {% block hero_content %}{% endblock hero_content %}
+    <div class="body-content">
+        <!--Body content-->
+        {{ template_hooks['page_header']() }}
+        {% block homepage_content %}{% endblock homepage_content %}
+        <!--End of body content-->
+    </div>
+  {% endif %}
+  {% if permalink != '/' %}
+    {% include "base_nav.tmpl" %}
+    <div class="body-content {% if permalink.startswith('/ecosystem/')%}full-width-band{% elif permalink.startswith('/mission-statement/') %}{% else %}center-band{% endif %}">
+        <!--Body content-->
+        {{ template_hooks['page_header']() }}
+        {% block extra_header %}{% endblock extra_header %}
+        {% block content %}{% endblock content %}
+        <!--End of body content-->
+    </div>
+  {% endif %}
+    {{ footer.html_footer() }}
+</div>
+
+{{ base.late_load_js() }}
+    {% if date_fanciness != 0 %}
+        <!-- fancy dates -->
+        <script>
+        luxon.Settings.defaultLocale = "{{ luxon_locales[lang] }}";
+        fancydates({{ date_fanciness }}, {{ luxon_date_format }});
+</script>
+        <!-- end fancy dates -->
+    {% endif %}
+    {% block extra_js %}{% endblock %}
+    <script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+</script>
+    {% include "scripts.tmpl" %}
+{{ body_end }}
+{{ template_hooks['body_end']() }}
+</body>
+</html>
+{# djlint:on #}

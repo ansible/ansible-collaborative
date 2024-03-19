@@ -1,0 +1,138 @@
+<h1>Getting Started with LDAP Authentication in Ansible Tower</h1>
+<p>Next in the Getting Started series is
+covering the basics of configuring Red Hat Ansible Tower to allow users
+to log in with LDAP credentials. In this post, we'll explain a few
+troubleshooting tips to help narrow down problems and correct them. As
+long as you have a map of your LDAP tree/forest, this post should help
+get users logging in with their LDAP credentials.</p>
+<h2>CONFIGURATION SETTINGS</h2>
+<p>To configure your Ansible Tower for LDAP authentication, navigate to
+Settings (the gear icon) and to the "Configure Tower" section. The
+area within these configuration settings we're focusing on is
+"Authentication", and the sub category should be set to "LDAP".</p>
+<p><img alt="Ansible-Getting-Started-Tower-LDAP-7" src="/images/posts/archive/Ansible-Getting-Started-Tower-LDAP-7.png"></p>
+<p>The fields that will be the primary focus are:</p>
+<ul>
+<li>LDAP server URI</li>
+<li>Bind DN and password</li>
+<li>User/group searches</li>
+</ul>
+<p>The other fields will allow you to refine your LDAP searches to reduce
+the resources used in production or map your organization.</p>
+<p><strong>The LDAP URI</strong> is simply the IP or hostname of your LDAP server
+prepended with the protocol (<code>ldap://</code>).</p>
+<p><img alt="Ansible-Getting-Started-Tower-LDAP-8" src="/images/posts/archive/Ansible-Getting-Started-Tower-LDAP-8.png">\</p>
+<p><strong>The bind DN</strong> will be a user credential and password (followed by the
+group and domain) with access to read the LDAP structure.</p>
+<p><img alt="Ansible-Getting-Started-Tower-LDAP-1" src="/images/posts/archive/Ansible-Getting-Started-Tower-LDAP-1.png"></p>
+<h2>REFINING USER SEARCH</h2>
+<p>With Ansible Tower able to connect to the LDAP server, refining the user
+search completes the configuration. The User Search entry will match the
+pattern specified by location and scope. In this case the user ID is the
+sAMAccountName value (instead of uid) since the search is against an
+Active Directory tree.</p>
+<p><img alt="Ansible-Getting-Started-Tower-LDAP-4" src="/images/posts/archive/Ansible-Getting-Started-Tower-LDAP-4.png">
+<img alt="Ansible-Getting-Started-Tower-LDAP-2" src="/images/posts/archive/Ansible-Getting-Started-Tower-LDAP-2.png"></p>
+<h2>USER AND GROUP SEARCH</h2>
+<p>The User and Group searches are where the most troubleshooting might
+have to be done, depending on how complex your directory structure is.
+Use the ldapsearch tool from the openldap package to construct searches
+against the LDAP server. Begin with a basic search and dive
+incrementally to refine your searches.</p>
+<div class="code"><pre class="code literal-block">ldapsearch -x  -H ldap://10.10.10.254 -D &quot;CN=jarvis,CN=Users,DC=shield,DC=team&quot; -w 01Password! -b &quot;cn=Users,dc=shield,dc=team&quot;
+</pre></div>
+
+<p>This search is general and will list results in the location specified
+<code>(-b "cn=Users,dc=shield,dc=team")</code> with the location
+matching what you would use for your LDAP search scope against your
+server.</p>
+<p>The LDAP Require Group and LDAP Deny Group fields are for adding single
+entries to narrow your search scope by a single group. The LDAP User DN
+Template field will narrow down the scope to just the format you enter
+in the field. In the LDAP User Search field within the configuration
+page use:</p>
+<ul>
+<li>SCOPE_SUBTREE: to search recursively down the directory tree</li>
+<li>SCOPE_ONELEVEL: to specify a search one level down the tree only</li>
+<li>SCOPE_BASE: to only search the level specified in the base DN</li>
+</ul>
+<p>Use the results returned from the LDAP search tool to choose the values
+to search by, for example: uid or sAMAccountName &amp; group or
+groupOfNames. It's worth keeping in mind that LDAP User DN Template will
+supercede your LDAP User Search, so only use one or the other when
+setting it up.</p>
+<p><img alt="Ansible-Getting-Started-Tower-LDAP-6" src="/images/posts/archive/Ansible-Getting-Started-Tower-LDAP-6.png"></p>
+<p><strong>For Windows/AD Admins</strong></p>
+<p>These steps set up a single-sign-on to Ansible Tower for logging in LDAP
+users. Configuration of Ansible Tower to authenticate against
+LDAP-connected hosts would be done in the Credentials section, and the
+same considerations will apply to authentication against Windows hosts
+that apply to Ansible.Considerations include prepping WinRM on the hosts
+to <a href="http://docs.ansible.com/ansible/latest/intro_windows.html#windows-system-prep">accept
+connections</a>.
+Before preparing and running jobs against Windows hosts in an Active
+Directory, make sure to have the Credentials set up appropriately!</p>
+<h2>USER ATTRIBUTE MAP</h2>
+<p>Finally, it's important to dedicate some time when testing LDAP
+authentication to attribute user and organization mapping. The LDAP User
+Attribute Map is where the LDAP attributes are mapped to Ansible Tower
+attributes. Examples include first name, last name, email, etc. In this
+case the email attribute is mapping to the
+[userPrincipalName] in the Active Directory Server being
+used. The default is "mail" for most LDAP layouts, but you will need to
+know your structure in order to map accordingly.</p>
+<p><img alt="Ansible-Getting-Started-Tower-LDAP-5" src="/images/posts/archive/Ansible-Getting-Started-Tower-LDAP-5.png"></p>
+<p>The LDAP User Flags By Group field can be used to quickly narrow down
+mapping. For example, users belonging to the OU named "secret" are
+mapped to the superusers group in Ansible Tower in the example below:</p>
+<p><img alt="Ansible-Getting-Started-Tower-LDAP-3" src="/images/posts/archive/Ansible-Getting-Started-Tower-LDAP-3.png"></p>
+<p>More complex mapping will get equally more complex when mapping to teams
+and organizations in Ansible Tower. The example being used has a single
+organization with org admins defined as the OU named "secret" that was
+matched in User Flags By Group.</p>
+<div class="code"><pre class="code literal-block">{
+ &quot;Shield&quot;: {
+  &quot;admins&quot;: [
+   &quot;ou=secret,dc=shield,dc=team&quot;
+  ],
+  &quot;remove_admins&quot;: false,
+  &quot;remove_users&quot;: false,
+  &quot;users&quot;: true
+ }
+}
+</pre></div>
+
+<p>Users are assigned teams using the LDAP Team Map field. The simple LDAP
+database in the example below is mapping two groups to two respective
+teams within the same organization.</p>
+<div class="code"><pre class="code literal-block">{
+ &quot;secret&quot;: {
+  &quot;organization&quot;: &quot;Shield&quot;,
+  &quot;users&quot;: &quot;OU=secret,DC=shield,DC=team&quot;,
+  &quot;remove&quot;: false
+ },
+ &quot;avengers&quot;: {
+  &quot;organization&quot;: &quot;Shield&quot;,
+  &quot;users&quot;: &quot;OU=avengers,DC=shield,DC=team&quot;,
+  &quot;remove&quot;: false
+ }
+}
+</pre></div>
+
+<p>Mapping users and groups to Ansible Tower will vary in difficulty based
+on the LDAP database layout. Use the LDAP search command to refine your
+group queries and match them accordingly in Ansible Tower.</p>
+<h2>Recap</h2>
+<ul>
+<li>To authenticate LDAP users logging into Ansible Tower, use:
+    LDAP server URI, bind DN &amp; password and user and group search</li>
+<li>Using LDAP User DN Template overrides the User Search</li>
+<li>Use LDAP Require Group and/or LDAP Deny Group to reduce the number
+    of groups searched by Ansible Tower</li>
+<li>LDAP User attributes in Ansible Tower are defined in LDAP User
+    Attribute Map</li>
+<li>Use LDAP User Flags By Group to set LDAP user flags in Ansible
+    Tower</li>
+<li>Groups in LDAP are mapped to organizations or teams in LDAP
+    Organization Map and LDAP Team Map, respectively</li>
+</ul>

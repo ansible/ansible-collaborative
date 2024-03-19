@@ -1,0 +1,92 @@
+<p><img alt="Ansible Bullhorn banner" src="/images/bullhorn-banner-mango.png"></p>
+<h2>The Bullhorn</h2>
+<p><em>A Newsletter for the Ansible Developer Community</em>
+<em>Issue #37, 2021-11-04 (<a href="https://us19.campaign-archive.com/home/?u=56d874e027110e35dea0e03c1&amp;id=d6635f5420">Past Issues</a>)</em></p>
+<p>Welcome to the Bullhorn, our newsletter for the Ansible developer community. If you have any questions or content you’d like to share, please reach out to us at the-bullhorn@redhat.com, or comment on this <a href="https://github.com/ansible/community/issues/546">GitHub issue</a>. Take a look at the "Community Update" torwards the end of this edition for a new way of sharing news/content!</p>
+<!-- TEASER_END -->
+
+<h3>KEY DATES</h3>
+<ul>
+<li>2021-11-08: ETA for Ansible-Core 2.11.7 and Ansible-Base 2.10.16 releases</li>
+<li>2021-11-08: <a href="https://docs.ansible.com/ansible-core/devel/roadmap/ROADMAP_2_12.html">ETA for Ansible-Core 2.12.0 GA release</a></li>
+<li>2021-11-10: <a href="https://github.com/ansible/community/issues/539">community IRC meeting</a>, 18:00 UTC (propose topics <a href="https://github.com/ansible-community/community-topics/issues">here</a>)</li>
+<li>2021-11-11: <a href="https://github.com/ansible/community/issues/577">D&amp;I working group meeting</a>, 19:00 UTC</li>
+<li>2021-11-16: <a href="https://github.com/ansible/community/issues/546">Bullhorn #38 content deadline</a></li>
+<li>2021-11-17: <a href="https://github.com/ansible/community/issues/539">community IRC meeting</a>, 18:00 UTC (check possible new time <a href="https://github.com/ansible-community/community-topics/issues/48">here</a>)</li>
+<li>2021-11-23: <a href="https://docs.ansible.com/ansible/devel/roadmap/COLLECTIONS_4.html">ETA for Ansible 4.9.0 release</a></li>
+<li>2021-11-30: <a href="https://docs.ansible.com/ansible/devel/roadmap/COLLECTIONS_5.html">ETA for Ansible 5.0.0 GA release</a></li>
+</ul>
+<h2>General News Updates</h2>
+<p><a href="https://matrix.to/#/@dmsimard:matrix.org">dmsimard</a> says</p>
+<blockquote>
+<p>Ansible 2.9 and ansible-base 2.10 EOL have been announced for May 23, 2022: https://groups.google.com/g/ansible-announce/c/kegIH5_okmg/</p>
+</blockquote>
+<p><a href="https://github.com/gundalow">gundalow</a> reports</p>
+<blockquote>
+<p><strong>Python 2.6 support for modules</strong></p>
+<p>We've just merged a guard preventing the use of Python 2.6 for executing modules into <code>ansible.module_utils.basic</code> for devel/2.13.</p>
+<p>The <code>milestone</code> branch won't be advanced to include this until tentatively 2021 Dec 13.</p>
+</blockquote>
+<h2>Major New Releases</h2>
+<h3>Ansible <a href="https://github.com/ansible-collections">↗</a></h3>
+<p><strong>Ansible</strong> is the full-fat package containing Ansible Core &amp; the Community Collections</p>
+<p><a href="https://matrix.to/#/@dmsimard:matrix.org">dmsimard</a> says</p>
+<blockquote>
+<p>Ansible 4.8.0 has been released: https://groups.google.com/g/ansible-announce/c/at_Cjdu-gh4</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@dmsimard:matrix.org">dmsimard</a> reports</p>
+<blockquote>
+<p>Ansible 5.0.0a3 is available for testing: https://groups.google.com/g/ansible-devel/c/gm4oSevkabo</p>
+</blockquote>
+<h3>DevTools <a href="https://github.com/ansible/vscode-ansible">↗</a></h3>
+<p>VScode extension, language server, linter, molecule, runner, navigator and potentially other development goodies</p>
+<p><a href="https://matrix.to/#/@ssbarnea:matrix.org">ssbarnea</a> reports</p>
+<blockquote>
+<p><a href="https://marketplace.visualstudio.com/items?itemName=redhat.ansible">vscode extension 0.6.1</a> is out https://github.com/ansible/vscode-ansible/discussions/297 -- we will have weekly releases (when having something to release).</p>
+</blockquote>
+<h3>Antsibull <a href="https://github.com/ansible-community/antsibull">↗</a></h3>
+<p>Tooling for building various things related to ansible</p>
+<p><a href="https://github.com/felixfontein">felixfontein</a> says</p>
+<blockquote>
+<p>antsibull 0.39.0 has been released.</p>
+</blockquote>
+<h2>Collection Updates</h2>
+<p><a href="https://github.com/briantist">briantist</a> reports</p>
+<blockquote>
+<p><a href="https://github.com/ansible-collections/community.hashi_vault/releases/tag/1.4.1"><code>community.hashi_vault</code> version <code>1.4.1</code> has been released with new content, bugfixes (including one for <code>aws_iam_login</code> auth), and a deprecation</a>.</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@gwmngilfen:ansible.im">Gwmngilfen (work)</a> says</p>
+<blockquote>
+<p>community.routeros 2.0.0 released</p>
+<p>A new major release with breaking changes in the behavior of community.routeros.command and community.routeros.api.</p>
+<p>See <a href="https://github.com/ansible-collections/community.routeros/blob/main/CHANGELOG.rst">the release notes</a> for all changes.</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@gwmngilfen:ansible.im">Gwmngilfen (work)</a> reports</p>
+<blockquote>
+<p>community.crypto 1.9.6 has been released (with a bugfix)</p>
+</blockquote>
+<p><a href="https://github.com/felixfontein">felixfontein</a> says</p>
+<blockquote>
+<p>community.crypto 2.0.0 has been released!</p>
+<p>community.general 3.8.1 has been released
+community.genreal 4.0.0 has been released</p>
+</blockquote>
+<h2>Community Updates</h2>
+<p><a href="https://matrix.to/#/@cybette:ansible.im">cybette</a> reports</p>
+<blockquote>
+<h3>Live News Reporting</h3>
+<p>We're trying out a new way to report news! If you have <em>anything</em> to share about what you've been up to with Ansible lately, at any time, simply hop into <a href="https://matrix.to/#/#social:ansible.com">#social:ansible.com</a> and leave a message, tagging <a href="https://matrix.to/#/@newsbot:ansible.im">newsbot</a>. Your update will then be included in the next edition of the Bullhorn (pending editor approval, of course).</p>
+<p>The intention here is to drive discussion around the news - while we have the <a href="https://github.com/ansible/community/issues/546">GitHub issue</a> for logging news, we felt it was a little dry. The Ansible community is a vibrant place, and we want to make it possible for others to comment easily on the news, give feedback, ask questions and so forth.</p>
+<p>The newsbot only listens in <a href="https://matrix.to/#/#social:ansible.com">#social:ansible.com</a> because we want to make it the place to discuss anything Ansible related, rather than fragmenting the news over many channels. We hope this is a low-effort way of getting the word out about your new release, new project, blog post, event, or anything Ansible-related.</p>
+<p>Feel free to ask myself or <a href="https://matrix.to/#/@gwmngilfen:ansible.im">Gwmngilfen</a> questions, and you can view a more detailed README <a href="https://github.com/ansible-community/ansible.im/blob/main/bots/README.md">in the repo</a>.</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@gwmngilfen:ansible.im">Gwmngilfen (work)</a> says</p>
+<blockquote>
+<p>If you want to see how this works with a room that is used to it, check out <a href="https://matrix.to/#/#twim:matrix.org">#twim:matrix.org</a> and the resulting posts at https://matrix.org/blog/category/this-week-in-matrix</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@cybette:ansible.im">cybette</a> says</p>
+<blockquote>
+<p>Please take the <a href="https://www.surveymonkey.co.uk/r/GSMSG7K">Contributor Survey</a> (whether or not you attended the Contributor Summit, we'd love your feedback!)</p>
+</blockquote>
+<h2>That’s all for now!</h2>
+<p>Have any questions you’d like to ask, or issues you’d like to see covered? Please ask in <a href="https://matrix.to/#/#social:ansible.com">#social:ansible.com</a>! See you next time!</p>

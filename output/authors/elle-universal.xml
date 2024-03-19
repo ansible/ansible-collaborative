@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Ansible Collaborative (Posts by Elle Universal)</title><link>https://ansible.com/</link><description></description><atom:link href="https://ansible.com/authors/elle-universal.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2024 &lt;a href="mailto:website@ansible.community"&gt;Ansible Collaborative, et al&lt;/a&gt; </copyright><lastBuildDate>Mon, 18 Mar 2024 19:47:36 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Learn about Event-Driven Ansible at Red Hat Summit and AnsibleFest 2023</title><link>https://ansible.com/blog/learn-about-event-driven-ansible-at-red-hat-summit-and-ansiblefest-2023/</link><dc:creator>Elle Universal</dc:creator><description>&lt;h2&gt;Learn about Event-Driven Ansible at Red Hat Summit and AnsibleFest 2023&lt;/h2&gt;
+&lt;p&gt;As you may have heard,
+&lt;a href="https://events.experiences.redhat.com/widget/redhat/sum23/SessionCatalog2023?tab.day=20230524&amp;amp;search.track=16439120758070013sVo"&gt;AnsibleFest&lt;/a&gt;
+will be taking place at Red Hat Summit in Boston May 23-25. This change
+will allow you to harness everything that Red Hat technology has to
+offer in a single place and give you even more tools to address your
+automation needs. Join Ansible and automation-focused audiences to hear
+from Red Hat and Ansible leaders, customers, and partners while getting
+the latest on future Ansible product updates, community projects, and
+what's coming in IT automation. &lt;/p&gt;
+&lt;p&gt;Event-Driven Ansible is a key component to address the complexities of
+managing varying assets at scale. We announced this product feature as a
+developer preview last October at AnsibleFest 2022, and we are excited
+to talk even more about it.  So what can you expect to see about
+Event-Driven Ansible at AnsibleFest and Red Hat Summit this year? &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Red Hat Summit keynote with a customer story around their use of
+    Event-Driven automation&lt;/li&gt;
+&lt;li&gt;AnsibleFest keynote about why the next wave of automation will be
+    event-driven &lt;/li&gt;
+&lt;li&gt;Breakout sessions from Ansible experts and customers&lt;/li&gt;
+&lt;li&gt;Hands on labs&lt;/li&gt;
+&lt;li&gt;Discovery Theater mini sessions in the expo hall&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Do you have questions about Event-Driven Ansible? Bring them to
+AnsibleFest and take advantage of the experts at the Ansible booth as
+well as the Ask the Expert area. We will also be running three different
+labs focused on Event-Driven Ansible, so this is the perfect opportunity
+to get hands-on experience while being able to ask questions in real
+time to Ansible experts. These labs include: &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Event-Driven Ansible and Red Hat OpenShift&lt;/li&gt;
+&lt;li&gt;Event-Driven Ansible and Red Hat OpenShift GitOps&lt;/li&gt;
+&lt;li&gt;Event-Driven Ansible and NetOps&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Please refer to the
+&lt;a href="https://events.experiences.redhat.com/widget/redhat/sum23/SessionCatalog2023?tab.day=20230524&amp;amp;search.track=16439120758070013sVo"&gt;session catalog&lt;/a&gt;
+for the most up to date room assignments; sessions subject to change.&lt;/p&gt;
+&lt;p&gt;Still hungry for more Event-Driven Ansible content? We have you
+covered. Check out these resources to learn more about how Event-Driven
+Ansible can help you:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://reg.experiences.redhat.com/flow/redhat/sum23/regGenAttendee/login?extIdCarryOver=true&amp;amp;sc_cid=701f2000001OH6uAAG"&gt;Register&lt;/a&gt; for AnsibleFest at Red Hat Summit&lt;/li&gt;
+&lt;li&gt;See what the analysts are saying about Event-Driven Ansible in this &lt;a href="https://www.redhat.com/en/resources/event-driven-impact-on-it-operations-analyst-material?extIdCarryOver=true&amp;amp;sc_cid=701f2000001OH6uAAG"&gt;research paper&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description><guid>https://ansible.com/blog/learn-about-event-driven-ansible-at-red-hat-summit-and-ansiblefest-2023/</guid><pubDate>Wed, 10 May 2023 00:00:00 GMT</pubDate></item><item><title>Best of Fest 2022</title><link>https://ansible.com/blog/best-of-fest-2022/</link><dc:creator>Elle Universal</dc:creator><description>&lt;h2&gt;Best of Fest 2022&lt;/h2&gt;
+&lt;p&gt;At AnsibleFest 2022, the power of automation was on full display.
+Through sessions, workshops, labs and more, we explored how to transform
+enterprise and industry through automation. There were a lot of exciting
+&lt;a href="https://www.redhat.com/en/about/ansiblefest-newsroom"&gt;announcements&lt;/a&gt;
+made on both days, and in case you missed it, we are going to dive into
+what is new!&lt;/p&gt;
+&lt;h2&gt;Ansible and AWS&lt;/h2&gt;
+&lt;p&gt;We are thrilled to also announce a new AWS Marketplace offering, Red Hat
+Ansible Automation Platform. By offering Ansible Automation Platform as
+a pre-integrated service that can be quickly deployed from cloud
+marketplaces, we are meeting our customers where they are, while giving
+them the flexibility to deliver any application, anywhere, without
+additional overhead or complexity. Whether you are automating your
+hybrid cloud or multi-cloud environments, Ansible Automation Platform
+acts as a single platform. This platform provides consistency,
+visibility, and control to help  you manage these environments at scale.
+Ansible is the IT automation "glue" for bringing your cloud, network,
+bare-metal and cloud-native infrastructure together. This  provides the
+functionality to coordinate and manage across  hybrid cloud environments
+in a simple and efficient way. Interested in learning more? Check out
+the &lt;a href="http://www.redhat.com/en/about/press-releases/red-hat-introduces-red-hat-ansible-automation-platform-aws-marketplace"&gt;press release&lt;/a&gt;.&lt;/p&gt;
+&lt;h2&gt;Automation at the Edge&lt;/h2&gt;
+&lt;p&gt;Ansible Automation Platform provides a framework for building and
+operating IT automation at scale. What this means for edge, much like
+the data center, is that users across an entire organization can create,
+share, and manage automation. They can develop and apply guidelines for 
+using automation within individual groups. They can write tasks that use
+existing knowledge so they can be leveraged by nonIT staff, allowing
+end-to-end automation to be deployed. Ansible Automation Platform uses
+containerization to package, distribute, and execute automation across
+environments securely via automation execution environments. This
+enables organizations to rapidly and consistently extend IT services to
+the edge, while maintaining a focus on security. This helps
+organizations to simplify capacity scaling, increase resiliency, and
+improve consistency. Learn more about automation at the edge
+&lt;a href="http://ansible.com/use-cases/edge"&gt;here.&lt;/a&gt;&lt;/p&gt;
+&lt;h2&gt;Event-Driven Ansible&lt;/h2&gt;
+&lt;p&gt;Event-Driven Ansible is a new capability that we're making available to
+the entire Ansible open source community in developer preview. With
+Event-Driven Ansible, you can eliminate low-level tasks from the
+day-to-day routine so you have more time to focus on innovations. This
+means a happier, more productive, and more engaged team. It is fast,
+accurate, and will free you (and your teams) to work on the things you
+WANT to be doing, without being dragged down by all the things you HAVE
+to do. Event--Driven Ansible will support a range of use cases, and here
+are few good ones to get started with:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Automating remediation of common problems, like resetting a network router that's out.&lt;/li&gt;
+&lt;li&gt;Gathering information to solve problems faster, like information about a server configuration or buffer pool size so when you get the service ticket, the information you need is already there.&lt;/li&gt;
+&lt;li&gt;Administering user requests ... like "I can't log in" or "I cannot access the application".&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;We are excited about the future of automation and what is possible with
+Event-Driven Ansible.&lt;/p&gt;
+&lt;h2&gt;Project Wisdom&lt;/h2&gt;
+&lt;p&gt;&lt;a href="http://www.redhat.com/en/about/press-releases/red-hat-and-ibm-research-advance-it-automation-ai-powered-capabilities-ansible"&gt;Project Wisdom&lt;/a&gt;
+is a Red Hat initiative, developed in close collaboration with IBM
+Research, to give Ansible artificial intelligence superpowers. The first
+goal is to bring together automation novices and Ansible experts while
+enabling new automators to drastically reduce the challenge of learning
+and mastering Ansible. The first capability we are using AI for is
+content generation. The AI models we use underneath Project Wisdom are
+able to generate Ansible Playbooks or roles that are both syntactically
+correct and functional. You can also head to redhat.com/wisdom for more
+information on how to get involved. &lt;/p&gt;
+&lt;h2&gt;Ansible Automation Platform 2&lt;/h2&gt;
+&lt;p&gt;Ansible Automation Platform 2 is built to enable a trusted automation
+supply chain. In the upcoming  Ansible Automation Platform 2.3 release,
+digital signing will be supported for containers, playbooks and
+collections. We're also excited to introduce
+Ansible validated content, which
+complements the  existing  ecosystem of Red Hat Ansible Certified
+Content Collections. Ansible validated content helps your teams to start
+automating faster by following a trusted, expert-led, opinionated path
+for performing operations and tasks on both Red Hat and third party
+platforms. Initially, Ansible validated content will be pre-loaded into
+private automation hub.&lt;/p&gt;
+&lt;h3&gt;Community&lt;/h3&gt;
+&lt;p&gt;We are so fortunate that we are a part of one of the largest, most
+vibrant open source project communities in the world. So while the
+landscape may be shifting around us, Ansible continues to push forward
+and evolve with the times. Ansible is celebrating its 10th anniversary
+this year! Within our expansive community, the new Working Groups focus
+on expanding the Ansible ecosystem with the development of Ansible
+Content Collections. First spun up by our team last year, Matrix has
+made a huge difference in our ability to connect and engage with the
+Ansible community. So far we've spun up 32 unique chat rooms, with 4200+
+members and nearly 80k messages sent in the past 6 months. Matrix's
+ability to bridge with IRC gave us a strong foundation upon which to
+build. Join the Working Groups and become a part of the conversation:
+&lt;a href="https://matrix.to/#/#social:ansible.com"&gt;https://matrix.to/#/#social:ansible.com&lt;/a&gt;&lt;/p&gt;</description><guid>https://ansible.com/blog/best-of-fest-2022/</guid><pubDate>Mon, 24 Oct 2022 00:00:00 GMT</pubDate></item><item><title>The Automation Experience, AnsibleFest 2022</title><link>https://ansible.com/blog/the-automation-experience-ansiblefest-2022/</link><dc:creator>Elle Universal</dc:creator><description>&lt;h2&gt;The Automation Experience, AnsibleFest 2022&lt;/h2&gt;
+&lt;p&gt;It is almost time for our favorite event of the year! AnsibleFest is
+back as an in-person event, and it's the only place to feel the full
+power of automation. &lt;a href="http://ansiblefest.com/"&gt;Join us&lt;/a&gt; October 18 and 19 in Chicago, and immerse
+yourself in the movement that's made Ansible an industry-leading
+automation technology.&lt;/p&gt;
+&lt;p&gt;The AnsibleFest 2022 session catalog and agenda builder are now
+available. That means you can see all this year's session content and
+build your own custom experience. Let's take a closer look at all that
+AnsibleFest 2022 has to offer.&lt;/p&gt;
+&lt;h3&gt;Breakout Sessions&lt;/h3&gt;
+&lt;p&gt;This year we will be featuring six content tracks. These tracks
+include: Getting Started with Automation, the Ansible Community,
+Automation Applied, Ansible Automation Platform, Advanced Ansible, and
+Automation Adoption. Sessions across these tracks will cover a range of
+focus areas, including network automation, security automation,
+automation at the edge, IT leaders, developers, and several more. We
+also have a wide range of customer, partner, and Ansible contributor
+talks to join. You can see a list of all the sessions being offered in
+our &lt;a href="https://events.experiences.redhat.com/widget/redhat/rhaf22/SessionCatalog2022?tab.day=20221018"&gt;session catalog&lt;/a&gt;.&lt;/p&gt;
+&lt;h3&gt;Workshops and Labs&lt;/h3&gt;
+&lt;p&gt;Get hands-on experience at AnsibleFest in our workshops and labs. We
+will have a mixture of self-paced and instructor led workshops for our
+attendees. Topics range from Ansible 101 and writing your first playbook
+to Terraforming with Ansible and Ansible 301. With over 20 labs and
+workshops available, there is something for every level of automation
+user to explore. See how AnsibleFest can help build your automation
+skills by checking out all the hands-on content we will be offering in
+the &lt;a href="https://events.experiences.redhat.com/widget/redhat/rhaf22/SessionCatalog2022?tab.day=20221018"&gt;session catalog&lt;/a&gt;.&lt;/p&gt;
+&lt;h3&gt;Spotlight Sessions&lt;/h3&gt;
+&lt;p&gt;In Chicago, we're introducing a new session segment, Spotlight Stage.
+These sessions will be 15 minute lightning talks and demos from key
+Ansible customers and partners, with an interactive component where the
+speakers will answer questions from the audience. The Spotlight Stage
+will be attached directly to the Red Hat Ansible Automation Platform
+booth in the expo hall for easy access for all
+attendees.&lt;/p&gt;
+&lt;h3&gt;Communities of Practice&lt;/h3&gt;
+&lt;p&gt;The Communities of Practice are a new set of open forums in the
+AnsibleFest Hallway Track for this year's AnsibleFest. These are 30
+minute open forums led by Ansible experts in a set of diverse topics.
+The audience will drive the discussion on
+these topics based on what they want to learn from the experts. We will
+be covering topics that include automation community + enthusiasm,
+network automation, Ansible Automation Platform, automation at the edge,
+security automation, event-driven automation, and cloud
+automation. &lt;/p&gt;
+&lt;h3&gt;Ask the Expert&lt;/h3&gt;
+&lt;p&gt;As AnsibleFest returns in-person, we're excited to bring back the Ask
+the Expert area. Here, you can get one-on-one time with Ansible experts
+to ask any burning questions about automation. We will now feature a
+larger space with designated areas for each expert's individual
+expertise, helping ensure you can find the right person for your
+questions. Experts will cover a wide range of topics that include
+product components and features, migrations, as well as use
+case-specific topics, like edge, network and event-driven
+automation.&lt;/p&gt;</description><guid>https://ansible.com/blog/the-automation-experience-ansiblefest-2022/</guid><pubDate>Wed, 07 Sep 2022 00:00:00 GMT</pubDate></item><item><title>Automation at the Edge, Summit 2022</title><link>https://ansible.com/blog/automation-at-the-edge-summit-2022/</link><dc:creator>Elle Universal</dc:creator><description>&lt;h2&gt;Automation at the Edge, Summit 2022&lt;/h2&gt;
+&lt;p&gt;As some of you may know, Red Hat Summit was back in person in Boston
+last week. For those who are not familiar, Red Hat Summit is the premier
+enterprise open source event for IT professionals to learn, collaborate,
+and innovate on technologies from the datacenter and public cloud to the
+edge and beyond. Red Hat made a lot of exciting announcements, with
+several that included Red Hat Ansible Automation Platform.
+If you could not make the event or would like to revisit some of the
+content, you can access any session &lt;a href="https://www.redhat.com/en/summit"&gt;on demand&lt;/a&gt;. &lt;/p&gt;
+&lt;p&gt;One of the big
+&lt;a href="https://www.redhat.com/en/about/press-releases/red-hat-unveils-new-levels-security-software-supply-chain-edge"&gt;announcements&lt;/a&gt;
+at Summit was the unveiling of new levels of security from the software
+supply chain to the edge. In Ansible Automation Platform 2.2, Red Hat is
+introducing a technical preview of Ansible content signing technology.
+The new capability helps with software supply chain security by enabling
+automation teams to validate that the automation content being executed
+in their enterprise is verified and trusted. &lt;/p&gt;
+&lt;p&gt;With the announcement of this new edge capability, we showcased a
+session for Ansible and edge that is available on demand. The session
+&lt;a href="https://events.experiences.redhat.com/widget/redhat/sum22/SessionCatalog22/session/1640789672821001p0oM"&gt;"GitOps your distributed edge computing model with Red Hat Ansible Automation Platform"&lt;/a&gt;
+covers how Ansible Automation Platform, in combination with GitOps, can
+decrease the time to market and repair time to deploy and operate
+network edge infrastructure. It includes a demo that shows how to
+describe a deployment in Git, which works as a single source of truth.
+You will be able to see how Ansible Automation Platform enforces the
+correct state of the network infrastructure of a large-scale
+organization and its tracking through IT Service Management. &lt;/p&gt;
+&lt;p&gt;Scaling automation anywhere using Ansible Automation Platform
+&lt;a href="https://www.redhat.com/en/about/press-releases/red-hat-introduces-new-cross-portfolio-edge-capabilities"&gt;Red Hat introduced new cross-portfolio edge capabilities&lt;/a&gt;,
+including features in Ansible Automation Platform that solves the
+management and automation needs to drive visibility and consistency
+across an organization's edge deployments. &lt;/p&gt;
+&lt;p&gt;The session &lt;a href="https://events.experiences.redhat.com/widget/redhat/sum22/SessionCatalog22/session/1641398142450001vmkJ"&gt;"Ansible Automation Platform 2 automation mesh-starting locally, scaling globally"&lt;/a&gt;
+covers how to scale automation to successfully execute in distributed
+edge locations. &lt;/p&gt;
+&lt;h2&gt;Automating RHEL at the edge with Ansible&lt;/h2&gt;
+&lt;p&gt;If you watched the keynote presentation, you heard about the release of
+a &lt;a href="https://www.redhat.com/en/about/press-releases/red-hat-introduces-new-cross-portfolio-edge-capabilities"&gt;SaaS Edge Manager&lt;/a&gt;.
+However, we realize not everyone can use the cloud to manage their
+fleet. Below is how to add a postscript to your kickstart file to
+register your devices directly to an Ansible Automation Platform
+inventory so you can use it to manage your fleet.&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="err"&gt;%&lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;post&lt;/span&gt;
+&lt;span class="l l-Scalar l-Scalar-Plain"&gt;# Create ansible playbook to register device to Ansible automation platform&lt;/span&gt;
+&lt;span class="l l-Scalar l-Scalar-Plain"&gt;cat &amp;gt; /tmp/add_to_aap.yml &amp;lt;&amp;lt;EOF&lt;/span&gt;
+&lt;span class="nn"&gt;---&lt;/span&gt;
+&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;hosts&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;localhost&lt;/span&gt;
+&lt;span class="w w-Error"&gt; &lt;/span&gt;&lt;span class="nt"&gt;vars&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;   &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;aap_url=https://AAPHOST.fqdn.com/api/v2/inventories/CHANGEME/hosts/&lt;/span&gt;
+&lt;span class="w"&gt;   &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;aap_username=changeme&lt;/span&gt;
+&lt;span class="w"&gt;   &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;aap_password=changeme&lt;/span&gt;
+&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;gather_facts&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;true&lt;/span&gt;
+&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;tasks&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;   &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;create hostname from regex of mac address&lt;/span&gt;
+&lt;span class="w"&gt;     &lt;/span&gt;&lt;span class="nt"&gt;ansible.builtin.set_fact&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;       &lt;/span&gt;&lt;span class="nt"&gt;edge_hostname&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"{{&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;ansible_default_ipv4.macaddress&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;|&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;replace(':','')&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;}}"&lt;/span&gt;
+&lt;span class="w"&gt;   &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;set hostname to mac ansible_all_ipv4_address&lt;/span&gt;
+&lt;span class="w"&gt;     &lt;/span&gt;&lt;span class="nt"&gt;ansible.builtin.hostname&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;       &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"summit-demo-{{&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;edge_hostname&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;}}"&lt;/span&gt;
+&lt;span class="w"&gt;       &lt;/span&gt;&lt;span class="nt"&gt;use&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;systemd&lt;/span&gt;
+&lt;span class="w"&gt;   &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;Update Ansible Tower inventory&lt;/span&gt;
+&lt;span class="w"&gt;     &lt;/span&gt;&lt;span class="nt"&gt;uri&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;url&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"{{&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;aap_url&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;}}"&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;user&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"{{&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;aap_ks_user&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;}}"&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;password&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"{{&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;aap_ks_password&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;}}"&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;method&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;POST&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;body&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"{{&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;ansible_hostname&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;}}"&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;variables&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;'{ipaddress:&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;"{{&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;ansible_all_ipv4_addresses&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;}}",&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;macaddress:&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;"{{&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;ansible_default_ipv4.macaddress&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;}}"&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;}'&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;force_basic_auth&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;yes&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;status_code&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;201&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;body_format&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;json&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;validate_certs&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;no&lt;/span&gt;
+&lt;span class="l l-Scalar l-Scalar-Plain"&gt;EOF&lt;/span&gt;
+&lt;span class="l l-Scalar l-Scalar-Plain"&gt;ansible-playbook /tmp/add_to_aap.yml&lt;/span&gt;
+&lt;span class="err"&gt;%&lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;end&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3&gt;Step 1: Inventory creation&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Create the inventory in Ansible Automation Platform, and get the
+    inventory number.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Get the URL: in this example, the inventory ID is 2:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="url example" src="https://ansible.com/images/posts/archive/edge-inventory-creation.png"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;https://AAPHOST.fqdn.com/#/inventories/inventory/2/details&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Assign aap_url in vars section:
+    &lt;code&gt;aap_url = https://AAPHOST.fqdn.com/api/v2/inventories/2/hosts/&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Step 2: Create credentials in Ansible Automation Platform&lt;/h3&gt;
+&lt;p&gt;Assign credentials to &lt;code&gt;aap_ks_user&lt;/code&gt; and &lt;code&gt;aap_ks_password&lt;/code&gt; in the Access Users tab in Ansible Automation Platform.&lt;/p&gt;
+&lt;h3&gt;Step 3: Check Ansible Automation Platform&lt;/h3&gt;
+&lt;p&gt;You should now see your devices in Ansible Automation Platform after they boot up.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="screenshot" src="https://ansible.com/images/posts/archive/edge-device-boot.png"&gt;&lt;/p&gt;</description><guid>https://ansible.com/blog/automation-at-the-edge-summit-2022/</guid><pubDate>Thu, 19 May 2022 00:00:00 GMT</pubDate></item><item><title>Best of AnsibleFest 2020</title><link>https://ansible.com/blog/best-of-fest-ansiblefest-2020/</link><dc:creator>Elle Universal</dc:creator><description>&lt;h2&gt;Best of AnsibleFest 2020&lt;/h2&gt;
+&lt;p&gt;Thank you to everyone who joined us over the past two days for the
+AnsibleFest 2020 virtual experience. We had such a great time connecting
+with Ansible lovers across the globe. In case you missed some of it (or
+all of it), we have some event highlights to share with you! If you want
+to go see what you may have missed, all the AnsibleFest 2020 content
+will be &lt;a href="https://onlinexperiences.com/scripts/Server.nxp?LASCmd=AI:4;F:QS!10100&amp;amp;ShowUUID=0D7D869A-8D51-4DED-9E1B-6699B9D36B9C"&gt;available on demand&lt;/a&gt;
+for a year. &lt;/p&gt;
+&lt;h3&gt;Community Updates&lt;/h3&gt;
+&lt;p&gt;This year at AnsibleFest 2020, Ansible Community Architect Robyn
+Bergeron kicked off with her keynote on Tuesday morning. We heard how
+with Ansible Content Collections, it's easier than ever to use Ansible
+the way you want or need to, as a contributor or an end user. Ansible
+2.10 is now available, and Robyn explained how the feedback loop got us
+there. If you want to hear more about the Ansible community project, go
+watch Robyn's keynote &lt;a href="https://onlinexperiences.com/scripts/Server.nxp?LASCmd=AI:4;F:QS!10100&amp;amp;ShowUUID=0D7D869A-8D51-4DED-9E1B-6699B9D36B9C"&gt;on demand&lt;/a&gt;. &lt;/p&gt;
+&lt;h4&gt;Product Updates&lt;/h4&gt;
+&lt;p&gt;Ansible's own Richard Henshall talked about the Red Hat Ansible
+Automation Platform product updates and new releases. In 2018, we
+unveiled the Ansible certified partner program and now we have over 50
+platforms certified. We are bridging traditional platforms, containers
+and edge with a new integration between Red Hat Advanced Cluster
+Management for Kubernetes and Ansible Automation Platform. Learn more
+about the new integration from our &lt;a href="https://www.redhat.com/en/about/press-releases/red-hat-expands-automation-hybrid-clouds-red-hat-ansible-automation-platform-integration-red-hat-openshift-environments"&gt;press release&lt;/a&gt;.
+This year at AnsibleFest, we also introduced private Automation Hub,
+where users can now manage and curate Ansible content privately, from
+trusted sources. You can learn more about this and other Ansible
+Automation Platform updates from our &lt;a href="https://www.redhat.com/en/about/press-releases/red-hat-accelerates-hybrid-cloud-automation-catalog-ready-use-certified-and-supported-ansible-automation"&gt;press release&lt;/a&gt;.
+You can also listen to Richard's full keynote in the AnsibleFest
+platform &lt;a href="https://onlinexperiences.com/scripts/Server.nxp?LASCmd=AI:4;F:QS!10100&amp;amp;ShowUUID=0D7D869A-8D51-4DED-9E1B-6699B9D36B9C"&gt;on demand now&lt;/a&gt;.&lt;/p&gt;
+&lt;h4&gt;Channel Content&lt;/h4&gt;
+&lt;p&gt;AnsibleFest 2020 showcased six channels of content; with something for
+everyone. Some popular talks included the Ansible Automation Platform
+Roadmap, Managing your own Private Ansible Content, Ansible Automation
+Platform Technical Content Strategy, How to manage your Ansible
+automation and how your automation is performing with analytics, and
+much more! All 70+ breakout sessions are available on demand now.&lt;/p&gt;
+&lt;p&gt;We hope everyone enjoyed our first virtual AnsibleFest. Thank you to all
+our attendees who helped make AnsibleFest 2020 the largest and most
+successful AnsibleFest to date. To see more highlights of the event, you
+can visit the &lt;a href="http://ansiblefest.com/"&gt;AnsibleFest homepage&lt;/a&gt;. Don't
+forget, all the content will be available until October 2021, so you can
+go back and &lt;a href="https://onlinexperiences.com/scripts/Server.nxp?LASCmd=AI:4;F:QS!10100&amp;amp;ShowUUID=0D7D869A-8D51-4DED-9E1B-6699B9D36B9C"&gt;watch the content&lt;/a&gt;
+whenever you would like. Thank you for connecting with us this year and
+happy automating!&lt;/p&gt;</description><guid>https://ansible.com/blog/best-of-fest-ansiblefest-2020/</guid><pubDate>Wed, 14 Oct 2020 00:00:00 GMT</pubDate></item><item><title>Customer Spotlights at AnsibleFest 2020</title><link>https://ansible.com/blog/customer-spotlights-at-ansiblefest-2020/</link><dc:creator>Elle Universal</dc:creator><description>&lt;h2&gt;Customer Spotlights at AnsibleFest 2020&lt;/h2&gt;
+&lt;p&gt;AnsibleFest 2020 will be here before we know it, and we cannot wait to
+connect with everyone in October. We have some great content lined up
+for this year's virtual experience and that includes some amazing
+customer spotlights. This year you will get to hear from CarMax, Blue
+Cross Blue Shield of NC, T-Mobile, and Cepsa. These customers are using
+Ansible in a variety of ways, and we hope you connect to their
+incredible stories of teamwork and transformative automation.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Customer Spotlights&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Benjamin Blizard, a Network Engineer at T-Mobile, will explore how
+T-Mobile transformed from a disparate organization with difficulty
+enforcing standards to a collaborative group of engineers working from
+repeatable templates and processes. T-Mobile, a major telecommunications
+provider, uses Ansible Automation Platform to standardize processes
+across their organization. Ben will show how automation supports
+T-Mobile's compliance standards, data integrity, and produces speed and
+efficiency for network teams. &lt;/p&gt;
+&lt;p&gt;Peter Bojovic, Director of Systems Engineering at Blue Cross Blue Shield
+of North Carolina, will talk about how they used automation to drive
+down costs in managed service costs while increasing productivity. Blue
+Cross NC, a leading health insurance provider, recently implemented a
+new tool to automate provisioning of their virtual machines for critical
+on-premise applications.&lt;/p&gt;
+&lt;p&gt;Members of Blue Cross NC's deployment team will also speak on a panel
+interview setup, featuring: Tobin Shay, Alex Devirgilis and Pavan
+Mutyala. They will discuss their recent experiences using automation to
+handle a large-scale migration and the future of automation at Blue
+Cross NC. The interview will also touch on how a large organization
+works to decrease a reliance on managed services, and the planning and
+processes that lead to a projected 16-week project being completed in
+just three business days.&lt;/p&gt;</description><guid>https://ansible.com/blog/customer-spotlights-at-ansiblefest-2020/</guid><pubDate>Wed, 30 Sep 2020 00:00:00 GMT</pubDate></item></channel></rss>

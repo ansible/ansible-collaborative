@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Ansible Collaborative (Posts by Talor Holloway)</title><link>https://ansible.com/</link><description></description><atom:link href="https://ansible.com/authors/talor-holloway.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2024 &lt;a href="mailto:website@ansible.community"&gt;Ansible Collaborative, et al&lt;/a&gt; </copyright><lastBuildDate>Mon, 18 Mar 2024 19:47:35 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>AIX Patch Management with Ansible</title><link>https://ansible.com/blog/aix-patch-management-with-ansible/</link><dc:creator>Talor Holloway</dc:creator><description>&lt;h2&gt;AIX Patch Management with Ansible&lt;/h2&gt;
+&lt;p&gt;Leading enterprises today use Red Hat Ansible Automation Platform to
+provision, configure, manage, secure and orchestrate hybrid IT
+environments. A common misconception is that Ansible is just used to
+manage the Linux operating system. This is a false belief. Ansible
+supports Linux, Windows, AIX, IBM i and IBM z/OS environments. This blog
+will help AIX system administrators get started with Ansible on AIX, and
+introduce a patching use case.&lt;/p&gt;
+&lt;h3&gt;Ansible Content Collections&lt;/h3&gt;
+&lt;p&gt;When Ansible Automation Platform was released, Ansible Content
+Collections became the de facto standard for distributing, maintaining
+and consuming automation content. The shift to Collections increased
+community participation and has exponentially increased the number of
+stable and supported Ansible modules. Modules delivered via Collections
+rather than packaged with Ansible Core have resulted in a faster release
+cadence for new modules.&lt;/p&gt;
+&lt;p&gt;Let us explore the IBM provided Ansible Collection for AIX. It is
+important to note that many of the Ansible modules for the Linux
+operating system will also work on AIX (in addition to the IBM provided
+AIX modules), making the use cases for Ansible on AIX very broad.&lt;/p&gt;
+&lt;h3&gt;Ansible and AIX, why?&lt;/h3&gt;
+&lt;p&gt;The AIX operating system has been around for 35 years and is used to run
+business-critical applications. Historically, AIX systems were managed
+using the tools that ship with AIX, complimented by shell scripts
+written by AIX system administrators. The problem with this approach is
+that these scripts can become extremely complex over the years, and
+often wind up being held together with "duct tape and zip ties".&lt;/p&gt;
+&lt;p&gt;As enterprises move to a modern, enterprise-wide automation strategy
+with Ansible Automation Platform, extending automation to AIX is a great
+method to simplify and develop consistency in the way AIX systems are
+supported, all while using the same automation tools that can be used
+across the enterprise.&lt;/p&gt;
+&lt;h3&gt;Ansible Concepts&lt;/h3&gt;
+&lt;p&gt;First let us cover some basic Ansible concepts that will be used in the
+example. Further information can be found on the
+&lt;a href="https://docs.ansible.com"&gt;Ansible documentation site&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Playbooks, which are ordered lists of tasks and variables that are
+performed against an inventory of hosts.&lt;/p&gt;
+&lt;p&gt;Tasks are a single unit of action in Ansible, which calls a module.&lt;/p&gt;
+&lt;p&gt;Modules are code that Ansible executes. Each module could be something
+like copying a file to using NIM to trigger an AIX update.&lt;/p&gt;
+&lt;p&gt;Roles are repeatable bundles of tasks that are contained in a specific
+directory structure.&lt;/p&gt;
+&lt;p&gt;Variables within Ansible are called like this "".&lt;/p&gt;
+&lt;p&gt;Task delegation is how tasks can be delegated to another host in the
+inventory, other than the host that the Ansible run is targeted against.&lt;/p&gt;
+&lt;h3&gt;Getting started with Ansible&lt;/h3&gt;
+&lt;p&gt;In this example, I'm using a Fedora Linux 34 workstation, so I'm going
+to use the dnf package manager to install Ansible:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;$&lt;span class="w"&gt; &lt;/span&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;dnf&lt;span class="w"&gt; &lt;/span&gt;install&lt;span class="w"&gt; &lt;/span&gt;-y&lt;span class="w"&gt; &lt;/span&gt;ansible
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Once Ansible is installed, I'm going to install the ibm.power_aix
+Collection:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;$&lt;span class="w"&gt; &lt;/span&gt;ansible-galaxy&lt;span class="w"&gt; &lt;/span&gt;collection&lt;span class="w"&gt; &lt;/span&gt;install&lt;span class="w"&gt; &lt;/span&gt;ibm.power_aix
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;When Ansible is installed, a default inventory file /etc/ansible/hosts
+is created. At this point, I'm going to include in the inventory the
+hosts used in this example:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;nim01 is our AIX 7.2 NIM Master which is functional and has an
+    lpp_source defined.&lt;/li&gt;
+&lt;li&gt;bruce is an AIX 7.2 NIM client registered to the nim01 NIM master.&lt;/li&gt;
+&lt;li&gt;freddie is an AIX 7.2 NIM client registered to the nim01 NIM master.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;$&lt;span class="w"&gt; &lt;/span&gt;cat&lt;span class="w"&gt; &lt;/span&gt;/etc/ansible/hosts
+nim01&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;ansible_host&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;10&lt;/span&gt;.0.0.5&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;ansible_user&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;root
+bruce&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;ansible_host&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;10&lt;/span&gt;.0.0.6&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;ansible_user&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;root
+freddie&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;ansible_host&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;10&lt;/span&gt;.0.0.7&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;ansible_user&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;root
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;I'm now going to connect to all the systems over SSH as "root". The
+usual practice is to have a service account with "sudo" access, however
+for this example I will use "root" in our lab environment. Using the
+ssh-copy-id command, I can distribute my SSH public key to the AIX
+servers.&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;$&lt;span class="w"&gt; &lt;/span&gt;ssh-copy-id&lt;span class="w"&gt; &lt;/span&gt;root@nim01
+$&lt;span class="w"&gt; &lt;/span&gt;ssh-copy-id&lt;span class="w"&gt; &lt;/span&gt;root@bruce
+$&lt;span class="w"&gt; &lt;/span&gt;ssh-copy-id&lt;span class="w"&gt; &lt;/span&gt;root@freddie
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The next step is to use the Ansible ping module to check that I can
+connect to the three hosts in our inventory.&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;$&lt;span class="w"&gt; &lt;/span&gt;ansible&lt;span class="w"&gt; &lt;/span&gt;-m&lt;span class="w"&gt; &lt;/span&gt;ping&lt;span class="w"&gt; &lt;/span&gt;all
+
+PLAY&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;Ansible&lt;span class="w"&gt; &lt;/span&gt;Ad-Hoc&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;************************************************************************************************************************************************************************************************************************
+
+TASK&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;ping&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;**********************************************************************************************************************************************************************************************************************************
+ok:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;nim01&lt;span class="o"&gt;]&lt;/span&gt;
+ok:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;freddie&lt;span class="o"&gt;]&lt;/span&gt;
+ok:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;bruce&lt;span class="o"&gt;]&lt;/span&gt;
+
+PLAY&lt;span class="w"&gt; &lt;/span&gt;RECAP&lt;span class="w"&gt; &lt;/span&gt;***********************************************************************************************************************************************************************************************************************************
+nim01&lt;span class="w"&gt;                  &lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;ok&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;changed&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;unreachable&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;failed&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;skipped&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;rescued&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;ignored&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;
+bruce&lt;span class="w"&gt;                  &lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;ok&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;changed&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;unreachable&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;failed&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;skipped&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;rescued&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;ignored&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;
+freddie&lt;span class="w"&gt;                &lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;ok&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;changed&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;unreachable&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;failed&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;skipped&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;rescued&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;ignored&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Ansible needs "python" to be installed on the AIX systems, and ideally
+the "yum" package manager should also be configured on AIX. If your AIX
+systems do not have these packages installed, or is a vanilla
+installation of AIX, IBM provides an Ansible Role to "bootstrap" an AIX
+system and manage it.&lt;/p&gt;
+&lt;p&gt;The playbook below uses the IBM provided role to prepare an AIX system
+for Ansible automation.&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;cat&lt;span class="w"&gt; &lt;/span&gt;aix_bootstrap.yml
+---
+
+-&lt;span class="w"&gt; &lt;/span&gt;name:&lt;span class="w"&gt; &lt;/span&gt;Prep&lt;span class="w"&gt; &lt;/span&gt;AIX&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;for&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;Ansible
+&lt;span class="w"&gt;  &lt;/span&gt;hosts:&lt;span class="w"&gt; &lt;/span&gt;all
+&lt;span class="w"&gt;  &lt;/span&gt;vars:
+&lt;span class="w"&gt;    &lt;/span&gt;pkgtype:&lt;span class="w"&gt; &lt;/span&gt;yum
+&lt;span class="w"&gt;  &lt;/span&gt;collections:
+&lt;span class="w"&gt;    &lt;/span&gt;-&lt;span class="w"&gt; &lt;/span&gt;ibm.power_aix
+&lt;span class="w"&gt;  &lt;/span&gt;roles:
+&lt;span class="w"&gt;    &lt;/span&gt;-&lt;span class="w"&gt; &lt;/span&gt;power_aix_bootstrap
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The following example demonstrates running the playbook; however, I can
+see that the hosts Ansible is running against already have "python" and
+"yum" installed, so there is no need for any changes to be made to these
+hosts.&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;$&lt;span class="w"&gt; &lt;/span&gt;ansible-playbook&lt;span class="w"&gt; &lt;/span&gt;aix_bootstrap.yml
+
+PLAY&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;Prep&lt;span class="w"&gt; &lt;/span&gt;AIX&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;for&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;Ansible&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;******************************************************************************************************************************************************************************************************************
+
+TASK&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;Gathering&lt;span class="w"&gt; &lt;/span&gt;Facts&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;***********************************************************************************************************************************************************************************************************************
+ok:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;bruce&lt;span class="o"&gt;]&lt;/span&gt;
+ok:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;freddie&lt;span class="o"&gt;]&lt;/span&gt;
+ok:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;nim01&lt;span class="o"&gt;]&lt;/span&gt;
+
+TASK&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;ibm.power_aix.power_aix_bootstrap&lt;span class="w"&gt; &lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;Fail&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;pkgtype&lt;span class="w"&gt; &lt;/span&gt;not&lt;span class="w"&gt; &lt;/span&gt;specified&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;*********************************************************************************************************************************************************************
+skipping:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;nim01&lt;span class="o"&gt;]&lt;/span&gt;
+skipping:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;bruce&lt;span class="o"&gt;]&lt;/span&gt;
+skipping:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;freddie&lt;span class="o"&gt;]&lt;/span&gt;
+
+TASK&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;ibm.power_aix.power_aix_bootstrap&lt;span class="w"&gt; &lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;Fail&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;download_dir&lt;span class="w"&gt; &lt;/span&gt;not&lt;span class="w"&gt; &lt;/span&gt;specified&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;****************************************************************************************************************************************************************
+skipping:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;nim01&lt;span class="o"&gt;]&lt;/span&gt;
+skipping:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;bruce&lt;span class="o"&gt;]&lt;/span&gt;
+skipping:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;freddie&lt;span class="o"&gt;]&lt;/span&gt;
+
+TASK&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;ibm.power_aix.power_aix_bootstrap&lt;span class="w"&gt; &lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;Fail&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;target_dir&lt;span class="w"&gt; &lt;/span&gt;not&lt;span class="w"&gt; &lt;/span&gt;specified&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;******************************************************************************************************************************************************************
+skipping:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;nim01&lt;span class="o"&gt;]&lt;/span&gt;
+skipping:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;bruce&lt;span class="o"&gt;]&lt;/span&gt;
+skipping:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;freddie&lt;span class="o"&gt;]&lt;/span&gt;
+
+TASK&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;ibm.power_aix.power_aix_bootstrap&lt;span class="w"&gt; &lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;Fail&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;rpm_src&lt;span class="w"&gt; &lt;/span&gt;not&lt;span class="w"&gt; &lt;/span&gt;specified&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;*********************************************************************************************************************************************************************
+skipping:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;nim01&lt;span class="o"&gt;]&lt;/span&gt;
+skipping:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;bruce&lt;span class="o"&gt;]&lt;/span&gt;
+skipping:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;freddie&lt;span class="o"&gt;]&lt;/span&gt;
+
+TASK&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;ibm.power_aix.power_aix_bootstrap&lt;span class="w"&gt; &lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;Fail&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;yum_src&lt;span class="w"&gt; &lt;/span&gt;not&lt;span class="w"&gt; &lt;/span&gt;specified&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;*********************************************************************************************************************************************************************
+skipping:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;nim01&lt;span class="o"&gt;]&lt;/span&gt;
+skipping:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;bruce&lt;span class="o"&gt;]&lt;/span&gt;
+skipping:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;freddie&lt;span class="o"&gt;]&lt;/span&gt;
+
+TASK&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;ibm.power_aix.power_aix_bootstrap&lt;span class="w"&gt; &lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;Bootstrap&lt;span class="w"&gt; &lt;/span&gt;yum&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;*************************************************************************************************************************************************************************************
+included:&lt;span class="w"&gt; &lt;/span&gt;/home/tholloway/.ansible/collections/ansible_collections/ibm/power_aix/roles/power_aix_bootstrap/tasks/yum_install.yml&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;for&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;nim01,&lt;span class="w"&gt; &lt;/span&gt;bruce,&lt;span class="w"&gt; &lt;/span&gt;freddie
+
+TASK&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;ibm.power_aix.power_aix_bootstrap&lt;span class="w"&gt; &lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;Check&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;for&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;existence&lt;span class="w"&gt; &lt;/span&gt;of&lt;span class="w"&gt; &lt;/span&gt;yum&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;************************************************************************************************************************************************************************
+changed:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;bruce&lt;span class="o"&gt;]&lt;/span&gt;
+changed:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;nim01&lt;span class="o"&gt;]&lt;/span&gt;
+changed:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;freddie&lt;span class="o"&gt;]&lt;/span&gt;
+
+PLAY&lt;span class="w"&gt; &lt;/span&gt;RECAP&lt;span class="w"&gt; &lt;/span&gt;***********************************************************************************************************************************************************************************************************************************
+nim01&lt;span class="w"&gt;                  &lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;ok&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;3&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;changed&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;unreachable&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;failed&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;skipped&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;5&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;rescued&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;ignored&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;
+bruce&lt;span class="w"&gt;                  &lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;ok&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;3&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;changed&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;unreachable&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;failed&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;skipped&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;5&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;rescued&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;ignored&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;
+freddie&lt;span class="w"&gt;                &lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;ok&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;3&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;changed&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;unreachable&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;failed&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;skipped&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;5&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;rescued&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;ignored&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Now that the platforms meet the required minimum components, I am now
+ready to automate AIX operations.&lt;/p&gt;
+&lt;h3&gt;Running an AIX Update using NIM and Ansible&lt;/h3&gt;
+&lt;p&gt;First off, I'll use a simple playbook to see what "oslevel" our NIM
+master and NIM clients are on, before I start.&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;$&lt;span class="w"&gt; &lt;/span&gt;cat&lt;span class="w"&gt; &lt;/span&gt;aix_oslevel_check.yml
+---
+
+-&lt;span class="w"&gt; &lt;/span&gt;name:&lt;span class="w"&gt; &lt;/span&gt;AIX&lt;span class="w"&gt; &lt;/span&gt;oslevel&lt;span class="w"&gt; &lt;/span&gt;checking&lt;span class="w"&gt; &lt;/span&gt;playbook
+&lt;span class="w"&gt;  &lt;/span&gt;hosts:&lt;span class="w"&gt; &lt;/span&gt;all
+&lt;span class="w"&gt;  &lt;/span&gt;tasks:
+
+&lt;span class="w"&gt;  &lt;/span&gt;-&lt;span class="w"&gt; &lt;/span&gt;name:&lt;span class="w"&gt; &lt;/span&gt;Gather&lt;span class="w"&gt; &lt;/span&gt;LPP&lt;span class="w"&gt; &lt;/span&gt;Facts
+&lt;span class="w"&gt;    &lt;/span&gt;shell:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"oslevel -s"&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;register:&lt;span class="w"&gt; &lt;/span&gt;output_oslevel
+
+&lt;span class="w"&gt;  &lt;/span&gt;-&lt;span class="w"&gt; &lt;/span&gt;name:&lt;span class="w"&gt; &lt;/span&gt;Print&lt;span class="w"&gt; &lt;/span&gt;the&lt;span class="w"&gt; &lt;/span&gt;oslevel
+&lt;span class="w"&gt;    &lt;/span&gt;debug:
+&lt;span class="w"&gt;      &lt;/span&gt;msg:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"{{ ansible_hostname }} has the AIX oslevel of {{ output_oslevel.stdout }}"&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Running that playbook delivers the below result. I can see that bruce
+and freddie are a service pack behind.&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;$&lt;span class="w"&gt; &lt;/span&gt;ansible-playbook&lt;span class="w"&gt; &lt;/span&gt;aix_oslevel_check.yml
+
+PLAY&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;AIX&lt;span class="w"&gt; &lt;/span&gt;oslevel&lt;span class="w"&gt; &lt;/span&gt;checking&lt;span class="w"&gt; &lt;/span&gt;playbook&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;*****************************************************************************************************************************************************************************************************************
+
+TASK&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;Gathering&lt;span class="w"&gt; &lt;/span&gt;Facts&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;***********************************************************************************************************************************************************************************************************************
+ok:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;bruce&lt;span class="o"&gt;]&lt;/span&gt;
+ok:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;freddie&lt;span class="o"&gt;]&lt;/span&gt;
+ok:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;nim01&lt;span class="o"&gt;]&lt;/span&gt;
+
+TASK&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;Gather&lt;span class="w"&gt; &lt;/span&gt;LPP&lt;span class="w"&gt; &lt;/span&gt;Facts&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;**********************************************************************************************************************************************************************************************************************
+changed:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;freddie&lt;span class="o"&gt;]&lt;/span&gt;
+changed:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;bruce&lt;span class="o"&gt;]&lt;/span&gt;
+changed:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;nim01&lt;span class="o"&gt;]&lt;/span&gt;
+
+TASK&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;Print&lt;span class="w"&gt; &lt;/span&gt;the&lt;span class="w"&gt; &lt;/span&gt;oslevel&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;*********************************************************************************************************************************************************************************************************************
+ok:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;nim01&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&amp;gt;
+&lt;span class="w"&gt;  &lt;/span&gt;msg:&lt;span class="w"&gt; &lt;/span&gt;nim01&lt;span class="w"&gt; &lt;/span&gt;has&lt;span class="w"&gt; &lt;/span&gt;the&lt;span class="w"&gt; &lt;/span&gt;AIX&lt;span class="w"&gt; &lt;/span&gt;oslevel&lt;span class="w"&gt; &lt;/span&gt;of&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;7200&lt;/span&gt;-05-02-2114
+ok:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;bruce&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&amp;gt;
+&lt;span class="w"&gt;  &lt;/span&gt;msg:&lt;span class="w"&gt; &lt;/span&gt;bruce&lt;span class="w"&gt; &lt;/span&gt;has&lt;span class="w"&gt; &lt;/span&gt;the&lt;span class="w"&gt; &lt;/span&gt;AIX&lt;span class="w"&gt; &lt;/span&gt;oslevel&lt;span class="w"&gt; &lt;/span&gt;of&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;7200&lt;/span&gt;-05-01-2038
+ok:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;freddie&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&amp;gt;
+&lt;span class="w"&gt;  &lt;/span&gt;msg:&lt;span class="w"&gt; &lt;/span&gt;freddie&lt;span class="w"&gt; &lt;/span&gt;has&lt;span class="w"&gt; &lt;/span&gt;the&lt;span class="w"&gt; &lt;/span&gt;AIX&lt;span class="w"&gt; &lt;/span&gt;oslevel&lt;span class="w"&gt; &lt;/span&gt;of&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;7200&lt;/span&gt;-05-01-2038
+
+PLAY&lt;span class="w"&gt; &lt;/span&gt;RECAP&lt;span class="w"&gt; &lt;/span&gt;***********************************************************************************************************************************************************************************************************************************
+nim01&lt;span class="w"&gt;                  &lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;ok&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;3&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;changed&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;unreachable&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;failed&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;skipped&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;rescued&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;ignored&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;
+bruce&lt;span class="w"&gt;                  &lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;ok&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;3&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;changed&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;unreachable&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;failed&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;skipped&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;rescued&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;ignored&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;
+freddie&lt;span class="w"&gt;                &lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;ok&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;3&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;changed&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;unreachable&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;failed&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;skipped&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;rescued&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;ignored&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;To ensure all systems are operating on the same OS level, I need to
+download the latest service pack. It should define an "lpp_source" on
+our NIM master. Make sure that the name of the "lpp_source" matches the
+example below, or the Ansible module will not detect the "oslevel".&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;$&lt;span class="w"&gt; &lt;/span&gt;cat&lt;span class="w"&gt; &lt;/span&gt;aix_download.yml
+---
+
+-&lt;span class="w"&gt; &lt;/span&gt;name:&lt;span class="w"&gt; &lt;/span&gt;AIX&lt;span class="w"&gt; &lt;/span&gt;Patching&lt;span class="w"&gt; &lt;/span&gt;Playbook
+&lt;span class="w"&gt;  &lt;/span&gt;hosts:&lt;span class="w"&gt; &lt;/span&gt;nim01
+&lt;span class="w"&gt;  &lt;/span&gt;vars:
+&lt;span class="w"&gt;    &lt;/span&gt;oslevel:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;7200&lt;/span&gt;-05-02
+&lt;span class="w"&gt;    &lt;/span&gt;nim_lpp_source:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;7200&lt;/span&gt;-05-02-2114-lpp_source
+&lt;span class="w"&gt;  &lt;/span&gt;collections:
+&lt;span class="w"&gt;    &lt;/span&gt;-&lt;span class="w"&gt; &lt;/span&gt;ibm.power_aix
+&lt;span class="w"&gt;  &lt;/span&gt;tasks:
+
+&lt;span class="w"&gt;  &lt;/span&gt;-&lt;span class="w"&gt; &lt;/span&gt;name:&lt;span class="w"&gt; &lt;/span&gt;Download&lt;span class="w"&gt; &lt;/span&gt;AIX&lt;span class="w"&gt; &lt;/span&gt;Updates
+&lt;span class="w"&gt;    &lt;/span&gt;nim_suma:
+&lt;span class="w"&gt;      &lt;/span&gt;action:&lt;span class="w"&gt; &lt;/span&gt;download
+&lt;span class="w"&gt;      &lt;/span&gt;download_dir:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"/export/nim/lpp_source"&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;lpp_source_name:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"{{ nim_lpp_source }}"&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;oslevel:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"{{ oslevel }}"&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;targets:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;'bruce, freddie'&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Next step is to run the &lt;em&gt;download playbook&lt;/em&gt;. It will download the
+required updates from IBM Fix Central and define an "lpp_source" on the
+NIM master:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;$&lt;span class="w"&gt; &lt;/span&gt;ansible-playbook&lt;span class="w"&gt; &lt;/span&gt;aix_download.yml
+
+PLAY&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;AIX&lt;span class="w"&gt; &lt;/span&gt;Patching&lt;span class="w"&gt; &lt;/span&gt;Playbook&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;*****************************************************************************************************************************************************************************************************************
+
+TASK&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;Gathering&lt;span class="w"&gt; &lt;/span&gt;Facts&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;***********************************************************************************************************************************************************************************************************************
+ok:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;nim01&lt;span class="o"&gt;]&lt;/span&gt;
+
+TASK&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;Download&lt;span class="w"&gt; &lt;/span&gt;AIX&lt;span class="w"&gt; &lt;/span&gt;Updates&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;******************************************************************************************************************************************************************************************************************
+changed:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;nim01&lt;span class="o"&gt;]&lt;/span&gt;
+
+PLAY&lt;span class="w"&gt; &lt;/span&gt;RECAP&lt;span class="w"&gt; &lt;/span&gt;***********************************************************************************************************************************************************************************************************************************
+nim01&lt;span class="w"&gt;                  &lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;ok&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;2&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;changed&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;unreachable&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;failed&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;skipped&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;rescued&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;ignored&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Now I can run a &lt;em&gt;patching playbook&lt;/em&gt;, which will make use of the
+"alt_disk" and "nim" Ansible modules. The playbook is going to perform
+the following tasks:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Remove any existing "altinst_rootvg" "alt_disk_copy" that is left on
+    the AIX system.&lt;/li&gt;
+&lt;li&gt;Create a new "alt_disk_copy" clone of the root volume group to a
+    spare disk as a backup.&lt;/li&gt;
+&lt;li&gt;Run an application stop script.&lt;/li&gt;
+&lt;li&gt;Run the AIX update via task delegation to the NIM master.&lt;/li&gt;
+&lt;li&gt;Reboot.&lt;/li&gt;
+&lt;li&gt;Run an application start script.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="nn"&gt;---&lt;/span&gt;
+
+&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;AIX Patching Playbook&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;hosts&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;bruce,freddie&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;vars&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;nim_lpp_source&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;7200-05-02-2114-lpp_source&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;nim_master&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;nim01&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;collections&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;ibm.power_aix&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;tasks&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;Cleanup any existing alt_disk_copy&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;alt_disk&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;action&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;clean&lt;/span&gt;
+
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;Create an alt_disk_copy for backup&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;alt_disk&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;targets&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;hdisk1&lt;/span&gt;
+
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;Stop Application&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;shell&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;/usr/local/bin/stop.sh&lt;/span&gt;
+
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;Run AIX Update&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;nim&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;action&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;update&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;lpp_source&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"{{&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;nim_lpp_source&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;}}"&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;targets&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"{{&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;ansible_hostname&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;}}"&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;delegate_to&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"{{&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;nim_master&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;}}"&lt;/span&gt;
+
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;Reboot&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;reboot&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;post_reboot_delay&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;180&lt;/span&gt;
+
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;Start Application&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;shell&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;/usr/local/bin/start.sh&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Now I will run the playbook and patch the NIM client systems "bruce" and
+"freddie":&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;$&lt;span class="w"&gt; &lt;/span&gt;ansible-playbook&lt;span class="w"&gt; &lt;/span&gt;aix_patching.yml
+
+&lt;span class="w"&gt; &lt;/span&gt;PLAY&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;AIX&lt;span class="w"&gt; &lt;/span&gt;Patching&lt;span class="w"&gt; &lt;/span&gt;Playbook&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;*****************************************************************************************************************************************************************************************************************
+
+TASK&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;Gathering&lt;span class="w"&gt; &lt;/span&gt;Facts&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;***********************************************************************************************************************************************************************************************************************
+ok:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;bruce&lt;span class="o"&gt;]&lt;/span&gt;
+ok:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;freddie&lt;span class="o"&gt;]&lt;/span&gt;
+
+TASK&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;Cleanup&lt;span class="w"&gt; &lt;/span&gt;any&lt;span class="w"&gt; &lt;/span&gt;existing&lt;span class="w"&gt; &lt;/span&gt;alt_disk_copy&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;****************************************************************************************************************************************************************************************************
+changed:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;bruce&lt;span class="o"&gt;]&lt;/span&gt;
+changed:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;freddie&lt;span class="o"&gt;]&lt;/span&gt;
+
+TASK&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;Create&lt;span class="w"&gt; &lt;/span&gt;an&lt;span class="w"&gt; &lt;/span&gt;alt_disk_copy&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;for&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;backup&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;****************************************************************************************************************************************************************************************************
+changed:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;bruce&lt;span class="o"&gt;]&lt;/span&gt;
+changed:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;freddie&lt;span class="o"&gt;]&lt;/span&gt;
+
+TASK&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;Stop&lt;span class="w"&gt; &lt;/span&gt;Application&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;**********************************************************************************************************************************************************************************************************************
+changed:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;bruce&lt;span class="o"&gt;]&lt;/span&gt;
+changed:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;freddie&lt;span class="o"&gt;]&lt;/span&gt;
+
+TASK&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;Run&lt;span class="w"&gt; &lt;/span&gt;AIX&lt;span class="w"&gt; &lt;/span&gt;Update&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;*************************************************************************************************************************************************************************************************************************
+changed:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;bruce&lt;span class="w"&gt; &lt;/span&gt;-&amp;gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;10&lt;/span&gt;.0.0.5&lt;span class="o"&gt;]&lt;/span&gt;
+changed:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;freddie&lt;span class="w"&gt; &lt;/span&gt;-&amp;gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;10&lt;/span&gt;.0.0.5&lt;span class="o"&gt;]&lt;/span&gt;
+
+TASK&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;Reboot&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;********************************************************************************************************************************************************************************************************************************
+changed:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;freddie&lt;span class="o"&gt;]&lt;/span&gt;
+changed:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;bruce&lt;span class="o"&gt;]&lt;/span&gt;
+
+TASK&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;Start&lt;span class="w"&gt; &lt;/span&gt;Application&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;*********************************************************************************************************************************************************************************************************************
+changed:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;bruce&lt;span class="o"&gt;]&lt;/span&gt;
+changed:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;freddie&lt;span class="o"&gt;]&lt;/span&gt;
+
+PLAY&lt;span class="w"&gt; &lt;/span&gt;RECAP&lt;span class="w"&gt; &lt;/span&gt;***********************************************************************************************************************************************************************************************************************************
+bruce&lt;span class="w"&gt;                 &lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;ok&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;7&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;changed&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;6&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;unreachable&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;failed&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;skipped&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;rescued&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;ignored&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;
+freddie&lt;span class="w"&gt;               &lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;ok&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;7&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;changed&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;6&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;unreachable&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;failed&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;skipped&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;rescued&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;ignored&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Next, I will run the aix_oslevel_check.yml playbook again and see that
+the systems are all on AIX 7.2 TL5 SP2.&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;$&lt;span class="w"&gt; &lt;/span&gt;ansible-playbook&lt;span class="w"&gt; &lt;/span&gt;aix_oslevel_check.yml
+
+PLAY&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;AIX&lt;span class="w"&gt; &lt;/span&gt;oslevel&lt;span class="w"&gt; &lt;/span&gt;checking&lt;span class="w"&gt; &lt;/span&gt;playbook&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;*****************************************************************************************************************************************************************************************************************
+
+TASK&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;Gathering&lt;span class="w"&gt; &lt;/span&gt;Facts&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;***********************************************************************************************************************************************************************************************************************
+ok:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;bruce&lt;span class="o"&gt;]&lt;/span&gt;
+ok:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;freddie&lt;span class="o"&gt;]&lt;/span&gt;
+ok:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;nim01&lt;span class="o"&gt;]&lt;/span&gt;
+
+TASK&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;Gather&lt;span class="w"&gt; &lt;/span&gt;LPP&lt;span class="w"&gt; &lt;/span&gt;Facts&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;**********************************************************************************************************************************************************************************************************************
+changed:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;freddie&lt;span class="o"&gt;]&lt;/span&gt;
+changed:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;bruce&lt;span class="o"&gt;]&lt;/span&gt;
+changed:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;nim01&lt;span class="o"&gt;]&lt;/span&gt;
+
+TASK&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;Print&lt;span class="w"&gt; &lt;/span&gt;the&lt;span class="w"&gt; &lt;/span&gt;oslevel&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;*********************************************************************************************************************************************************************************************************************
+ok:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;nim01&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&amp;gt;
+&lt;span class="w"&gt;  &lt;/span&gt;msg:&lt;span class="w"&gt; &lt;/span&gt;nim01&lt;span class="w"&gt; &lt;/span&gt;has&lt;span class="w"&gt; &lt;/span&gt;the&lt;span class="w"&gt; &lt;/span&gt;AIX&lt;span class="w"&gt; &lt;/span&gt;oslevel&lt;span class="w"&gt; &lt;/span&gt;of&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;7200&lt;/span&gt;-05-02-2114
+ok:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;bruce&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&amp;gt;
+&lt;span class="w"&gt;  &lt;/span&gt;msg:&lt;span class="w"&gt; &lt;/span&gt;bruce&lt;span class="w"&gt; &lt;/span&gt;has&lt;span class="w"&gt; &lt;/span&gt;the&lt;span class="w"&gt; &lt;/span&gt;AIX&lt;span class="w"&gt; &lt;/span&gt;oslevel&lt;span class="w"&gt; &lt;/span&gt;of&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;7200&lt;/span&gt;-05-02-2114
+ok:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;freddie&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&amp;gt;
+&lt;span class="w"&gt;  &lt;/span&gt;msg:&lt;span class="w"&gt; &lt;/span&gt;freddie&lt;span class="w"&gt; &lt;/span&gt;has&lt;span class="w"&gt; &lt;/span&gt;the&lt;span class="w"&gt; &lt;/span&gt;AIX&lt;span class="w"&gt; &lt;/span&gt;oslevel&lt;span class="w"&gt; &lt;/span&gt;of&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;7200&lt;/span&gt;-05-02-2114
+
+PLAY&lt;span class="w"&gt; &lt;/span&gt;RECAP&lt;span class="w"&gt; &lt;/span&gt;***********************************************************************************************************************************************************************************************************************************
+nim01&lt;span class="w"&gt;                  &lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;ok&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;3&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;changed&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;unreachable&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;failed&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;skipped&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;rescued&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;ignored&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;
+bruce&lt;span class="w"&gt;                  &lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;ok&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;3&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;changed&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;unreachable&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;failed&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;skipped&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;rescued&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;ignored&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;
+freddie&lt;span class="w"&gt;                &lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;ok&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;3&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;changed&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;unreachable&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;failed&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;skipped&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;rescued&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;ignored&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3&gt;Conclusion&lt;/h3&gt;
+&lt;p&gt;As you can see from this example, Ansible provides a lot of value in
+automating AIX operations. For additional information, see the
+documentation for the supported Collection available from
+&lt;a href="https://cloud.redhat.com/ansible/automation-hub/repo/published/ibm/power_aix"&gt;Automation Hub&lt;/a&gt;.
+This Collection is also available to the community from
+&lt;a href="https://galaxy.ansible.com/ibm/power_aix"&gt;Ansible Galaxy&lt;/a&gt;.&lt;/p&gt;</description><guid>https://ansible.com/blog/aix-patch-management-with-ansible/</guid><pubDate>Wed, 07 Jul 2021 00:00:00 GMT</pubDate></item></channel></rss>

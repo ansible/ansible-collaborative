@@ -1,0 +1,175 @@
+<h1>Hands on with Ansible collections</h1>
+<p>Ansible collections have been introduced previously through two of our
+blogs "Getting Started with Ansible Content Collections"
+and "The Future of Ansible Content Delivery".
+In essence, Ansible Automation content is going to be delivered using
+the collection packaging mechanism.  Ansible Content refers to Ansible
+Playbooks, modules, module utilities and plugins. Basically all the
+Ansible tools that users use to create their Ansible Automation. Content
+is divided between two repositories:</p>
+<ol>
+<li>Ansible Galaxy
+    (<a href="https://galaxy.ansible.com/">https://galaxy.ansible.com</a>)</li>
+<li>Automation Hub (<a href="https://cloud.redhat.com/ansible/automation-hub">https://cloud.redhat.com/ansible/automation-hub</a>)</li>
+</ol>
+<p>Ansible Galaxy is the upstream community for sharing Ansible
+Collections.  Any community user can create a namespace and share
+content with anyone. Access to Automation Hub is included with a Red Hat
+Ansible Automation Platform subscription.  Automation Hub only contains
+fully supported and certified content from Red Hat and our partners.
+This makes it easier for Red Hat customers to determine which content is
+the official certified, and importantly supported, content.  This
+includes full content from partners such as Arista, Cisco, Checkpoint,
+F5, IBM, Microsoft and NetApp. </p>
+<p>In this blog post we\'ll walk through a use case wherein, the user would
+like to use a Red Hat certified collection from Automation Hub and also
+use a community supported collection from Ansible Galaxy.</p>
+<p>There are different ways to interact with Ansible Collections and your
+Ansible Automation:</p>
+<ol>
+<li>Install into your runtime environment or virtual env</li>
+<li>Provide as part of your SCM tree</li>
+<li>Using a requirements file</li>
+</ol>
+<p>Regardless of the method chosen, first you need to find, identity and
+obtain the Ansible Collections you want to use.</p>
+<h2>Ansible Playbook repo structure:</h2>
+<p>Here is my setup for this demonstration of Ansible Collections:</p>
+<p><img alt="Ajay blog one" src="/images/posts/archive/ajay-blog-one.png"></p>
+<ul>
+<li>ansible.cfg is the Ansible configuration file.  I will elaborate on
+    this in the next section.</li>
+<li>collections is a directory storing all Ansible Collections that my
+    Ansible Playbook will use</li>
+<li>inventory is a directory containing a inventory file named hosts</li>
+<li>play.yaml is my Ansible Playbook</li>
+</ul>
+<p>For my example this is a development environment where I just want to
+download the latest and greatest.  I will use a gitignore file to ignore
+the downloaded content and only track the requirements file.</p>
+<p><img alt="Ajay blog two" src="/images/posts/archive/ajay-blog-two.png"></p>
+<p>This gitignore file helps ensure that your playbook repository content
+in the version control system only tracks your playbook and related
+files.  If you want to track Ansible Collections being used in your SCM
+just remove the Git ignore (e.g. the <strong>2- Provide as part of your SCM
+tree</strong> in the introduction).  For a more in-depth look into using
+collections and the folder structure please refer to the
+<a href="https://docs.ansible.com/ansible/latest/user_guide/collections_using.html#using-collections">documentation</a>.</p>
+<h2>Configuring access to Automation Hub and Galaxy</h2>
+<p>For accessing certified content from the Automation Hub, you will need
+to first get the token for authentication. Do this by logging into
+<a href="https://cloud.redhat.com/">https://cloud.redhat.com</a> and then
+navigating to <a href="https://cloud.redhat.com/ansible/automation-hub/token">https://cloud.redhat.com/ansible/automation-hub/token</a> </p>
+<p><img alt="Ajay blog three" src="/images/posts/archive/ajay-blog-three.png"></p>
+<p>Clicking on the <code>Load token</code> button will reveal your
+authentication token. Save this information somewhere, we will need to
+enter this into the ansible.cfg file. Ansible Galaxy also has an API
+token used for authentication and can be accessed by navigating to
+<a href="https://galaxy.ansible.com/me/preferences">https://galaxy.ansible.com/me/preferences</a> after logging in.</p>
+<p><img alt="Ajay blog five" src="/images/posts/archive/ajay-blog-five.png"></p>
+<p>Click on the <code>Show API key</code> button to reveal your API key.</p>
+<h2>Configuring your Ansible.cfg</h2>
+<p>We define the Galaxy servers under the <strong>[galaxy]</strong> section of the
+Ansible configuration file (i.e. *ansible.cfg). * An Ansible
+configuration file is an ini formatted file for configuring behavior
+settings.  This includes settings such as changing the return output
+from JSON to YAML. If you are unfamiliar with an Ansible configuration
+file please refer to the
+<a href="https://docs.ansible.com/ansible/latest/installation_guide/intro_configuration.html">documentation</a>. 
+As a reminder the Ansible configuration file is searched in the
+following order:\</p>
+<ol>
+<li>ansible.cfg (in the current directory)</li>
+<li>\~/.ansible.cfg (in the current home directory)</li>
+<li>/etc/ansible/ansible.cfg </li>
+</ol>
+<p>These tokens should be added now to the ansible.cfg file. An example of
+this is shown below.  It is recommended when using more than one Galaxy
+server to list them in server_list. The list should be in precedence
+order with your primary location choice first, in this case Automation
+Hub.</p>
+<div class="code"><pre class="code literal-block"><span class="p p-Indicator">[</span><span class="nv">defaults</span><span class="p p-Indicator">]</span>
+<span class="l l-Scalar l-Scalar-Plain">stdout_callback = yaml</span>
+<span class="l l-Scalar l-Scalar-Plain">inventory = inventory/hosts</span>
+<span class="l l-Scalar l-Scalar-Plain">collections_paths = ./collections</span>
+
+<span class="l l-Scalar l-Scalar-Plain">[galaxy]</span>
+
+<span class="l l-Scalar l-Scalar-Plain">server_list = automation_hub, release_galaxy</span>
+
+<span class="l l-Scalar l-Scalar-Plain">[galaxy_server.automation_hub]</span>
+<span class="l l-Scalar l-Scalar-Plain">url=https://cloud.redhat.com/api/automation-hub/</span>
+<span class="l l-Scalar l-Scalar-Plain">auth_url=https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token</span>
+<span class="l l-Scalar l-Scalar-Plain">token=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</span>
+
+<span class="l l-Scalar l-Scalar-Plain">[galaxy_server.release_galaxy]</span>
+<span class="l l-Scalar l-Scalar-Plain">url=https://galaxy.ansible.com/</span>
+<span class="l l-Scalar l-Scalar-Plain">token=xxxxxxxxxxxxxxxxxxxxxx</span>
+</pre></div>
+
+<p>Note the <em>url</em> and <em>auth_url</em> keys that define the Automation Hub
+repository and authentication endpoint. Also note that this file defines
+where the collections should be downloaded to via the collections_paths
+parameter (e.g.. ./collections).  For more information on configuration
+for Ansible Galaxy and Automation Hub please refer to the
+<a href="https://docs.ansible.com/ansible/latest/galaxy/user_guide.html#galaxy-user-guide">Galaxy User Guide</a>.</p>
+<h2>Using a requirements file</h2>
+<p>For this example I am going to use the requirements.yml method where I
+can install all the collections from a single list. If you are familiar
+with the use of <em>requirements.yml</em>  file with roles, the file is very
+similar for collections. This is best understood through an example:</p>
+<div class="code"><pre class="code literal-block"><span class="l l-Scalar l-Scalar-Plain">» cat collections/requirements.yml</span>
+<span class="l l-Scalar l-Scalar-Plain">collections</span><span class="p p-Indicator">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">junipernetworks.junos</span>
+<span class="w">    </span><span class="nt">source</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://galaxy.ansible.com</span>
+
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">f5networks.f5_modules</span>
+<span class="w">    </span><span class="nt">source</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://cloud.redhat.com/api/automation-hub/</span>
+</pre></div>
+
+<p>Here, we defined 2 collections that are needed for our test playbook.
+The Juniper Networks <em>junos</em> collection is being downloaded from Ansible
+Galaxy whereas the F5 Networks <em>f5_modules collection</em> is being
+downloaded from Automation Hub.</p>
+<h2>Installing the collections</h2>
+<p>The collections can now be installed using the command:</p>
+<div class="code"><pre class="code literal-block"><span class="l l-Scalar l-Scalar-Plain">ansible-galaxy collection install -r collections/requirements.yml</span>
+</pre></div>
+
+<p>Running this command in verbose mode helps us look at the endpoints
+being accessed:</p>
+<p><img alt="Ajay Blog seven" src="/images/posts/archive/ajay-blog-seven.png"></p>
+<p>To test the availability of modules from these new collections, you can
+use the <em>ansible-doc</em> command:</p>
+<div class="code"><pre class="code literal-block"><span class="l l-Scalar l-Scalar-Plain">ansible-doc f5networks.f5_modules.bigip_device_info</span>
+</pre></div>
+
+<p>Our simple playbook will collect facts from the Juniper and F5 device
+(<a href="https://github.com/termlen0/collections_demo/blob/master/play.yaml">https://github.com/termlen0/collections_demo/blob/master/play.yaml</a>).
+We can test the playbook by running it from the command line:</p>
+<p><img alt="Ajay blog eight" src="/images/posts/archive/ajay-blog-eight.png"></p>
+<p>If you don\'t want to dynamically load the latest collection content
+every time, comment out or remove the requirements file.  This means you
+can control which Ansible Collections are available by manually
+installing each collection required for your Ansible Playbook into the
+correct virtual environment.  For example to install the F5 Networks
+collections you would perform this command:</p>
+<div class="code"><pre class="code literal-block"><span class="l l-Scalar l-Scalar-Plain">ansible-galaxy collection install f5networks.f5_modules</span>
+</pre></div>
+
+<p>Another way would be to package the required collections in your SCM
+(source control management) with your other content.  This means you
+would sync collections in your development environment versus the
+Ansible Tower device.</p>
+<p>In the future we will introduce a more standardized way around packaging
+collections and a particular Ansible version and its dependencies.  </p>
+<h2>Conclusion</h2>
+<p>Ansible Collections introduce a way to modularize and package automation
+content effectively. Red Hat Automation Hub hosts certified, secure
+collections that are validated and supported by Red Hat. Ansible Galaxy
+hosts community contributed collections. Customers can access
+collections from both content repositories. I think of collections as a
+superchargers to the "batteries included" approach that Ansible takes.
+It up-levels the nuances involved in building out automation, allowing
+users to plug-n-play the latest and greatest automation content being
+built by certified partners and the community.</p>

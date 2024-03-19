@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html prefix="
+og: http://ogp.me/ns# article: http://ogp.me/ns/article#
+" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="Ansible Collaborative Website">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ansible Collaborative (old posts, page 16) | Ansible Collaborative</title>
+<link href="../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="../assets/css/baguetteBox.min.css" rel="stylesheet" type="text/css">
+<link href="../assets/css/rst.css" rel="stylesheet" type="text/css">
+<link href="../assets/css/code.css" rel="stylesheet" type="text/css">
+<link href="../assets/css/theme.css" rel="stylesheet" type="text/css">
+<!-- Red Hat fonts --><link rel="stylesheet" href="https://static.redhat.com/libs/redhat/redhat-font/2.0.0/webfonts/red-hat-font.css">
+<!-- Font Awesome --><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+<!-- Fork Awesome --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css" integrity="sha256-XoaMnoYC5TH6/+ihMEnospgm0J1PM/nioxbOUdnM8HY=" crossorigin="anonymous">
+<!-- Sass compiled css  --><link rel="stylesheet" href="../assets/css/main.css">
+<link rel="stylesheet" href="../assets/css/redhat-footer.css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../rss.xml">
+<link rel="canonical" href="https://ansible.com/blog/index-16.html">
+<link rel="prev" href="index-17.html" type="text/html">
+<link rel="next" href="index-15.html" type="text/html">
+<!--[if lt IE 9]><script src="../assets/js/html5.js"></script><![endif]-->
+</head>
+<body id="top">
+
+<div class="global-container" id="content" role="main">
+<!-- Start menubar -->
+<nav class="navbar navbar-expand-lg static-top mb-4 navbar-padding full-width-bg   navbar-dark   bg-pool   "><div class="masthead">
+    <!-- This keeps the margins nice -->
+    <a class="navbar-brand" href="../">
+        <img src="../images/ansible_logo-small-15.png" alt="Ansible community logo" id="logo" class="d-inline-block align-top" width="50" height="50"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon nav-toggle-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="bs-navbar">
+      <ul class="navbar-nav mr-auto"></ul>
+<ul class="navbar-nav navbar-right">
+<li class="nav-item dropdown">
+	        <a href="#" class="nav-link nav-link-color dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <i class=""></i> Documentation
+                </a>
+		<div class="dropdown-menu dropdown-menu-border">
+	    
+                    <a href="https://docs.ansible.com/" class="dropdown-item">
+		        <i class=""></i> Project documentation
+                    </a>
+                    <a href="https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/" class="dropdown-item">
+		        <i class=""></i> Ansible Automation Platform documentation
+                    </a>
+            </div>
+                 </li>
+<li class="nav-item">
+		     <a href="https://galaxy.ansible.com/" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Galaxy
+		     </a>
+		 </li>
+                 <li class="nav-item">
+		     <a href="https://forum.ansible.com/" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Forum
+		     </a>
+		 </li>
+            <li class="nav-item dropdown">
+	        <a href="#" class="nav-link nav-link-color dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <i class=""></i> Resources
+                </a>
+		<div class="dropdown-menu dropdown-menu-border">
+	    
+                    <a href="../how-ansible-works/" class="dropdown-item">
+		        <i class=""></i> How Ansible works
+                    </a>
+                    <a href="../ecosystem/" class="dropdown-item">
+		        <i class=""></i> Ansible ecosystem
+                    </a>
+                    <a href="archive.html" class="dropdown-item">
+		        <i class=""></i> Blog
+                    </a>
+                    <a href="../faq/" class="dropdown-item">
+		        <i class=""></i> Frequently asked questions
+                    </a>
+                    <a href="../ansible-community-training/" class="dropdown-item">
+		        <i class=""></i> Ansible community training
+                    </a>
+                    <a href="../contact-us/" class="dropdown-item">
+		        <i class=""></i> Contact us
+                    </a>
+            </div>
+                 </li>
+<li class="nav-item">
+		     <a href="https://www.redhat.com/en/technologies/management/ansible?sc_cid=7015Y000003szaKQAQ" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Ansible Automation Platform
+		     </a>
+		 </li>
+
+        
+      </ul>
+</div>
+    <!-- /.navbar-collapse -->
+  </div>
+  <!-- /.container -->
+</nav><!-- End default Menubar --><div class="body-content center-band">
+        <!--Body content-->
+        
+    
+  <div class="postindex ansible-content">
+      <article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title">
+            <a href="bullhorn-62/" class="u-url">Bullhorn #62</a>
+          </h1>
+          <div class="metadata">
+            <p class="byline author vcard">
+              <span class="byline-name fn" itemprop="author">
+                  <a href="../authors/ansible-collaborative-et-al/">Ansible Collaborative, et al</a>
+              </span>
+            </p>
+            <p class="dateline">
+              <a href="bullhorn-62/" rel="bookmark">
+                <time class="published dt-published" datetime="2022-06-10T14:45:00Z" itemprop="datePublished" title="2022-06-10 14:45">2022-06-10 14:45</time></a>
+            </p>
+          </div>
+        </header><div class="p-summary entry-summary">
+            <div>
+<p><img alt="Ansible Bullhorn banner" src="../images/bullhorn-banner-mango.png"></p>
+<p><em>A Newsletter for the Ansible Developer Community</em>
+<em>Issue #62, 2022-06-10 (<a href="https://us19.campaign-archive.com/home/?u=56d874e027110e35dea0e03c1&amp;id=d6635f5420">Past Issues</a>)</em></p>
+<p>Welcome to <a href="https://github.com/ansible/community/wiki/News#the-bullhorn">The Bullhorn</a>, our newsletter for the Ansible developer community. If you have any questions or content you’d like to share, you're welcome to chat with us in the <a href="https://matrix.to/#/#social:ansible.com">Ansible Social room on Matrix</a>, and mention <a href="https://matrix.to/#/@newsbot:ansible.im"><code>newsbot</code></a> to have your news item tagged for review for the next weekly issue!</p>
+</div>
+          </div>
+      </article><br><hr>
+<br><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title">
+            <a href="pump-up-your-itil-with-automation/" class="u-url">Pump up your ITIL with Automation</a>
+          </h1>
+          <div class="metadata">
+            <p class="byline author vcard">
+              <span class="byline-name fn" itemprop="author">
+                  <a href="../authors/eric-lavarde/">Eric Lavarde</a>
+              </span>
+            </p>
+            <p class="dateline">
+              <a href="pump-up-your-itil-with-automation/" rel="bookmark">
+                <time class="published dt-published" datetime="2022-06-09T00:00:00Z" itemprop="datePublished" title="2022-06-09 00:00">2022-06-09 00:00</time></a>
+            </p>
+          </div>
+        </header><div class="p-summary entry-summary">
+            <h2>Pump up your ITIL with Automation</h2>
+<p>In the world of automation and agility, it seems that Information
+Technology Infrastructure Library (ITIL) doesn't have a role to play
+anymore, being marked as an "old school" framework. Can it be the end of
+the methodology after it served numerous IT organizations for so long as
+a guideline and blueprint for their processes?</p>
+<p>This series of articles shows how automation, and more specifically Red
+Hat Ansible Automation Platform and the principles of Infrastructure as
+Code (IaC), can help bring some of the ITIL topics into the agile and
+automated bliss:</p>
+<ul>
+<li><a href="https://www.redhat.com/en/technologies/management/ansible/configuration-management">Configuration management</a></li>
+<li>Change and release management</li>
+<li>Incident and problem management</li>
+</ul>
+<p>So let's step into the topic of configuration management and what
+everybody still knows as
+<a href="https://www.redhat.com/en/technologies/management/ansible/configuration-management">CMDB</a>
+(Configuration Management Database) even if ITIL has since long titled
+it as CMS (Configuration Management System). This name change was meant
+to highlight the fact that the function can be fulfilled by a
+combination of multiple databases and tools, but it won't matter here,
+so we'll stick to the infamous CMDB term.</p>
+<p>Do you love your CMDB? Probably not, according to my experience with
+numerous customers. The data is generally outdated and wrong, considered
+useless, which means that its maintenance is considered a chore. This
+means that it's maintained with as little effort as possible, in a
+careless manner, making it even less up-to-date, and in a downward
+spiral you go.</p>
+<p>To avoid the crash, we need first to understand that a CMDB and the
+related Configuration management have two main purposes:</p>
+<ol>
+<li>Document the desired state of your environment - this is too often
+    done manually, with the admins required to maintain the
+    configuration once in the "real world" and once in the CMDB. To do
+    this, companies often populate the CMDB from the discovery of the
+    environment, which leads to a database that documents the current
+    state. Note that there is no clarity if it corresponds to the
+    desired state or not.</li>
+<li>Support the change management process by allowing an analysis of the
+    environment, e.g. to validate that there is enough disk space free
+    on each server before installing the new bloated software. Based on
+    the noted lack of trust in the data quality, it is generally ignored
+    as part of the process.</li>
+</ol>
+<p>Looking at the above shortcoming, we need first to more clearly
+structure our database, as it contains multiple kinds of data:</p>
+<ol>
+<li>Desired state data - this is information that comes from a service
+    or change request and represents what one needs to have in one's
+    environment.</li>
+<li>Actual state data - this is information discovered from the
+    environment and representing its current state.</li>
+</ol>
+<p>As data can be only desired, only actual or both, we have three
+categories, which we'll reference with A to C for sake of simplicity:</p>
+<p><img alt="database category diagram" src="../images/posts/archive/database-category-diagram.png"></p>
+<p>Because admins don't want to maintain the desired state twice, you use
+the desired state in your CMDB (type A and B) as inventory source for
+Ansible Automation Platform to configure your environment from it.
+Admins know that the better the data in the CMDB, the better the result
+in the real world, which leads to less work. That should be enough
+motivation to quickly improve the data quality of your CMDB.</p>
+<p>Because the CMDB doesn't mix-up desired state and actual state for the
+data of category A, you can detect discrepancies, make a decision on how
+to fix it, and use Ansible again for automated remediation. This should
+help you quickly align reality with desired state, and have the right
+data to make decisions.</p>
+<p>The data of type C isn't of much use for automation, and is meant for
+decision making in your change management process, though you could
+decide to skip a patch cycle if the disks are too full. That said, you
+shouldn't confuse this aspect with monitoring; monitoring a disk full
+situation and correcting it quickly belongs to incident management, not
+to configuration management.</p>
+<p>Once you've reached this first stage, you can go to the next level and
+use Ansible Automation Platform to automatically populate the desired
+state in your CMDB.</p>
+<p><img alt="database population" src="../images/posts/archive/database-population-diagram.png"></p>
+<p>Let's assume you have a service portal where customers can order new
+services or modify and decommission them, using a service catalogue and
+a dialog driving them through the choices they need to make. Using the
+input variables grabbed through the dialog, the service portal can,
+using the automation controller's API, trigger a workflow to fulfil the
+service. One of the first steps of the workflow is then to enter those
+input variables as desired state (type A and B) into the CMDB. It has
+the advantage that, should the workflow job fail, you still have the
+desired state documented and could trigger the action again once the
+root cause for the failure has been fixed.</p>
+<p>It would now be nice to have commit, branch and tag functions like in
+Git to roll-back such changes easily. But perhaps someone will invent a
+CMDB with such functionality based on this article. In the meantime,
+connect Ansible Automation Platform to your CMDB and add value and
+quality to your CMDB with automation.</p>
+<p><a href="https://www.redhat.com/en/technologies/management/ansible/configuration-management">Learn more about using Ansible Automation Platform for configuration
+management</a></p>
+<h3>Take a video tour</h3>
+<p><a href="https://youtu.be/7GJjhZoYEus">This eight-minute overview video</a> highlights the components and
+features found in the latest version of Ansible Automation
+Platform---and how they come together to deliver a comprehensive
+enterprise automation experience.</p>
+          </div>
+      </article><br><hr>
+<br><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title">
+            <a href="bullhorn-61/" class="u-url">Bullhorn #61</a>
+          </h1>
+          <div class="metadata">
+            <p class="byline author vcard">
+              <span class="byline-name fn" itemprop="author">
+                  <a href="../authors/ansible-collaborative-et-al/">Ansible Collaborative, et al</a>
+              </span>
+            </p>
+            <p class="dateline">
+              <a href="bullhorn-61/" rel="bookmark">
+                <time class="published dt-published" datetime="2022-06-02T21:45:00Z" itemprop="datePublished" title="2022-06-02 21:45">2022-06-02 21:45</time></a>
+            </p>
+          </div>
+        </header><div class="p-summary entry-summary">
+            <div>
+<p><img alt="Ansible Bullhorn banner" src="../images/bullhorn-banner-mango.png"></p>
+<p><em>A Newsletter for the Ansible Developer Community</em>
+<em>Issue #61, 2022-06-02 (<a href="https://us19.campaign-archive.com/home/?u=56d874e027110e35dea0e03c1&amp;id=d6635f5420">Past Issues</a>)</em></p>
+<p>Welcome to <a href="https://github.com/ansible/community/wiki/News#the-bullhorn">The Bullhorn</a>, our newsletter for the Ansible developer community. If you have any questions or content you’d like to share, you're welcome to chat with us in the <a href="https://matrix.to/#/#social:ansible.com">Ansible Social room on Matrix</a>, and mention <a href="https://matrix.to/#/@newsbot:ansible.im"><code>newsbot</code></a> to have your news item tagged for review for the next weekly issue!</p>
+</div>
+          </div>
+      </article><br><hr>
+<br><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title">
+            <a href="released-automation-content-navigator-2.0/" class="u-url">Automation content navigator releases with Ansible Automation Platform 2.2</a>
+          </h1>
+          <div class="metadata">
+            <p class="byline author vcard">
+              <span class="byline-name fn" itemprop="author">
+                  <a href="../authors/colin-mcnaughton/">Colin McNaughton</a>
+              </span>
+            </p>
+            <p class="dateline">
+              <a href="released-automation-content-navigator-2.0/" rel="bookmark">
+                <time class="published dt-published" datetime="2022-06-01T00:00:00Z" itemprop="datePublished" title="2022-06-01 00:00">2022-06-01 00:00</time></a>
+            </p>
+          </div>
+        </header><div class="p-summary entry-summary">
+            <h2>Automation content navigator releases with Ansible Automation Platform 2.2</h2>
+<h3>What is it?</h3>
+<p>Automation content navigator was released alongside Red Hat Ansible
+Automation Platform 2.0 and changed the way content creators build and
+test Ansible automation. Navigator 1.0 drew together multiple Ansible
+command line tools like ansible-playbook, ansible-doc, ansible-config,
+etc. and continues to accrue seriously useful new features to help
+deliver greater flexibility to automation creators.</p>
+<p>Coinciding with the release of Ansible Automation Platform 2.2,
+navigator 2.0 introduces improvements to existing functionality
+alongside additional features to aid in the development of automation
+content.</p>
+<p>Within navigator 2.0, you will find:</p>
+<ul>
+<li>Automation execution environment image build support </li>
+<li>Ability to interact in real-time with automation execution
+    environments </li>
+<li>Settings subcommand to view active configuration of local
+    environment </li>
+<li>Generate a sample configuration file that can be used for new
+    projects</li>
+<li>Automatic mode selection (stdout vs. interactive) </li>
+<li>Technology preview lint support, UI improvements, Collections view
+    support for Ansible built-ins, time zone support, color
+    enhancements, and more!</li>
+</ul>
+<h3>Looking closer</h3>
+<h4>Image builder support</h4>
+<p>Before the release of navigator 2.0, a separate command line application
+(ansible-builder)  was needed to build execution environment images from
+human readable YAML files. With this release, ansible-navigator installs
+ansible-builder and includes a new build command that is used to pass
+through arguments to ansible-builder allowing content creators to create
+images from a single familiar interface.</p>
+<h4>Why should I care?</h4>
+<p>All enhancements to ansible-builder can be leveraged from
+ansible-navigator. This functionality helps to cement navigator's role
+within the content creators workflow to allow not only content creation
+and environment introspection, but also execution environment build
+support from within navigator.</p>
+<h4>Things to try:</h4>
+<ul>
+<li>Add the arista.avd Collection to the supported execution
+    environment:</li>
+</ul>
+<p><em>==&gt; ./builder/execution-environment.yml</em></p>
+<div class="code"><pre class="code literal-block"><span class="o">---</span>
+<span class="nl">version:</span><span class="w"> </span><span class="mh">1</span>
+<span class="nl">build_arg_defaults:</span>
+<span class="w">  </span><span class="nl">EE_BASE_IMAGE:</span><span class="w"> </span><span class="s">"registry.redhat.io/ansible-automation-platform-21/ee-supported-rhel8:latest"</span>
+<span class="nl">dependencies:</span>
+<span class="w">  </span><span class="nl">galaxy:</span><span class="w"> </span><span class="n">requirements</span><span class="p">.</span><span class="n">yml</span>
+<span class="w">  </span><span class="nl">system:</span><span class="w"> </span><span class="s">""</span>
+<span class="w">  </span><span class="nl">python:</span><span class="w"> </span><span class="s">""</span>
+</pre></div>
+
+<p><em>==&gt; ./builder/requirements.yml</em></p>
+<div class="code"><pre class="code literal-block">---
+collections:
+  - arista.avd
+</pre></div>
+
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>ansible-navigator<span class="w"> </span>builder<span class="w"> </span>build<span class="w"> </span>--workdir<span class="w"> </span>builder
+</pre></div>
+
+<h3>Introducing the exec command</h3>
+<p>With a new subcommand, exec, automation creators now have the ability to
+open a shell in the default execution environment. This allows creators
+to further inspect the execution environment and leverage utilities
+installed within the execution environment without installing them on a
+local workstation.</p>
+<p>For example, imagine you're creating some new workflows and you need to
+leverage an additional Collection from Ansible automation hub. Instead
+of installing the ansible-galaxy command-line tool on the local
+workstation, you can run a command within navigator to install the
+Collection in a directory alongside the new workflows. Because the
+current working directory is bind mounted to the running container, the
+installed Collection is placed on the local filesystem.</p>
+<div class="code"><pre class="code literal-block">ansible-navigator<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>--<span class="w"> </span>ansible-galaxy<span class="w"> </span>collection<span class="w"> </span>install<span class="w"> </span>servicenow.itsm<span class="w"> </span>-p<span class="w"> </span>./collections
+</pre></div>
+
+<p>After running the above command, a new directory called "Collections"
+should exist in your current working directory (CWD). This directory
+will be made available to the execution environment at runtime because
+the CWD is bind mounted at runtime. This allows you to always tell which
+Collections are installed within the execution environment and which
+have been bind mounted to the container.</p>
+<h4>Why should I care?</h4>
+<p>Navigator lowers the barrier for creating new content! A creator now
+only needs to install ansible-navigator to begin creating new
+automation. Leveraging execution environments, the content creator
+doesn't even need to install ansible-core! Navigator pulls in a default
+execution environment that contains ansible-core and common Ansible
+command line utilities such as ansible-galaxy. The exec command allows
+these to be leveraged from within the default execution environment
+instead of relying on workstation configuration.</p>
+<h4>Things to try:</h4>
+<ul>
+<li>Encrypt a secret using a vault password file:</li>
+</ul>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span><span class="nb">echo</span><span class="w"> </span>secret_vault_password<span class="w"> </span>&gt;<span class="w"> </span>password_file
+$<span class="w"> </span>ansible-navigator<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>--<span class="w"> </span>ansible-vault<span class="w"> </span>encrypt_string<span class="w"> </span>--vault-password-file<span class="w"> </span>password_file<span class="w"> </span><span class="s1">'secret'</span>
+!vault<span class="w"> </span><span class="p">|</span>
+<span class="w">          </span><span class="nv">$ANSIBLE_VAULT</span><span class="p">;</span><span class="m">1</span>.1<span class="p">;</span>AES256
+<span class="w">          </span><span class="m">64323039613737313538666239363032396361613464393033343165663631653835356232373139</span>
+
+Encryption<span class="w"> </span>successful
+</pre></div>
+
+<ul>
+<li>Scaffold a new Collection in the CWD, in the playbook adjacent
+    Collection directory:</li>
+</ul>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>ansible-navigator<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>--<span class="w"> </span>env
+<span class="nv">ANSIBLE_CACHE_PLUGIN</span><span class="o">=</span>jsonfile
+<span class="nv">DESCRIPTION</span><span class="o">=</span>Red<span class="w"> </span>Hat<span class="w"> </span>Ansible<span class="w"> </span>Automation<span class="w"> </span>Platform<span class="w"> </span>Minimal<span class="w"> </span>Execution<span class="w"> </span>Environment
+<span class="nv">SSH_AUTH_SOCK</span><span class="o">=</span>/run/user/1000/keyring/ssh
+</pre></div>
+
+<h3>Navigator settings command</h3>
+<p>The settings command surfaces the configuration of the local environment
+from within navigator. From the settings screen, creators are able to
+view default values and values changed by local configuration
+parameters. Leveraging this within an integrated development environment
+(IDE) such as VS Code is especially helpful using features like
+command+click to open a file path within the editor. For example, a
+creator is able to see that a local ansible.cfg or ansible-navigator.yml
+file is being sourced by navigator and can open that file within the
+configured editor directly from the navigator settings screen.</p>
+<h4>Why should I care?</h4>
+<p>Ansible is flexible! System-wide configuration files can be sourced for
+multiple automation projects. It's very helpful to the content creator
+to be able to view default configuration, which configuration parameters
+have been defined in local configuration files and which files are being
+sourced by the current project. All of this enhances a streamlined
+creator workflow that becomes more predictable for content creators.</p>
+<h4>Navigator sample settings</h4>
+<p>Imagine you are an automation content creator starting a new project.
+You know that this new project will:</p>
+<ul>
+<li>use a newly built execution environment</li>
+<li>require navigator to have reasonable configuration defaults</li>
+</ul>
+<p>In addition, you know you want to customize navigator to use your
+preferred code editor.</p>
+<p>Navigator sample settings allow creators to display a sample
+ansible-navigator.yml configuration file with all parameters commented
+out. This allows the creator to pick and choose which settings to adjust
+for the new project. Things like default execution environment image
+name, image pull policy, which code editor to use when opening files
+from navigator, etc. are all configured from ansible-navigator.yml.
+Additionally, this sample settings file can be written to the local
+filesystem where, once edited for the new project, can be sourced by
+navigator.</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>ansible-navigator<span class="w"> </span>settings<span class="w"> </span>--sample<span class="w"> </span>&gt;<span class="w"> </span>my.yaml
+</pre></div>
+
+<h4>Why should I care?</h4>
+<p>Multiple automation projects usually mean multiple execution
+environments that need to be defined as the default execution
+environment for the corresponding project. By allowing settings files to
+be created from navigator, creators do not need to rely on memory to
+define the parameters necessary to customize and deploy their projects.</p>
+<h4>Things to try:</h4>
+<ul>
+<li>Use the TUI to review the current settings:</li>
+</ul>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>ansible-navigator<span class="w"> </span>settings
+</pre></div>
+
+<ul>
+<li>Review the effective setting for ansible-navigator:</li>
+</ul>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>ansible-navigator<span class="w"> </span>settings<span class="w"> </span>--effective
+</pre></div>
+
+<ul>
+<li>Show the source for each of the current settings:</li>
+</ul>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>ansible-navigator<span class="w"> </span>settings<span class="w"> </span>--sources
+</pre></div>
+
+<h3>Automatic mode selection</h3>
+<p>Navigator consists of a textual user interface (TUI) that operates in
+interactive mode by default. In interactive mode, creators run commands
+and navigate the interface by using a series of keystrokes. Navigator
+1.0 supported standard out mode for some commands. This means that
+instead of opening up the full interactive user interface, creators
+could run commands and query information about the local environment
+without opening up the TUI. Standard out mode is helpful, for instance,
+in CI/CD pipelines where there is no need to run commands interactively.</p>
+<p>With navigator 2.0, more commands are supported in standard out mode.
+For example, the collections subcommand can now run in standard out mode
+and interactive mode. It's very useful to automation creators to see
+which Collections are available in the environment to figure out which
+modules can be leveraged in automated workflows.</p>
+<p>Additionally, navigator now supports automatic mode selection for
+commands that are only offered in a single mode. Previously the <code>--mode</code>
+command line argument was necessary for commands that only supported
+mode stdout.</p>
+<h4>Why should I care?</h4>
+<p>Navigator is easily adapted to individual creators' workflows and
+preferences. Even more, by adding standard out support for more
+commands, navigator can now be utilized in automated build environments.</p>
+<h4>Things to try:</h4>
+<ul>
+<li>Show the help for the ansible-playbook command without specifying
+    <code>--mode stodut</code>
+</li>
+</ul>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>ansible-navigator<span class="w"> </span>run<span class="w"> </span>--help-playbook
+</pre></div>
+
+<ul>
+<li>Show the help for the ansible-builder command:</li>
+</ul>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>ansible-navigator<span class="w"> </span>builder<span class="w"> </span>--help-builder
+</pre></div>
+
+<h3>Lint functionality (technology preview)</h3>
+<p>One very nice use of interactive mode is in the newly added and
+experimental feature for linting Ansible content. The lint subcommand,
+when coupled with a path to an Ansible Playbook or directory of Ansible
+content, opens a new screen in navigator where problems and suggestions
+are displayed for the file(s) passed into the lint command. As the
+problem files are corrected and saved, the list of problems and
+suggestions shrinks. Coupled with a code editor's ability to
+control+click to open a file path, editing files with potential issues
+is quick and fits in well with the rest of the creator experience.</p>
+<h4>Why should I care?</h4>
+<p>Consistent content produces reliable automation. Lint support allows
+creators the ability to ensure that the content produced adheres to best
+practices.</p>
+<h4>Things to try:</h4>
+<ul>
+<li>Lint a playbook using the latest creator execution environment</li>
+</ul>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>ansible-navigator<span class="w"> </span>lint<span class="w"> </span>site.yaml<span class="w"> </span>--eei<span class="w"> </span>quay.io/ansible/creator-ee:latest
+</pre></div>
+
+<h3>What now?</h3>
+<p>Automation content navigator 2.0 is available for use today! Navigator
+offers improvements to the authoring and testing experience. As a
+result, automation content creators have more tools on hand to assist in
+the creation and maintenance of automated workflows. </p>
+          </div>
+      </article><br><hr>
+<br><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title">
+            <a href="bullhorn-60/" class="u-url">Bullhorn #60</a>
+          </h1>
+          <div class="metadata">
+            <p class="byline author vcard">
+              <span class="byline-name fn" itemprop="author">
+                  <a href="../authors/ansible-collaborative-et-al/">Ansible Collaborative, et al</a>
+              </span>
+            </p>
+            <p class="dateline">
+              <a href="bullhorn-60/" rel="bookmark">
+                <time class="published dt-published" datetime="2022-05-27T19:00:00Z" itemprop="datePublished" title="2022-05-27 19:00">2022-05-27 19:00</time></a>
+            </p>
+          </div>
+        </header><div class="p-summary entry-summary">
+            <div>
+<p><img alt="Ansible Bullhorn banner" src="../images/bullhorn-banner-mango.png"></p>
+<p><em>A Newsletter for the Ansible Developer Community</em>
+<em>Issue #60, 2022-05-27 (<a href="https://us19.campaign-archive.com/home/?u=56d874e027110e35dea0e03c1&amp;id=d6635f5420">Past Issues</a>)</em></p>
+<p>Welcome to <a href="https://github.com/ansible/community/wiki/News#the-bullhorn">The Bullhorn</a>, our newsletter for the Ansible developer community. If you have any questions or content you’d like to share, you're welcome to chat with us in the <a href="https://matrix.to/#/#social:ansible.com">Ansible Social room on Matrix</a>, and mention <a href="https://matrix.to/#/@newsbot:ansible.im"><code>newsbot</code></a> to have your news item tagged for review for the next weekly issue!</p>
+</div>
+          </div>
+      </article><br><hr>
+<br><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title">
+            <a href="exploring-new-possibilities-with-the-aws-cloud-control-collection/" class="u-url">Exploring New Possibilities with the AWS Cloud Control Collection</a>
+          </h1>
+          <div class="metadata">
+            <p class="byline author vcard">
+              <span class="byline-name fn" itemprop="author">
+                  <a href="../authors/alina-buzachis/">Alina Buzachis</a>
+              </span>
+            </p>
+            <p class="dateline">
+              <a href="exploring-new-possibilities-with-the-aws-cloud-control-collection/" rel="bookmark">
+                <time class="published dt-published" datetime="2022-05-25T00:00:00Z" itemprop="datePublished" title="2022-05-25 00:00">2022-05-25 00:00</time></a>
+            </p>
+          </div>
+        </header><div class="p-summary entry-summary">
+            <h2>Exploring New Possibilities with the AWS Cloud Control Collection</h2>
+<p>We recently made available an experimental alpha Collection of
+generated modules using the AWS Cloud Control API for interacting with
+AWS Services. This content is not intended for production in its current
+state. We are making this work available because we thought it was
+important to share our research and get your
+feedback.</p>
+<p>In this post, we'll highlight how to try out this alpha release of the
+new <a href="https://github.com/ansible-collections/amazon.cloud">amazon.cloud content Collection</a></p>
+<h3>The AWS Cloud Control API</h3>
+<p>Launched in September 2021 and featured at AWS re:Invent, AWS Cloud
+Control API is a set of common application programming interfaces (APIs)
+that provides five operations for developers to create, read, update,
+delete, and list (CRUDL) resources and make it easy for developers and
+partners to manage the lifecycle of AWS and third-party services in a
+standard way.</p>
+<p>The Cloud Control API provides support for hundreds of AWS resources
+today with support for more existing AWS resources across services such
+as Amazon Elastic Compute Cloud (Amazon EC2) and Amazon Simple Storage
+Service (Amazon S3) in the coming months.</p>
+<p>AWS delivers a broad and deep portfolio of cloud services. It started
+with Amazon Simple Storage Service (Amazon S3) and grew over 200+
+services. Each distinct AWS service has a specific API with its own
+vocabulary, input parameters, and error reporting. As these APIs are
+unique to each service, developers have to understand the behavior
+(input, responses, and error codes) of each API they use. As
+applications have become increasingly sophisticated and developers work
+across more AWS services, it can become challenging to learn and manage
+distinct APIs for developers.</p>
+<p>With the launch of AWS Cloud Control API, developers have a consistent
+method to manage supported services that are defined as part of their
+cloud infrastructure throughout their lifecycle, so there are fewer APIs
+to learn as developers add new services to their
+infrastructure.</p>
+<h3>Why AWS Cloud Control API is important to Ansible</h3>
+<p>While not directly affecting Ansible content authors automating AWS
+services, we believe the Cloud Control API will be beneficial in
+providing a better cloud automation experience.</p>
+<p>The most noteworthy is that it enables the
+rapid introduction of new AWS services and
+implementation of new features to existing ones. This will also enable
+more comprehensive coverage of the vast number of AWS services
+available. This can be further extended to include third-party services
+running in the AWS cloud that have adopted the Cloud Control
+API.</p>
+<p>The modules contained in this Collection are generated using a tool
+called <a href="https://github.com/ansible-collections/amazon_cloud_code_generator">amazon_cloud_code_generator</a> -
+developed and open sourced by the Ansible Cloud
+team.</p>
+<p><img alt="amazon.cloud collection generation flow diagram" src="../images/posts/archive/aws-ansible-cloud-collection.jpg"></p>
+<p>As you can see in the flow diagram, the Collection can be easily
+deployed using <code>tox -e refresh_modules</code>, and it is generated in the
+<code>cloud</code> subdirectory by default.</p>
+<p>Basically, the generation process leverages some Python utility scripts
+that wrap the AWS CloudFormation client to scrape Resource Type
+Definition Schema or meta-schema for each Amazon-supported resource and
+performs the necessary processing to generate module 
+documentation.</p>
+<p>Additional processing logic generates all utilities including modules,
+modules_utils, and tests.</p>
+<p>For example, <code>module_utils</code> contains a base class that can be used by all resource modules to
+provide all the necessary methods to create, update, delete, describe
+and list with the appropriate logic to wait, paginate, and gracefully
+handle botocore exceptions. </p>
+<h3>Using the amazon.cloud Collection</h3>
+<p>All the modules of this Collection use boto3
+Amazon Web Services (AWS) Software
+Development Kit (SDK) for Python and AWS
+Cloud Control API (CloudControlApi) client. It
+requires:</p>
+<ul>
+<li>
+<a href="https://github.com/boto/boto3">boto3</a> <code>&gt;=</code> 1.20.0 and <a href="https://github.com/boto/botocore">botocore</a> <code>&gt;=</code> 1.23.0</li>
+<li>Python 3.9 or higher.</li>
+</ul>
+<h3>The basic task example</h3>
+<p>Let's take a look at a practical example of how to use the amazon.cloud
+Collection. Perhaps you need to provision a simple AWS S3 bucket and
+then describe it.</p>
+<p>If you are already using the
+<a href="https://github.com/ansible-collections/amazon.aws"><code>amazon.aws</code></a>
+and
+<a href="https://github.com/ansible-collections/community.aws"><code>community.aws</code></a>
+Collections, you can see the tasks syntax is pretty much
+similar.</p>
+<p>You may notice that we no longer have
+<code>info</code> modules,
+but the "get" or "describe" and "list" features that the
+<code>info</code> modules
+were doing are handled in the main module. This certainly simplifies the
+Collection usage and improves user experience.</p>
+<div class="code"><pre class="code literal-block"><span class="o">-</span><span class="w"> </span><span class="nx">name</span><span class="p">:</span><span class="w"> </span><span class="nx">Create</span><span class="w"> </span><span class="nx">a</span><span class="w"> </span><span class="nx">simple</span><span class="w"> </span><span class="nx">S3</span><span class="w"> </span><span class="nx">bucket</span><span class="w"> </span><span class="nx">with</span><span class="w"> </span><span class="nx">public</span><span class="w"> </span><span class="nx">access</span><span class="w"> </span><span class="nx">block</span><span class="w"> </span><span class="nx">configuration</span>
+<span class="w">  </span><span class="nx">amazon</span><span class="p">.</span><span class="nx">cloud</span><span class="p">.</span><span class="nx">s3_bucket</span><span class="p">:</span>
+<span class="w">    </span><span class="nx">state</span><span class="p">:</span><span class="w"> </span><span class="nx">present</span>
+<span class="w">    </span><span class="nx">bucket_name</span><span class="p">:</span><span class="w"> </span><span class="err">“</span><span class="p">{{</span><span class="w"> </span><span class="nx">local_bucket_name</span><span class="w"> </span><span class="p">}}</span><span class="err">”</span>
+<span class="w">    </span><span class="nx">public_access_block_configuration</span><span class="p">:</span>
+<span class="w">      </span><span class="nx">block_public_acls</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">      </span><span class="nx">block_public_policy</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">      </span><span class="nx">ignore_public_acls</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">      </span><span class="nx">restrict_public_buckets</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">  </span><span class="nx">register</span><span class="p">:</span><span class="w"> </span><span class="nx">_result_create</span>
+
+<span class="o">-</span><span class="w"> </span><span class="nx">name</span><span class="p">:</span><span class="w"> </span><span class="nx">Gather</span><span class="w"> </span><span class="nx">information</span><span class="w"> </span><span class="nx">about</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">S3</span><span class="w"> </span><span class="nx">bucket</span>
+<span class="w">  </span><span class="nx">amazon</span><span class="p">.</span><span class="nx">cloud</span><span class="p">.</span><span class="nx">s3_bucket</span><span class="p">:</span>
+<span class="w">    </span><span class="nx">state</span><span class="p">:</span><span class="w"> </span><span class="nx">get</span>
+<span class="w">    </span><span class="nx">bucket_name</span><span class="p">:</span><span class="w"> </span><span class="err">“</span><span class="p">{{</span><span class="w"> </span><span class="nx">local_bucket_name</span><span class="w"> </span><span class="p">}}</span><span class="err">”</span>
+<span class="w">  </span><span class="nx">register</span><span class="p">:</span><span class="w"> </span><span class="nx">_result_info</span>
+</pre></div>
+
+<div class="code"><pre class="code literal-block"><span class="o">-</span><span class="w"> </span><span class="nx">name</span><span class="p">:</span><span class="w"> </span><span class="nx">Create</span><span class="w"> </span><span class="nx">a</span><span class="w"> </span><span class="nx">simple</span><span class="w"> </span><span class="nx">S3</span><span class="w"> </span><span class="nx">bucket</span><span class="w"> </span><span class="nx">with</span><span class="w"> </span><span class="nx">public</span><span class="w"> </span><span class="nx">access</span><span class="w"> </span><span class="nx">block</span><span class="w"> </span><span class="nx">configuration</span>
+<span class="w">  </span><span class="nx">amazon</span><span class="p">.</span><span class="nx">aws</span><span class="p">.</span><span class="nx">s3_bucket</span><span class="p">:</span>
+<span class="w">    </span><span class="nx">state</span><span class="p">:</span><span class="w"> </span><span class="nx">present</span>
+<span class="w">    </span><span class="nx">name</span><span class="p">:</span><span class="w"> </span><span class="err">“</span><span class="p">{{</span><span class="w"> </span><span class="nx">local_bucket_name</span><span class="w"> </span><span class="p">}}</span><span class="err">”</span>
+<span class="w">    </span><span class="nx">public_access</span><span class="p">:</span>
+<span class="w">      </span><span class="nx">block_public_acls</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">      </span><span class="nx">block_public_policy</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">      </span><span class="nx">ignore_public_acls</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">      </span><span class="nx">restrict_public_buckets</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">  </span><span class="nx">register</span><span class="p">:</span><span class="w"> </span><span class="nx">_result_create</span>
+
+<span class="o">-</span><span class="w"> </span><span class="nx">name</span><span class="p">:</span><span class="w"> </span><span class="nx">Gather</span><span class="w"> </span><span class="nx">information</span><span class="w"> </span><span class="nx">about</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">S3</span><span class="w"> </span><span class="nx">bucket</span>
+<span class="w">  </span><span class="nx">community</span><span class="p">.</span><span class="nx">aws</span><span class="p">.</span><span class="nx">aws_s3_bucket_info</span><span class="p">:</span>
+<span class="w">    </span><span class="nx">name</span><span class="p">:</span><span class="w"> </span><span class="err">“</span><span class="p">{{</span><span class="w"> </span><span class="nx">local_bucket_name</span><span class="w"> </span><span class="p">}}</span><span class="err">”</span>
+<span class="w">  </span><span class="nx">register</span><span class="p">:</span><span class="w"> </span><span class="nx">_result_info</span>
+</pre></div>
+
+<p>Another relevant feature of the amazon.cloud content Collection is the
+structure of the returned result. Particularly, the result returned by
+all the available operations (present, absent, list and get or describe)
+is well-structured and uniform across all the modules. It always
+contains the identifier of the resource and a dictionary of
+resource-specific properties. </p>
+<p>In this way, we can straightforwardly get the identifier of each
+resource and re-use it in multiple dependent resources.</p>
+<p>This feature has definitely a positive impact on the user experience.</p>
+<div class="code"><pre class="code literal-block"><span class="p">[</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="s">"identifier"</span><span class="o">:</span><span class="w"> </span><span class="s">"090ba2aa-cc0c-5a40-9b5f-a2d2b8fc6ceb"</span><span class="p">,</span>
+<span class="w">    </span><span class="s">"properties"</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="s">"arn"</span><span class="o">:</span><span class="w"> </span><span class="s">"arn:aws:s3:::090ba2aa-cc0c-5a40-9b5f-a2d2b8fc6ceb"</span><span class="p">,</span>
+<span class="w">        </span><span class="s">"bucket_name"</span><span class="o">:</span><span class="w"> </span><span class="s">"090ba2aa-cc0c-5a40-9b5f-a2d2b8fc6ceb"</span><span class="p">,</span>
+<span class="w">        </span><span class="s">"domain_name"</span><span class="o">:</span><span class="w"> </span><span class="s">"090ba2aa-cc0c-5a40-9b5f-a2d2b8fc6ceb.s3.amazonaws.com"</span><span class="p">,</span>
+<span class="w">        </span><span class="s">"dual_stack_domain_name"</span><span class="o">:</span><span class="w"> </span><span class="s">"090ba2aa-cc0c-5a40-9b5f-a2d2b8fc6ceb.s3.dualstack.us-east-1.amazonaws.com"</span><span class="p">,</span>
+<span class="w">        </span><span class="s">"regional_domain_name"</span><span class="o">:</span><span class="w"> </span><span class="s">"090ba2aa-cc0c-5a40-9b5f-a2d2b8fc6ceb.s3.us-east-1.amazonaws.com"</span><span class="p">,</span>
+<span class="w">        </span><span class="s">"website_url"</span><span class="o">:</span><span class="w"> </span><span class="s">"http://090ba2aa-cc0c-5a40-9b5f-a2d2b8fc6ceb.s3-website-us-east-1.amazonaws.com"</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+
+<h3>Known issues and shortcomings</h3>
+<ul>
+<li>
+<p>Generated modules like these are only as good as the API and its
+    schema. Documentation may not be complete for all the modules
+    options.</p>
+</li>
+<li>
+<p>Missing supportability for important AWS resources like, EC2
+    instance, volume and snapshot, RDS instance and snapshot, Elastic
+    Load Balancer, etc. Resources from some of these AWS services are
+    expected to be supported in the coming months.</p>
+</li>
+<li>
+<p>Idempotency (desired state) is a function of the API and may not be
+    fully supported. In the Cloud Control API, the idempotency is
+    achieved using the <code>ClientToken</code>. A
+    <code>ClientToken</code>, which is valid for 36 hours
+    once used. </p>
+</li>
+<li>
+<ul>
+<li>After that, a resource request with the same client token is
+        treated as a new request. </li>
+<li>To overcome this limitation, the modules present in this
+    Collection handle the idempotency by performing a first
+    <code>get_resource(TypeName='', Identifier='')</code> operation using the
+    resource identifier. </li>
+</ul>
+</li>
+<li>
+<p>Missing server-side pagination may have a severe impact on
+    performance. As you may know, some AWS operations return results
+    that are incomplete and require subsequent requests in order to
+    attain the entire result set. Paginators are a feature of boto3 that
+    act as an abstraction over the process of iterating over an entire
+    result set of a truncated API operation. Cloud Control API lacks
+    this functionality at the moment. This limitation is handled in this
+    Collection by implementing manual client-side paginators.</p>
+</li>
+<li>
+<p>Filtering to provide name based identification to support desired
+    state (idempotency) logic like in amazon.aws is absent. In practice
+    it means you cannot list all the resources and filter the result on
+    the server-side. </p>
+</li>
+<li>
+<ul>
+<li>For example, several modules do not allow the user to set a
+        primaryIdentifier at creation time. One possible solution would
+        be to allow the user to set a resource name and use that name to
+        set [Tag:Name, but as the API does
+        not allow server-side resource filtering, we can only implement
+        a client-side filtering using that tag information. This
+        approach would definitely have a severe impact on performance. </li>
+</ul>
+</li>
+<li>
+<p>Not all the resources support the available states. In practice this
+    means that some resources cannot be updated or listed.</p>
+</li>
+</ul>
+<h3>What is next?</h3>
+<p>The new amazon.cloud auto-generated Collection, besides the fact that it
+can be easily generated using the generator tool and has a pretty
+abstract set of APIs for all modules, is very straightforward to use and
+to re-use resources across multiple dependent resources.</p>
+<p>We continually strive to:</p>
+<ul>
+<li>Make a Collection\'s API generated modules more usable and easier to
+    work with. </li>
+<li>Increase resource supportability and cover wider use case scenarios
+    more quickly.</li>
+<li>Improve the overall Collection module's performance.</li>
+</ul>
+<p>What can we do to improve provisioning AWS cloud resources with Ansible?
+More broadly, what can we do to make API generated modules more usable
+and easier to work with? We'd like to hear what you think.</p>
+<p>You can provide feedback by reporting any issue against the
+<a href="https://github.com/ansible-collections/amazon.cloud/issues.">amazon.cloud GitHub repository</a>.</p>
+<p>Because the modules are auto-generated, you can contribute with GitHub
+Pull Requests by opening them against the
+<a href="https://github.com/ansible-collections/amazon_cloud_code_generator">amazon_cloud_code_generator</a>
+tool and not the resulting Collection.</p>
+<h3>In conclusion</h3>
+<p>Although in its alpha version, the new amazon.cloud content Collection
+shows enormous potential for automating your deployments on AWS with
+Ansible and greatly increasing the chances of your cloud initiative
+being successful. </p>
+<p>We hope you found this blog post helpful! But, more importantly, we hope
+it inspired you to try out the latest amazon.cloud Collection release
+and let us know what you think.</p>
+          </div>
+      </article><br><hr>
+<br><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title">
+            <a href="bullhorn-59/" class="u-url">Bullhorn #59</a>
+          </h1>
+          <div class="metadata">
+            <p class="byline author vcard">
+              <span class="byline-name fn" itemprop="author">
+                  <a href="../authors/ansible-collaborative-et-al/">Ansible Collaborative, et al</a>
+              </span>
+            </p>
+            <p class="dateline">
+              <a href="bullhorn-59/" rel="bookmark">
+                <time class="published dt-published" datetime="2022-05-20T06:15:00Z" itemprop="datePublished" title="2022-05-20 06:15">2022-05-20 06:15</time></a>
+            </p>
+          </div>
+        </header><div class="p-summary entry-summary">
+            <div>
+<p><img alt="Ansible Bullhorn banner" src="../images/bullhorn-banner-mango.png"></p>
+<p><em>A Newsletter for the Ansible Developer Community</em>
+<em>Issue #59, 2022-05-20 (<a href="https://us19.campaign-archive.com/home/?u=56d874e027110e35dea0e03c1&amp;id=d6635f5420">Past Issues</a>)</em></p>
+<p>Welcome to <a href="https://github.com/ansible/community/wiki/News#the-bullhorn">The Bullhorn</a>, our newsletter for the Ansible developer community. If you have any questions or content you’d like to share, you're welcome to chat with us in the <a href="https://matrix.to/#/#social:ansible.com">Ansible Social room on Matrix</a>, and mention <a href="https://matrix.to/#/@newsbot:ansible.im"><code>newsbot</code></a> to have your news item tagged for review for the next weekly issue!</p>
+</div>
+          </div>
+      </article><br><hr>
+<br><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title">
+            <a href="automation-at-the-edge-summit-2022/" class="u-url">Automation at the Edge, Summit 2022</a>
+          </h1>
+          <div class="metadata">
+            <p class="byline author vcard">
+              <span class="byline-name fn" itemprop="author">
+                  <a href="../authors/elle-universal/">Elle Universal</a>
+              </span>
+            </p>
+            <p class="dateline">
+              <a href="automation-at-the-edge-summit-2022/" rel="bookmark">
+                <time class="published dt-published" datetime="2022-05-19T00:00:00Z" itemprop="datePublished" title="2022-05-19 00:00">2022-05-19 00:00</time></a>
+            </p>
+          </div>
+        </header><div class="p-summary entry-summary">
+            <h2>Automation at the Edge, Summit 2022</h2>
+<p>As some of you may know, Red Hat Summit was back in person in Boston
+last week. For those who are not familiar, Red Hat Summit is the premier
+enterprise open source event for IT professionals to learn, collaborate,
+and innovate on technologies from the datacenter and public cloud to the
+edge and beyond. Red Hat made a lot of exciting announcements, with
+several that included Red Hat Ansible Automation Platform.
+If you could not make the event or would like to revisit some of the
+content, you can access any session <a href="https://www.redhat.com/en/summit">on demand</a>. </p>
+<p>One of the big
+<a href="https://www.redhat.com/en/about/press-releases/red-hat-unveils-new-levels-security-software-supply-chain-edge">announcements</a>
+at Summit was the unveiling of new levels of security from the software
+supply chain to the edge. In Ansible Automation Platform 2.2, Red Hat is
+introducing a technical preview of Ansible content signing technology.
+The new capability helps with software supply chain security by enabling
+automation teams to validate that the automation content being executed
+in their enterprise is verified and trusted. </p>
+<p>With the announcement of this new edge capability, we showcased a
+session for Ansible and edge that is available on demand. The session
+<a href="https://events.experiences.redhat.com/widget/redhat/sum22/SessionCatalog22/session/1640789672821001p0oM">"GitOps your distributed edge computing model with Red Hat Ansible Automation Platform"</a>
+covers how Ansible Automation Platform, in combination with GitOps, can
+decrease the time to market and repair time to deploy and operate
+network edge infrastructure. It includes a demo that shows how to
+describe a deployment in Git, which works as a single source of truth.
+You will be able to see how Ansible Automation Platform enforces the
+correct state of the network infrastructure of a large-scale
+organization and its tracking through IT Service Management. </p>
+<p>Scaling automation anywhere using Ansible Automation Platform
+<a href="https://www.redhat.com/en/about/press-releases/red-hat-introduces-new-cross-portfolio-edge-capabilities">Red Hat introduced new cross-portfolio edge capabilities</a>,
+including features in Ansible Automation Platform that solves the
+management and automation needs to drive visibility and consistency
+across an organization's edge deployments. </p>
+<p>The session <a href="https://events.experiences.redhat.com/widget/redhat/sum22/SessionCatalog22/session/1641398142450001vmkJ">"Ansible Automation Platform 2 automation mesh-starting locally, scaling globally"</a>
+covers how to scale automation to successfully execute in distributed
+edge locations. </p>
+<h2>Automating RHEL at the edge with Ansible</h2>
+<p>If you watched the keynote presentation, you heard about the release of
+a <a href="https://www.redhat.com/en/about/press-releases/red-hat-introduces-new-cross-portfolio-edge-capabilities">SaaS Edge Manager</a>.
+However, we realize not everyone can use the cloud to manage their
+fleet. Below is how to add a postscript to your kickstart file to
+register your devices directly to an Ansible Automation Platform
+inventory so you can use it to manage your fleet.</p>
+<div class="code"><pre class="code literal-block"><span class="err">%</span><span class="l l-Scalar l-Scalar-Plain">post</span>
+<span class="l l-Scalar l-Scalar-Plain"># Create ansible playbook to register device to Ansible automation platform</span>
+<span class="l l-Scalar l-Scalar-Plain">cat &gt; /tmp/add_to_aap.yml &lt;&lt;EOF</span>
+<span class="nn">---</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">localhost</span>
+<span class="w w-Error"> </span><span class="nt">vars</span><span class="p">:</span>
+<span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">aap_url=https://AAPHOST.fqdn.com/api/v2/inventories/CHANGEME/hosts/</span>
+<span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">aap_username=changeme</span>
+<span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">aap_password=changeme</span>
+<span class="w"> </span><span class="nt">gather_facts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w"> </span><span class="nt">tasks</span><span class="p">:</span>
+<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">create hostname from regex of mac address</span>
+<span class="w">     </span><span class="nt">ansible.builtin.set_fact</span><span class="p">:</span>
+<span class="w">       </span><span class="nt">edge_hostname</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">ansible_default_ipv4.macaddress</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">replace(':','')</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">set hostname to mac ansible_all_ipv4_address</span>
+<span class="w">     </span><span class="nt">ansible.builtin.hostname</span><span class="p">:</span>
+<span class="w">       </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">"summit-demo-{{</span><span class="nv"> </span><span class="s">edge_hostname</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="w">       </span><span class="nt">use</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">systemd</span>
+<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Update Ansible Tower inventory</span>
+<span class="w">     </span><span class="nt">uri</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">aap_url</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="w">      </span><span class="nt">user</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">aap_ks_user</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="w">      </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">aap_ks_password</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="w">      </span><span class="nt">method</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">POST</span>
+<span class="w">      </span><span class="nt">body</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">ansible_hostname</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="w">        </span><span class="nt">variables</span><span class="p">:</span><span class="w"> </span><span class="s">'{ipaddress:</span><span class="nv"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">ansible_all_ipv4_addresses</span><span class="nv"> </span><span class="s">}}",</span><span class="nv"> </span><span class="s">macaddress:</span><span class="nv"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">ansible_default_ipv4.macaddress</span><span class="nv"> </span><span class="s">}}"</span><span class="nv"> </span><span class="s">}'</span>
+<span class="w">      </span><span class="nt">force_basic_auth</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">yes</span>
+<span class="w">      </span><span class="nt">status_code</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">201</span>
+<span class="w">      </span><span class="nt">body_format</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">json</span>
+<span class="w">      </span><span class="nt">validate_certs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">no</span>
+<span class="l l-Scalar l-Scalar-Plain">EOF</span>
+<span class="l l-Scalar l-Scalar-Plain">ansible-playbook /tmp/add_to_aap.yml</span>
+<span class="err">%</span><span class="l l-Scalar l-Scalar-Plain">end</span>
+</pre></div>
+
+<h3>Step 1: Inventory creation</h3>
+<ul>
+<li>
+<p>Create the inventory in Ansible Automation Platform, and get the
+    inventory number.</p>
+</li>
+<li>
+<p>Get the URL: in this example, the inventory ID is 2:</p>
+<p><img alt="url example" src="../images/posts/archive/edge-inventory-creation.png"></p>
+<p><code>https://AAPHOST.fqdn.com/#/inventories/inventory/2/details</code></p>
+</li>
+<li>
+<p>Assign aap_url in vars section:
+    <code>aap_url = https://AAPHOST.fqdn.com/api/v2/inventories/2/hosts/</code></p>
+</li>
+</ul>
+<h3>Step 2: Create credentials in Ansible Automation Platform</h3>
+<p>Assign credentials to <code>aap_ks_user</code> and <code>aap_ks_password</code> in the Access Users tab in Ansible Automation Platform.</p>
+<h3>Step 3: Check Ansible Automation Platform</h3>
+<p>You should now see your devices in Ansible Automation Platform after they boot up.</p>
+<p><img alt="screenshot" src="../images/posts/archive/edge-device-boot.png"></p>
+          </div>
+      </article><br><hr>
+<br><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title">
+            <a href="bullhorn-58/" class="u-url">Bullhorn #58</a>
+          </h1>
+          <div class="metadata">
+            <p class="byline author vcard">
+              <span class="byline-name fn" itemprop="author">
+                  <a href="../authors/ansible-collaborative-et-al/">Ansible Collaborative, et al</a>
+              </span>
+            </p>
+            <p class="dateline">
+              <a href="bullhorn-58/" rel="bookmark">
+                <time class="published dt-published" datetime="2022-05-13T12:15:00Z" itemprop="datePublished" title="2022-05-13 12:15">2022-05-13 12:15</time></a>
+            </p>
+          </div>
+        </header><div class="p-summary entry-summary">
+            <div>
+<p><img alt="Ansible Bullhorn banner" src="../images/bullhorn-banner-mango.png"></p>
+<p><em>A Newsletter for the Ansible Developer Community</em>
+<em>Issue #58, 2022-05-13 (<a href="https://us19.campaign-archive.com/home/?u=56d874e027110e35dea0e03c1&amp;id=d6635f5420">Past Issues</a>)</em></p>
+<p>Welcome to <a href="https://github.com/ansible/community/wiki/News#the-bullhorn">The Bullhorn</a>, our newsletter for the Ansible developer community. If you have any questions or content you’d like to share, you're welcome to chat with us in the <a href="https://matrix.to/#/#social:ansible.com">Ansible Social room on Matrix</a>, and mention <a href="https://matrix.to/#/@newsbot:ansible.im"><code>newsbot</code></a> to have your news item tagged for review for the next weekly issue!</p>
+</div>
+          </div>
+      </article><br><hr>
+<br><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title">
+            <a href="introducing-a-brand-new-way-to-automate-your-azure-cloud/" class="u-url">Introducing a brand new way to automate your Azure cloud</a>
+          </h1>
+          <div class="metadata">
+            <p class="byline author vcard">
+              <span class="byline-name fn" itemprop="author">
+                  <a href="../authors/hicham-mourad/">Hicham Mourad</a>
+              </span>
+            </p>
+            <p class="dateline">
+              <a href="introducing-a-brand-new-way-to-automate-your-azure-cloud/" rel="bookmark">
+                <time class="published dt-published" datetime="2022-05-10T00:00:00Z" itemprop="datePublished" title="2022-05-10 00:00">2022-05-10 00:00</time></a>
+            </p>
+          </div>
+        </header><div class="p-summary entry-summary">
+            <h2>Introducing a brand new way to automate your Azure cloud</h2>
+<p>In December of 2021, Red Hat and Microsoft announced
+<a href="https://www.redhat.com/en/about/press-releases/red-hat-brings-industry-leading-ansible-automation-platform-microsoft-azure">Red Hat Ansible Automation Platform</a>
+on <a href="https://azure.microsoft.com/en-us/blog/expand-hybrid-management-tools-with-red-hat-ansible-automation-platform-on-azure/">Microsoft Azure</a>. </p>
+<p>This year during Red Hat Summit 2022, Red Hat announced the general
+availability of Red Hat Ansible Automation Platform on Microsoft Azure
+across North America with global availability coming soon.  </p>
+<p>I'd like to spend some time providing some more details about this
+offering and why you should consider Red Hat Ansible Automation Platform
+on Azure.</p>
+<h2>Azure Marketplace deployment</h2>
+<p>Red Hat Ansible Automation Platform on Azure deploys from the Azure
+Marketplace as a <a href="https://docs.microsoft.com/en-us/azure/azure-resource-manager/managed-applications/overview">managed application</a>. 
+It deploys directly into your Azure subscription, but as the publisher
+of the application, Red Hat has access to a shared and secured managed
+resource group to support, maintain, and upgrade your deployment. More
+specifically, a dedicated Red Hat SRE team deals with all the ongoing
+management of Red Hat Ansible Automation Platform on Azure, while you
+focus on expanding your automation strategy within your organization
+across the hybrid cloud.</p>
+<p><img alt="screenshot" src="../images/posts/archive/azure-screenshot.png"></p>
+<h2>Azure Integrations</h2>
+<p>For many organizations using Azure today, there are huge benefits to
+take advantage of with Red Hat Ansible Automation Platform on Azure. It
+runs in your Azure subscription. It integrates seamlessly with many of
+the Azure services, including Azure billing. Also, if you have a
+Microsoft Azure Consumption Commitment agreement (MACC), the Red Hat
+Ansible Automation Platform on Azure deployment costs will count towards
+your MACC, and will be reflected on your Azure bill.  Oh, and did I
+mention that Red Hat supports the deployment, and you can automate,
+automate, and automate some more!</p>
+<p>Once you've deployed Red Hat Ansible Automation Platform on Azure, with
+a few simple configuration steps you can integrate into your Azure
+active directory (AD) environment for authentication.</p>
+<p><img alt="screenshot" src="../images/posts/archive/azure-ad-integration.png"></p>
+<p>There's great automation content available for you to leverage with
+examples to learn from if you're new to Red Hat Ansible Automation
+Platform on Azure.</p>
+<p>Here's a GitHub repository that has automation content for automating
+many Azure resources, like Azure Load Balancers, Azure PostgreSQL, Azure
+Networking, Azure Security groups, and more. Shortly, I'll highlight
+some more as we discuss the
+<a href="https://github.com/ansible-collections/cloud.azure_roles.git">Red Hat Ansible Certified Content Collection for Microsoft Azure</a>.</p>
+<p>Here's an image of some sample content.</p>
+<p><img alt="screenshot" src="../images/posts/archive/azure-screenshot-one.png"></p>
+<h2>Content is King!</h2>
+<p>Anyone using Red Hat Ansible Automation Platform on Azure will
+definitely want to use the Red Hat Ansible Certified Content Collection
+for Microsoft Azure. But with your subscription, you have access to all
+the Red Hat Ansible Certified Content at your fingertips!</p>
+<p><img alt="screenshot" src="../images/posts/archive/azure-screenshot-two.png"></p>
+<p>The Azure Collection includes over 250 modules to interrogate, manage,
+and automate numerous Azure resource types. From Azure AD, to
+networking, to DB, to AKS, to storage, to backup, to VMs, to security
+groups, to IAM... and so much more.  </p>
+<p><img alt="screenshot" src="../images/posts/archive/azure-screenshot-three.png"></p>
+<p>If you'd like to see the full list of modules you can check it out
+<a href="https://console.redhat.com/ansible/automation-hub/repo/published/azure/azcollection/content">here</a>
+on the Automation automation hub.  </p>
+<p>Here's an example of an Ansible Automation Platform workflow template
+linking together many job templates to perform a larger automation
+task.  In this case, spinning up a full development environment for the
+DevOps team.</p>
+<p><img alt="screenshot" src="../images/posts/archive/azure-screenshot-four.png"></p>
+<h2>Go deeper, go wider, and achieve more!</h2>
+<p>Red Hat Ansible Automation Platform on Azure includes an automation
+execution environment already tailored for cloud
+automation so you have everything you need to get started on Azure immediately. Having said
+that, a question that often comes up is:  "if I'm using Red Hat Ansible
+Automation Platform on Azure, does that mean I can only perform
+automation against Azure resources?" The great thing about Ansible
+Automation Platform in general is that it doesn't matter where you are
+running it from. In the case Red Hat Ansible Automation Platform on
+Azure, you are able to automate public cloud, private cloud, physical
+and virtual environments, and edge resources.  Obviously, one of the
+requirements here is having proper networking connectivity to other
+environments. Deploy Red Hat Ansible Automation Platform on Azure, and
+automate anywhere!</p>
+<p>Often, when people think about the Ansible Automation Platform they
+think configuration Management. However, configuration management is
+just one of the many use cases that Ansible Automation Platform can
+accomplish. So many organizations today take advantage of Ansible
+Automation Platform to automate network and security use cases,
+integrate into IT Service Management (ITSM) solutions like ServiceNow,
+Linux automation, Windows automation, and monitoring and analytics
+solutions.  </p>
+<p>Additionally, with the aggressive push to application modernization,
+many organizations use Ansible Automation Platform to integrate into
+their DevOps CI/CD pipelines. Are you using Azure DevOps, Jenkins, or
+other CI/CD tools? Cool, have your pipelines at any phase kick off
+Ansible Automation Platform automation jobs!  </p>
+<p>The automation use cases are endless, and there are so many efficiencies
+and savings to be gained by leveraging Ansible Automation Platform, not
+to mention the reduction in human errors, and the increased cross-silo
+collaboration.</p>
+          </div>
+      </article><br><hr>
+<br>
+</div>
+          <ul class="pager postindexpager clearfix">
+<li class="previous"><a href="index-17.html" rel="prev">Newer posts</a></li>
+            <li class="next"><a href="index-15.html" rel="next">Older posts</a></li>
+        </ul>
+<!--End of body content-->
+</div>
+        <div class="content-slim redhat-footer">
+      <div class="footer-left">
+        <ul class="footer-left-links">
+<li>
+            <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-SA 4.0</a>
+          </li>
+          <li>
+            <a href="https://www.redhat.com/en/about/privacy-policy" target="_blank">Privacy policy</a>
+          </li>
+          <li>
+            <a href="https://docs.ansible.com/ansible/latest/community/code_of_conduct.html" target="_blank">Code of conduct</a>
+          </li>
+        </ul>
+</div>
+      <div class="footer-right">
+        <span class="redhat">Powered by</span>
+        <span class="redhat-logo">
+          <a href="https://www.redhat.com/en/technologies/management/ansible" target="_blank">
+            <img src="../assets/images/redhat_reversed.svg" alt="Red Hat logo." width="96" height="28"></a>
+        </span>
+      </div>
+    </div>
+
+</div>
+
+            <script src="../assets/js/jquery.min.js"></script><script src="../assets/js/popper.min.js"></script><script src="../assets/js/bootstrap.min.js"></script><script src="../assets/js/baguetteBox.min.js"></script><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+</script><script src="../assets/js/clipboard.min.js" type="text/javascript"></script><script src="../assets/js/clipboard.js" type="text/javascript"></script>
+</body>
+</html>

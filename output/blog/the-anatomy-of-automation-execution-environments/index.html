@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html prefix="
+og: http://ogp.me/ns# article: http://ogp.me/ns/article#
+" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="In this blog, I will take you through the inner workings of ansible-builder and how all the above requirements are packaged and delivered as part of Ansible Automation Platform.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The anatomy of automation execution environments | Ansible Collaborative</title>
+<link href="../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/baguetteBox.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/rst.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/code.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/theme.css" rel="stylesheet" type="text/css">
+<!-- Red Hat fonts --><link rel="stylesheet" href="https://static.redhat.com/libs/redhat/redhat-font/2.0.0/webfonts/red-hat-font.css">
+<!-- Font Awesome --><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+<!-- Fork Awesome --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css" integrity="sha256-XoaMnoYC5TH6/+ihMEnospgm0J1PM/nioxbOUdnM8HY=" crossorigin="anonymous">
+<!-- Sass compiled css  --><link rel="stylesheet" href="../../assets/css/main.css">
+<link rel="stylesheet" href="../../assets/css/redhat-footer.css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://ansible.com/blog/the-anatomy-of-automation-execution-environments/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Anshul Behl">
+<link rel="prev" href="../bullhorn-73/" title="Bullhorn #73" type="text/html">
+<link rel="next" href="../ansible-vs.-terraform-demystified/" title="Ansible versus Terraform Demystified" type="text/html">
+<meta property="og:site_name" content="Ansible Collaborative">
+<meta property="og:title" content="The anatomy of automation execution environments">
+<meta property="og:url" content="https://ansible.com/blog/the-anatomy-of-automation-execution-environments/">
+<meta property="og:description" content="In this blog, I will take you through the inner workings of ansible-builder and how all the above requirements are packaged and delivered as part of Ansible Automation Platform.">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2022-09-12T00:00:00Z">
+</head>
+<body id="top">
+
+<div class="global-container" id="content" role="main">
+<!-- Start menubar -->
+<nav class="navbar navbar-expand-lg static-top mb-4 navbar-padding full-width-bg   navbar-dark   bg-pool   "><div class="masthead">
+    <!-- This keeps the margins nice -->
+    <a class="navbar-brand" href="../../">
+        <img src="../../images/ansible_logo-small-15.png" alt="Ansible community logo" id="logo" class="d-inline-block align-top" width="50" height="50"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon nav-toggle-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="bs-navbar">
+      <ul class="navbar-nav mr-auto"></ul>
+<ul class="navbar-nav navbar-right">
+<li class="nav-item dropdown">
+	        <a href="#" class="nav-link nav-link-color dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <i class=""></i> Documentation
+                </a>
+		<div class="dropdown-menu dropdown-menu-border">
+	    
+                    <a href="https://docs.ansible.com/" class="dropdown-item">
+		        <i class=""></i> Project documentation
+                    </a>
+                    <a href="https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/" class="dropdown-item">
+		        <i class=""></i> Ansible Automation Platform documentation
+                    </a>
+            </div>
+                 </li>
+<li class="nav-item">
+		     <a href="https://galaxy.ansible.com/" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Galaxy
+		     </a>
+		 </li>
+                 <li class="nav-item">
+		     <a href="https://forum.ansible.com/" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Forum
+		     </a>
+		 </li>
+            <li class="nav-item dropdown">
+	        <a href="#" class="nav-link nav-link-color dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <i class=""></i> Resources
+                </a>
+		<div class="dropdown-menu dropdown-menu-border">
+	    
+                    <a href="../../how-ansible-works/" class="dropdown-item">
+		        <i class=""></i> How Ansible works
+                    </a>
+                    <a href="../../ecosystem/" class="dropdown-item">
+		        <i class=""></i> Ansible ecosystem
+                    </a>
+                    <a href="../archive.html" class="dropdown-item">
+		        <i class=""></i> Blog
+                    </a>
+                    <a href="../../faq/" class="dropdown-item">
+		        <i class=""></i> Frequently asked questions
+                    </a>
+                    <a href="../../ansible-community-training/" class="dropdown-item">
+		        <i class=""></i> Ansible community training
+                    </a>
+                    <a href="../../contact-us/" class="dropdown-item">
+		        <i class=""></i> Contact us
+                    </a>
+            </div>
+                 </li>
+<li class="nav-item">
+		     <a href="https://www.redhat.com/en/technologies/management/ansible?sc_cid=7015Y000003szaKQAQ" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Ansible Automation Platform
+		     </a>
+		 </li>
+
+        
+      </ul>
+</div>
+    <!-- /.navbar-collapse -->
+  </div>
+  <!-- /.container -->
+</nav><!-- End default Menubar --><div class="body-content center-band">
+        <!--Body content-->
+        
+  <article class="post-text h-entry hentry postpage ansible-content" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">The anatomy of automation execution environments</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard p-author h-card"><span class="byline-name fn p-name" itemprop="author">
+                    <a class="u-url" href="../../authors/anshul-behl/">Anshul Behl</a>
+            </span></p>
+            <p class="dateline">
+            <a href="." rel="bookmark">
+            <time class="published dt-published" datetime="2022-09-12T00:00:00Z" itemprop="datePublished" title="2022-09-12 00:00">2022-09-12 00:00</time></a>
+            </p>
+                    <p class="sourceline"><a href="index.md" class="sourcelink">Source</a></p>
+
+        </div>
+        
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+<h2>The anatomy of automation execution environments</h2>
+<p>Red Hat Ansible Automation Platform 2 introduced  major architectural
+changes, like automation mesh and automation execution environments,
+that help extend Ansible automation across your organization in a
+flexible manner, providing a single solution to all your organizational
+and hybrid cloud automation needs.</p>
+<p>Automation execution environments are container images that act as
+Ansible runtimes for automation controller jobs. Ansible Automation
+Platform also includes a command-line tool called
+ansible-builder(execution environment builder)that lets you create
+automation execution environments by specifying Ansible Content
+Collections and Python dependencies.</p>
+<p>In general, an automation execution environment includes:</p>
+<ul>
+<li>A version of Python.</li>
+<li>A version of ansible-core.</li>
+<li>Python modules/dependencies.</li>
+<li>Ansible Content Collections (optional).</li>
+</ul>
+<p><img alt="diagram of an execution environment" src="../../images/posts/archive/execution-environment-ubi.png"></p>
+<p>In this blog, I will take you through the inner workings of
+ansible-builder and <strong>how</strong> all the above requirements are packaged
+inside automation execution environments and delivered as part of
+Ansible Automation Platform.</p>
+<h2>A tale of two ansible-builder packages</h2>
+<p>As all projects in Red Hat, ansible-builder follows an open development
+model and an upstream-first approach. The upstream project for
+<a href="https://github.com/ansible/ansible-builder">ansible-builder</a> is
+distributed as a Python package, and then packaged into an RPM for
+Ansible Automation Platform downstream. This
+also means that there are different ways to install the upstream package
+and the downstream ansible-builder.</p>
+<p>NOTE: To get the downstream packages, you must subscribe to Ansible
+Automation Platform repos from Red Hat.</p>
+<p>Upstream:</p>
+<div class="code"><pre class="code literal-block">pip3<span class="w"> </span>install<span class="w"> </span>ansible-builder
+</pre></div>
+
+<p>Downstream: </p>
+<div class="code"><pre class="code literal-block">dnf<span class="w"> </span>install<span class="w"> </span>ansible-builder
+</pre></div>
+
+<p>This has sometimes led to confusions among users, as customers of
+Ansible Automation Platform can also install the Python package for
+free. There are minor differences between both upstream and downstream
+packages that you should understand before diving deeper into building
+automation execution environments.</p>
+<p>As mentioned earlier, automation execution environments are container
+images that act as Ansible runtimes and ansible-builder is quite similar
+to generally available container engines such as Podman and Docker. So
+like any other container engine, the concept of building an image starts
+with a base image; that is where the upstream and downstream packages
+for ansible-builder differ. The base images used in upstream
+ansible-builder (Python package) as predefined constants are as follows:</p>
+<div class="code"><pre class="code literal-block"><span class="nv">EE_BASE_IMAGE</span><span class="o">=</span><span class="s1">'quay.io/ansible/ansible-runner:latest'</span>
+<span class="nv">EE_BUILDER_IMAGE</span><span class="o">=</span><span class="s1">'quay.io/ansible/ansible-builder:latest'</span>
+</pre></div>
+
+<p>Base images in the downstream package are as follows:</p>
+<div class="code"><pre class="code literal-block"><span class="nv">EE_BASE_IMAGE</span><span class="o">=</span><span class="s1">'registry.redhat.io/ansible-automation-platform-22/ee-minimal-rhel8:latest'</span>
+<span class="nv">EE_BUILDER_IMAGE</span><span class="o">=</span><span class="s1">'registry.redhat.io/ansible-automation-platform-22/ansible-builder-rhel8:latest'</span>
+</pre></div>
+
+<p>Upstream base images are available through Red Hat Quay.io, while the
+downstream ones come from Red Hat Ecosystem Catalog(registry.redhat.io),
+which requires authentication with a Red Hat account. The other
+difference in these images is that upstream ones use CentOS image as the
+base image while the downstream ones use Red Hat Universal Base Image
+(UBI). UBI offers greater reliability, security, and performance for
+official Red Hat container images compared with CentOS images.</p>
+<p>One commonality for the upstream and downstream packages is that they
+both allow image configuration through an automation execution
+environment specification file called execution-environment.yml.</p>
+<p>Whether you are an Ansible Automation Platform customer or a community
+user of ansible-builder, you can use UBI images as base images or the
+CentOS images for your automation execution environments based on the
+package or by  passing a different set of base images to your automation
+execution environment specification file.</p>
+<h2>Why does the ansible-builder package have two base images?</h2>
+<p>Continuing from the previous section that introduce the upstream and
+downstream base images for ansible-builder, there are two arguments that
+specify which images to use:</p>
+<ul>
+<li>The <code>EE_BASE_IMAGE</code> build argument specifies the parent image for the
+    automation execution environment.</li>
+<li>The <code>EE_BUILDER_IMAGE</code> build argument specifies the image used for
+    compiling type tasks.</li>
+</ul>
+<p>For most container images, you generally only need one base image on top
+of which you add different instructions, also known as build steps, to
+create your final container image.</p>
+<p>However, the base automation execution environment (ee-minimal) is built
+using the multi-stage build concept of containers. The <code>EE_BUILDER_IMAGE</code>
+build argument serves as the intermediary step to install Collections
+and build dependencies to keep the base image size as low as possible.</p>
+<p>Let's take an example: Suppose your Ansible Content Collection depends
+on a Python package that needs to be compiled using python-dev package
+(e.g. NumPy). Because python-dev is a compile time dependency, you don't
+necessarily need it in the final package (you just need the NumPy
+package). You wouldn't want to include python-dev in the final image to
+keep the image size as low as possible. For this purpose, the
+<code>EE_BUILDER_IMAGE</code> is used to build dependencies and then copy over only
+the package wheels needed for the final automation execution
+environment.</p>
+<h3>Does this matter if I want to build a custom automation execution environment?</h3>
+<p>In most cases it doesn't matter. When you build your automation
+execution environment using ansible-builder, you just need <code>EE_BASE_IMAGE</code>
+and not <code>EE_BUILDER_IMAGE</code>. However, you should understand how a compile
+time binary dependency is applied in the execution-environment
+definition file called bindep.txt. For the above example, if you need to
+install the NumPy Python package as a dependency for your Collection on
+UBI8, you specify the bindep.txt and requirements.txt as follows:</p>
+<div class="code"><pre class="code literal-block"><span class="c1"># bindep.txt</span>
+python38-devel<span class="w"> </span><span class="o">[</span>compile<span class="w"> </span>platform:rhel-8<span class="o">]</span><span class="w"> </span><span class="c1">#compile time dependency</span>
+</pre></div>
+
+<div class="code"><pre class="code literal-block"><span class="c1"># requirements.txt</span>
+NumPy
+</pre></div>
+
+<p>There will be instances where the configuration in the automation
+execution environment specification isn't reflected or errors occur when
+you're building the automation execution environment. In these
+instances, it's important to understand the role for the
+EE_BUILDER_IMAGE. The next section explains this in more detail.</p>
+<h2>Automation execution environment design</h2>
+<p><img alt="diagram picture of automation execution environment design" src="../../images/posts/archive/execution-environment-diagram.png"></p>
+<p>The above diagram outlines how automation execution environments are
+designed. I have mentioned the upstream image name and the downstream
+counterparts in the same boxes.</p>
+<p>For reference, CentOS 8 and UBI8 (for downstream) serve as the base
+images for the python-base container image, which acts as the image for
+running python-based projects, hence it bundles a version of Python that
+is supported by the ansible-core package (python 3.8 for reference).</p>
+<p>This python-base image serves as the base image for both the
+python-builder image as well as the ansible-runner (ee-minimal
+downstream) image. To summarize the purpose of python-builder and
+ansible-builder images, they build Python projects such as ansible-core
+and any Collections that are dependent on Python. For instance, if your
+Collection relies on Python dependencies for which wheels need to be
+built on the machine itself, they are built on the python-builder image.</p>
+<p>Finally, the ansible-runner (ee-minimal downstream) image includes a
+version of the ansible-core package. The ansible-builder image works in
+conjunction with this image to build Python wheels, so that the final
+automation execution environment size is minimal by only keeping things
+that are necessary to run your required automation. custom-ee1 and
+custom-ee2 in the diagram represent any custom automation execution
+environments that can be created using ansible-runner (ee-minimal
+downstream) and the ansible-builder image.</p>
+<h2>Verifying your base images</h2>
+<p>To start building your custom automation execution environments, you
+should first verify which <code>EE_BASE_IMAGE</code> and <code>EE_BUILDER_IMAGE</code> are used in
+ansible-builder by default. To verify, first create an empty automation
+execution environment definition file called execution-environment.yml</p>
+<div class="code"><pre class="code literal-block">touch<span class="w"> </span>execution-environment.yml
+</pre></div>
+
+<p>Then create a build context from the empty definition file by running
+this command in the same directory where you created the empty
+definition file:</p>
+<div class="code"><pre class="code literal-block">ansible-builder<span class="w"> </span>create
+</pre></div>
+
+<p>This will create a context directory in your working directory which
+includes a Containerfile. Opening the Containerfile shows which images
+are set as the BASE and BUILDER images and tells you which
+ansible-builder you are using, the upstream or the downstream one. For
+instance, if you open the Containerfile created through the above
+process and a pip install of ansible-builder, you see the following
+content:</p>
+<div class="code"><pre class="code literal-block">ARG<span class="w"> </span><span class="nv">EE_BASE_IMAGE</span><span class="o">=</span>quay.io/ansible/ansible-runner:latest
+ARG<span class="w"> </span><span class="nv">EE_BUILDER_IMAGE</span><span class="o">=</span>quay.io/ansible/ansible-builder:latest
+
+FROM<span class="w"> </span><span class="nv">$EE_BASE_IMAGE</span><span class="w"> </span>as<span class="w"> </span>galaxy
+ARG<span class="w"> </span><span class="nv">ANSIBLE_GALAXY_CLI_COLLECTION_OPTS</span><span class="o">=</span>
+USER<span class="w"> </span>root
+
+
+FROM<span class="w"> </span><span class="nv">$EE_BUILDER_IMAGE</span><span class="w"> </span>as<span class="w"> </span>builder
+
+FROM<span class="w"> </span><span class="nv">$EE_BASE_IMAGE</span>
+USER<span class="w"> </span>root
+COPY<span class="w"> </span>--from<span class="o">=</span>builder<span class="w"> </span>/output/<span class="w"> </span>/output/
+RUN<span class="w"> </span>/output/install-from-bindep<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>rm<span class="w"> </span>-rf<span class="w"> </span>/output/wheels
+</pre></div>
+
+<p>In the first two lines you can observe that the images point to the
+upstream images. If you do the same process on the downstream install of
+ansible-builder, you find the downstream images in a similar
+Containerfile.</p>
+<h2>Using the ansible-builder context</h2>
+<p>The context building is an important aspect of ansible-builder. You can
+use the context to change the Containerfile and customize your
+automation execution environments to your needs. You can use this
+context and the knowledge of multi-stage builds using BUILDER and BASE
+images to build an automation execution environment in a disconnected
+environment. The following shows an execution-environment definition
+that pulls the BUILDER and BASE images from a private automation hub
+instance:</p>
+<div class="code"><pre class="code literal-block"><span class="gh">#</span> cat execution-environment.yml
+---
+version: 1
+build_arg_defaults:
+  EE_BASE_IMAGE: 'automation-hub.demolab.local/ansible-automation-platform-22/ee-minimal-rhel8:latest'
+  EE_BUILDER_IMAGE: 'automation-hub.demolab.local/ansible-automation-platform-22/ansible-builder-rhel8:latest'
+
+dependencies:
+  python: requirements.txt
+</pre></div>
+
+<p>And the contents of the requirements.txt file are as follows:</p>
+<div class="code"><pre class="code literal-block"><span class="c1"># cat requirements.txt</span>
+<span class="nv">dnspython</span><span class="o">==</span><span class="m">1</span>.15.0
+</pre></div>
+
+<p>Let's create a context for the above definition file,
+execution-environment.yml:</p>
+<div class="code"><pre class="code literal-block"><span class="c1"># ansible-builder create</span>
+Complete!<span class="w"> </span>The<span class="w"> </span>build<span class="w"> </span>context<span class="w"> </span>can<span class="w"> </span>be<span class="w"> </span>found<span class="w"> </span>at:<span class="w"> </span>/root/disconnected_ee/context
+</pre></div>
+
+<p>The following issues may arise when building an automation execution
+environment in a disconnected environment (this example takes into
+account the building of a downstream image):</p>
+<ul>
+<li>Cannot reach the external yum repositories.</li>
+<li>Cannot pull Python dependencies from an external PyPI server, so
+    using an internal PyPI proxy when building an automation execution
+    environment.</li>
+<li>(Optional) SSL certificate issues when pulling from internal PyPI
+    mirror.</li>
+</ul>
+<p>Firstly, create a pip.conf that points to the local mirror:</p>
+<div class="code"><pre class="code literal-block"><span class="c1"># cat context/pip.conf</span>
+<span class="o">[</span>global<span class="o">]</span>
+index-url<span class="w"> </span><span class="o">=</span><span class="w"> </span>https://nexus-nexus.apps.celeron.demolab.local/repository/pypi-proxy/simple/
+</pre></div>
+
+<p>You add the above pip.conf file and the certificate to the context
+folder for the targeted automation execution environment creation to add
+these files inside your custom execution-environment.</p>
+<p>Using the multi-stage build knowledge and context editing, edit the
+Containerfile. Note the sections marked in bold text as well as some
+comments. These are the changes to build an automation execution
+environment in a disconnected fashion.</p>
+<div class="code"><pre class="code literal-block"><span class="c1"># cat Containerfile</span>
+ARG<span class="w"> </span><span class="nv">EE_BASE_IMAGE</span><span class="o">=</span>automation-hub.demolab.local/ansible-automation-platform-21/ee-supported-rhel8:latest
+ARG<span class="w"> </span><span class="nv">EE_BUILDER_IMAGE</span><span class="o">=</span>automation-hub.demolab.local/ansible-automation-platform-21/ansible-builder-rhel8:latest
+
+FROM<span class="w"> </span><span class="nv">$EE_BASE_IMAGE</span><span class="w"> </span>as<span class="w"> </span>galaxy
+ARG<span class="w"> </span><span class="nv">ANSIBLE_GALAXY_CLI_COLLECTION_OPTS</span><span class="o">=</span>
+USER<span class="w"> </span>root
+
+ADD<span class="w"> </span>_build<span class="w"> </span>/build
+WORKDIR<span class="w"> </span>/build
+
+
+FROM<span class="w"> </span><span class="nv">$EE_BUILDER_IMAGE</span><span class="w"> </span>as<span class="w"> </span>builder
+ADD<span class="w"> </span>_build/requirements.txt<span class="w"> </span>requirements.txt
+RUN<span class="w"> </span>ansible-builder<span class="w"> </span>introspect<span class="w"> </span>--sanitize<span class="w"> </span>--user-pip<span class="o">=</span>requirements.txt<span class="w"> </span>--write-bindep<span class="o">=</span>/tmp/src/bindep.txt<span class="w"> </span>--write-pip<span class="o">=</span>/tmp/src/requirements.txt
+
+<span class="c1">####### Changes to create EE in a disconnected environment</span>
+<span class="c1"># Remove ubi repo which tries to reach external links</span>
+RUN<span class="w"> </span>rm<span class="w"> </span>-f<span class="w"> </span>/etc/yum.repos.d/ubi.repo
+<span class="c1"># Add pip.conf for internal pypi proxy</span>
+ADD<span class="w"> </span>pip.conf<span class="w"> </span>/etc/pip.conf
+<span class="c1"># Add CA certificate and update trust</span>
+ADD<span class="w"> </span>demolab-ca.crt<span class="w"> </span>/etc/pki/ca-trust/source/anchors/demolab-ca.crt
+RUN<span class="w"> </span>update-ca-trust
+<span class="c1">####### This marks the end of edits for the builder stage</span>
+
+RUN<span class="w"> </span>assemble
+
+FROM<span class="w"> </span><span class="nv">$EE_BASE_IMAGE</span>
+USER<span class="w"> </span>root
+COPY<span class="w"> </span>--from<span class="o">=</span>builder<span class="w"> </span>/output/<span class="w"> </span>/output/
+
+<span class="c1">####### Changes to create EE in a disconnected environment</span>
+<span class="c1"># Remove ubi repo which tries to reach external links</span>
+RUN<span class="w"> </span>rm<span class="w"> </span>-f<span class="w"> </span>/etc/yum.repos.d/ubi.repo
+<span class="c1"># Add pip.conf for internal pypi proxy</span>
+ADD<span class="w"> </span>pip.conf<span class="w"> </span>/etc/pip.conf
+<span class="c1"># Add CA certificate and update trust</span>
+ADD<span class="w"> </span>demolab-ca.crt<span class="w"> </span>/etc/pki/ca-trust/source/anchors/demolab-ca.crt
+RUN<span class="w"> </span>update-ca-trust
+<span class="c1">####### This marks the end of edits for the main image</span>
+
+RUN<span class="w"> </span>/output/install-from-bindep<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>rm<span class="w"> </span>-rf<span class="w"> </span>/output/wheels
+</pre></div>
+
+<p>If you look closely in the above Containerfile, you can notice the
+additions that fix all the issues previously mentioned in both the
+BUILDER and the BASE image stages because both images use this
+information to pull and build Python dependencies.</p>
+<p>Understanding what happens in each stage helps you understand where to
+edit your Containerfile, and at which stage, allowing you to make
+endless customizations to your custom automation execution environments.</p>
+<p>Finally let's build the above execution-environment with the following
+command:</p>
+<div class="code"><pre class="code literal-block">podman<span class="w"> </span>build<span class="w"> </span>-f<span class="w"> </span>context/Containerfile<span class="w"> </span>-t<span class="w"> </span>disconnected_ee:1.0
+</pre></div>
+
+<p>When the build succeeds, you should see a message like this:</p>
+<div class="code"><pre class="code literal-block">--&gt;<span class="w"> </span>2316db485a1
+Successfully<span class="w"> </span>tagged<span class="w"> </span>localhost/disconnected_ee:1.0
+2316db485a1c4e7be4a687c682d0fc90335372d7e5564774f1ff6451840ac35f
+</pre></div>
+
+<h3>Looking forward</h3>
+<p>Our ultimate goal is to make the developer experience as seamless as
+possible for customers. Ansible engineering teams are working on
+enhancements to the automation execution environment building
+experience, with several improvements already in the planning stage.
+Until those enhancements are available, this blog should help you tackle
+any challenges around the process of building automation execution
+environments. Following the upstream first model means you can also
+participate in community discussions and provide your thoughts and
+feedback through IRC. Please follow the link
+<a href="https://docs.ansible.com/ansible/latest/community/communication.html#ansible-community-on-irc">here</a>
+to join us. One of the main enhancements to the automation execution
+environment experience is being discussed in this
+<a href="https://github.com/ansible/ansible-builder/pull/411">GitHub pull request</a>,
+so you can participate in the GitHub discussions as well.</p>
+</div>
+    <aside class="postpromonav"><nav><ul class="pager hidden-print">
+<li class="previous">
+                <a href="../bullhorn-73/" rel="prev" title="Bullhorn #73">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../ansible-vs.-terraform-demystified/" rel="next" title="Ansible versus Terraform Demystified">Next post</a>
+            </li>
+        </ul></nav></aside></article><!--End of body content-->
+</div>
+        <div class="content-slim redhat-footer">
+      <div class="footer-left">
+        <ul class="footer-left-links">
+<li>
+            <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-SA 4.0</a>
+          </li>
+          <li>
+            <a href="https://www.redhat.com/en/about/privacy-policy" target="_blank">Privacy policy</a>
+          </li>
+          <li>
+            <a href="https://docs.ansible.com/ansible/latest/community/code_of_conduct.html" target="_blank">Code of conduct</a>
+          </li>
+        </ul>
+</div>
+      <div class="footer-right">
+        <span class="redhat">Powered by</span>
+        <span class="redhat-logo">
+          <a href="https://www.redhat.com/en/technologies/management/ansible" target="_blank">
+            <img src="../../assets/images/redhat_reversed.svg" alt="Red Hat logo." width="96" height="28"></a>
+        </span>
+      </div>
+    </div>
+
+</div>
+
+            <script src="../../assets/js/jquery.min.js"></script><script src="../../assets/js/popper.min.js"></script><script src="../../assets/js/bootstrap.min.js"></script><script src="../../assets/js/baguetteBox.min.js"></script><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+</script><script src="../../assets/js/clipboard.min.js" type="text/javascript"></script><script src="../../assets/js/clipboard.js" type="text/javascript"></script>
+</body>
+</html>

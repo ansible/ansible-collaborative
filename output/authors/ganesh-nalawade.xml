@@ -1,0 +1,595 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Ansible Collaborative (Posts by Ganesh Nalawade)</title><link>https://ansible.com/</link><description></description><atom:link href="https://ansible.com/authors/ganesh-nalawade.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2024 &lt;a href="mailto:website@ansible.community"&gt;Ansible Collaborative, et al&lt;/a&gt; </copyright><lastBuildDate>Mon, 18 Mar 2024 19:47:35 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Deep dive on Ansible VScode extension</title><link>https://ansible.com/blog/deep-dive-on-ansible-vscode-extension/</link><dc:creator>Ganesh Nalawade</dc:creator><description>&lt;h2&gt;Deep dive on Ansible VScode extension&lt;/h2&gt;
+&lt;p&gt;Ansible as part of the Red Hat Ansible Automation Platform continues to
+grow and mature. Recent enhancements include Ansible Content Collections,
+automation execution environments,
+and an increasing list of integrations using plugins and modules. It is
+more important than ever that both new and experienced content creators
+have access to tools that help them write better content faster. The
+newly created Ansible Devtools initiative focuses on developing and
+enhancing tools like &lt;code&gt;ansible-navigator&lt;/code&gt;, &lt;a href="https://marketplace.visualstudio.com/items?itemName=redhat.ansible"&gt;Ansible VScode extension&lt;/a&gt;,
+&lt;a href="https://pypi.org/project/ansible-lint/"&gt;ansible-lint&lt;/a&gt; and so on to help
+ease the Ansible automation content creator experience. In this blog, we
+will do a deep dive into the Ansible VSCode extension, giving an
+overview of how it works and the initial setup required to get it
+working after installation.&lt;/p&gt;
+&lt;h3&gt;Evolution&lt;/h3&gt;
+&lt;p&gt;The &lt;a href="https://marketplace.visualstudio.com/items?itemName=redhat.ansible"&gt;Ansible VSCode
+extension&lt;/a&gt;
+was initially a fork of &lt;a href="https://github.com/tomaciazek"&gt;Tomasz Maciążek&lt;/a&gt;'s VSCode extension.
+After the fork, the server and client-side code were decoupled into their own separate repositories to allow independent releases for both server and client.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href="https://github.com/ansible/ansible-language-server"&gt;Ansible language
+    server&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/ansible/vscode-ansible"&gt;Ansible VSCode
+    extension&lt;/a&gt; &lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;The Ansible Language Server is released as a node module on the &lt;a href="https://www.npmjs.com/package/@ansible/ansible-language-server"&gt;npm
+repository&lt;/a&gt;,
+allowing it to be reused by other editors supporting language server
+protocol, while the VSCode extension client was released on the
+&lt;a href="https://marketplace.visualstudio.com/items?itemName=redhat.ansible"&gt;marketplace&lt;/a&gt;
+with many additional features.&lt;/p&gt;
+&lt;p&gt;Tomasz continues to be a core contributor to the Ansible extension and
+we would like to thank him and all the other community members for their
+contributions to help make the extension better for Ansible content
+creators with every new release.&lt;/p&gt;
+&lt;h3&gt;Introduction to the language server protocol (LSP)&lt;/h3&gt;
+&lt;p&gt;The Ansible Language Server implements &lt;a href="https://microsoft.github.io/language-server-protocol/"&gt;language server
+protocol&lt;/a&gt; (LSP),
+which is an open, &lt;a href="https://www.jsonrpc.org/specification"&gt;JSON-RPC&lt;/a&gt;
+based protocol that is used between source code editors, integrated
+development environments (IDEs) and servers that provide programming
+language-specific features. The goal of the protocol is to allow
+programming language support to be implemented and distributed
+independently of any given editor or IDE.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="LSP diagram" src="https://ansible.com/images/posts/archive/lsp-diagram.png"&gt;&lt;/p&gt;
+&lt;p&gt;Source: https://code.visualstudio.com/api/language-extensions/language-server-extension-guide&lt;/p&gt;
+&lt;p&gt;As seen from the above diagram, the language server protocol allows a
+single language server implementation to be reused by multiple code
+editors or IDEs, thus avoiding the need to duplicate language-related
+support for each editor as in the case of no LSP. The language server
+runs as a separate process and the development tools like VSCode
+communicate with the server using the language protocol over JSON-RPC.
+For more details refer to the &lt;a href="https://microsoft.github.io/language-server-protocol/overviews/lsp/overview/"&gt;language server specification&lt;/a&gt;.&lt;/p&gt;
+&lt;h3&gt;Ansible Language Server&lt;/h3&gt;
+&lt;p&gt;&lt;img alt="Ansible language server diagram" src="https://ansible.com/images/posts/archive/ansible-language-server-diagram.png"&gt;&lt;/p&gt;
+&lt;p&gt;The Ansible Language Server provides features like:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Code completion&lt;/li&gt;
+&lt;li&gt;Hover (display keyword description on hover)&lt;/li&gt;
+&lt;li&gt;Goto definition (for modules)&lt;/li&gt;
+&lt;li&gt;Diagnostics and so on&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;It serves the JSON-RPC request sent by the development tool (client).
+The language server runs Ansible commands like ansible-config,
+ansible-playbook and so on to support these features and thus requires
+an Ansible&lt;a href="https://pypi.org/project/ansible/"&gt; package&lt;/a&gt; or
+&lt;a href="https://pypi.org/project/ansible-core/"&gt;ansible-core&lt;/a&gt; installed locally
+or within an automation execution environment. In addition, the language
+server relies on &lt;a href="https://pypi.org/project/ansible-lint/"&gt;ansible-lint&lt;/a&gt;
+for providing diagnostic information if installed and enabled (default).
+While running with an automation execution environment, ansible-core and
+optionally ansible-lint should be included.&lt;/p&gt;
+&lt;h3&gt;Extension installation&lt;/h3&gt;
+&lt;p&gt;In the VSCode Extensions tab, search and install the &lt;strong&gt;Ansible VS Code Extension&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;Note: &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;When the extension is installed for the first time, the "Runtime Status" is "Not yet activated" which indicates that the extension is not yet running.
+The status will be activated only after a file is opened in the editor and the language identified for the file is "&lt;strong&gt;Ansible&lt;/strong&gt;".&lt;/li&gt;
+&lt;li&gt;For Windows users, the extension works with WSL2 and not on native Windows.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Ansible extension settings&lt;/h3&gt;
+&lt;p&gt;The Ansible extension supports multiple configuration options allowing,
+for instance, to change the executable path for Ansible, ansible-lint,
+python interpreter and so on. There is also an option to enable the
+automation execution environment and users can choose the container
+engine, image name, pull policy and more. To see and change the
+configuration options in the VSCode window, go to
+&lt;strong&gt;Code-&amp;gt;Preference-&amp;gt;Settings&lt;/strong&gt; and in the Search settings box type
+"&lt;strong&gt;ansible&lt;/strong&gt;" as shown in the below snapshot.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="vscode extension screenshot" src="https://ansible.com/images/posts/archive/ansible-vscode-ext-screenshot.png"&gt;&lt;/p&gt;
+&lt;p&gt;The preferences can be set for a given user or workspace, and depending
+on the environment, also for remote type and workspace folder. Settings
+in the user scope will be applied globally for any instance of VSCode
+that is opened. Workspace scoped settings will be stored inside your
+workspace and only apply when the current workspace is opened. For more
+information refer to the VSCode documentation
+&lt;a href="https://code.visualstudio.com/docs/getstarted/settings"&gt;here&lt;/a&gt;.
+Alternatively, for workspace settings, you can also provide the Ansible
+settings by editing the &lt;strong&gt;.vscode/settings.json&lt;/strong&gt; file within the
+workspace root folder as shown below.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="vscode extension screenshot" src="https://ansible.com/images/posts/archive/ansible-vscode-ext-screenshot-one.png"&gt;&lt;/p&gt;
+&lt;h3&gt;Activating and using Ansible extension&lt;/h3&gt;
+&lt;p&gt;As stated above, the
+&lt;a href="https://marketplace.visualstudio.com/items?itemName=redhat.ansible"&gt;vscode-ansible&lt;/a&gt;
+extension depends on the &lt;a href="https://www.npmjs.com/package/@ansible/ansible-language-server"&gt;ansible-language-server&lt;/a&gt;running
+as a background process to provide features for Ansible Playbooks and
+task files like auto-completion, hover, diagnostics, goto and more. The
+extension also depends on the Red Hat
+&lt;a href="https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml"&gt;vscode-yaml&lt;/a&gt;
+extension to provide auto-completion and diagnostics information of
+other related files like Ansible vars file, ansible-navigator settings
+file,  ansible-galaxy requirements and metafiles, ansible-lint
+configuration file and other YAML files. The extension uses file pattern
+match to associate the file with the YAML language. For details about
+the file pattern and associated schema file used by the &lt;a href="https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml"&gt;vscode-yaml&lt;/a&gt;extension,
+read more
+&lt;a href="https://github.com/ansible/vscode-ansible/blob/v0.8.1/package.json#L54-L125"&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;With this context set, you can now go ahead and open the root of your Ansible project in the VSCode window.
+That folder will be a root of your workspace, also treated as the current working directory by the Ansible Language Server while executing Ansible commands in the background.
+If you try to open an Ansible file without first setting up a workspace, the plugin might not be able to determine the context (such as CWD) correctly.&lt;/p&gt;
+&lt;p&gt;After an Ansible file is opened in the VSCode window, it might not be
+identified correctly as an &lt;strong&gt;Ansible&lt;/strong&gt; language type as seen in the
+below snapshot. Most likely, the file will be identified as "&lt;strong&gt;YAML&lt;/strong&gt;"
+language since Ansible files have either "&lt;strong&gt;yaml&lt;/strong&gt;" or "&lt;strong&gt;yml&lt;/strong&gt;"
+extension and installing the
+&lt;a href="http://ketplace.visualstudio.com/items?itemName=redhat.ansible"&gt;vscode-ansible&lt;/a&gt;
+extension, in turn, installs the &lt;a href="https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml"&gt;vscode-yaml&lt;/a&gt;extension.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="vscode extension screenshot" src="https://ansible.com/images/posts/archive/ansible-vscode-ext-screenshot-two.png"&gt;&lt;/p&gt;
+&lt;p&gt;Hovering the cursor on the language identified (YAML in this case) in
+the bottom right corner you will see "Select Language Mode". By clicking
+on the identified language name (YAML) it will open a drop-down menu;
+type "&lt;strong&gt;Ansible&lt;/strong&gt;" in the tab and then select it. After doing this, you
+will notice the identified language for the file is changed to
+"&lt;strong&gt;Ansible&lt;/strong&gt;" as shown in the below snapshot.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="vscode extension screenshot" src="https://ansible.com/images/posts/archive/ansible-vscode-ext-screenshot-three.png"&gt;&lt;/p&gt;
+&lt;p&gt;When the file language is identified as Ansible for the first time, the
+&lt;strong&gt;vscode-ansible&lt;/strong&gt; extension will be activated and the extension will
+run the &lt;strong&gt;ansible-language-server&lt;/strong&gt; process in the background which
+provides auto-completion, hover and diagnostics information as you type
+and/or hover within the file. The diagnostics information will be
+available in the &lt;strong&gt;PROBLEMS&lt;/strong&gt; tab. If it's installed and enabled, the
+language server will run &lt;strong&gt;ansible-lint&lt;/strong&gt; by default to generate
+diagnostics information on the open file. If &lt;strong&gt;ansible-lint&lt;/strong&gt; is not
+installed, the server will run &lt;strong&gt;ansible-playbook --syntax-check&lt;/strong&gt; to
+generate diagnostics information.&lt;/p&gt;
+&lt;p&gt;Instead of changing the language for each file, you can set the file
+associations setting by clicking on "&lt;strong&gt;Code -&amp;gt; Preferences -&amp;gt;
+Settings&lt;/strong&gt;" and typing "&lt;strong&gt;file associations&lt;/strong&gt;" in the search box. Add an
+item to associate the extension with the language type as shown in the
+below snapshot.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="vscode extension screenshot" src="https://ansible.com/images/posts/archive/ansible-vscode-ext-screenshot-four.png"&gt;&lt;/p&gt;
+&lt;p&gt;For more information on file associations, refer to the document
+&lt;a href="https://code.visualstudio.com/docs/languages/identifiers"&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;h3&gt;Using automation execution environments&lt;/h3&gt;
+&lt;p&gt;To see the automation execution environments supported by extension, you
+can go to settings (Code -&amp;gt; Preferences -&amp;gt; Settings) and type
+"&lt;strong&gt;ansible.execution environment&lt;/strong&gt;".&lt;/p&gt;
+&lt;p&gt;&lt;img alt="vscode extension screenshot" src="https://ansible.com/images/posts/archive/ansible-vscode-ext-screenshot-five.png"&gt;&lt;/p&gt;
+&lt;p&gt;After enabling the execution environment (EE), the extension will pull
+the "&lt;strong&gt;quay.io/ansible/creator-ee:latest&lt;/strong&gt;" image by default, if it is
+not present locally. The value of the image can be changed by providing
+the intended value for "ansible.executionEnvironment.image" setting.
+After the EE pull is successful, the Ansible extension will copy the
+plugins docs from within EE to the local cache folder and it will be
+used to provide auto-completion, hover and goto functionality. Since the
+"creator-ee" image has "&lt;strong&gt;ansible-lint&lt;/strong&gt;" bundled, the Ansible extension
+and &lt;strong&gt;ansible-language-server&lt;/strong&gt; will volume mount the entire workspace
+within the EE and run "&lt;strong&gt;ansible-lint&lt;/strong&gt;" or &lt;strong&gt;"ansible-playbook
+---syntax-check&lt;/strong&gt;" based on settings to provide diagnostics information
+in editor.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="vscode extension screenshot" src="https://ansible.com/images/posts/archive/ansible-vscode-ext-screenshot-six.png"&gt;&lt;/p&gt;
+&lt;p&gt;Note: &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;If auto-completion and other features are not working after enabling
+    the execution environment, you can reload VS Code by opening the
+    command palette ("&lt;strong&gt;view -&amp;gt; Command Palette&lt;/strong&gt;") and executing the
+    "&lt;strong&gt;Developer: Reload Window&lt;/strong&gt;" command, which also restarts the
+    "&lt;strong&gt;ansible-language-server&lt;/strong&gt;" process running in the background.&lt;/li&gt;
+&lt;li&gt;If the extension is not working as expected, you can follow the
+    debug steps shown
+    &lt;a href="https://www.youtube.com/watch?v=vfIbIIbtQYI"&gt;here&lt;/a&gt;. If it is still
+    not working, please do raise an issue
+    &lt;a href="https://github.com/ansible/vscode-ansible/issues"&gt;here&lt;/a&gt;. &lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The auto-completions will now provide suggestions for plugins that are
+part of the given execution environment image name.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="vscode extension screenshot" src="https://ansible.com/images/posts/archive/ansible-vscode-ext-screenshot-seven.png"&gt;&lt;/p&gt;
+&lt;p&gt;The "trigger suggest" key depends on the keyboard shortcut. To view the
+associated keys, go to &lt;strong&gt;Code -&amp;gt; Preferences -&amp;gt; Keyboard Shortcuts&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="vscode extension screenshot" src="https://ansible.com/images/posts/archive/ansible-vscode-ext-screenshot-eight.png"&gt;&lt;/p&gt;
+&lt;h3&gt;Ansible Playbook run entry point&lt;/h3&gt;
+&lt;p&gt;The extension also provides an option to run an Ansible Playbook from
+within the extension either using "&lt;strong&gt;ansible-navigator run&lt;/strong&gt;" or
+"&lt;strong&gt;ansible-playbook&lt;/strong&gt;" command as shown in the below snapshot.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="vscode extension screenshot" src="https://ansible.com/images/posts/archive/ansible-vscode-ext-screenshot-nine.png"&gt;&lt;/p&gt;</description><guid>https://ansible.com/blog/deep-dive-on-ansible-vscode-extension/</guid><pubDate>Mon, 18 Apr 2022 00:00:00 GMT</pubDate></item><item><title>Using New Ansible Utilities for Operational State Management and Remediation</title><link>https://ansible.com/blog/using-new-ansible-utilities-for-operational-state-management-and-remediation/</link><dc:creator>Ganesh Nalawade</dc:creator><description>&lt;h2&gt;Using New Ansible Utilities for Operational State Management and Remediation&lt;/h2&gt;
+&lt;p&gt;Comparing the current operational state of your IT infrastructure to
+your desired state is a common use case for IT automation.  This allows
+automation users to identify drift or problem scenarios to take
+corrective actions and even proactively identify and solve problems. 
+This blog post will walk through the automation workflow for validation
+of operational state and even automatic remediation of issues.&lt;/p&gt;
+&lt;p&gt;We will demonstrate how the Red Hat supported and certified Ansible
+content can be used to:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Collect the current operational state from the remote host and
+    convert it into normalised structure data.&lt;/li&gt;
+&lt;li&gt;Define the desired state criteria in a standard based format that
+    can be used across enterprise infrastructure teams.&lt;/li&gt;
+&lt;li&gt;Validate the current state data against the pre-defined criteria to
+    identify if there is any deviation.&lt;/li&gt;
+&lt;li&gt;Take corrective remediation action as required.&lt;/li&gt;
+&lt;li&gt;Validate input data as per the data model schema&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Gathering state data from a remote host&lt;/h3&gt;
+&lt;p&gt;The recently released
+&lt;a href="https://galaxy.ansible.com/ansible/utils"&gt;ansible.utils&lt;/a&gt;
+version 1.0.0 Collection has added support for
+&lt;a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.cli_parse_module.rst"&gt;ansible.utils.cli_parse&lt;/a&gt;
+module, which converts text data into structured JSON format.  The
+module has the capability to either execute the command on the remote
+endpoint and fetch the text response, or read the text from a file on
+the control node to convert it into structured data.  This module can
+work with both traditional Linux servers as well as vendor appliances,
+such as network devices that don't have the ability to execute Python,
+and the module relies on well-known text parser libraries for this
+conversion. The current supported CLI parser sub plugin engines are as
+below:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href="https://github.com/ansible-collections/ansible.utils/blob/main/plugins/sub_plugins/cli_parser/textfsm_parser.py"&gt;ansible.utils.textfsm&lt;/a&gt;
+    Uses&lt;a href="https://pypi.org/project/textfsm/"&gt; textfsm python library&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/ansible-collections/ansible.utils/blob/main/plugins/sub_plugins/cli_parser/ttp_parser.py"&gt;ansible.utils.ttp&lt;/a&gt;
+    Uses&lt;a href="https://pypi.org/project/ttp/"&gt; ttp python library&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/ansible-collections/ansible.netcommon/blob/main/plugins/sub_plugins/cli_parser/native_parser.py"&gt;ansible.netcommon.native&lt;/a&gt;
+    Uses netcommon inbuilt parser engine&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/ansible-collections/ansible.netcommon/blob/main/plugins/sub_plugins/cli_parser/ntc_templates_parser.py"&gt;ansible.netcommon.ntc_templates&lt;/a&gt;
+    Uses &lt;a href="https://pypi.org/project/ntc-templates/"&gt;ntc_templates python library&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/ansible-collections/ansible.netcommon/blob/main/plugins/sub_plugins/cli_parser/pyats_parser.py"&gt;ansible.netcommon.pyats&lt;/a&gt;
+    Uses &lt;a href="https://pypi.org/project/pyats/"&gt;pyats python library&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/ansible-collections/ansible.utils/blob/main/plugins/sub_plugins/cli_parser/xml_parser.py"&gt;ansible.utils.xml&lt;/a&gt;Uses
+    &lt;a href="https://pypi.org/project/xmltodict/"&gt;xmltodict python library&lt;/a&gt; &lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/ansible-collections/ansible.utils/blob/main/plugins/sub_plugins/cli_parser/json_parser.py"&gt;ansible.utils.json&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;img alt="state assessment blog" src="https://ansible.com/images/posts/archive/state-assessment-blog.png"&gt;&lt;/p&gt;
+&lt;p&gt;The examples described in this blog uses Cisco network switch, NXOS
+version 7.3(0)D1(1), as the remote endpoint and Ansible version 2.9.15
+running on the control node and requires
+&lt;a href="https://galaxy.ansible.com/ansible/utils"&gt;ansible.utils&lt;/a&gt;,
+&lt;a href="https://galaxy.ansible.com/ansible/netcommon"&gt;ansible.netcommon&lt;/a&gt; and
+&lt;a href="https://galaxy.ansible.com/cisco/nxos"&gt;cisco.nxos &lt;/a&gt;Collections to be
+installed on the control node.&lt;/p&gt;
+&lt;p&gt;The below &lt;a href="https://gist.github.com/ganeshrn/f763e299cb4896b548c586b57041ee73"&gt;Ansible snippet&lt;/a&gt;
+fetches the operational state of the interfaces and translates it to
+structured data using &lt;strong&gt;ansible.netcommon.pyats&lt;/strong&gt; parser. This parse
+requires &lt;a href="https://pypi.org/project/pyats/"&gt;pyats&lt;/a&gt; library to be
+installed on the control node.&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="nn"&gt;---&lt;/span&gt;
+&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;hosts&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;nxos&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;connection&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;ansible.netcommon.network_cli&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;gather_facts&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;false&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;vars&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;ansible_network_os&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;cisco.nxos.nxos&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;ansible_user&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"changeme"&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;ansible_password&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"changeme"&lt;/span&gt;
+
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;tasks&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"Fetch&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;interface&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;state&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;and&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;parse&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;with&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;pyats"&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;ansible.utils.cli_parse&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;command&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;show interface&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;parser&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;ansible.netcommon.pyats&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;register&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;nxos_pyats_show_interface&lt;/span&gt;
+
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;print structured interface state data&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;ansible.builtin.debug&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;msg&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"{{&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;nxos_pyats_show_interface['parsed']&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;}}"&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The value of the &lt;strong&gt;command&lt;/strong&gt; option in &lt;strong&gt;ansible.utils.cli_parse&lt;/strong&gt; task
+is the command that should the executed on the remote host,
+alternatively, the task can accept a &lt;strong&gt;text&lt;/strong&gt; option that accepts the
+value directly in string format and can be used in case the response of
+the command is already prefetched. The &lt;strong&gt;name&lt;/strong&gt; option under the
+&lt;strong&gt;parser&lt;/strong&gt; parent option can be any one of the above-discussed parser
+sub plugins.&lt;/p&gt;
+&lt;p&gt;After running the playbook, the output of &lt;strong&gt;ansible.utils.cli_parse&lt;/strong&gt;
+task for the given host is as shown for reference:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="err"&gt;ok&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="kc"&gt;n&lt;/span&gt;&lt;span class="err"&gt;xos&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;=&amp;gt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="w"&gt;   &lt;/span&gt;&lt;span class="nt"&gt;"changed"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kc"&gt;false&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="w"&gt;   &lt;/span&gt;&lt;span class="nt"&gt;"parsed"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="w"&gt;       &lt;/span&gt;&lt;span class="nt"&gt;"Ethernet2/1"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="w"&gt;           &lt;/span&gt;&lt;span class="nt"&gt;"admin_state"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"down"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="w"&gt;           &lt;/span&gt;&lt;span class="nt"&gt;"auto_mdix"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"off"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="w"&gt;           &lt;/span&gt;&lt;span class="nt"&gt;"auto_negotiate"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kc"&gt;false&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="w"&gt;           &lt;/span&gt;&lt;span class="nt"&gt;"bandwidth"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;1000000&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="w"&gt;           &lt;/span&gt;&lt;span class="nt"&gt;"beacon"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"off"&lt;/span&gt;
+&lt;span class="w"&gt;           &lt;/span&gt;&lt;span class="err"&gt;&amp;lt;&lt;/span&gt;&lt;span class="mi"&gt;--&lt;/span&gt;&lt;span class="err"&gt;s&lt;/span&gt;&lt;span class="kc"&gt;n&lt;/span&gt;&lt;span class="err"&gt;ip&lt;/span&gt;&lt;span class="mi"&gt;--&lt;/span&gt;&lt;span class="err"&gt;&amp;gt;&lt;/span&gt;
+&lt;span class="w"&gt;       &lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt;
+&lt;span class="w"&gt;       &lt;/span&gt;&lt;span class="nt"&gt;"Ethernet2/10"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="w"&gt;           &lt;/span&gt;&lt;span class="nt"&gt;"admin_state"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"down"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="w"&gt;           &lt;/span&gt;&lt;span class="nt"&gt;"auto_mdix"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"off"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="w"&gt;           &lt;/span&gt;&lt;span class="nt"&gt;"auto_negotiate"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kc"&gt;false&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="w"&gt;           &lt;/span&gt;&lt;span class="nt"&gt;"bandwidth"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;1000000&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="w"&gt;           &lt;/span&gt;&lt;span class="nt"&gt;"beacon"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"off"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="w"&gt;           &lt;/span&gt;&lt;span class="err"&gt;&amp;lt;&lt;/span&gt;&lt;span class="mi"&gt;--&lt;/span&gt;&lt;span class="err"&gt;s&lt;/span&gt;&lt;span class="kc"&gt;n&lt;/span&gt;&lt;span class="err"&gt;ip&lt;/span&gt;&lt;span class="mi"&gt;--&lt;/span&gt;&lt;span class="err"&gt;&amp;gt;&lt;/span&gt;
+&lt;span class="w"&gt;       &lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="w"&gt;   &lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Notice the value of &lt;strong&gt;admin_state&lt;/strong&gt; key for some of the interfaces is
+&lt;strong&gt;down&lt;/strong&gt;, for the complete output refer
+&lt;a href="https://gist.github.com/ganeshrn/79a7a2670ce03fe381678f9796482089"&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;h3&gt;Defining state criteria and validation&lt;/h3&gt;
+&lt;p&gt;The &lt;a href="https://galaxy.ansible.com/ansible/utils"&gt;ansible.utils&lt;/a&gt; Collection
+has added support for the
+&lt;a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.validate_module.rst"&gt;ansible.utils.validate&lt;/a&gt;
+module, which validates the input JSON data with the provided criteria
+based on the validation engine. The currently supported validation
+engine is &lt;a href="https://pypi.org/project/jsonschema/"&gt;jsonschema&lt;/a&gt;, and in
+future support for additional validation, engines will be added on a
+need basis. &lt;/p&gt;
+&lt;p&gt;In the above section, we fetched the interface state and converted to
+structured JSON data. Suppose if we want the desired admin state for all
+the interfaces to always be in &lt;strong&gt;up&lt;/strong&gt; state the &lt;a href="https://gist.github.com/ganeshrn/0a479d580caa96326a7c8186c4b12d7d"&gt;criteria for
+jsonschema&lt;/a&gt;
+will look like:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="err"&gt;$ca&lt;/span&gt;&lt;span class="kc"&gt;t&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;cri&lt;/span&gt;&lt;span class="kc"&gt;ter&lt;/span&gt;&lt;span class="err"&gt;ias/&lt;/span&gt;&lt;span class="kc"&gt;n&lt;/span&gt;&lt;span class="err"&gt;xos_show_i&lt;/span&gt;&lt;span class="kc"&gt;nterfa&lt;/span&gt;&lt;span class="err"&gt;ce_admi&lt;/span&gt;&lt;span class="kc"&gt;n&lt;/span&gt;&lt;span class="err"&gt;_cri&lt;/span&gt;&lt;span class="kc"&gt;ter&lt;/span&gt;&lt;span class="err"&gt;ia.jso&lt;/span&gt;&lt;span class="kc"&gt;n&lt;/span&gt;
+&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;"type"&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"object"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;"patternProperties"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="w"&gt;                &lt;/span&gt;&lt;span class="nt"&gt;"^.*"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="w"&gt;                        &lt;/span&gt;&lt;span class="nt"&gt;"type"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"object"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="w"&gt;                        &lt;/span&gt;&lt;span class="nt"&gt;"properties"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="w"&gt;                                &lt;/span&gt;&lt;span class="nt"&gt;"admin_state"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="w"&gt;                                        &lt;/span&gt;&lt;span class="nt"&gt;"type"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"string"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="w"&gt;                                        &lt;/span&gt;&lt;span class="nt"&gt;"pattern"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"up"&lt;/span&gt;
+&lt;span class="w"&gt;                                &lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="w"&gt;                        &lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="w"&gt;                &lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;After the criteria for the desired state of the resource is defined, it
+can be used with the &lt;strong&gt;ansible.utils.validate&lt;/strong&gt; module to check if the
+current state of the resource matches with the desired state as shown in
+the below
+&lt;a href="https://gist.github.com/ganeshrn/d9a3049673bd8bec1cbd4b717cf56c99"&gt;task&lt;/a&gt;.&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;validate interface for admin state&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;ansible.utils.validate&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;data&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"{{&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;nxos_pyats_show_interface['parsed']&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;}}"&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;criteria&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"{{&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;lookup('file',&lt;/span&gt;&lt;span class="nv"&gt;  &lt;/span&gt;&lt;span class="s"&gt;'./criterias/nxos_show_interface_admin_criteria.json')&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;|&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;from_json&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;}}"&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;engine&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;ansible.utils.jsonschema&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;ignore_errors&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;true&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;register&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;result&lt;/span&gt;
+
+&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;print the interface names that does not satisfy the desired state&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;ansible.builtin.debug&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;msg&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"{{&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;item['data_path'].split('.')[0]&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;}}"&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;loop&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"{{&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;result['errors']&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;}}"&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;when&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"'errors'&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;in&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;result"&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The &lt;strong&gt;data&lt;/strong&gt; option of &lt;strong&gt;ansible.utils.validate&lt;/strong&gt; task accepts a JSON
+value and in this case, it is the output parsed from
+&lt;strong&gt;ansible.utils.cli_parse&lt;/strong&gt; module as discussed above. The value of
+&lt;strong&gt;engine&lt;/strong&gt; option is the sub plugin name of the validate module that is
+&lt;a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.jsonschema_validate.rst"&gt;ansible.utils.jsonschema&lt;/a&gt;,
+and it identifies the underlying validation library to be used; in this
+case, we are using &lt;strong&gt;jsonschema&lt;/strong&gt; library. The value of the &lt;strong&gt;criteria&lt;/strong&gt;
+option can be a list and should be in a format that is defined by the
+validation engine used. For the above to run
+&lt;a href="https://pypi.org/project/jsonschema/"&gt;jsonschema&lt;/a&gt;, installing a library
+is required on the control node. The output of the above task run will
+be a list of errors indicating interfaces that do not have admin value
+in &lt;strong&gt;up&lt;/strong&gt; state. The reference output can be seen
+&lt;a href="https://gist.github.com/ganeshrn/912d88b7ff5b6a959e82c4935d9b4d0c"&gt;here&lt;/a&gt;
+(note: the output will vary based on the state of the interfaces on the
+remote host).&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;TASK&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;validate&lt;span class="w"&gt; &lt;/span&gt;interface&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;for&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;admin&lt;span class="w"&gt; &lt;/span&gt;state&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;***********************************************************************************************************
+fatal:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;nxos02&lt;span class="o"&gt;]&lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;FAILED!&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&amp;gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;{&lt;/span&gt;&lt;span class="s2"&gt;"changed"&lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;false,&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"errors"&lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[{&lt;/span&gt;&lt;span class="s2"&gt;"data_path"&lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"Ethernet2/1.admin_state"&lt;/span&gt;,&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"expected"&lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"up"&lt;/span&gt;,&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"found"&lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"down"&lt;/span&gt;,&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"json_path"&lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;$&lt;span class="s2"&gt;.Ethernet2/1.admin_state"&lt;/span&gt;,&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"message"&lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"'down' does not match 'up'"&lt;/span&gt;,&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"relative_schema"&lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;{&lt;/span&gt;&lt;span class="s2"&gt;"pattern"&lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"up"&lt;/span&gt;,&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"type"&lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"string"&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;,&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"schema_path"&lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"patternProperties.^.*.properties.admin_state.pattern"&lt;/span&gt;,&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"validator"&lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"pattern"&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;,&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;{&lt;/span&gt;&lt;span class="s2"&gt;"data_path"&lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"Ethernet2/10.admin_state"&lt;/span&gt;,&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"expected"&lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"up"&lt;/span&gt;,&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"found"&lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"down"&lt;/span&gt;,&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"json_path"&lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;$&lt;span class="s2"&gt;.Ethernet2/10.admin_state"&lt;/span&gt;,&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"message"&lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"'down' does not match 'up'"&lt;/span&gt;,&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"relative_schema"&lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;{&lt;/span&gt;&lt;span class="s2"&gt;"pattern"&lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"up"&lt;/span&gt;,&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"type"&lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"string"&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;,&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"schema_path"&lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"patternProperties.^.*.properties.admin_state.pattern"&lt;/span&gt;,&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"validator"&lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"pattern"&lt;/span&gt;&lt;span class="o"&gt;}]&lt;/span&gt;,&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"msg"&lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"Validation errors were found.\nAt 'patternProperties.^.*.properties.admin_state.pattern' 'down' does not match 'up'. \nAt 'patternProperties.^.*.properties.admin_state.pattern' 'down' does not match 'up'. \nAt 'patternProperties.^.*.properties.admin_state.pattern' 'down' does not match 'up'. "&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;
+...ignoring
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;TASK&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;print&lt;span class="w"&gt; &lt;/span&gt;the&lt;span class="w"&gt; &lt;/span&gt;interface&lt;span class="w"&gt; &lt;/span&gt;names&lt;span class="w"&gt; &lt;/span&gt;that&lt;span class="w"&gt; &lt;/span&gt;does&lt;span class="w"&gt; &lt;/span&gt;not&lt;span class="w"&gt; &lt;/span&gt;satisfy&lt;span class="w"&gt; &lt;/span&gt;the&lt;span class="w"&gt; &lt;/span&gt;desired&lt;span class="w"&gt; &lt;/span&gt;state&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;****************************************************************************
+Monday&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;14&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;December&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;2020&lt;/span&gt;&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="m"&gt;11&lt;/span&gt;:05:38&lt;span class="w"&gt; &lt;/span&gt;+0530&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;:00:01.661&lt;span class="o"&gt;)&lt;/span&gt;&lt;span class="w"&gt;       &lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;:00:28.676&lt;span class="w"&gt; &lt;/span&gt;*******
+ok:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;nxos&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&amp;gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;{&lt;/span&gt;
+&lt;span class="w"&gt;   &lt;/span&gt;&lt;span class="s2"&gt;"msg"&lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"Ethernet2/1"&lt;/span&gt;
+&lt;span class="o"&gt;}&lt;/span&gt;
+ok:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;nxos&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&amp;gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;{&lt;/span&gt;
+&lt;span class="w"&gt;   &lt;/span&gt;&lt;span class="s2"&gt;"msg"&lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"Ethernet2/10"&lt;/span&gt;
+&lt;span class="o"&gt;}&lt;/span&gt;
+
+PLAY&lt;span class="w"&gt; &lt;/span&gt;RECAP&lt;span class="w"&gt; &lt;/span&gt;******************************************************************************************************************************************
+nxos&lt;span class="w"&gt;                       &lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;ok&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;4&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;changed&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;unreachable&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;failed&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;skipped&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;rescued&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;ignored&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;As seen from the above output, the interface &lt;strong&gt;Ethernet2/1&lt;/strong&gt; and
+&lt;strong&gt;Ethernet2/10&lt;/strong&gt; are not in the desired state as per the defined
+criteria.&lt;/p&gt;
+&lt;h3&gt;Remediation&lt;/h3&gt;
+&lt;p&gt;Based on the output of the &lt;strong&gt;ansible.utils.validate&lt;/strong&gt; task, a number of
+remediation actions can be taken using Ansible modules for configuration
+management and/or reporting. In our case, we will be using the
+&lt;a href="https://github.com/ansible-collections/cisco.nxos/blob/main/docs/cisco.nxos.nxos_interfaces_module.rst"&gt;cisco.nxos.nxos_interfaces&lt;/a&gt;
+resource module to configure the given interfaces in admin &lt;strong&gt;up&lt;/strong&gt; state
+as shown in the below
+&lt;a href="https://gist.github.com/ganeshrn/58f1346aa3dad4ce771fe4cb9420349f"&gt;snippet&lt;/a&gt;.&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;Configure interface with drift in admin up state&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;cisco.nxos.nxos_interfaces&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;config&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"{{&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;item['data_path'].split('.')[0]&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;}}"&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;enabled&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;true&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;loop&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"{{&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;result['errors']&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;}}"&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;when&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"'errors'&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;in&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;result"&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;This remediation task will be executed only when the validation from the
+earlier task fails and will run only for those interfaces whose admin
+state is not up.&lt;/p&gt;
+&lt;h3&gt;Data validation&lt;/h3&gt;
+&lt;p&gt;It is often required to validate the data before giving it as an input
+to the task to ensure the input data structure is  per the expected data
+model.  This allows us to validate data model adherence prior to pushing
+configuration to the network device. This use case is explained in the
+&lt;a href="https://www.ipspace.net/kb/DataModels/70-Validation.html"&gt;data validation&lt;/a&gt;
+blog from &lt;a href="https://www.ipspace.net/Main_Page"&gt;Ivan Pepelnjak&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="state assessment blog two" src="https://ansible.com/images/posts/archive/state-assessment-blog-two.png"&gt;&lt;/p&gt;
+&lt;p&gt;The blog uses command-line tools to validate the input data, however
+with the support of the &lt;strong&gt;ansible.utils.validate&lt;/strong&gt; module, this
+functionality can now be added in the Ansible Playbook itself as shown
+in the below
+&lt;a href="https://gist.github.com/ganeshrn/11ef6cf725ee8fbc4f7a1bbffe5eb92b"&gt;snippet&lt;/a&gt;.&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;validate bgp data data with jsonschema bgp model criteria&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;ansible.utils.validate&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;data&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"{{&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;hostvars&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;}}"&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;criteria&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"{{&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;lookup('file',&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;'./bgp_data_model_criteria.json')&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;|&lt;/span&gt;&lt;span class="nv"&gt;  &lt;/span&gt;&lt;span class="s"&gt;from_json&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;}}"&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;engine&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;ansible.utils.jsonschema&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;register&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;result&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The criteria structure stored in &lt;strong&gt;bgp_data_model_criteria.json&lt;/strong&gt; file
+locally can be referred
+&lt;a href="https://gist.github.com/ganeshrn/aef7f74d132199b5ddb379d49fe314f7"&gt;here&lt;/a&gt; 
+(modified example from the &lt;a href="https://www.ipspace.net/kb/DataModels/70-Validation.html"&gt;original blog
+post&lt;/a&gt;) and the
+sample &lt;code&gt;host_vars&lt;/code&gt; file as below:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="nv"&gt;$cat&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;host_vars/nxos.yaml
+---
+bgp_as:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;
+description:&lt;span class="w"&gt; &lt;/span&gt;Unexpected
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The output of the above task run can be seen as below:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;TASK&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;validate&lt;span class="w"&gt; &lt;/span&gt;bgp&lt;span class="w"&gt; &lt;/span&gt;data&lt;span class="w"&gt; &lt;/span&gt;data&lt;span class="w"&gt; &lt;/span&gt;with&lt;span class="w"&gt; &lt;/span&gt;jsonschema&lt;span class="w"&gt; &lt;/span&gt;bgp&lt;span class="w"&gt; &lt;/span&gt;model&lt;span class="w"&gt; &lt;/span&gt;criteria&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;*******************************************************************************************
+fatal:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;nxos&lt;span class="o"&gt;]&lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;FAILED!&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&amp;gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;{&lt;/span&gt;&lt;span class="s2"&gt;"changed"&lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;false,&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"errors"&lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[{&lt;/span&gt;&lt;span class="s2"&gt;"data_path"&lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"nxos.bgp_as"&lt;/span&gt;,&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"expected"&lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;,&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"found"&lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;,&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"json_path"&lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;$&lt;span class="s2"&gt;.nxos.bgp_as"&lt;/span&gt;,&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"message"&lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"0 is less than the minimum of 1"&lt;/span&gt;,&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"relative_schema"&lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;{&lt;/span&gt;&lt;span class="s2"&gt;"maximum"&lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;65535&lt;/span&gt;,&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"minimum"&lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;,&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"type"&lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"number"&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;,&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"schema_path"&lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"patternProperties..*.properties.bgp_as.minimum"&lt;/span&gt;,&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"validator"&lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"minimum"&lt;/span&gt;&lt;span class="o"&gt;}]&lt;/span&gt;,&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"msg"&lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"Validation errors were found.\nAt 'patternProperties..*.properties.bgp_as.minimum' 0 is less than the minimum of 1. "&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;</description><guid>https://ansible.com/blog/using-new-ansible-utilities-for-operational-state-management-and-remediation/</guid><pubDate>Thu, 21 Jan 2021 00:00:00 GMT</pubDate></item><item><title>New LibSSH Connection Plugin for Ansible Network Replaces Paramiko, Adds FIPS Mode Enablement</title><link>https://ansible.com/blog/new-libssh-connection-plugin-for-ansible-network/</link><dc:creator>Ganesh Nalawade</dc:creator><description>&lt;h2&gt;New LibSSH Connection Plugin for Ansible Network Replaces Paramiko, Adds FIPS Mode Enablement&lt;/h2&gt;
+&lt;p&gt;As Red Hat Ansible Automation Platform expands its footprint with a
+growing customer base, security continues to be an important aspect of
+organizations' overall strategy. Red Hat regularly reviews and enhances
+the foundational codebase to follow better security practices. As part
+of this effort, we are introducing &lt;a href="https://www.sdxcentral.com/security/definitions/what-does-mean-fips-compliant/"&gt;FIPS 140-2
+readiness&lt;/a&gt;
+enablement by means of a newly developed Ansible SSH connection plugin
+that uses the &lt;a href="https://www.libssh.org/"&gt;libssh&lt;/a&gt; library.&lt;/p&gt;
+&lt;h3&gt;Ansible Network SSH Connection Basics&lt;/h3&gt;
+&lt;p&gt;Since most network appliances don't support or have limited capability
+for the local execution of a third party software, the Ansible network
+modules are not copied to the remote host unlike linux hosts; instead,
+they run on the control node itself. Hence, Ansible network can't use
+the typical Ansible SSH connection plugin that is used with linux host.
+Furthermore, due to this behavior, performance of the underlying SSH
+subsystem is critical. Not only is the new LibSSH connection plugin
+enabling FIPS readiness, but it was also designed to be
+&lt;a href="https://elegantnetwork.github.io/posts/comparing-ssh/"&gt;more performant than the existing Paramiko SSH subsystem&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="diagram of module code execution" src="https://ansible.com/images/posts/archive/module-code-execution-diagram.png"&gt;&lt;/p&gt;
+&lt;p&gt;The top level &lt;code&gt;network_cli&lt;/code&gt; connection
+plugin, provided by the ansible.netcommon Collection (specifically
+&lt;code&gt;ansible.netcommon.network_cli&lt;/code&gt;), provides an SSH based connection to the
+network appliance. It in turn calls the &lt;code&gt;ansible.builtin.paramiko_ssh&lt;/code&gt;
+connection plugin that depends on the paramiko python library to
+initialize the session between control node and the remote host. After
+that, it creates a pseudo terminal (PTY) to send commands from the
+control node to the network appliance and receive the responses.&lt;/p&gt;
+&lt;h3&gt;Why Replace Paramiko?&lt;/h3&gt;
+&lt;p&gt;The primary reason to replace the paramiko library is that it doesn't
+guarantee FIPS readiness and thus limits the Ansible network capability
+to run in environments that mandate FIPS mode to be enabled. Paramiko
+also isn't the speediest of connection plugins, so that can also be
+enhanced. Therefore, the new &lt;code&gt;ansible.netcommon.libssh&lt;/code&gt; connection plugin
+can now be easily swapped in for paramiko. The &lt;code&gt;ansible.netcommon&lt;/code&gt;
+Collection now contains this by default, and can be used for testing
+purposes until the codebase becomes more stable (it is currently
+&lt;a href="https://access.redhat.com/solutions/21101"&gt;Technology Preview&lt;/a&gt;).&lt;/p&gt;
+&lt;p&gt;Comparing the connection flow to the above, the top level
+&lt;code&gt;network_cli&lt;/code&gt; connection plugin that is provided by the &lt;code&gt;ansible.netcommon&lt;/code&gt; Collection
+(specifically &lt;code&gt;ansible.netcommon.network_cli&lt;/code&gt;) still provides an SSH based
+connection to the network appliance. It in turn calls the
+&lt;code&gt;ansible.netcommon.libssh&lt;/code&gt; connection plugin that depends on the
+&lt;a href="https://pypi.org/project/ansible-pylibssh/"&gt;&lt;code&gt;ansible-pylibssh&lt;/code&gt; python library&lt;/a&gt;
+to initialize the session between control node and the remote host. This
+python library is essentially a cython wrapper on top of the
+&lt;a href="https://www.libssh.org/"&gt;libssh C library&lt;/a&gt;. It then creates pseudo terminals
+(PTY) over SSH using python.&lt;/p&gt;
+&lt;h3&gt;Switching Ansible Playbooks to use LibSSH&lt;/h3&gt;
+&lt;p&gt;With the &lt;code&gt;ansible.netcommon&lt;/code&gt; Collection version 1.0.0, a new configuration
+parameter within &lt;code&gt;ansible.netcommon.network_cli&lt;/code&gt; connection plugin was
+added, which allows for &lt;code&gt;ssh_type&lt;/code&gt; be set to either &lt;code&gt;libssh&lt;/code&gt; or &lt;code&gt;paramiko&lt;/code&gt;. &lt;/p&gt;
+&lt;p&gt;If the value of the configuration parameter is set to &lt;code&gt;libssh&lt;/code&gt;, it will use the
+&lt;code&gt;ansible.netcommon.libssh&lt;/code&gt; connection plugin, which in turn uses the
+&lt;code&gt;ansible-pylibssh&lt;/code&gt; python library that supports FIPS readiness. If the
+value is set to &lt;code&gt;paramiko&lt;/code&gt;, it will continue to use the default
+&lt;code&gt;ansible.builtin.paramiko&lt;/code&gt; connection plugin that relies on the
+&lt;code&gt;paramiko&lt;/code&gt; python library. &lt;/p&gt;
+&lt;p&gt;Again, the default value is set to &lt;code&gt;paramiko&lt;/code&gt;, but in the future plans are
+to change the default to &lt;code&gt;libssh&lt;/code&gt;.&lt;/p&gt;
+&lt;h3&gt;Installing and Configuring LibSSH&lt;/h3&gt;
+&lt;p&gt;In order to utilize the LibSSH plugin, you must first install the
+&lt;code&gt;ansible-pylibssh&lt;/code&gt; python library from PyPI via the following command:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;pip&lt;span class="w"&gt; &lt;/span&gt;install&lt;span class="w"&gt; &lt;/span&gt;ansible-pylibssh
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;NOTES:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The current PyPI installation method bundles the correct version of
+    &lt;code&gt;LibSSH&lt;/code&gt; library and its dependencies as &lt;a href="https://packaging.python.org/glossary/#term-Built-Distribution"&gt;platform-specific
+    wheels&lt;/a&gt;
+    that don't rely on any OS-level libraries in runtime.&lt;/li&gt;
+&lt;li&gt;Future plans include creation, publishing, and maintenance of
+    stand-alone RPM and DEB packages for the &lt;code&gt;ansible-pylibssh&lt;/code&gt; library
+    that can be installed with well-known Linux package managers. These
+    will install the required system &lt;code&gt;libssh&lt;/code&gt; version and its dependencies
+    on the control node. FYI, Red Hat Enterprise Linux 8.1 and later
+    contains the proper &lt;code&gt;libssh&lt;/code&gt; package version and its dependencies.&lt;/li&gt;
+&lt;li&gt;The current primary use case for using LibSSH with Ansible is for
+    connecting to network devices. Connecting to other types of
+    endpoints (such as Linux) will be officially enabled at a later
+    date.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Using LibSSH in Ansible Playbooks&lt;/h3&gt;
+&lt;p&gt;Method 1:  The &lt;code&gt;ssh_type&lt;/code&gt; configuration parameter can be set to use
+&lt;code&gt;libssh&lt;/code&gt; in the active &lt;code&gt;ansible.cfg&lt;/code&gt; file of your project as shown below:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="k"&gt;[persistent_connection]&lt;/span&gt;
+&lt;span class="na"&gt;ssh_type&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;libssh&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Method 2:  Set the &lt;code&gt;ANSIBLE_NETWORK_CLI_SSH_TYPE&lt;/code&gt; environment variable as shown below:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="nv"&gt;$export&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;ANSIBLE_NETWORK_CLI_SSH_TYPE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;libssh
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Method 3:  Set the &lt;code&gt;ansible_network_cli_ssh_type&lt;/code&gt; parameter to &lt;code&gt;libssh&lt;/code&gt;
+within your playbook at the play level (as shown in below example).&lt;/p&gt;
+&lt;p&gt;NOTE: This setting can be made at the individual task level, but only if
+the connection to the remote network device is not already established.
+That is, if the first task uses &lt;code&gt;paramiko&lt;/code&gt;, then all subsequent tasks in
+the play must use &lt;code&gt;paramiko&lt;/code&gt; even if &lt;code&gt;libssh&lt;/code&gt; is specified in any subsequent
+tasks.&lt;/p&gt;
+&lt;h3&gt;Troubleshooting LibSSH Connections&lt;/h3&gt;
+&lt;p&gt;To quickly verify the libssh transport is set correctly, you can run the
+below playbook using the &lt;code&gt;ansible-playbook&lt;/code&gt; command line with verbose flag
+(-vvvv) added. Before running, ensure the inventory file is set correctly.&lt;/p&gt;
+&lt;p&gt;This example playbook uses the &lt;code&gt;cisco.ios&lt;/code&gt; Collection and must first be
+installed from Ansible Galaxy or Ansible Automation Platform on your
+Ansible control node.&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;hosts&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"changeme"&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;gather_facts&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;no&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;connection&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;ansible.netcommon.network_cli&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;vars&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;ansible_network_os&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;cisco.ios.ios&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;ansible_user&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"changeme"&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;ansible_password&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"changeme"&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;ansible_network_cli_ssh_type&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;libssh&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;tasks&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;run show version command&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;ansible.netcommon.cli_command&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;command&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;show version&lt;/span&gt;
+
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;run show interface command&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;ansible.netcommon.cli_command&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;       &lt;/span&gt;&lt;span class="nt"&gt;command&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;show interfaces&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;a href="https://gist.github.com/ganeshrn/78149adca85c809b69ed1b5f5262844c"&gt;https://gist.github.com/ganeshrn/78149adca85c809b69ed1b5f5262844c&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;In the output verbose logs, you should see the line &lt;em&gt;"ssh type is set to libssh"&lt;/em&gt; displayed on the console, which confirms the configuration is
+set correctly.&lt;/p&gt;
+&lt;h3&gt;Next Steps and Resources&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Start testing your Ansible network playbooks by setting the
+    configuration to use the ansible-pylibssh library.&lt;/li&gt;
+&lt;li&gt;Help with performance profiling of your existing playbook of 
+    ansible-pylibssh library with respect to paramiko library.&lt;/li&gt;
+&lt;li&gt;Get involved with the ansible-pylibssh project
+    (&lt;a href="https://github.com/ansible/pylibssh"&gt;https://github.com/ansible/pylibssh&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;</description><guid>https://ansible.com/blog/new-libssh-connection-plugin-for-ansible-network/</guid><pubDate>Tue, 24 Nov 2020 00:00:00 GMT</pubDate></item></channel></rss>

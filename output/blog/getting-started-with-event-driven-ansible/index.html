@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html prefix="
+og: http://ogp.me/ns# article: http://ogp.me/ns/article#
+" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Getting Started with Event-Driven Ansible | Ansible Collaborative</title>
+<link href="../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/baguetteBox.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/rst.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/code.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/theme.css" rel="stylesheet" type="text/css">
+<!-- Red Hat fonts --><link rel="stylesheet" href="https://static.redhat.com/libs/redhat/redhat-font/2.0.0/webfonts/red-hat-font.css">
+<!-- Font Awesome --><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+<!-- Fork Awesome --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css" integrity="sha256-XoaMnoYC5TH6/+ihMEnospgm0J1PM/nioxbOUdnM8HY=" crossorigin="anonymous">
+<!-- Sass compiled css  --><link rel="stylesheet" href="../../assets/css/main.css">
+<link rel="stylesheet" href="../../assets/css/redhat-footer.css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://ansible.com/blog/getting-started-with-event-driven-ansible/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Nuno Martins">
+<link rel="prev" href="../introducing-event-driven-ansible/" title="Introducing the Event-Driven Ansible developer preview" type="text/html">
+<link rel="next" href="../best-of-fest-2022/" title="Best of Fest 2022" type="text/html">
+<meta property="og:site_name" content="Ansible Collaborative">
+<meta property="og:title" content="Getting Started with Event-Driven Ansible">
+<meta property="og:url" content="https://ansible.com/blog/getting-started-with-event-driven-ansible/">
+<meta property="og:description" content="Getting Started with Event-Driven Ansible
+As one technology advances, it expands the possibilities for other technologies and offers the solutions of tomorrow for the challenges we face today. Ansible">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2022-10-19T13:00:00Z">
+<meta property="article:tag" content="ansible-rulebook">
+<meta property="article:tag" content="eda">
+<meta property="article:tag" content="event-driven-ansible">
+<meta property="article:tag" content="getting-started">
+<meta property="article:tag" content="rulebooks">
+</head>
+<body id="top">
+
+<div class="global-container" id="content" role="main">
+<!-- Start menubar -->
+<nav class="navbar navbar-expand-lg static-top mb-4 navbar-padding full-width-bg   navbar-dark   bg-pool   "><div class="masthead">
+    <!-- This keeps the margins nice -->
+    <a class="navbar-brand" href="../../">
+        <img src="../../images/ansible_logo-small-15.png" alt="Ansible community logo" id="logo" class="d-inline-block align-top" width="50" height="50"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon nav-toggle-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="bs-navbar">
+      <ul class="navbar-nav mr-auto"></ul>
+<ul class="navbar-nav navbar-right">
+<li class="nav-item dropdown">
+	        <a href="#" class="nav-link nav-link-color dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <i class=""></i> Documentation
+                </a>
+		<div class="dropdown-menu dropdown-menu-border">
+	    
+                    <a href="https://docs.ansible.com/" class="dropdown-item">
+		        <i class=""></i> Project documentation
+                    </a>
+                    <a href="https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/" class="dropdown-item">
+		        <i class=""></i> Ansible Automation Platform documentation
+                    </a>
+            </div>
+                 </li>
+<li class="nav-item">
+		     <a href="https://galaxy.ansible.com/" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Galaxy
+		     </a>
+		 </li>
+                 <li class="nav-item">
+		     <a href="https://forum.ansible.com/" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Forum
+		     </a>
+		 </li>
+            <li class="nav-item dropdown">
+	        <a href="#" class="nav-link nav-link-color dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <i class=""></i> Resources
+                </a>
+		<div class="dropdown-menu dropdown-menu-border">
+	    
+                    <a href="../../how-ansible-works/" class="dropdown-item">
+		        <i class=""></i> How Ansible works
+                    </a>
+                    <a href="../../ecosystem/" class="dropdown-item">
+		        <i class=""></i> Ansible ecosystem
+                    </a>
+                    <a href="../archive.html" class="dropdown-item">
+		        <i class=""></i> Blog
+                    </a>
+                    <a href="../../faq/" class="dropdown-item">
+		        <i class=""></i> Frequently asked questions
+                    </a>
+                    <a href="../../ansible-community-training/" class="dropdown-item">
+		        <i class=""></i> Ansible community training
+                    </a>
+                    <a href="../../contact-us/" class="dropdown-item">
+		        <i class=""></i> Contact us
+                    </a>
+            </div>
+                 </li>
+<li class="nav-item">
+		     <a href="https://www.redhat.com/en/technologies/management/ansible?sc_cid=7015Y000003szaKQAQ" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Ansible Automation Platform
+		     </a>
+		 </li>
+
+        
+      </ul>
+</div>
+    <!-- /.navbar-collapse -->
+  </div>
+  <!-- /.container -->
+</nav><!-- End default Menubar --><div class="body-content center-band">
+        <!--Body content-->
+        
+  <article class="post-text h-entry hentry postpage ansible-content" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Getting Started with Event-Driven Ansible</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard p-author h-card"><span class="byline-name fn p-name" itemprop="author">
+                    <a class="u-url" href="../../authors/nuno-martins/">Nuno Martins</a>
+            </span></p>
+            <p class="dateline">
+            <a href="." rel="bookmark">
+            <time class="published dt-published" datetime="2022-10-19T13:00:00Z" itemprop="datePublished" title="2022-10-19 13:00">2022-10-19 13:00</time></a>
+            </p>
+                    <p class="sourceline"><a href="index.md" class="sourcelink">Source</a></p>
+
+        </div>
+        
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+<h2>Getting Started with Event-Driven Ansible</h2>
+<p>As one technology advances, it expands the possibilities for other technologies and offers the solutions of tomorrow for the challenges we face today. AnsibleFest 2022 brings us new advances in Ansible automation that are as bright as they are innovative. I am talking about the Event-Driven Ansible developer preview.</p>
+<p>Automation allows us to give our systems and technology speed and agility while minimizing human error. However, when it comes to trouble tickets and issues, we are often left to traditional and manual methods of troubleshooting and information gathering. We inherently slow things down and interrupt our businesses. We have to gather information, try our common troubleshooting steps, confirm with different teams, and eventually, we need to sleep.</p>
+<p>The following image illustrates a support lifecycle with many manual steps and hand-offs:</p>
+<p><img alt="support lifecycle diagram" src="../../images/posts/archive/getting-started-eda-lifecycle-diagram.png"></p>
+<p>One application of Event-Driven Ansible is to remediate technology issues before near real-time, or at least trigger troubleshooting and information collection in an attempt to find the root cause of an outage while your support teams handle other issues.</p>
+<p>The following image illustrates how event-driven automation is used in the support lifecycle: fewer steps, faster Mean-Time-To-Resolution.</p>
+<p><img alt="Event-Driven Ansible in the support lifecycle" src="../../images/posts/archive/getting-started-eda-eda.png"></p>
+<p>Event-Driven Ansible has the potential to change the way we respond to issues and illuminates many new automation possibilities. So, how do you take the next step with Event-Driven Ansible?</p>
+<h2>Let’s get started!</h2>
+<p>Event-Driven Ansible is currently in developer preview, however there is nothing stopping us from installing ansible-rulebook, which is the CLI component of Event-Driven Ansible, and building our first rulebook. Event-Driven Ansible contains a decision framework that was built using Drools. We need a rulebook to tell the system what events to flag and how to respond to them. These rulebooks are also created in YAML and are used like traditional Ansible Playbooks, so this makes it easier to understand and build the rulebooks we need. One key difference between playbooks and rulebooks is the If-this-then-that coding that is needed in a rulebook to make an event driven  automation approach work.</p>
+<p>A rulebook is comprised of three main components:</p>
+<ul>
+<li>
+<p><strong>Sources</strong> define which event source we will use. These sources come from source plugins which have been built to accommodate common use cases. With time, more and more sources will be available. There are some source plugins that are available already, including: webhooks, Kafka, Azure service bus, file changes, and alertmanager.</p>
+</li>
+<li>
+<p><strong>Rules</strong> define conditionals we will try to match from the event source. Should the condition be met, then we can trigger an action.</p>
+</li>
+<li>
+<p><strong>Actions</strong> trigger what you need to happen should a condition be met. Some of the current actions are: run_playbook, run_module, set_fact, post_event, and debug.</p>
+</li>
+</ul>
+<p><img alt="getting-started-with-event-driven-ansible" src="../../images/posts/archive/getting-started-eda-event-source.png"></p>
+<p>Now, let's install ansible-rulebook and start with our very first event.</p>
+<p>To install ansible-rulebook, we can install our Galaxy Collection, which has a playbook to install everything we need.</p>
+<div class="code"><pre class="code literal-block">ansible-galaxy<span class="w"> </span>collection<span class="w"> </span>install<span class="w"> </span>ansible.eda
+</pre></div>
+
+<p>Once the Collection is installed, you can run the install-rulebook-cli.yml playbook. This will install everything you need to get started with ansible-rulebook on the command line. This is currently supported for Mac and Fedora.</p>
+<p><strong>Note:</strong> Now, you could also skip this method above and install ansible-rulebook with pip, followed by installing the ansible.eda collection. Java 11+ is required if you use this method and we suggest using <a href="https://jdk.java.net/19/">openjdk</a>. (This step is not required if you used the previous install method.)</p>
+<div class="code"><pre class="code literal-block">pip<span class="w"> </span>install<span class="w"> </span>ansible-rulebook
+
+ansible-galaxy<span class="w"> </span>collection<span class="w"> </span>install<span class="w"> </span>ansible.eda
+</pre></div>
+
+<p>If you want to contribute to ansible-rulebook, you can also fork the following <a href="https://github.com/ansible/ansible-rulebook">GitHub repository</a>. This repository also contains instructions for setting up your development environment and how to build a test container.</p>
+<p>Let's build an example rulebook that will trigger an action from a webhook. We will be looking for a specific payload from the webhook, and if that condition is met from the webhook event, then ansible-rulebook will trigger the desired action. Below is our example rulebook:</p>
+<div class="code"><pre class="code literal-block"><span class="nn">---</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Listen for events on a webhook</span>
+<span class="w w-Error"> </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">all</span>
+
+<span class="w"> </span><span class="c1">## Define our source for events</span>
+
+<span class="w"> </span><span class="nt">sources</span><span class="p">:</span>
+<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">ansible.eda.webhook</span><span class="p">:</span>
+<span class="w">       </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0.0.0</span>
+<span class="w">       </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5000</span>
+
+<span class="w"> </span><span class="c1">## Define the conditions we are looking for</span>
+
+<span class="w"> </span><span class="nt">rules</span><span class="p">:</span>
+<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Say Hello</span>
+<span class="w">     </span><span class="nt">condition</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">event.payload.message == "Ansible is super cool!"</span>
+
+<span class="w"> </span><span class="c1">## Define the action we should take should the condition be met</span>
+
+<span class="w">     </span><span class="nt">action</span><span class="p">:</span>
+<span class="w">       </span><span class="nt">run_playbook</span><span class="p">:</span>
+<span class="w">         </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">say-what.yml</span>
+</pre></div>
+
+<p>If we look at this example, we can see the structure of the rulebook. Our sources, rules and actions are defined. We are using the webhook source plugin from our ansible.eda collection, and we are looking for a message payload from our webhook that contains "Ansible is super cool". Once this condition has been met, our defined action will trigger, which in this case is to trigger a playbook.</p>
+<p>One important thing to take note of ansible-rulebook is that it is not like ansible-playbook which runs a playbook and once the playbook has been completed it will exit. With ansible-rulebook, it will continue to run waiting for events and matching those events. It will only exit upon a shutdown action or if there is an issue with the event source itself, for example if a website you are watching with the url-check plugin stops working.</p>
+<p>With our rulebook built, we will simply tell ansible-rulebook to use it as a ruleset and wait for events:</p>
+<div class="code"><pre class="code literal-block">root@ansible-rulebook:/root#<span class="w"> </span>ansible-rulebook<span class="w"> </span>--rules<span class="w"> </span>webhook-example.yml<span class="w"> </span>-i<span class="w"> </span>inventory.yml<span class="w"> </span>--verbose
+
+INFO:ansible_events:Starting<span class="w"> </span>sources
+INFO:ansible_events:Starting<span class="w"> </span>sources
+INFO:ansible_events:Starting<span class="w"> </span>rules
+INFO:root:run_ruleset
+INFO:root:<span class="o">{</span><span class="s1">'all'</span>:<span class="w"> </span><span class="o">[{</span><span class="s1">'m'</span>:<span class="w"> </span><span class="o">{</span><span class="s1">'payload.message'</span>:<span class="w"> </span><span class="s1">'Ansible is super cool!'</span><span class="o">}}]</span>,<span class="w"> </span><span class="s1">'run'</span>:<span class="w"> </span>&lt;<span class="k">function</span><span class="w"> </span>make_fn.&lt;locals&gt;.fn<span class="w"> </span>at<span class="w"> </span>0x7ff962418040&gt;<span class="o">}</span>
+INFO:root:Waiting<span class="w"> </span><span class="k">for</span><span class="w"> </span>event
+INFO:root:load<span class="w"> </span><span class="nb">source</span>
+INFO:root:load<span class="w"> </span><span class="nb">source</span><span class="w"> </span>filters
+INFO:root:Calling<span class="w"> </span>main<span class="w"> </span><span class="k">in</span><span class="w"> </span>ansible.eda.webhook
+</pre></div>
+
+<p>Now, ansible-rulebook is ready and it's waiting for an event to match. If a webhook is triggered but the payload does not match our condition in our rule, we can see it in the ansible-rulebook verbose output:</p>
+<div class="code"><pre class="code literal-block">…
+INFO:root:Calling<span class="w"> </span>main<span class="w"> </span><span class="k">in</span><span class="w"> </span>ansible.eda.webhook
+INFO:aiohttp.access:127.0.0.1<span class="w"> </span><span class="o">[</span><span class="m">14</span>/Oct/2022:09:49:32<span class="w"> </span>+0000<span class="o">]</span><span class="w"> </span><span class="s2">"POST /endpoint HTTP/1.1"</span><span class="w"> </span><span class="m">200</span><span class="w"> </span><span class="m">158</span><span class="w"> </span><span class="s2">"-"</span><span class="w"> </span><span class="s2">"curl/7.61.1"</span>
+INFO:root:Waiting<span class="w"> </span><span class="k">for</span><span class="w"> </span>event
+</pre></div>
+
+<p>But once our payload matches what we are looking for, that’s when the magic happens, so we will simulate a webhook with the correct payload:</p>
+<div class="code"><pre class="code literal-block">curl<span class="w"> </span>-H<span class="w"> </span><span class="s1">'Content-Type: application/json'</span><span class="w"> </span>-d<span class="w"> </span><span class="s2">"{\"message\": \"Ansible is super cool\"}"</span><span class="w"> </span><span class="m">127</span>.0.0.1:5000/endpoint
+
+INFO:root:Calling<span class="w"> </span>main<span class="w"> </span><span class="k">in</span><span class="w"> </span>ansible.eda.webhook
+INFO:aiohttp.access:127.0.0.1<span class="w"> </span><span class="o">[</span><span class="m">14</span>/Oct/2022:09:50:28<span class="w"> </span>+0000<span class="o">]</span><span class="w"> </span><span class="s2">"POST /endpoint HTTP/1.1"</span><span class="w"> </span><span class="m">200</span><span class="w"> </span><span class="m">158</span><span class="w"> </span><span class="s2">"-"</span><span class="w"> </span><span class="s2">"curl/7.61.1"</span>
+INFO:root:calling<span class="w"> </span>Say<span class="w"> </span>Hello
+INFO:root:call_action<span class="w"> </span>run_playbook
+INFO:root:substitute_variables<span class="w"> </span><span class="o">[{</span><span class="s1">'name'</span>:<span class="w"> </span><span class="s1">'say-what.yml'</span><span class="o">}]</span><span class="w"> </span><span class="o">[{</span><span class="s1">'event'</span>:<span class="w"> </span><span class="o">{</span><span class="s1">'payload'</span>:<span class="w"> </span><span class="o">{</span><span class="s1">'message'</span>:<span class="w"> </span><span class="s1">'Ansible is super cool'</span><span class="o">}</span>,<span class="w"> </span><span class="s1">'meta'</span>:<span class="w"> </span><span class="o">{</span><span class="s1">'endpoint'</span>:<span class="w"> </span><span class="s1">'endpoint'</span>,<span class="w"> </span><span class="s1">'headers'</span>:<span class="w"> </span><span class="o">{</span><span class="s1">'Host'</span>:<span class="w"> </span><span class="s1">'127.0.0.1:5000'</span>,<span class="w"> </span><span class="s1">'User-Agent'</span>:<span class="w"> </span><span class="s1">'curl/7.61.1'</span>,<span class="w"> </span><span class="s1">'Accept'</span>:<span class="w"> </span><span class="s1">'*/*'</span>,<span class="w"> </span><span class="s1">'Content-Type'</span>:<span class="w"> </span><span class="s1">'application/json'</span>,<span class="w"> </span><span class="s1">'Content-Length'</span>:<span class="w"> </span><span class="s1">'36'</span><span class="o">}}}</span>,<span class="w"> </span><span class="s1">'fact'</span>:<span class="w"> </span><span class="o">{</span><span class="s1">'payload'</span>:<span class="w"> </span><span class="o">{</span><span class="s1">'message'</span>:<span class="w"> </span><span class="s1">'Ansible is super cool'</span><span class="o">}</span>,<span class="w"> </span><span class="s1">'meta'</span>:<span class="w"> </span><span class="o">{</span><span class="s1">'endpoint'</span>:<span class="w"> </span><span class="s1">'endpoint'</span>,<span class="w"> </span><span class="s1">'headers'</span>:<span class="w"> </span><span class="o">{</span><span class="s1">'Host'</span>:<span class="w"> </span><span class="s1">'127.0.0.1:5000'</span>,<span class="w"> </span><span class="s1">'User-Agent'</span>:<span class="w"> </span><span class="s1">'curl/7.61.1'</span>,<span class="w"> </span><span class="s1">'Accept'</span>:<span class="w"> </span><span class="s1">'*/*'</span>,<span class="w"> </span><span class="s1">'Content-Type'</span>:<span class="w"> </span><span class="s1">'application/json'</span>,<span class="w"> </span><span class="s1">'Content-Length'</span>:<span class="w"> </span><span class="s1">'36'</span><span class="o">}}}}]</span>
+INFO:root:action<span class="w"> </span>args:<span class="w"> </span><span class="o">{</span><span class="s1">'name'</span>:<span class="w"> </span><span class="s1">'say-what.yml'</span><span class="o">}</span>
+INFO:root:running<span class="w"> </span>Ansible<span class="w"> </span>playbook:<span class="w"> </span>say-what.yml
+INFO:root:Calling<span class="w"> </span>Ansible<span class="w"> </span>runner
+
+PLAY<span class="w"> </span><span class="o">[</span>say<span class="w"> </span>thanks<span class="o">]</span><span class="w"> </span>**************************************************************
+
+TASK<span class="w"> </span><span class="o">[</span>debug<span class="o">]</span><span class="w"> </span>*******************************************************************
+ok:<span class="w"> </span><span class="o">[</span>localhost<span class="o">]</span><span class="w"> </span><span class="o">=</span>&gt;<span class="w"> </span><span class="o">{</span>
+<span class="w">    </span><span class="s2">"msg"</span>:<span class="w"> </span><span class="s2">"Thank you, my friend!"</span>
+<span class="o">}</span>
+
+PLAY<span class="w"> </span>RECAP<span class="w"> </span>*********************************************************************
+localhost<span class="w">                  </span>:<span class="w"> </span><span class="nv">ok</span><span class="o">=</span><span class="m">1</span><span class="w">    </span><span class="nv">changed</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">unreachable</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">failed</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">skipped</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">rescued</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">ignored</span><span class="o">=</span><span class="m">0</span>
+
+INFO:root:Waiting<span class="w"> </span><span class="k">for</span><span class="w"> </span>event
+</pre></div>
+
+<p>We can see from the output above, that the condition was met from the webhook and ansible-rulebook then triggered our action which was to run_playbook. The playbook we defined is then triggered and once it completes we can see we revert back to "Waiting for event".</p>
+<p>Event-Driven Ansible opens up the possibilities of faster resolution and greater automated observation of our environments. It has the possibility of simplifying the lives of many technical and sleep-deprived engineers. The current ansible-rulebook is easy to learn and work with, and the graphical user interface EDA-Server will simplify this further.</p>
+<h3>What can you do next?</h3>
+<p>Whether you are beginning your automation journey or a seasoned veteran, there are a variety of resources to enhance your automation knowledge:</p>
+<ul>
+<li>
+<a href="https://www.redhat.com/en/engage/redhat-ansible-automation-202108061218">Self-paced lab exercises</a> - We have interactive, in-browser exercises to help you get started with Event-Driven Ansible and ansible-rulebook.</li>
+<li>
+<a href="https://youtu.be/PtevBKX1SYI">Event-Driven Rulebooks</a> - Watch another example of Event-Driven Ansible on our YouTube channel.</li>
+<li>
+<a href="https://youtu.be/Bb51DftLbPE">Event-Driven Ansible and Gitops</a> - Watch another example of Event-Driven Ansible, but with GitOps, on our YouTube channel.</li>
+</ul>
+</div>
+    <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">
+<li><a class="tag p-category" href="../../categories/ansible-rulebook/" rel="tag">ansible-rulebook</a></li>
+            <li><a class="tag p-category" href="../../categories/eda/" rel="tag">eda</a></li>
+            <li><a class="tag p-category" href="../../categories/event-driven-ansible/" rel="tag">event-driven-ansible</a></li>
+            <li><a class="tag p-category" href="../../categories/getting-started/" rel="tag">getting-started</a></li>
+            <li><a class="tag p-category" href="../../categories/rulebooks/" rel="tag">rulebooks</a></li>
+        </ul>
+<ul class="pager hidden-print">
+<li class="previous">
+                <a href="../introducing-event-driven-ansible/" rel="prev" title="Introducing the Event-Driven Ansible developer preview">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../best-of-fest-2022/" rel="next" title="Best of Fest 2022">Next post</a>
+            </li>
+        </ul></nav></aside></article><!--End of body content-->
+</div>
+        <div class="content-slim redhat-footer">
+      <div class="footer-left">
+        <ul class="footer-left-links">
+<li>
+            <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-SA 4.0</a>
+          </li>
+          <li>
+            <a href="https://www.redhat.com/en/about/privacy-policy" target="_blank">Privacy policy</a>
+          </li>
+          <li>
+            <a href="https://docs.ansible.com/ansible/latest/community/code_of_conduct.html" target="_blank">Code of conduct</a>
+          </li>
+        </ul>
+</div>
+      <div class="footer-right">
+        <span class="redhat">Powered by</span>
+        <span class="redhat-logo">
+          <a href="https://www.redhat.com/en/technologies/management/ansible" target="_blank">
+            <img src="../../assets/images/redhat_reversed.svg" alt="Red Hat logo." width="96" height="28"></a>
+        </span>
+      </div>
+    </div>
+
+</div>
+
+            <script src="../../assets/js/jquery.min.js"></script><script src="../../assets/js/popper.min.js"></script><script src="../../assets/js/bootstrap.min.js"></script><script src="../../assets/js/baguetteBox.min.js"></script><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+</script><script src="../../assets/js/clipboard.min.js" type="text/javascript"></script><script src="../../assets/js/clipboard.js" type="text/javascript"></script>
+</body>
+</html>

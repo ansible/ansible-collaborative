@@ -1,0 +1,372 @@
+<h1>Introduction to Ansible Builder</h1>
+<p>Hello and welcome to another introductory Ansible blog post, where
+we'll be covering a new command-line interface (CLI) tool, Ansible
+Builder. Please note that this article will cover some
+intermediate-level topics such as containers (Ansible Builder uses
+<a href="https://developers.redhat.com/articles/podman-next-generation-linux-container-tools">Podman</a>
+by default), virtual environments, and Ansible Content Collections.
+If you have some familiarity with those topics, then read on to find out
+what Ansible Builder is, why it was developed, and how to use it. </p>
+<p>This project is currently in development upstream on
+<a href="https://github.com/ansible/ansible-builder">GitHub</a> and is not yet part
+of the Red Hat Ansible Automation Platform product.  As with all Red Hat
+software, our <a href="https://www.redhat.com/en/our-code-is-open">code is open</a>
+and we have an open source development model for our enterprise
+software.  The goal of this blog post is to show the current status of
+this initiative, and start getting the community and customers
+comfortable with our methodologies, thought process, and concept of
+Execution Environments.  Feedback on this upstream project can be
+provided on GitHub via comments and issues, or provided via the various
+methods listed on our website.</p>
+<h1>What is Ansible Builder?</h1>
+<p>In a nutshell, Ansible Builder is a tool that aids in the creation of
+Ansible Execution Environments. To fully understand this, let's step
+back and discuss what exactly execution environments are.  </p>
+<h2>A Primer on Execution Environments</h2>
+<p>Before the concept of Execution Environments came about, the Ansible
+Automation Platform execution system was limited to executing jobs under
+<a href="https://github.com/containers/bubblewrap">bubblewrap</a> in order to
+isolate processes. There were several problems related to this,
+including the fact that in the cases of Red Hat OpenShift and
+Kubernetes-based deployments, any container running jobs had to run in
+privileged mode. In addition to this issue, consuming Ansible Content
+Collections was very labor-intensive and users faced a lot of challenges
+managing custom Python virtual environments and Ansible module
+dependencies. The concept of Execution Environments is the solution to
+these problems; simply put, they are container images that can be
+utilized as Ansible control nodes. These container images enable the
+simplification and automation of outdated processes.</p>
+<p>As an example of how useful Execution Environments can be, let's say a
+developer writes content for Ansible locally by using container
+technology so that they can create portable automation runtimes; these
+container images will allow that developer to share pre-packaged
+Execution Environment, which can be tested and promoted to production.
+This eliminates a lot of manual steps (e.g. creating a Dockerfile from
+scratch) and accelerates operations by streamlining development and
+deployment.  </p>
+<h2>Ansible Builder is a Tool for Building Execution Environments</h2>
+<p>To enable developers, contributors, and users to take advantage of this
+new concept, Ansible Builder was developed to automate the process of
+building Execution Environments.  It does this by using the dependency
+information defined in various Ansible Content Collections, as well as
+by the user. Ansible Builder will produce a directory that acts as the
+build context for the container image build, which will contain the
+<code>Containerfile</code>, along with any other files that need to be added to the image.</p>
+<h2>Getting Started</h2>
+<h3>Installing</h3>
+<p>You can install Ansible Builder from the <a href="https://pypi.org/project/ansible-builder/">Python Package Index
+(PyPI)</a> or from the main
+ansible-builder development branch of the codebase hosted on
+<a href="https://github.com/ansible/ansible-builder">GitHub</a>. In your terminal,
+simply run:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>ansible-builder
+</pre></div>
+
+<p><strong>Note:</strong> Podman is used by default to build images. To use Docker, use
+<code>ansible-builder build --container-runtime docker</code>.</p>
+<h3>Writing a Definition</h3>
+<p>In the world of Ansible Builder, the "definition" is a YAML file that
+outlines the Execution Environment's Collection-level dependencies, base
+image source, and overrides for specific items within the Execution
+Environment. The <code>ansible-builder build</code> command, which we
+will discuss in further detail later, takes the definition file as an
+input and then outputs the build context necessary for creating an
+Execution Environment image, which it then uses to actually build that
+image. That same build context can consistently rebuild the Execution
+Environment image elsewhere, which enables users to create distributable
+working environments for any Collections. </p>
+<p>Below is an example of the content that would be in a definition file:</p>
+<div class="code"><pre class="code literal-block"><span class="nn">---</span>
+<span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="nt">dependencies</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">galaxy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">requirements.yml</span>
+<span class="w">  </span><span class="nt">python</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">requirements.txt</span>
+<span class="w">  </span><span class="nt">system</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">bindep.txt</span>
+
+<span class="nt">additional_build_steps</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">prepend</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">    </span><span class="no">RUN pip3 install --upgrade pip setuptools</span>
+<span class="w">  </span><span class="nt">append</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RUN ls -la /etc</span>
+</pre></div>
+
+<p><strong>Note:</strong> The build command will default to using a definition file
+named <code>execution-environment.yml</code>.
+If you want to use a different file, you will need to specify the file
+name with the <code>-f</code> (or <code>--file</code>) flag. This file <em>must</em> be a <code>.yml</code>
+formatted file.</p>
+<p>In the <code>dependencies</code> section of
+the definition file above, the entries that would be listed there may be
+a relative path from the directory of the Execution Environment
+definition's folder, or an absolute path. Below is an example of what
+might be contained in a <code>requirements.yml</code> file,
+which points to a valid requirements file for the
+<code>ansible-galaxy collection install -r</code>... command:</p>
+<p><strong>NOTE</strong>: The following collection example is sourced from Automation
+Hub on <a href="http://cloud.redhat.com/">cloud.redhat.com</a> and requires a valid
+<a href="http://red.ht/try_ansible">Ansible Automation Platform subscription</a>
+and an upcoming feature to ansible-builder to access.</p>
+<ul>
+<li>For more information on using Automation Hub, refer to the <a href="https://docs.ansible.com/ansible/latest/galaxy/user_guide.html#downloading-a-collection-from-automation-hub">user
+    guide</a></li>
+<li>For instructions on how to use an ansible.cfg file with Ansible
+    Builder, see the <a href="https://ansible-builder.readthedocs.io/en/latest/definition.html#ansible-config-file-path">documentation
+    here</a></li>
+</ul>
+<div class="code"><pre class="code literal-block"><span class="nn">---</span>
+<span class="nt">collections</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">redhat.openshift</span>
+</pre></div>
+
+<p>The <code>python</code> entry points to a Python requirements file for <code>pip install -r</code>.
+For example, the <code>requirements.txt</code> file might contain the following:</p>
+<div class="code"><pre class="code literal-block">awxkit&gt;=13.0.0
+boto&gt;=2.49.0
+botocore&gt;=1.12.249
+boto3&gt;=1.9.249
+openshift&gt;=0.6.2
+requests-oauthlib
+</pre></div>
+
+<p>The <a href="https://docs.openstack.org/infra/bindep/readme.html">bindep</a>
+requirements file specifies cross-platform requirements, if there are
+any.  These get processed by bindep and then passed to dnf (other
+platforms are not yet supported as of the publication of this blog
+post). An example of the content of a
+<code>bindep.txt</code> file is below:</p>
+<div class="code"><pre class="code literal-block">subversion [platform:rpm]
+subversion [platform:dpkg]
+</pre></div>
+
+<p>Additional commands may be specified in the <code>additional_build_steps</code> section, to be executed before the main build steps (<code>prepend</code>) or after (<code>append</code>).
+The syntax needs to be either a multi-line string (as shown in the <code>prepend</code> section of the example definition file) or a list (as shown via the example's <code>append</code> section).</p>
+<h3>Customizable Options</h3>
+<p>Before we run the <code>build</code> command, let's discuss the customizable options you can use alongside
+it.  </p>
+<p><code>'-f', '--file'</code></p>
+<p>This flag points to the specific definition file of the Execution Environment; it will default to <code>execution-environment.yml</code> if a different file name is not specified.</p>
+<p><code>'-b', '--base-image'</code></p>
+<p>The parent image for the Execution Environment; when not mentioned, it defaults to <code>quay.io/ansible/ansible-runner:devel</code>.</p>
+<p><code>'-c', '--context'</code></p>
+<p>The directory to use for the build context, if it should be generated in a specific place. The default location is <code>$PWD/context.</code></p>
+<p><code>'--container-runtime'</code></p>
+<p>Specifies which container runtime to use; the choices are <code>podman</code> (default option) or <code>docker</code>.</p>
+<p><code>'--tag'</code></p>
+<p>The name for the container image being built; when nothing is specified with this flag, the image will be named <code>ansible-execution-env</code>.</p>
+<p>As with most CLIs, adding <code>--help</code> at the end of
+any Ansible Builder command will provide output in the form of help text
+that will display and explain the options available under any particular
+command. Below is an example of a command for looking up help text,
+along with its corresponding output:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>ansible-builder<span class="w"> </span>--help
+usage:<span class="w"> </span>ansible-builder<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>--version<span class="o">]</span><span class="w"> </span><span class="o">{</span>build,introspect<span class="o">}</span><span class="w"> </span>...
+
+Tooling<span class="w"> </span>to<span class="w"> </span><span class="nb">help</span><span class="w"> </span>build<span class="w"> </span>container<span class="w"> </span>images<span class="w"> </span><span class="k">for</span><span class="w"> </span>running<span class="w"> </span>Ansible<span class="w"> </span>content.<span class="w"> </span>Get
+started<span class="w"> </span>by<span class="w"> </span>looking<span class="w"> </span>at<span class="w"> </span>the<span class="w"> </span><span class="nb">help</span><span class="w"> </span><span class="k">for</span><span class="w"> </span>one<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>subcommands.
+
+positional<span class="w"> </span>arguments:
+<span class="w">  </span><span class="o">{</span>build,introspect<span class="o">}</span><span class="w">  </span>The<span class="w"> </span><span class="nb">command</span><span class="w"> </span>to<span class="w"> </span>invoke.
+<span class="w">    </span>build<span class="w">             </span>Builds<span class="w"> </span>a<span class="w"> </span>container<span class="w"> </span>image.
+<span class="w">    </span>introspect<span class="w">        </span>Introspects<span class="w"> </span>collections<span class="w"> </span><span class="k">in</span><span class="w"> </span>folder.
+
+optional<span class="w"> </span>arguments:
+<span class="w">  </span>-h,<span class="w"> </span>--help<span class="w">          </span>show<span class="w"> </span>this<span class="w"> </span><span class="nb">help</span><span class="w"> </span>message<span class="w"> </span>and<span class="w"> </span><span class="nb">exit</span>
+<span class="w">  </span>--version<span class="w">           </span>Print<span class="w"> </span>ansible-builder<span class="w"> </span>version<span class="w"> </span>and<span class="w"> </span>exit.
+</pre></div>
+
+<h3>Start the Build</h3>
+<p>Let's see what happens when we run the build command!
+The build definition will be gathered from the default <code>execution-environment.yml</code> file as shown below:</p>
+<div class="code"><pre class="code literal-block"><span class="nn">---</span>
+<span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="nt">dependencies</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">galaxy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">requirements.yml</span>
+
+<span class="nt">additional_build_steps</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">prepend</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">    </span><span class="no">RUN pip3 install --upgrade pip setuptools</span>
+<span class="w">  </span><span class="nt">append</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RUN ls -la /etc</span>
+</pre></div>
+
+<p>We will be building an image named <code>my_first_ee_image</code> using Docker by running the command below:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>ansible-builder<span class="w"> </span>build<span class="w"> </span>--tag<span class="w"> </span>my_first_ee_image<span class="w"> </span>--container-runtime<span class="w"> </span>docker
+Using<span class="w"> </span>python3<span class="w"> </span><span class="o">(</span><span class="m">3</span>.7.7<span class="o">)</span>
+File<span class="w"> </span>context/introspect.py<span class="w"> </span>is<span class="w"> </span>already<span class="w"> </span>up-to-date.
+Writing<span class="w"> </span>partial<span class="w"> </span>Containerfile<span class="w"> </span>without<span class="w"> </span>collection<span class="w"> </span>requirements
+Running<span class="w"> </span>command:
+<span class="w">  </span>docker<span class="w"> </span>build<span class="w"> </span>-f<span class="w"> </span>context/Dockerfile<span class="w"> </span>-t<span class="w"> </span>my_first_ee_image<span class="w"> </span>context
+Sending<span class="w"> </span>build<span class="w"> </span>context<span class="w"> </span>to<span class="w"> </span>Docker<span class="w"> </span>daemon<span class="w">  </span><span class="m">14</span>.34kB
+Step<span class="w"> </span><span class="m">1</span>/3<span class="w"> </span>:<span class="w"> </span>FROM<span class="w"> </span>quay.io/ansible/ansible-runner:devel
+devel:<span class="w"> </span>Pulling<span class="w"> </span>from<span class="w"> </span>ansible/ansible-runner
+85a0beca2b15:<span class="w"> </span>Pulling<span class="w"> </span>fs<span class="w"> </span>layer
+...
+e21f0ff5ad71:<span class="w"> </span>Pull<span class="w"> </span><span class="nb">complete</span>
+Digest:<span class="w"> </span>sha256:e2b84...
+Status:<span class="w"> </span>Downloaded<span class="w"> </span>newer<span class="w"> </span>image<span class="w"> </span><span class="k">for</span><span class="w"> </span>quay.io/ansible/ansible-runner:devel
+<span class="w"> </span>---&gt;<span class="w"> </span>6b886a75333f
+Step<span class="w"> </span><span class="m">2</span>/3<span class="w"> </span>:<span class="w"> </span>RUN<span class="w"> </span><span class="nb">echo</span><span class="w"> </span>this<span class="w"> </span>is<span class="w"> </span>a<span class="w"> </span><span class="nb">command</span>
+<span class="w"> </span>---&gt;<span class="w"> </span>Running<span class="w"> </span><span class="k">in</span><span class="w"> </span>e9cea402bd67
+this<span class="w"> </span>is<span class="w"> </span>a<span class="w"> </span><span class="nb">command</span>
+Removing<span class="w"> </span>intermediate<span class="w"> </span>container<span class="w"> </span>e9cea402bd67
+<span class="w"> </span>---&gt;<span class="w"> </span>5d253a1fbd54
+Step<span class="w"> </span><span class="m">3</span>/3<span class="w"> </span>:<span class="w"> </span>RUN<span class="w"> </span>cat<span class="w"> </span>/etc/os-release
+<span class="w"> </span>---&gt;<span class="w"> </span>Running<span class="w"> </span><span class="k">in</span><span class="w"> </span>788173de3929
+<span class="nv">NAME</span><span class="o">=</span>Fedora
+<span class="nv">VERSION</span><span class="o">=</span><span class="s2">&quot;32 (Container Image)&quot;</span>
+...
+<span class="nv">VARIANT</span><span class="o">=</span><span class="s2">&quot;Container Image&quot;</span>
+<span class="nv">VARIANT_ID</span><span class="o">=</span>container
+Removing<span class="w"> </span>intermediate<span class="w"> </span>container<span class="w"> </span>788173de3929
+<span class="w"> </span>---&gt;<span class="w"> </span>df802929c259
+Successfully<span class="w"> </span>built<span class="w"> </span>df802929c259
+Successfully<span class="w"> </span>tagged<span class="w"> </span>my_first_ee_image:latest
+Running<span class="w"> </span>command:
+<span class="w">  </span>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-v<span class="w"> </span>/Users/bhenderson/Documents/GitHub/ansible-builder/context:/context:Z<span class="w"> </span>my_first_ee_image<span class="w"> </span>/bin/bash<span class="w"> </span>-c<span class="w"> </span>python3<span class="w"> </span>/context/introspect.py
+python:<span class="w"> </span><span class="o">{}</span>
+system:<span class="w"> </span><span class="o">{}</span>
+
+Rewriting<span class="w"> </span>Containerfile<span class="w"> </span>to<span class="w"> </span>capture<span class="w"> </span>collection<span class="w"> </span>requirements
+Running<span class="w"> </span>command:
+<span class="w">  </span>docker<span class="w"> </span>build<span class="w"> </span>-f<span class="w"> </span>context/Dockerfile<span class="w"> </span>-t<span class="w"> </span>my_first_ee_image<span class="w"> </span>context
+Sending<span class="w"> </span>build<span class="w"> </span>context<span class="w"> </span>to<span class="w"> </span>Docker<span class="w"> </span>daemon<span class="w">  </span><span class="m">14</span>.34kB
+Step<span class="w"> </span><span class="m">1</span>/4<span class="w"> </span>:<span class="w"> </span>FROM<span class="w"> </span>quay.io/ansible/ansible-runner:devel
+<span class="w"> </span>---&gt;<span class="w"> </span>6b886a75333f
+Step<span class="w"> </span><span class="m">2</span>/4<span class="w"> </span>:<span class="w"> </span>RUN<span class="w"> </span><span class="nb">echo</span><span class="w"> </span>this<span class="w"> </span>is<span class="w"> </span>a<span class="w"> </span><span class="nb">command</span>
+<span class="w"> </span>---&gt;<span class="w"> </span>Using<span class="w"> </span>cache
+<span class="w"> </span>---&gt;<span class="w"> </span>5d253a1fbd54
+Step<span class="w"> </span><span class="m">3</span>/4<span class="w"> </span>:<span class="w"> </span>RUN<span class="w"> </span>cat<span class="w"> </span>/etc/os-release
+<span class="w"> </span>---&gt;<span class="w"> </span>Using<span class="w"> </span>cache
+<span class="w"> </span>---&gt;<span class="w"> </span>df802929c259
+Removing<span class="w"> </span>intermediate<span class="w"> </span>container<span class="w"> </span>6bd2a824fe4f
+<span class="w"> </span>---&gt;<span class="w"> </span>ba254aa08b88
+Step<span class="w"> </span><span class="m">4</span>/4<span class="w"> </span>:<span class="w"> </span>RUN<span class="w"> </span>ls<span class="w"> </span>-la<span class="w"> </span>/etc
+<span class="w"> </span>---&gt;<span class="w"> </span>Running<span class="w"> </span><span class="k">in</span><span class="w"> </span>aa3d855d3ae7
+total<span class="w"> </span><span class="m">1072</span>
+drwxr-xr-x<span class="w"> </span><span class="m">1</span><span class="w"> </span>root<span class="w"> </span>root<span class="w">   </span><span class="m">4096</span><span class="w"> </span>Sep<span class="w"> </span><span class="m">28</span><span class="w"> </span><span class="m">13</span>:25<span class="w"> </span>.
+...
+drwxr-xr-x<span class="w"> </span><span class="m">2</span><span class="w"> </span>root<span class="w"> </span>root<span class="w">   </span><span class="m">4096</span><span class="w"> </span>Jul<span class="w">  </span><span class="m">9</span><span class="w"> </span><span class="m">06</span>:48<span class="w"> </span>yum.repos.d
+Removing<span class="w"> </span>intermediate<span class="w"> </span>container<span class="w"> </span>aa3d855d3ae7
+<span class="w"> </span>---&gt;<span class="w"> </span>0b386b132825
+Successfully<span class="w"> </span>built<span class="w"> </span>0b386b132825
+Successfully<span class="w"> </span>tagged<span class="w"> </span>my_first_ee_image:latest
+Complete!<span class="w"> </span>The<span class="w"> </span>build<span class="w"> </span>context<span class="w"> </span>can<span class="w"> </span>be<span class="w"> </span>found<span class="w"> </span>at:<span class="w"> </span>context
+</pre></div>
+
+<p>As you can see from the output above, the definition file points to the
+specific Collection(s) listed, then builds a container image with all of
+the dependencies specified in the metadata.  Output such as:</p>
+<div class="code"><pre class="code literal-block">Step<span class="w"> </span><span class="m">2</span>/3<span class="w"> </span>:<span class="w"> </span>RUN<span class="w"> </span><span class="nb">echo</span><span class="w"> </span>this<span class="w"> </span>is<span class="w"> </span>a<span class="w"> </span><span class="nb">command</span>
+<span class="w"> </span>---&gt;<span class="w"> </span>Running<span class="w"> </span><span class="k">in</span><span class="w"> </span>e9cea402bd67
+this<span class="w"> </span>is<span class="w"> </span>a<span class="w"> </span><span class="nb">command</span>
+</pre></div>
+
+<p>and</p>
+<div class="code"><pre class="code literal-block">Step<span class="w"> </span><span class="m">4</span>/4<span class="w"> </span>:<span class="w"> </span>RUN<span class="w"> </span>ls<span class="w"> </span>-la<span class="w"> </span>/etc
+<span class="w"> </span>---&gt;<span class="w"> </span>Running<span class="w"> </span><span class="k">in</span><span class="w"> </span>aa3d855d3ae7
+total<span class="w"> </span><span class="m">1072</span>
+drwxr-xr-x<span class="w"> </span><span class="m">1</span><span class="w"> </span>root<span class="w"> </span>root<span class="w">   </span><span class="m">4096</span><span class="w"> </span>Sep<span class="w"> </span><span class="m">28</span><span class="w"> </span><span class="m">13</span>:25<span class="w"> </span>.
+</pre></div>
+
+<p>shows that the <code>prepend</code> and <code>append</code> steps are also being run correctly.
+The following output shows that we indeed did not list any Python or system requirements:</p>
+<div class="code"><pre class="code literal-block">python:<span class="w"> </span><span class="o">{}</span>
+system:<span class="w"> </span><span class="o">{}</span>
+</pre></div>
+
+<h2>Validating with Ansible Runner</h2>
+<p>Due to this new tool still being in development, we are taking a
+shortcut with our current available set of tools to help us validate
+against this. That being said, as of now, <code>ansible-runner</code> is a
+command-line utility that has the ability to interact with playbooks. 
+Also, since it is a key part of Execution Environments, our validation
+for now will be that the content runs as expected.  This will change in
+the future; we'll definitely come up with something bigger and better!
+So stay tuned. </p>
+<p>Now without further ado, let's dive into this...</p>
+<p>If you do not have Ansible Runner already installed, you can refer to
+its
+<a href="https://ansible-runner.readthedocs.io/en/latest/install.html">documentation</a>
+for guidance. Below is an example playbook (we'll call it
+<code>test.yml</code>) that can be
+run via Ansible Runner to ensure that the Execution Environment is
+working:</p>
+<div class="code"><pre class="code literal-block"><span class="nn">---</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">localhost</span>
+<span class="w">  </span><span class="nt">connection</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">local</span>
+
+<span class="w">  </span><span class="nt">tasks</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Ensure the myapp Namespace exists.</span>
+<span class="w">      </span><span class="nt">redhat.openshift.k8s</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">api_version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
+<span class="w">        </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Namespace</span>
+<span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">myapp</span>
+<span class="w">        </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">present</span>
+</pre></div>
+
+<p>To confirm that the <code>my_first_ee_image</code>
+Execution Environment image did indeed get built correctly and will work
+with the <code>redhat.openshift</code> Collection, run the command below to execute our
+<code>test.yml</code> playbook:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>ansible-runner<span class="w"> </span>playbook<span class="w"> </span>--container-image<span class="o">=</span>my_first_ee_image<span class="w"> </span>test.yml
+PLAY<span class="w"> </span><span class="o">[</span>localhost<span class="o">]</span><span class="w"> </span>*************************************************************
+
+TASK<span class="w"> </span><span class="o">[</span>Gathering<span class="w"> </span>Facts<span class="o">]</span><span class="w"> </span>*******************************************************
+ok:<span class="w"> </span><span class="o">[</span>localhost<span class="o">]</span>
+
+TASK<span class="w"> </span><span class="o">[</span>Ensure<span class="w"> </span>the<span class="w"> </span>myapp<span class="w"> </span>Namespace<span class="w"> </span>exists.<span class="o">]</span><span class="w"> </span>************************************
+changed:<span class="w"> </span><span class="o">[</span>localhost<span class="o">]</span>
+
+PLAY<span class="w"> </span>RECAP<span class="w"> </span>*******************************************************************
+Localhost:<span class="w"> </span><span class="nv">ok</span><span class="o">=</span><span class="m">2</span><span class="w"> </span><span class="nv">changed</span><span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="nv">unreachable</span><span class="o">=</span><span class="m">0</span><span class="w"> </span><span class="nv">failed</span><span class="o">=</span><span class="m">0</span><span class="w"> </span><span class="nv">skipped</span><span class="o">=</span><span class="m">0</span><span class="w"> </span><span class="nv">rescued</span><span class="o">=</span><span class="m">0</span><span class="w">  </span><span class="nv">ignored</span><span class="o">=</span><span class="m">0</span>
+</pre></div>
+
+<p>Running the command <code>ansible-runner</code> playbook will indicate to Ansible Runner that we want it to execute a playbook
+that's similar to running the command <code>ansible-playbook</code> itself.
+However, Ansible Runner has additional advantages over a traditional
+<code>ansible-playbook</code> command, one of which is to let us take advantage of the Execution
+Environment image and its dependencies, which ultimately allows the
+playbook to run. For this specific example, note that we also inherited
+the <code>kubeconfig</code> set per the <code>redhat.openshift.k8s</code> module; this <code>kubeconfig</code>
+is automatically detected and mounted into the Execution Environment
+container runtime (just as many other cloud provider modules and SSH
+credentials are) without any additional input needed from the user.</p>
+<h2>Distributing</h2>
+<p>Execution Environment build contexts (as well as the containers built
+from them) can be easily shared via public or private registries.  This
+new workflow process allows users to automate tasks that were once more
+manual (e.g. container images can be scanned and rebuilt automatically
+when vulnerabilities are discovered inside).  The build context,
+generated when we ran the <code>ansible-builder</code> command,
+can be committed to source control and utilized later without the need
+for Ansible Builder, either locally or on another system.</p>
+<h3>Push to GitHub</h3>
+<p>After an Execution Environment image has been built using Ansible
+Builder, all of the build context files can be pushed to GitHub (or any
+other version control system) for distribution.  See below for an
+example of a repository that hosts everything necessary for re-building
+a specific image:</p>
+<p><img alt="Ansible Builder Blog one" src="/images/posts/archive/ansible-builder-blog-one.png"></p>
+<p><a href="https://www.redhat.com/en/technologies/cloud-computing/quay">Red Hat Quay</a> is a
+container image registry that provides storage and enables the building,
+distribution, and deployment of containers. Set up an account in quay.io
+and select "Create New Repository". A series of choices will be
+displayed, starting with what's shown below:</p>
+<p><img alt="Ansible Builder blog two" src="/images/posts/archive/ansible-builder-blog-two.png"></p>
+<p>From here, you can select your specific GitHub repository (or wherever
+you are hosting your image files), then navigate through other settings
+such as configuring the build triggers, as well as the specific
+Containerfile/Dockerfile and context, amongst other things:</p>
+<p><img alt="Ansible builder blog three" src="/images/posts/archive/ansible-builder-blog-three.png"></p>
+<p>There are other ways you can also share your Execution Environment
+images; the above is just a single example of a streamlined and
+easy-to-integrate method.</p>
+<h1>Conclusion</h1>
+<p>We hope you enjoyed learning about Execution Environments and how to
+build them using the new Ansible Builder CLI tool!  In a future version
+of Red Hat Ansible Automation Platform, Execution Environments will be
+able to be used to run jobs in Ansible Automation Platform, so keep an
+eye out for details regarding the next release. For further reading,
+please refer to the <a href="https://ansible-builder.readthedocs.io/en/latest/">Ansible Builder documentation</a>,
+<a href="https://ansible-runner.readthedocs.io/en/latest/execution_environments.html">Ansible Runner documentation</a>,
+and be sure to take a look at the <a href="https://github.com/ansible/ansible-builder">Ansible Builder repo</a> on GitHub.</p>

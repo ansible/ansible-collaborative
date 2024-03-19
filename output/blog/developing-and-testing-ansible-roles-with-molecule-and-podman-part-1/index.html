@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html prefix="
+og: http://ogp.me/ns# article: http://ogp.me/ns/article#
+" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="Molecule is a complete testing framework that helps you develop and test Ansible roles, which allows you to focus on the content instead of focusing on managing testing infrastructure">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Developing and Testing Ansible Roles with Molecule and Podman - Part 1 | Ansible Collaborative</title>
+<link href="../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/baguetteBox.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/rst.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/code.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/theme.css" rel="stylesheet" type="text/css">
+<!-- Red Hat fonts --><link rel="stylesheet" href="https://static.redhat.com/libs/redhat/redhat-font/2.0.0/webfonts/red-hat-font.css">
+<!-- Font Awesome --><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+<!-- Fork Awesome --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css" integrity="sha256-XoaMnoYC5TH6/+ihMEnospgm0J1PM/nioxbOUdnM8HY=" crossorigin="anonymous">
+<!-- Sass compiled css  --><link rel="stylesheet" href="../../assets/css/main.css">
+<link rel="stylesheet" href="../../assets/css/redhat-footer.css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://ansible.com/blog/developing-and-testing-ansible-roles-with-molecule-and-podman-part-1/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Ricardo Gerardi">
+<link rel="prev" href="../bullhorn-8/" title="Bullhorn #8" type="text/html">
+<link rel="next" href="../ansible-certified-content-collection-for-chocolatey/" title="Ansible Certified Content Collection for Chocolatey" type="text/html">
+<meta property="og:site_name" content="Ansible Collaborative">
+<meta property="og:title" content="Developing and Testing Ansible Roles with Molecule and Podman - Part 1">
+<meta property="og:url" content="https://ansible.com/blog/developing-and-testing-ansible-roles-with-molecule-and-podman-part-1/">
+<meta property="og:description" content="Molecule is a complete testing framework that helps you develop and test Ansible roles, which allows you to focus on the content instead of focusing on managing testing infrastructure">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2020-08-25T00:00:00Z">
+</head>
+<body id="top">
+
+<div class="global-container" id="content" role="main">
+<!-- Start menubar -->
+<nav class="navbar navbar-expand-lg static-top mb-4 navbar-padding full-width-bg   navbar-dark   bg-pool   "><div class="masthead">
+    <!-- This keeps the margins nice -->
+    <a class="navbar-brand" href="../../">
+        <img src="../../images/ansible_logo-small-15.png" alt="Ansible community logo" id="logo" class="d-inline-block align-top" width="50" height="50"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon nav-toggle-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="bs-navbar">
+      <ul class="navbar-nav mr-auto"></ul>
+<ul class="navbar-nav navbar-right">
+<li class="nav-item dropdown">
+	        <a href="#" class="nav-link nav-link-color dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <i class=""></i> Documentation
+                </a>
+		<div class="dropdown-menu dropdown-menu-border">
+	    
+                    <a href="https://docs.ansible.com/" class="dropdown-item">
+		        <i class=""></i> Project documentation
+                    </a>
+                    <a href="https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/" class="dropdown-item">
+		        <i class=""></i> Ansible Automation Platform documentation
+                    </a>
+            </div>
+                 </li>
+<li class="nav-item">
+		     <a href="https://galaxy.ansible.com/" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Galaxy
+		     </a>
+		 </li>
+                 <li class="nav-item">
+		     <a href="https://forum.ansible.com/" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Forum
+		     </a>
+		 </li>
+            <li class="nav-item dropdown">
+	        <a href="#" class="nav-link nav-link-color dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <i class=""></i> Resources
+                </a>
+		<div class="dropdown-menu dropdown-menu-border">
+	    
+                    <a href="../../how-ansible-works/" class="dropdown-item">
+		        <i class=""></i> How Ansible works
+                    </a>
+                    <a href="../../ecosystem/" class="dropdown-item">
+		        <i class=""></i> Ansible ecosystem
+                    </a>
+                    <a href="../archive.html" class="dropdown-item">
+		        <i class=""></i> Blog
+                    </a>
+                    <a href="../../faq/" class="dropdown-item">
+		        <i class=""></i> Frequently asked questions
+                    </a>
+                    <a href="../../ansible-community-training/" class="dropdown-item">
+		        <i class=""></i> Ansible community training
+                    </a>
+                    <a href="../../contact-us/" class="dropdown-item">
+		        <i class=""></i> Contact us
+                    </a>
+            </div>
+                 </li>
+<li class="nav-item">
+		     <a href="https://www.redhat.com/en/technologies/management/ansible?sc_cid=7015Y000003szaKQAQ" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Ansible Automation Platform
+		     </a>
+		 </li>
+
+        
+      </ul>
+</div>
+    <!-- /.navbar-collapse -->
+  </div>
+  <!-- /.container -->
+</nav><!-- End default Menubar --><div class="body-content center-band">
+        <!--Body content-->
+        
+  <article class="post-text h-entry hentry postpage ansible-content" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Developing and Testing Ansible Roles with Molecule and Podman - Part 1</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard p-author h-card"><span class="byline-name fn p-name" itemprop="author">
+                    <a class="u-url" href="../../authors/ricardo-gerardi/">Ricardo Gerardi</a>
+            </span></p>
+            <p class="dateline">
+            <a href="." rel="bookmark">
+            <time class="published dt-published" datetime="2020-08-25T00:00:00Z" itemprop="datePublished" title="2020-08-25 00:00">2020-08-25 00:00</time></a>
+            </p>
+                    <p class="sourceline"><a href="index.md" class="sourcelink">Source</a></p>
+
+        </div>
+        
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+<h2>Developing and Testing Ansible Roles with Molecule and Podman - Part 1</h2>
+<p>One of the beauties of the Red Hat Ansible Automation Platform is that
+the language to describe automation is readable not only by a few
+dedicated experts, but by almost anyone across the IT ecosystem. That
+means all IT professionals can take part in the automation, enabling
+cross team collaboration and really drive automation as a culture inside
+an organization. With so many people contributing to the automation, it
+is crucial to test the automation content in-depth. So when you're
+developing new Ansible Content like playbooks, roles and collections,
+it's a good idea to test the content in a test environment before using
+it to automate production infrastructure. Testing ensures the automation
+works as designed and avoids unpleasant surprises down the road. </p>
+<p>Testing automation content is often a challenge, since it requires the
+deployment of specific testing infrastructure as well as setting up the
+testing conditions to ensure the tests are relevant. Molecule is a
+complete testing framework that helps you develop and test Ansible
+roles, which allows you to focus on the content instead of focusing on
+managing testing infrastructure.</p>
+<p>According to its official
+<a href="https://molecule.readthedocs.io/en/latest/index.html#">documentation</a>,
+Molecule is a project:</p>
+<p>"designed to aid in the development and testing of Ansible roles. It
+encourages an approach that results in consistently developed roles that
+are well-written, easily understood and maintained."</p>
+<p>Molecule allows you to test your role with many instances, ensuring it
+works properly across different combinations of operating systems and
+virtualization environments. Without it, you would have to provision and
+maintain a testing environment separately. You would also have to
+configure connectivity to those instances and ensure they are clean and
+ready before every test. Molecule manages those aspects for you in an
+automated and repeatable manner.</p>
+<p>In this two part series, we will use Molecule to develop and test a new
+Ansible role. The first article will guide you through installing and
+configuring Molecule. In Part 2, we will use Molecule to aid with the
+role development.</p>
+<p>If this role is part of a Collection, use this approach to develop and
+"unit" test the role. In a future article, we'll see how to use Molecule
+to run integrated tests in a Collection.</p>
+<p>Molecule uses drivers to provision testing instances using different
+technologies, including Linux containers, virtual machines and cloud
+providers. By default, it comes with three drivers pre-installed: Docker
+and Podman drivers to manage containers, and Delegated that allows you
+to customize your integration. Drivers for other providers are available
+through the open source community.</p>
+<p>In this article, we will use the <a href="https://podman.io/">Podman</a> driver to
+develop and test a new role using Linux containers. Podman is a
+lightweight container engine for Linux that does not require a running
+daemon, and allows execution of containers in "rootless" mode for
+increased security. </p>
+<p>By using Molecule with the Podman driver, we will develop and test a new
+Ansible role from scratch. This basic role deploys a web application
+supported by the Apache web server. It must run on Red Hat Enterprise
+Linux (RHEL) 8 or Ubuntu 20.04 operating systems.</p>
+<p>This example shows a common scenario where a role is expected to work on
+different versions of operating systems. Using Podman and Linux
+containers allows us to create many instances to test the role with the
+specific required versions. Since containers are lightweight, they also
+allow us to quickly iterate over the role functionality while developing
+it. Using containers for testing roles is applicable in this situation
+because the role is configuring the running Linux instances only. To
+test other provisioning scenarios or cloud infrastructure, we can use
+the delegated driver or another appropriate driver provided by the
+community.</p>
+<h3>What do you need?</h3>
+<p>To follow this tutorial, use a physical or virtual machine running Linux
+with Python 3 and Podman installed. For these examples, we're running
+RHEL 8.2. You also need Podman configured to run rootless containers.
+The installation of Podman is out of the scope of this blog, so please
+refer to the official
+<a href="https://podman.io/getting-started/installation">documentation</a> for more
+information. To install Podman on RHEL 8, you can also check the RHEL 8
+<a href="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html-single/building_running_and_managing_containers/index#getting-container-tools_building-running-and-managing-containers">container
+documentation</a>.</p>
+<h3>Getting Started</h3>
+<p>Molecule is available as a Python package and thus can be installed via
+pip. As a first step, we create a dedicated Python environment for our
+Molecule installation, and install it there:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>mkdir<span class="w"> </span>molecule-blog
+$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>molecule-blog
+$<span class="w"> </span>python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>molecule-venv
+$<span class="w"> </span><span class="nb">source</span><span class="w"> </span>molecule-venv/bin/activate
+<span class="o">(</span>molecule-venv<span class="o">)</span><span class="w"> </span>$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"molecule[lint]"</span>
+</pre></div>
+
+<p>Note that we installed Molecule with the "lint" option. By using this
+option, pip also installed the "yamllint" and "ansible-lint" tools that
+allow you to use Molecule to  perform static code analysis of your role,
+ensuring it complies with Ansible coding standards.</p>
+<p>The installation downloads all of the dependencies from the Internet,
+including Ansible. Verify the installed version:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>molecule<span class="w"> </span>--version
+molecule<span class="w"> </span><span class="m">3</span>.0.4
+<span class="w">   </span><span class="nv">ansible</span><span class="o">==</span><span class="m">2</span>.9.10<span class="w"> </span><span class="nv">python</span><span class="o">==</span><span class="m">3</span>.6
+</pre></div>
+
+<p>Next, let's use the "molecule" command to initialize a new Ansible role.</p>
+<h3>Initializing a New Ansible Role</h3>
+<p>Generally speaking, when developing a new Ansible role, you initialize
+it by running the "ansible-galaxy role init" command. In this case,
+instead use "molecule" to initialize the new role. By doing this, you'll
+have the same role structure provided by the "ansible-galaxy" command
+and the basic boilerplate code required to run Molecule tests.</p>
+<p>By default, Molecule uses the Docker driver to execute tests. Since we
+want to execute tests using "podman", we need to specify the driver name
+using the option <code>--driver-name=podman</code> when initializing the role with
+"molecule". </p>
+<p>Switch back to the "molecule-blog" directory and initialize the new role
+"mywebapp" with this command: </p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>molecule<span class="w"> </span>init<span class="w"> </span>role<span class="w"> </span>mywebapp<span class="w"> </span>--driver-name<span class="o">=</span>podman
+--&gt;<span class="w"> </span>Initializing<span class="w"> </span>new<span class="w"> </span>role<span class="w"> </span>mywebapp...
+Initialized<span class="w"> </span>role<span class="w"> </span><span class="k">in</span><span class="w"> </span>/home/ricardo/molecule-blog/mywebapp<span class="w"> </span>successfully.
+</pre></div>
+
+<p>Molecule created the structure for your new role in a directory named
+"mywebapp". Switch into this directory and check the content created by
+Molecule:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>mywebapp
+$<span class="w"> </span>tree
+.
+├──<span class="w"> </span>defaults
+│<span class="w">   </span>└──<span class="w"> </span>main.yml
+├──<span class="w"> </span>files
+├──<span class="w"> </span>handlers
+│<span class="w">   </span>└──<span class="w"> </span>main.yml
+├──<span class="w"> </span>meta
+│<span class="w">   </span>└──<span class="w"> </span>main.yml
+├──<span class="w"> </span>molecule
+│<span class="w">   </span>└──<span class="w"> </span>default
+│<span class="w">       </span>├──<span class="w"> </span>converge.yml
+│<span class="w">       </span>├──<span class="w"> </span>INSTALL.rst
+│<span class="w">       </span>├──<span class="w"> </span>molecule.yml
+│<span class="w">       </span>└──<span class="w"> </span>verify.yml
+├──<span class="w"> </span>README.md
+├──<span class="w"> </span>tasks
+│<span class="w">   </span>└──<span class="w"> </span>main.yml
+├──<span class="w"> </span>templates
+├──<span class="w"> </span>tests
+│<span class="w">   </span>├──<span class="w"> </span>inventory
+│<span class="w">   </span>└──<span class="w"> </span>test.yml
+└──<span class="w"> </span>vars
+<span class="w">    </span>└──<span class="w"> </span>main.yml
+
+<span class="m">10</span><span class="w"> </span>directories,<span class="w"> </span><span class="m">12</span><span class="w"> </span>files
+</pre></div>
+
+<p>Molecule includes its configuration files under the "molecule"
+subdirectory. When initializing a new role, Molecule adds a single
+scenario named "default". Later, you can add more scenarios to test
+different conditions. For this tutorial, we'll use the "default"
+scenario.</p>
+<p>Verify the basic configuration in the file <code>molecule/default/molecule.yml</code>:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>cat<span class="w"> </span>molecule/default/molecule.yml
+---
+dependency:
+<span class="w">  </span>name:<span class="w"> </span>galaxy
+driver:
+<span class="w">  </span>name:<span class="w"> </span>podman
+platforms:
+<span class="w">  </span>-<span class="w"> </span>name:<span class="w"> </span>instance
+<span class="w">    </span>image:<span class="w"> </span>docker.io/pycontribs/centos:7
+<span class="w">    </span>pre_build_image:<span class="w"> </span><span class="nb">true</span>
+provisioner:
+<span class="w">  </span>name:<span class="w"> </span>ansible
+verifier:
+<span class="w">  </span>name:<span class="w"> </span>ansible
+</pre></div>
+
+<p>As per our requirements, this file specifies the Podman driver for
+tests. It also defines a default platform "instance" using the container
+image <code>docker.io/pycontribs/centos:7</code> that you'll change later.</p>
+<p>Unlike Molecule v2, Molecule v3 does not specify a linter by default.
+Open the configuration file <code>molecule/default/molecule.yml</code> using your
+favorite editor to include the lint configuration at the end:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>vi<span class="w"> </span>molecule/default/molecule.yml
+...
+verifier:
+<span class="w">  </span>name:<span class="w"> </span>ansible
+lint:<span class="w"> </span><span class="p">|</span>
+<span class="w">  </span><span class="nb">set</span><span class="w"> </span>-e
+<span class="w">  </span>yamllint<span class="w"> </span>.
+<span class="w">  </span>ansible-lint<span class="w"> </span>.
+</pre></div>
+
+<p>Save and close the configuration file. Run "molecule lint" from the
+project root to lint the entire project:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>molecule<span class="w"> </span>lint
+</pre></div>
+
+<p>This command returns a few errors because the file "meta/main.yml" is
+missing some required values. Fix these issues by editing the file
+"meta/main.yml" and adding "author", "company", "license", "platforms",
+and removing the blank line at the end. Without comments - for brevity -
+the "meta/main.yaml" looks like this:</p>
+<div class="code"><pre class="code literal-block"><span class="l l-Scalar l-Scalar-Plain">$ vi meta/main.yml</span>
+<span class="l l-Scalar l-Scalar-Plain">galaxy_info</span><span class="p p-Indicator">:</span>
+<span class="w">  </span><span class="nt">author</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Ricardo Gerardi</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Mywebapp role deploys a sample web app</span>
+<span class="w">  </span><span class="nt">company</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Red Hat</span>
+
+<span class="w">  </span><span class="nt">license</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MIT</span>
+
+<span class="w">  </span><span class="nt">min_ansible_version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2.9</span>
+
+<span class="w">  </span><span class="nt">platforms</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rhel</span>
+<span class="w">    </span><span class="nt">versions</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu</span>
+<span class="w">    </span><span class="nt">versions</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20.04</span>
+
+<span class="w">  </span><span class="nt">galaxy_tags</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
+
+<span class="nt">dependencies</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
+</pre></div>
+
+<p>Now re-lint the project and verify that there are no errors this time.</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>molecule<span class="w"> </span>lint
+--&gt;<span class="w"> </span>Test<span class="w"> </span>matrix
+
+└──<span class="w"> </span>default
+<span class="w">    </span>├──<span class="w"> </span>dependency
+<span class="w">    </span>└──<span class="w"> </span>lint
+
+--&gt;<span class="w"> </span>Scenario:<span class="w"> </span><span class="s1">'default'</span>
+--&gt;<span class="w"> </span>Action:<span class="w"> </span><span class="s1">'dependency'</span>
+Skipping,<span class="w"> </span>missing<span class="w"> </span>the<span class="w"> </span>requirements<span class="w"> </span>file.
+Skipping,<span class="w"> </span>missing<span class="w"> </span>the<span class="w"> </span>requirements<span class="w"> </span>file.
+--&gt;<span class="w"> </span>Scenario:<span class="w"> </span><span class="s1">'default'</span>
+--&gt;<span class="w"> </span>Action:<span class="w"> </span><span class="s1">'lint'</span>
+--&gt;<span class="w"> </span>Executing:<span class="w"> </span><span class="nb">set</span><span class="w"> </span>-e
+yamllint<span class="w"> </span>.
+ansible-lint<span class="w"> </span>.
+</pre></div>
+
+<p>The role is initialized and the basic molecule configuration is in place.
+Let's set up the test instances next.</p>
+<h3>Setting up Instances</h3>
+<p>By default, Molecule defines a single instance named "instance" using
+the "Centos:7" image. According to our requirements, we want to ensure
+our role works with RHEL 8 and Ubuntu 20.04. In addition, because this
+role starts the Apache web server as a system service, we need to use
+container images that enable "systemd".</p>
+<p>Red Hat provides an official <a href="https://www.redhat.com/en/blog/introducing-red-hat-universal-base-image">Universal Base Image</a>
+for RHEL 8, which enables "systemd": </p>
+<ul>
+<li><code>registry.access.redhat.com/ubi8/ubi-init</code></li>
+</ul>
+<p>For Ubuntu, there's no official "systemd" enabled images so we'll use an
+image maintained by Jeff Geerling from the Ansible open-source
+community:</p>
+<ul>
+<li><code>geerlingguy/docker-ubuntu2004-ansible</code></li>
+</ul>
+<p>To enable the "systemd" instances, modify the
+"molecule/default/molecule.yml" configuration file, remove the
+"centos:7" instance and add the two new instances.</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>vi<span class="w"> </span>molecule/default/molecule.yml
+---
+dependency:
+<span class="w">  </span>name:<span class="w"> </span>galaxy
+driver:
+<span class="w">  </span>name:<span class="w"> </span>podman
+platforms:
+<span class="w">  </span>-<span class="w"> </span>name:<span class="w"> </span>rhel8
+<span class="w">    </span>image:<span class="w"> </span>registry.access.redhat.com/ubi8/ubi-init
+<span class="w">    </span>tmpfs:
+<span class="w">      </span>-<span class="w"> </span>/run
+<span class="w">      </span>-<span class="w"> </span>/tmp
+<span class="w">    </span>volumes:
+<span class="w">      </span>-<span class="w"> </span>/sys/fs/cgroup:/sys/fs/cgroup:ro
+<span class="w">    </span>capabilities:
+<span class="w">      </span>-<span class="w"> </span>SYS_ADMIN
+<span class="w">    </span>command:<span class="w"> </span><span class="s2">"/usr/sbin/init"</span>
+<span class="w">    </span>pre_build_image:<span class="w"> </span><span class="nb">true</span>
+<span class="w">  </span>-<span class="w"> </span>name:<span class="w"> </span>ubuntu
+<span class="w">    </span>image:<span class="w"> </span>geerlingguy/docker-ubuntu2004-ansible
+<span class="w">    </span>tmpfs:
+<span class="w">      </span>-<span class="w"> </span>/run
+<span class="w">      </span>-<span class="w"> </span>/tmp
+<span class="w">    </span>volumes:
+<span class="w">      </span>-<span class="w"> </span>/sys/fs/cgroup:/sys/fs/cgroup:ro
+<span class="w">    </span>capabilities:
+<span class="w">      </span>-<span class="w"> </span>SYS_ADMIN
+<span class="w">    </span>command:<span class="w"> </span><span class="s2">"/lib/systemd/systemd"</span>
+<span class="w">    </span>pre_build_image:<span class="w"> </span><span class="nb">true</span>
+provisioner:
+<span class="w">  </span>name:<span class="w"> </span>ansible
+verifier:
+<span class="w">  </span>name:<span class="w"> </span>ansible
+lint:<span class="w"> </span><span class="p">|</span>
+<span class="w">  </span><span class="nb">set</span><span class="w"> </span>-e
+<span class="w">  </span>yamllint<span class="w"> </span>.
+<span class="w">  </span>ansible-lint<span class="w"> </span>.
+</pre></div>
+
+<p>With these parameters, we're mounting the temporary filesystem "/run"
+and "/tmp", as well as the "cgroup" volume for each instance. We're also
+enabling the "SYS_ADMIN" capability, as they are required to run a
+container with Systemd.</p>
+<p>Also, if you're following this tutorial on a RHEL 8 machine with SELinux
+enabled - as it should - you need to set the "container_manage_cgroup"
+boolean to true to allow containers to run Systemd. See the RHEL 8
+<a href="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html-single/building_running_and_managing_containers/index#starting_services_within_a_container_using_systemd">documentation</a>
+for more details:</p>
+<div class="code"><pre class="code literal-block">sudo<span class="w"> </span>setsebool<span class="w"> </span>-P<span class="w"> </span>container_manage_cgroup<span class="w"> </span><span class="m">1</span>
+</pre></div>
+
+<p>Molecule uses an Ansible Playbook to provision these instances. Modify
+and add parameters for provisioning by modifying the "provisioner"
+dictionary in the "molecule/default/molecule.yml" configuration file. It
+accepts the same configuration options provided in an Ansible
+configuration file "ansible.cfg". For example, update the provisioner
+configuration by adding a "defaults" section. Set the Python interpreter
+to "auto_silent" to prevent warnings. Enable the "profile_tasks",
+"timer", and "yaml" callback plugins to output profiling information
+with the playbook output. Then, add the "ssh_connection" section and
+disable SSH pipelining because it does not work with Podman:</p>
+<div class="code"><pre class="code literal-block"><span class="nt">provisioner</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ansible</span>
+<span class="w">  </span><span class="nt">config_options</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">defaults</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">interpreter_python</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">auto_silent</span>
+<span class="w">      </span><span class="nt">callback_whitelist</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">profile_tasks, timer, yaml</span>
+<span class="w">    </span><span class="nt">ssh_connection</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">pipelining</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+</pre></div>
+
+<p>Save the configuration file and create the instances by running
+"molecule create" from the role root directory:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>molecule<span class="w"> </span>create
+</pre></div>
+
+<p>Molecule runs the provisioning playbook and creates both instances. You
+can check the instances by running "molecule list":</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>molecule<span class="w"> </span>list
+Instance<span class="w"> </span>Name<span class="w">    </span>Driver<span class="w"> </span>Name<span class="w">    </span>Provisioner<span class="w"> </span>Name<span class="w">    </span>Scenario<span class="w"> </span>Name<span class="w">    </span>Created<span class="w">    </span>Converged
+---------------<span class="w">  </span>-------------<span class="w">  </span>------------------<span class="w">  </span>---------------<span class="w">  </span>---------<span class="w">  </span>-----------
+rhel8<span class="w">            </span>podman<span class="w">         </span>ansible<span class="w">             </span>default<span class="w">          </span><span class="nb">true</span><span class="w">       </span><span class="nb">false</span>
+ubuntu<span class="w">           </span>podman<span class="w">         </span>ansible<span class="w">             </span>default<span class="w">          </span><span class="nb">true</span><span class="w">       </span><span class="nb">false</span>
+</pre></div>
+
+<p>You can also verify that both containers are running in Podman:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>podman<span class="w"> </span>ps
+CONTAINER<span class="w"> </span>ID<span class="w">  </span>IMAGE<span class="w">                                                   </span>COMMAND<span class="w">               </span>CREATED<span class="w">             </span>STATUS<span class="w">                 </span>PORTS<span class="w">  </span>NAMES
+2e2f14eaa37b<span class="w">  </span>docker.io/geerlingguy/docker-ubuntu2004-ansible:latest<span class="w">  </span>/lib/systemd/syst...<span class="w">  </span>About<span class="w"> </span>a<span class="w"> </span>minute<span class="w"> </span>ago<span class="w">  </span>Up<span class="w"> </span>About<span class="w"> </span>a<span class="w"> </span>minute<span class="w"> </span>ago<span class="w">         </span>ubuntu
+2ce0a0ea8692<span class="w">  </span>registry.access.redhat.com/ubi8/ubi-init:latest<span class="w">         </span>/usr/sbin/init<span class="w">        </span>About<span class="w"> </span>a<span class="w"> </span>minute<span class="w"> </span>ago<span class="w">  </span>Up<span class="w"> </span>About<span class="w"> </span>a<span class="w"> </span>minute<span class="w"> </span>ago<span class="w">         </span>rhel8
+</pre></div>
+
+<p>While developing the role, Molecule uses the running instances to test
+it. In case a test fails, or an error causes an irreversible change that
+requires you to start over, delete these instances by running "molecule
+destroy" and recreate them with "molecule create" at any time.</p>
+</div>
+    <aside class="postpromonav"><nav><ul class="pager hidden-print">
+<li class="previous">
+                <a href="../bullhorn-8/" rel="prev" title="Bullhorn #8">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../ansible-certified-content-collection-for-chocolatey/" rel="next" title="Ansible Certified Content Collection for Chocolatey">Next post</a>
+            </li>
+        </ul></nav></aside></article><!--End of body content-->
+</div>
+        <div class="content-slim redhat-footer">
+      <div class="footer-left">
+        <ul class="footer-left-links">
+<li>
+            <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-SA 4.0</a>
+          </li>
+          <li>
+            <a href="https://www.redhat.com/en/about/privacy-policy" target="_blank">Privacy policy</a>
+          </li>
+          <li>
+            <a href="https://docs.ansible.com/ansible/latest/community/code_of_conduct.html" target="_blank">Code of conduct</a>
+          </li>
+        </ul>
+</div>
+      <div class="footer-right">
+        <span class="redhat">Powered by</span>
+        <span class="redhat-logo">
+          <a href="https://www.redhat.com/en/technologies/management/ansible" target="_blank">
+            <img src="../../assets/images/redhat_reversed.svg" alt="Red Hat logo." width="96" height="28"></a>
+        </span>
+      </div>
+    </div>
+
+</div>
+
+            <script src="../../assets/js/jquery.min.js"></script><script src="../../assets/js/popper.min.js"></script><script src="../../assets/js/bootstrap.min.js"></script><script src="../../assets/js/baguetteBox.min.js"></script><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+</script><script src="../../assets/js/clipboard.min.js" type="text/javascript"></script><script src="../../assets/js/clipboard.js" type="text/javascript"></script>
+</body>
+</html>

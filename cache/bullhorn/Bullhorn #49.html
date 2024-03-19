@@ -1,0 +1,93 @@
+<p><img alt="Ansible Bullhorn banner" src="/images/bullhorn-banner-mango.png"></p>
+<p><em>A Newsletter for the Ansible Developer Community</em>
+<em>Issue #49, 2022-03-10 (<a href="https://us19.campaign-archive.com/home/?u=56d874e027110e35dea0e03c1&amp;id=d6635f5420">Past Issues</a>)</em></p>
+<p>Welcome to <a href="https://github.com/ansible/community/wiki/News#the-bullhorn">The Bullhorn</a>, our newsletter for the Ansible developer community. If you have any questions or content you’d like to share, you're welcome to chat with us in the <a href="https://matrix.to/#/#social:ansible.com">Ansible Social room on Matrix</a>, and mention <a href="https://matrix.to/#/@newsbot:ansible.im"><code>newsbot</code></a> to have your news item tagged for review for the next weekly issue!</p>
+<!-- TEASER_END -->
+
+<h2>KEY DATES</h2>
+<p><a href="https://matrix.to/#/@cybette:ansible.im">cybette</a> said</p>
+<blockquote>
+<ul>
+<li>2022-03-15: <a href="https://docs.ansible.com/ansible/devel/roadmap/COLLECTIONS_5.html">ETA for Ansible 5.5.0 release</a></li>
+<li>2022-03-15: <a href="https://github.com/ansible/community/issues/643">DaWGs meeting</a>, 16:00 UTC</li>
+<li>2022-03-16: <a href="https://github.com/ansible/community/issues/645">Community WG meeting</a>, 18:00 UTC (propose topics <a href="https://github.com/ansible-community/community-topics/issues">here</a>)</li>
+<li>2022-03-17: <a href="https://github.com/ansible/community/wiki/News#the-bullhorn">Bullhorn #50 content deadline</a>, 18:00 UTC</li>
+<li>2022-03-28: ETA for Ansible-Core 2.12.4 and Ansible-Core 2.11.10 releases (if those releases have updates)</li>
+<li>2022-04-12: <a href="https://hackmd.io/@ansible-community/contrib-summit-202204">Contributor Summit 2022.04</a> 💾📅</li>
+</ul>
+</blockquote>
+<h2>GENERAL NEWS UPDATES</h2>
+<p><a href="https://matrix.to/#/@cybette:ansible.im">cybette</a> contributed</p>
+<blockquote>
+<p>The next <strong>Ansible Contributor Summit</strong> will be on <strong>April 12, 2022</strong> (Tuesday). Please take a look at the <a href="https://hackmd.io/@ansible-community/contrib-summit-202204">HackMD note</a> - add your names &amp; propose topics - and <a href="https://raw.githubusercontent.com/ansible/community/main/meetings/ical/contribsummit202204.ics">save the date</a>! (Subscribe to the ical from URL instead of importing it so that any updates to the event will be reflected in your calendar.)</p>
+</blockquote>
+<h2>NEW RELEASES</h2>
+<h3>DevTools <a href="https://github.com/ansible-community/ansible-lint">↗</a></h3>
+<p>Projects to make it easier to write and test Ansible Content. Includes <a href="https://github.com/ansible/vscode-ansible">VScode extension</a>, <a href="https://github.com/ansible/ansible-language-server">language server</a>, <a href="https://github.com/ansible-community/ansible-lint">ansible-lint</a>, <a href="https://github.com/ansible-community/molecule">molecule</a>, <a href="https://github.com/ansible/ansible-navigator">ansible-navigator</a> and potentially other development goodies. To see what's planned, and how you can help checkout the <a href="https://github.com/orgs/ansible/projects/86/views/4">foundation-devtools project board</a></p>
+<p><a href="https://matrix.to/#/@ssbarnea:matrix.org">ssbarnea</a> shared</p>
+<blockquote>
+<p>First pre-release for ansible-lint v6 is out, now being able to reformat documents. More details at https://github.com/ansible-community/ansible-lint/discussions/1955</p>
+</blockquote>
+<h2>COLLECTION UPDATES</h2>
+<p><a href="https://matrix.to/#/@andersson007_:matrix.org">andersson007_</a> shared</p>
+<blockquote>
+<p><a href="https://github.com/ansible-collections/community.network">community.network</a> collection versions <a href="https://github.com/ansible-collections/community.network/blob/stable-1/CHANGELOG.rst">1.3.6</a>, <a href="https://github.com/ansible-collections/community.network/blob/stable-2/CHANGELOG.rst">2.2.1</a>, and <a href="https://github.com/ansible-collections/community.network/blob/stable-3/CHANGELOG.rst">3.1.0</a> have been released! Special thanks to <a href="https://github.com/felixfontein">felixfontein</a>!</p>
+</blockquote>
+<h2>HELP WANTED</h2>
+<p><a href="https://matrix.to/#/@rockaut:matrix.org">Markus @RealRockaut</a> contributed</p>
+<blockquote>
+<p>for <a href="https://github.com/ansible-collections/community.zabbix">community.zabbix</a>: With the release of Zabbix 6.0 LTS we would love to get some help on blocking issues like <a href="https://github.com/ansible-collections/community.zabbix/issues/634">with the integration of a new scripts module</a>. Thank you for your attention!</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@samccann:ansible.im">samccann</a> shared</p>
+<blockquote>
+<p>Looking for a way to contribute to Ansible? How about starting with one of these <a href="https://github.com/ansible/ansible/issues?q=is%3Aopen+is%3Aissue+label%3Aeasyfix">easyfix issues</a>?</p>
+</blockquote>
+<h2>PROPOSALS - FEEDBACK APPRECIATED!</h2>
+<p><a href="https://matrix.to/#/@gundalow:ansible.im">gundalow</a> shared</p>
+<blockquote>
+<h3>Improving Ansible documentation by unversioning some guides</h3>
+<p>Today, we have multiple files that we only maintain in <code>/devel/</code>. Historically, we had problems keeping these files up to date in other branches (<code>latest</code> and older). The docs team chose to publish the following pages only to <code>devel</code> and put a stub page up in <code>latest</code> and earlier releases to point to <code>devel</code>:</p>
+<ul>
+<li><a href="https://docs.ansible.com/ansible/latest/porting_guides/porting_guides.html">Porting guides</a></li>
+<li><a href="https://docs.ansible.com/ansible/latest/reference_appendices/release_and_maintenance.html">Release and Maintenance</a></li>
+</ul>
+<p>While this has worked well to keep the relevant docs current, it can be a cause of confusion. One recent reader was confused that we were pointing them to a devel page which has the banner that says this is not a guaranteed stable branch.</p>
+<p>We have another set of guides (the community and contributor guides) that are getting a significant overhaul in devel. These guides are not specific to any release (core or Ansible package), but because we publish only to versioned urls, we force these guides to be 'versioned'.</p>
+<p>We'd really welcome feedback from users, contributors and folks that have helped with the documentation via <a href="https://github.com/ansible-community/community-topics/issues/68">ansible-community/community-topics#68</a>.</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@gundalow:ansible.im">gundalow</a> contributed</p>
+<blockquote>
+<h3>Revamping the community and contributor documentation</h3>
+<p>We have docs in three places today for contributors:
+*  ansible/ansible in the <a href="https://github.com/ansible/ansible/tree/devel/docs/docsite/rst/community">community folder</a>
+*  <a href="https://github.com/ansible/community-docs">ansible/community-docs</a> - more collection focused
+*  <a href="https://github.com/ansible-collections/overview">ansible-collections/overview</a> - has deeper collection contribution details</p>
+<p>Since only the first one is published to docs.ansible.com, we need to find a way to publish the details from the other two repositories.</p>
+<p>This is a complex issue, and will shape how we structure the wide range of Ansible Documentation in the future. We'd really like to get your thoughts, and to hear your ideas via <a href="https://github.com/ansible-community/community-topics/issues/60">community-topics#60</a>.</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@felixfontein:libera.chat">felixfontein</a> said</p>
+<blockquote>
+<p>We are looking for feedback on a new rule for collections included in Ansible on which files are allowed to be used by plugins, roles, and playbooks in this collection. If you maintain a collection that is included in Ansible, please look at <a href="https://github.com/ansible-community/community-topics/issues/70">the corresponding community discussion topic</a> to see how this rule could look like and whether this is a problem for your collection. Thanks!</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@mariolenz:matrix.org">mariolenz</a> shared</p>
+<blockquote>
+<p>While most examples should go into the <code>EXAMPLES</code> block in the module documentation, some collections have an <code>examples/</code> directory for more complex ones showing how to combine several modules or roles to achieve something.</p>
+<p>Discussion: <a href="https://github.com/ansible-community/community-topics/issues/73">Should there be a standard place for examples?</a></p>
+</blockquote>
+<h2>COMMUNITY UPDATES</h2>
+<p><a href="https://matrix.to/#/@julian:foad.me.uk">JulianF</a> said</p>
+<blockquote>
+<h3>Self-Host a Matrix Map Tile Server</h3>
+<p>Following Element's recent announcement of location sharing with support for self-hosted map tile server, I went ahead and set up one, and have written a <a href="https://wrily.foad.me.uk/self-host-a-matrix-map-server">blog post</a> about it, explaining how to go a little further than the currently published guide, and with <a href="https://lab.trax.im/matrix/map-tile-server-ansible">Ansible scripts</a> included.</p>
+</blockquote>
+<h2>COMMUNITY EVENTS AND MEETUPS</h2>
+<p><a href="https://matrix.to/#/@cybette:ansible.im">cybette</a> said</p>
+<blockquote>
+<p>The Ansible Community will have a presence at <a href="https://chemnitzer.linux-tage.de/2022/en">Chemnitz Linux Days 2022</a> this weekend (March 12-13), with some <a href="https://chemnitzer.linux-tage.de/2022/en/programm/vortraege">talks</a> (in German) as well as a <a href="https://chemnitzer.linux-tage.de/2022/en/programm/beitrag/155">virtual booth</a>. Thanks to <a href="https://twitter.com/dschier_wtd">Daniel Schier</a> for orchestrating the details!</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@cybette:ansible.im">cybette</a> contributed</p>
+<blockquote>
+<p>If you're in the Minneapolis area, join <a href="https://www.meetup.com/Ansible-Minneapolis/">Ansible Minneapolis</a> on March 17 for <a href="https://www.meetup.com/Ansible-Minneapolis/events/284260692">March Meetup at Utepils</a>, grab a beverage and talk some Ansible.</p>
+</blockquote>
+<h2>THAT'S ALL FOR NOW!</h2>
+<p>Have any questions you’d like to ask, or issues you’d like to see covered? Please ask in <a href="https://matrix.to/#/#social:ansible.com">#social:ansible.com</a>! See you next time!</p>

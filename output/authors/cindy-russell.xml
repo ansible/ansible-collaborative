@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Ansible Collaborative (Posts by Cindy Russell)</title><link>https://ansible.com/</link><description></description><atom:link href="https://ansible.com/authors/cindy-russell.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2024 &lt;a href="mailto:website@ansible.community"&gt;Ansible Collaborative, et al&lt;/a&gt; </copyright><lastBuildDate>Mon, 18 Mar 2024 19:47:35 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>AnsibleFest 2021 Network Automation Track</title><link>https://ansible.com/blog/ansiblefest-2021-network-automation-track/</link><dc:creator>Cindy Russell</dc:creator><description>&lt;h2&gt;AnsibleFest 2021 Network Automation Track&lt;/h2&gt;
+&lt;p&gt;This year, we are adapting our signature automation event, AnsibleFest,
+into a free virtual experience to connect our communities with a wider
+audience and to collaborate to solve problems. Seasoned pros and new
+Ansible enthusiasts alike can find answers and learn more about Red Hat
+Ansible Automation Platform, the platform for building and operating
+automation at scale and creating an enterprise automation strategy. Have
+you already automated some type of server or infrastructure management?
+Use the &lt;a href="https://events.ansiblefest.redhat.com/widget/redhat/ansible21/sessioncatalog?search.track=1623965164845001BE2L"&gt;network automation track&lt;/a&gt;
+to understand the benefits that come with automating network management
+the Ansible way. &lt;/p&gt;
+&lt;p&gt;Let's take a closer look at this track for &lt;a href="http://ansiblefest.com"&gt;AnsibleFest 2021&lt;/a&gt;.&lt;/p&gt;
+&lt;h3&gt;Network Automation at AnsibleFest&lt;/h3&gt;
+&lt;p&gt;Gone are the days of hand-typing commands into network devices one by
+one, because you simply can't keep up. Manage your network
+infrastructure using Ansible Automation Platform throughout the entire
+development and production life cycle, and free time as a result to
+focus on your top priority network engineering challenges. This
+AnsibleFest track focuses on network automation topics for &lt;strong&gt;automation content developers&lt;/strong&gt; as well as
+&lt;strong&gt;network and cloud engineers or operators&lt;/strong&gt;. &lt;/p&gt;
+&lt;p&gt;Attendees will learn how network automation can no longer be a point
+tool, but instead part of a holistic automation strategy that spans
+NetOps and even IT teams. You will hear about some key use cases in
+network automation, as well as a new builder experience that makes it
+easier to create great network automation so your team can move
+faster.  &lt;/p&gt;
+&lt;p&gt;You'll hear from our customers who will share their experiences, as well
+as our network partners who will explain how to automate their solutions
+using Ansible Automation Platform. We also suggest you take a look at
+the Telco track, which features additional customers and advanced topics
+like AIOps.  &lt;/p&gt;
+&lt;p&gt;Here are a few sessions that you can expect to see in the network
+automation track: &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Journey to Network Automation (great for getting started) by Sean
+    Cavanaugh and Trishna Guha &lt;/li&gt;
+&lt;li&gt;NetDevOps: The network developer automation experience by Brad
+    Thornton and Michael Ford&lt;/li&gt;
+&lt;li&gt;From Lunch Hobby to Production Ready: The ANZ Bank NZ Network
+    Automation Journey by Roxy Rice, Kyle Claudi, Tony Thistol and
+    Joseph Tejal&lt;/li&gt;
+&lt;li&gt;Everything as code and GitOps with Ansible by customer Emile Zweep
+    and Anton Nesterov of ODC-Noord, a government data center in the
+    Netherlands&lt;/li&gt;
+&lt;li&gt;Ansible wrapper to schedule any workflow while using ServiceNow
+    change management and MS Teams by Rick Walsh of US Bank&lt;/li&gt;
+&lt;li&gt;Use case sessions offered by our engineering team, as well as any of
+    the network partner sessions &lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;And of course, check out the &lt;a href="https://events.ansiblefest.redhat.com/widget/redhat/ansible21/sessioncatalog?search.topics=1629335758240001qcI2"&gt;Telco track&lt;/a&gt;
+to find sessions by customers Cox Communications and Bell Canada. &lt;/p&gt;
+&lt;p&gt;We can't wait for AnsibleFest 2021 to kick off and hope to see you
+there, virtually!&lt;/p&gt;</description><guid>https://ansible.com/blog/ansiblefest-2021-network-automation-track/</guid><pubDate>Mon, 30 Aug 2021 00:00:00 GMT</pubDate></item></channel></rss>

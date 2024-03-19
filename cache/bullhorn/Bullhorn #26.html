@@ -1,0 +1,71 @@
+<p><img alt="Ansible Bullhorn banner" src="/images/bullhorn-banner-mango.png"></p>
+<h2>The Bullhorn</h2>
+<p><em>A Newsletter for the Ansible Developer Community</em>
+<em>Issue #26, 2021-05-13 (<a href="https://us19.campaign-archive.com/home/?u=56d874e027110e35dea0e03c1&amp;id=d6635f5420">Past Issues</a>)</em></p>
+<p>Welcome to the Bullhorn, our newsletter for the Ansible developer community. If you have any questions or content you’d like to share, please reach out to us at the-bullhorn@redhat.com, or comment on this <a href="https://github.com/ansible/community/issues/546">GitHub issue</a>.</p>
+<!-- TEASER_END -->
+
+<p><strong>KEY DATES</strong></p>
+<ul>
+<li>2021-05-18: <a href="https://docs.ansible.com/ansible/devel/roadmap/COLLECTIONS_4.html">ETA for Ansible 4.0.0 release</a></li>
+<li>2021-05-19: <a href="https://github.com/ansible/community/issues/539">community IRC meeting</a>, 18:00 UTC (propose topics <a href="https://github.com/ansible-community/community-topics/issues">here</a>)</li>
+<li>2021-05-24: ETA for Ansible-Core 2.11.1 release</li>
+<li>2021-05-25: <a href="https://github.com/ansible/community/issues/546">Bullhorn #27 content deadline</a></li>
+<li>2021-05-26: <a href="https://github.com/ansible/community/issues/539">community IRC meeting</a>, 18:00 UTC (propose topics <a href="https://github.com/ansible-community/community-topics/issues">here</a>)</li>
+<li>2021-05-27: <a href="https://github.com/ansible/community/issues/577">D&amp;I working group meeting</a>, 19:00 UTC</li>
+<li>2021-06-08: <a href="https://www.eventbrite.com/e/ansible-contributor-summit-202106-registration-152686374055?aff=bullhorn">Ansible Contributor Summit 2021.06</a></li>
+<li><a href="https://docs.ansible.com/ansible-core/devel/roadmap/ROADMAP_2_12.html">Ansible-core 2.12 Roadmap now available</a></li>
+</ul>
+<p><strong>ANSIBLE 4.0.0 RELEASE CANDIDATE 1</strong></p>
+<p>The Ansible Community team announced the first release candidate of Ansible 4.0.0 on May 11th. This update is based on the Ansible-core-2.11.x package which is a major update from the Ansible 3 package (Ansible 3 was based on Ansible-base-2.10.x). There may be backwards incompatibilities in the core playbook language. Please see the <a href="https://docs.ansible.com/ansible/devel/porting_guides/porting_guide_4.html">porting guide</a> for details. For what is included in this release, and how to get it for testing, please see <a href="https://groups.google.com/g/ansible-devel/c/LnqAU5m4ioU">Toshio Kuratomi’s email to the ansible-devel list</a>. Unless a blocker bug is found, Ansible 4.0.0 final is scheduled for May 18, 2021.</p>
+<p><strong>ANSIBLE 3.4.0 RELEASED</strong></p>
+<p>The Ansible Community team announced the general availability of Ansible 3.4.0 on May 11th. This update contains bugfixes and new, backwards compatible features in the contained collections. If you would like to learn about how and why we got to version 3.0.0, we invite you to visit our blog for the <a href="https://www.ansible.com/blog/announcing-the-community-ansible-3.0.0-package">background</a> as well as a <a href="https://www.ansible.com/blog/ansible-3.0.0-qa">Q&amp;A</a>. For what's new in the release and how to install it, please see <a href="https://groups.google.com/g/ansible-announce/c/UfVpNNkpRuA">Toshio Kuratomi's email to the ansible-announce list</a>. Barring unforeseen issues, this will be the last Ansible 3 release.</p>
+<p><strong>ANSIBLE-BASE 2.10.9 AND ANSIBLE 2.9.21 RELEASED</strong></p>
+<p>The Ansible Core team announced the maintenance releases of Ansible-Base 2.10.9 and Ansible 2.9.21 on May 3rd. Follow <a href="https://groups.google.com/g/ansible-devel/c/6xlHakDA9Gs">this link</a> for Rick Elrod’s email to the ansible-devel mailing list, to obtain details on what’s new, installation instructions, and schedule for future releases.</p>
+<p><strong>NEW/UPDATED COMMUNITY COLLECTIONS</strong></p>
+<ul>
+<li>IBM Z System Automation collection - <a href="https://galaxy.ansible.com/ibm/ibm_zos_sysauto">ibm.ibm_zos_sysauto</a> 1.0.0 has been released.</li>
+<li>PostgreSQL collection for Ansible - <a href="https://galaxy.ansible.com/community/postgresql">community.postgresql</a> 1.3.0 has been released.</li>
+<li>Ansible Community VMware Collection - <a href="https://galaxy.ansible.com/community/vmware">community.vmware</a> <a href="https://github.com/ansible-collections/community.vmware/pull/830">1.10.0</a> has been released. Please update for new features and bug fixes.</li>
+<li>Community DNS Collection - <a href="https://galaxy.ansible.com/community/dns">community.dns</a> 1.0.0 has been released. The collection provides some DNS-related filter plugins and modules.</li>
+<li>TrendMicro DeepSecurity Ansible Collection - <a href="https://galaxy.ansible.com/trendmicro/deepsec">trendmicro.deepsec</a> <a href="https://github.com/ansible-collections/trendmicro.deepsec/pull/15">1.0.0</a> has been released. This collection includes a variety of Ansible content to help automate the management of TrendMicro DeepSecurity Endpoint Security solutions. Please check out the collection and update for new feature and bug fixes.</li>
+<li>Community General Collection - <a href="https://galaxy.ansible.com/community/general">community.general</a> 2.5.2 has been released for inclusion in Ansible 3.4.0.</li>
+<li>Community General Collection - <a href="https://galaxy.ansible.com/community/general">community.general</a> 3.0.2 has been released for inclusion in Ansible 4.0.0 RC1.</li>
+<li>Docker Community Collection - <a href="https://galaxy.ansible.com/community/docker">community.docker</a> 1.6.0 has been released.</li>
+</ul>
+<p><strong>CHANGES IMPACTING COLLECTION OWNERS</strong></p>
+<ul>
+<li>Ansible Changelog Tool - <a href="https://github.com/ansible-community/antsibull-changelog/">antsibull-changelog</a> <a href="https://github.com/ansible-community/antsibull-changelog/blob/main/CHANGELOG.rst#v0-10-0">0.10.0</a> has been released.</li>
+<li><a href="https://github.com/ansible-collections/overview/issues/45#issuecomment-830220740">Update testing to use Fedora 34</a> - Fedora 34 has been added to <code>ansible-test</code> on the <code>devel</code> branch.</li>
+<li><a href="https://github.com/ansible-collections/overview/issues/45#issuecomment-836847770">Testing with Python 3.10</a> - Python 3.10 is now supported by the <code>devel</code> branch version of <code>ansible-test</code>.</li>
+<li>For more details of each of the above, and to stay on top of these changes, please subscribe to the <a href="https://github.com/ansible-collections/overview/issues/45">issue on GitHub</a>.</li>
+</ul>
+<p><strong>PROPOSAL: ANSIBLE COMMUNITY GALAXY NEXT STEPS</strong></p>
+<p>We're updating galaxy.ansible.com to use GalaxyNG, the code that powers Ansible Automation Hub, because it is well maintained and efficient. Help us make sure your use cases are addressed in this transition! Please take a look at this <a href="https://www.reddit.com/r/ansible/comments/na4end/ansible_community_galaxy_next_steps_help_needed/">post on Reddit</a> for the details, and ways you can help and provide feedback.</p>
+<p><strong>FEEDBACK: ADD ACTION_GROUPS SUPPORT TO COLLECTIONS</strong></p>
+<p>In ansible-core 2.12, collections will be able to define new groups to use with <code>module_defaults</code>. <a href="https://gist.github.com/s-hertel/725ecc719b5301e76c571aca58d39bd3">Here</a> is a summary of the evolution of the feature. <a href="https://github.com/ansible/ansible/pull/74039">Feedback</a> is welcome!</p>
+<p><strong>FEEDBACK: UBUNTU PPA</strong></p>
+<p>We are currently in the testing phase of our new GitHub Action PPA process. This testing includes Ansible <code>2.8.20</code> and <code>2.9.21</code> for Ubuntu <code>18.04</code>, as well as Ansible <code>2.10.7</code>, <code>3.4.0</code>, and <code>4.0.0rc1</code> for Ubuntu <code>18.04</code>, <code>20.04</code>, <code>20.10</code>, and <code>21.04</code>. If you are interested in testing or checking out the new process please see <a href="https://github.com/ansible-community/ppa/issues/1">this GitHub issue</a> for more details.</p>
+<p><strong>ANSIBLE CONTRIBUTOR SUMMIT 2021.06</strong></p>
+<p>The next Ansible Contributor Summit will be held on Tuesday, June 8, 2021. Please see the details and register on <a href="https://www.eventbrite.com/e/ansible-contributor-summit-202106-registration-152686374055?aff=bullhorn">Eventbrite</a>, and propose topics you’d like to discuss in this <a href="https://hackmd.io/@ansible-community/contrib-summit-202106">HackMD note</a>.</p>
+<p><strong>PYCON US 2021</strong></p>
+<p>A few of us from the Ansible team will be at <a href="https://us.pycon.org/2021/">PyCon US 2021</a>. Come chat with us this Friday, May 14th 12-5:30pm EDT at the Red Hat booth. Talent scouts from Red Hat will be at the PyCon Job Fair on Sunday, May 16th 1-3pm EDT.</p>
+<p><strong>CONTENT FROM THE ANSIBLE COMMUNITY</strong></p>
+<p>Find out how the Ansible project is working to eliminate racism and other harmful prejudices from the project's code and community with this <a href="https://opensource.com/article/21/5/inclusive-language-ansible">great post</a> by <a href="https://github.com/jillr">Jill Rouleau</a>.</p>
+<p><strong>ANSIBLE VIRTUAL MEETUPS</strong></p>
+<p>The following virtual meetup(s) are being held in the Ansible community over the next month:</p>
+<ul>
+<li>Fri, May 14 · 16:00 UTC - <a href="https://wiki.centos.org/Events/Dojo/May2021">CentOS Dojo</a> - "Keeping track of CentOS infrastructure deployments with Ansible and ARA" by <a href="https://twitter.com/dmsimard">David Moreau-Simard</a> and <a href="https://twitter.com/Arrfab">Fabian Arrotin</a></li>
+<li>Tue, May 18 · 11:00 AM GMT+2 - <a href="https://www.ansible-anwender.de/post/2021/04/register/">Ansible Anwendertreffen</a> (in German)</li>
+<li>Tue, May 25 · 6:00 PM GMT+1 - <a href="https://www.meetup.com/Ansible-London/events/278093392/">Ansible London</a> - Virtual meetup 25th May 2021</li>
+</ul>
+<p><strong>THE ANSIBLE TEAM IS HIRING</strong></p>
+<p>Red Hat is hiring several roles to work on Ansible. Please check the job descriptions in the links and apply!</p>
+<ul>
+<li><a href="https://global-redhat.icims.com/jobs/82487/devops-automation-engineer---red-hat-ansible/job">DevOps Automation Engineer - Red Hat Ansible</a></li>
+<li><a href="https://us-redhat.icims.com/jobs/82489/senior-product-manager---technical/job">Senior Field Product Manager - Technical</a></li>
+<li><a href="https://us-redhat.icims.com/jobs/82490/senior-product-manager---technical/job">Senior Product Manager - Technical</a></li>
+<li><a href="https://us-redhat.icims.com/jobs/86158/principal-product-manager---technical/job">Principal Product Manager - Technical</a></li>
+</ul>
+<p><strong>FEEDBACK</strong></p>
+<p>Have any questions you’d like to ask, or issues you’d like to see covered? Please send us an email at the-bullhorn@redhat.com.</p>

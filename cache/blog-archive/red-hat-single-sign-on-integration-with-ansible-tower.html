@@ -1,0 +1,183 @@
+<h1>Red Hat Single Sign-on Integration with Ansible Tower</h1>
+<p>As you might know, Red Hat Ansible Tower supports SAML authentication
+(both N and Z) by default. This document will guide you through the
+steps for configuring both products to delegate the authentication to
+RHSSO/Keycloak (Red Hat Single Sign-On).</p>
+<p>Requirements:</p>
+<ul>
+<li>A running RHSSO/Keycloak instance</li>
+<li>Ansible Tower</li>
+<li>Admin rights for both</li>
+<li>DNS resolution</li>
+</ul>
+<h2>Hands-On Lab</h2>
+<p>Unless you have your own certificate already, the first step will be to
+create one. To do so, execute the following command:</p>
+<p><code>openssl req -new -x509 -days 365 -nodes -out saml.crt -keyout saml.key</code></p>
+<p>Now we need to create the Ansible Tower Realm on the RHSSO platform. Go
+to the "Select Realm" drop-down and click on "Add new realm":</p>
+<p><img alt="Ansible-Tower-SSO-Screen-16" src="/images/posts/archive/Ansible-Tower-SSO-Screen-16.png"></p>
+<p>Once created, go to the "Keys" tab and delete all certificates, keys,
+etc. that were created by default.</p>
+<p>Now that we have a clean realm, let's populate it with the appropriate
+information. Click on "Add Keystore" in the upper right corner and
+click on RSA:</p>
+<p><img alt="Ansible-Tower-SSO-Screen-15" src="/images/posts/archive/Ansible-Tower-SSO-Screen-15.png"></p>
+<p>Click on Save and create your Ansible Tower client information. It is
+recommend to start with the Tower configuration so that you can inject
+the metadata file and customize a few of the fields.</p>
+<p>Log in as the admin user on Ansible Tower and go to "Settings &gt;
+Configure Tower &gt; Authentication &gt; SAML". Here you will find many
+fields (two of them read-only), that give us the information necessary
+to make this work:</p>
+<ul>
+<li>Assertion Consumer Service</li>
+<li>Metadata URL for the Service Provider (this will return the
+    configuration for your IDP)</li>
+</ul>
+<p><img alt="Ansible-Tower-SSO-Screen-18" src="/images/posts/archive/Ansible-Tower-SSO-Screen-18.png"></p>
+<p>Now let's fill all the required fields:</p>
+<ul>
+<li>EntityID for SAML Service Provider: <code>tower.usersys.redhat.com</code> (must
+    be the same on RHSSO as <code>client_id</code> name)</li>
+<li>Pub Cert: use the saml.crt (<code>cat saml.crt</code> and copy/paste)</li>
+<li>Private Key: use the same.key (<code>cat saml.key</code> and copy/paste)</li>
+</ul>
+<p><img alt="Ansible-Tower-SSO-Screen-17" src="/images/posts/archive/Ansible-Tower-SSO-Screen-17.png"></p>
+<ul>
+<li>Org info of Service Provider:</li>
+</ul>
+<div class="code"><pre class="code literal-block">{
+  &quot;en-US&quot;: {
+    &quot;url&quot;: &quot;https://rhsso.usersys.redhat.com:8443&quot;,
+    &quot;displayname&quot;: &quot;RHSSO Solutions Engineering&quot;,
+    &quot;name&quot;: &quot;RHSSO&quot;
+  }
+}
+</pre></div>
+
+<p><img alt="Ansible-Tower-SSO-Screen-4" src="/images/posts/archive/Ansible-Tower-SSO-Screen-4.png"></p>
+<ul>
+<li>Technical contact for SAML Service Provider:</li>
+</ul>
+<div class="code"><pre class="code literal-block"><span class="err">{</span>
+<span class="w">  </span><span class="ss">&quot;givenName&quot;</span><span class="err">:</span><span class="w"> </span><span class="ss">&quot;Juan Manuel Parrilla&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="ss">&quot;emailAddress&quot;</span><span class="err">:</span><span class="w"> </span><span class="ss">&quot;jparrill@redhat.com&quot;</span>
+<span class="err">}</span>
+</pre></div>
+
+<p><img alt="Ansible-Tower-SSO-Screen-7" src="/images/posts/archive/Ansible-Tower-SSO-Screen-7.png"></p>
+<ul>
+<li>Support contact for SAML Service Provider:</li>
+</ul>
+<div class="code"><pre class="code literal-block"><span class="err">{</span>
+<span class="w">  </span><span class="ss">&quot;givenName&quot;</span><span class="err">:</span><span class="w"> </span><span class="ss">&quot;Juan Manuel Parrilla&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="ss">&quot;emailAddress&quot;</span><span class="err">:</span><span class="w"> </span><span class="ss">&quot;jparrill@redhat.com&quot;</span>
+<span class="err">}</span>
+</pre></div>
+
+<p><img alt="Ansible-Tower-SSO-Screen-7" src="/images/posts/archive/Ansible-Tower-SSO-Screen-7.png"></p>
+<ul>
+<li>Enabled SAML Identity Providers:</li>
+</ul>
+<div class="code"><pre class="code literal-block">{
+   &quot;RHSSO&quot;: {
+      &quot;attr_last_name&quot;: &quot;last_name&quot;,
+      &quot;attr_username&quot;: &quot;username&quot;,
+      &quot;entity_id&quot;: &quot;https://rhsso.usersys.redhat.com:8443/auth/realms/tower&quot;,
+      &quot;attr_user_permanent_id&quot;: &quot;name_id&quot;,
+      &quot;url&quot;: &quot;https://rhsso.usersys.redhat.com:8443/auth/realms/tower/protocol/saml&quot;,
+      &quot;attr_email&quot;: &quot;email&quot;,
+      &quot;x509cert&quot;: &quot;&quot;,
+      &quot;attr_first_name&quot;: &quot;first_name&quot;,
+      &quot;attr_groups&quot;: &quot;groups&quot;
+   }
+}
+</pre></div>
+
+<p>Note: To provide the x509cert field on the JSON, just execute this command and paste the result on the Ansible Tower interface:</p>
+<div class="code"><pre class="code literal-block">sed<span class="w"> </span><span class="s1">&#39;:a;N;$!ba;s/\n//g&#39;</span><span class="w"> </span>saml.crt
+</pre></div>
+
+<p><img alt="Ansible-Tower-SSO-Screen-20" src="/images/posts/archive/Ansible-Tower-SSO-Screen-20.png"></p>
+<ul>
+<li>Organization SAML Map:</li>
+</ul>
+<div class="code"><pre class="code literal-block"><span class="err">{</span>
+<span class="w">   </span><span class="ss">&quot;Default&quot;</span><span class="err">:</span><span class="w"> </span><span class="err">{</span>
+<span class="w">      </span><span class="ss">&quot;users&quot;</span><span class="err">:</span><span class="w"> </span><span class="k">true</span>
+<span class="w">   </span><span class="err">}</span><span class="p">,</span>
+<span class="w">   </span><span class="ss">&quot;Systems Engineering&quot;</span><span class="err">:</span><span class="w"> </span><span class="err">{</span>
+<span class="w">      </span><span class="ss">&quot;admins&quot;</span><span class="err">:</span><span class="w"> </span><span class="o">[</span>
+<span class="n">         &quot;acheron@redhat.com&quot;,</span>
+<span class="n">         &quot;jparrill@redhat.com&quot;,</span>
+<span class="n">         &quot;covenant@redhat.com&quot;,</span>
+<span class="n">         &quot;olympia@redhat.com</span>
+<span class="n">      </span><span class="o">]</span><span class="p">,</span>
+<span class="w">      </span><span class="ss">&quot;remove_admins&quot;</span><span class="err">:</span><span class="w"> </span><span class="k">false</span><span class="p">,</span>
+<span class="w">      </span><span class="ss">&quot;remove_users&quot;</span><span class="err">:</span><span class="w"> </span><span class="k">false</span><span class="p">,</span>
+<span class="w">      </span><span class="ss">&quot;users&quot;</span><span class="err">:</span><span class="w"> </span><span class="k">true</span>
+<span class="w">   </span><span class="err">}</span>
+<span class="err">}</span>
+</pre></div>
+
+<p><img alt="Ansible-Tower-SSO-Screen-10" src="/images/posts/archive/Ansible-Tower-SSO-Screen-10.png"></p>
+<h2>Recommended Steps and Things to Check</h2>
+<ul>
+<li>RHSSO is the chosen name, which can be whatever you want and is not
+    tied to DNS or server configurations. This is simply a visual
+    marker.</li>
+<li>All the <code>attr_ fields</code> are required to work and will be mappers on
+    the client that we will create on the next step.</li>
+<li><code>Entity_id</code> will point to your realm. Go to your RHSSO realm through
+    WebUI and in "General" you will see "OpenID Endpoint
+    Configuration". Just click and catch the "issuer" field to
+    fulfill the <code>entity_id</code>.</li>
+<li>"For url" is a fixed field; put your <code>entity_id</code> there, followed by
+    <code>/protocol/saml</code>.</li>
+<li>If you generated your cert/key in RHSSO, you will have them in one
+    line. To convert to PEM format you can just wrap them in
+    "-----BEGIN CERTIFICATE-----" etc. and use <code>fold -w64</code> to
+    split the single line.</li>
+</ul>
+<h2>RHSSO Client Configuration</h2>
+<p>Now that you've configured SAML on Ansible Tower save the changes and
+start with the RHSSO Client configuration.</p>
+<p>First, log in as the admin user on the RHSSO platform and go to the
+"Tower" realm. From there, go to "Clients" and select "Create". Click
+on "select file" to import the data that we already have on Ansible
+Tower (to get the configuration execute this command from your laptop:
+<code>curl -L -k https://tower.usersys.redhat.com/sso/metadata/saml/</code>).
+Modify the Client ID by pointing it to <code>tower.usersys.redhat.com</code>, then
+set the "Client Protocol" to SAML as displayed below:</p>
+<p><img alt="Ansible-Tower-SSO-Screen-19" src="/images/posts/archive/Ansible-Tower-SSO-Screen-19.png"></p>
+<p>Next, fix the configuration to fit the following screenshot:</p>
+<p><img alt="Ansible-Tower-SSO-Screen-1" src="/images/posts/archive/Ansible-Tower-SSO-Screen-1.png"></p>
+<p>The last step to take is to create the mappers on Tower's RHSSO client.
+The purpose of this is to define the information that comes from your
+RHSSO, which will be mapped against Ansible Tower users.</p>
+<p>To do this, we must go to Mappers tab:</p>
+<p><img alt="Ansible-Tower-SSO-Screen-14" src="/images/posts/archive/Ansible-Tower-SSO-Screen-14.png"></p>
+<p>Displayed below are the necessary mappers:</p>
+<p><img alt="Ansible-Tower-SSO-Screen-6" src="/images/posts/archive/Ansible-Tower-SSO-Screen-6.png"></p>
+<p>The following screenshot shows proper configuration of user name, last
+name, email, user ID, and first name:</p>
+<p><img alt="Ansible-Tower-SSO-Screen-22" src="/images/posts/archive/Ansible-Tower-SSO-Screen-22.png"></p>
+<p><img alt="Ansible-Tower-SSO-Screen-11" src="/images/posts/archive/Ansible-Tower-SSO-Screen-11.png"></p>
+<p><img alt="Ansible-Tower-SSO-Screen-8" src="/images/posts/archive/Ansible-Tower-SSO-Screen-8.png"></p>
+<p><img alt="Ansible-Tower-SSO-Screen-9" src="/images/posts/archive/Ansible-Tower-SSO-Screen-9.png"></p>
+<p><img alt="Ansible-Tower-SSO-Screen-3" src="/images/posts/archive/Ansible-Tower-SSO-Screen-3.png"></p>
+<p>Note: "firstName" and "lastName" are case sensitive since they map the RHSSO user property.</p>
+<h3>Now you're all set!</h3>
+<p>Let's test with a user that we already have on our RHSSO (we have RHSSO
+with a user federation against <code>ldap.example.com</code>). For testing
+purposes, you can create a user on "Manage &gt; Users" if you wish.</p>
+<p>Now go to the Ansible Tower login page and you should see "Sign in With S":</p>
+<p><img alt="Ansible-Tower-SSO-Screen-21" src="/images/posts/archive/Ansible-Tower-SSO-Screen-21.png"></p>
+<p>Click on this "S" and you will be redirected to login on your RHSSO
+server:</p>
+<p><img alt="Ansible-Tower-SSO-Screen-2" src="/images/posts/archive/Ansible-Tower-SSO-Screen-2.png"></p>
+<p>And that's it!
+<img alt="Ansible-Tower-SSO-Screen-5" src="/images/posts/archive/Ansible-Tower-SSO-Screen-5.png"></p>
+<p>Hope this was a helpful guide to Red Hat Single Sign-On integration with
+Ansible Tower!</p>

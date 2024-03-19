@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html prefix="
+og: http://ogp.me/ns# article: http://ogp.me/ns/article#
+" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="In this blog, we will see how ansible.utils collection can be useful in operational state assessment as an example use case.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Getting Started with Ansible.utils Collection for Playbook Creators | Ansible Collaborative</title>
+<link href="../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/baguetteBox.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/rst.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/code.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/theme.css" rel="stylesheet" type="text/css">
+<!-- Red Hat fonts --><link rel="stylesheet" href="https://static.redhat.com/libs/redhat/redhat-font/2.0.0/webfonts/red-hat-font.css">
+<!-- Font Awesome --><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+<!-- Fork Awesome --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css" integrity="sha256-XoaMnoYC5TH6/+ihMEnospgm0J1PM/nioxbOUdnM8HY=" crossorigin="anonymous">
+<!-- Sass compiled css  --><link rel="stylesheet" href="../../assets/css/main.css">
+<link rel="stylesheet" href="../../assets/css/redhat-footer.css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://ansible.com/blog/getting-started-with-ansible.utils-collection-for-playbook-creators-part-2/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Ashwini Mhatre">
+<link rel="prev" href="../bullhorn-42/" title="Bullhorn #42" type="text/html">
+<link rel="next" href="../getting-started-with-ansible.utils-collection-for-playbook-creators-part-1/" title="Getting Started with Ansible.utils Collection for Playbook Creators" type="text/html">
+<meta property="og:site_name" content="Ansible Collaborative">
+<meta property="og:title" content="Getting Started with Ansible.utils Collection for Playbook Creators">
+<meta property="og:url" content="https://ansible.com/blog/getting-started-with-ansible.utils-collection-for-playbook-creators-part-2/">
+<meta property="og:description" content="In this blog, we will see how ansible.utils collection can be useful in operational state assessment as an example use case.">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2022-01-24T00:00:00Z">
+</head>
+<body id="top">
+
+<div class="global-container" id="content" role="main">
+<!-- Start menubar -->
+<nav class="navbar navbar-expand-lg static-top mb-4 navbar-padding full-width-bg   navbar-dark   bg-pool   "><div class="masthead">
+    <!-- This keeps the margins nice -->
+    <a class="navbar-brand" href="../../">
+        <img src="../../images/ansible_logo-small-15.png" alt="Ansible community logo" id="logo" class="d-inline-block align-top" width="50" height="50"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon nav-toggle-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="bs-navbar">
+      <ul class="navbar-nav mr-auto"></ul>
+<ul class="navbar-nav navbar-right">
+<li class="nav-item dropdown">
+	        <a href="#" class="nav-link nav-link-color dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <i class=""></i> Documentation
+                </a>
+		<div class="dropdown-menu dropdown-menu-border">
+	    
+                    <a href="https://docs.ansible.com/" class="dropdown-item">
+		        <i class=""></i> Project documentation
+                    </a>
+                    <a href="https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/" class="dropdown-item">
+		        <i class=""></i> Ansible Automation Platform documentation
+                    </a>
+            </div>
+                 </li>
+<li class="nav-item">
+		     <a href="https://galaxy.ansible.com/" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Galaxy
+		     </a>
+		 </li>
+                 <li class="nav-item">
+		     <a href="https://forum.ansible.com/" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Forum
+		     </a>
+		 </li>
+            <li class="nav-item dropdown">
+	        <a href="#" class="nav-link nav-link-color dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <i class=""></i> Resources
+                </a>
+		<div class="dropdown-menu dropdown-menu-border">
+	    
+                    <a href="../../how-ansible-works/" class="dropdown-item">
+		        <i class=""></i> How Ansible works
+                    </a>
+                    <a href="../../ecosystem/" class="dropdown-item">
+		        <i class=""></i> Ansible ecosystem
+                    </a>
+                    <a href="../archive.html" class="dropdown-item">
+		        <i class=""></i> Blog
+                    </a>
+                    <a href="../../faq/" class="dropdown-item">
+		        <i class=""></i> Frequently asked questions
+                    </a>
+                    <a href="../../ansible-community-training/" class="dropdown-item">
+		        <i class=""></i> Ansible community training
+                    </a>
+                    <a href="../../contact-us/" class="dropdown-item">
+		        <i class=""></i> Contact us
+                    </a>
+            </div>
+                 </li>
+<li class="nav-item">
+		     <a href="https://www.redhat.com/en/technologies/management/ansible?sc_cid=7015Y000003szaKQAQ" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Ansible Automation Platform
+		     </a>
+		 </li>
+
+        
+      </ul>
+</div>
+    <!-- /.navbar-collapse -->
+  </div>
+  <!-- /.container -->
+</nav><!-- End default Menubar --><div class="body-content center-band">
+        <!--Body content-->
+        
+  <article class="post-text h-entry hentry postpage ansible-content" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Getting Started with Ansible.utils Collection for Playbook Creators</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard p-author h-card"><span class="byline-name fn p-name" itemprop="author">
+                    <a class="u-url" href="../../authors/ashwini-mhatre/">Ashwini Mhatre</a>
+            </span></p>
+            <p class="dateline">
+            <a href="." rel="bookmark">
+            <time class="published dt-published" datetime="2022-01-24T00:00:00Z" itemprop="datePublished" title="2022-01-24 00:00">2022-01-24 00:00</time></a>
+            </p>
+                    <p class="sourceline"><a href="index.md" class="sourcelink">Source</a></p>
+
+        </div>
+        
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+<h2>Part 2: Use case of operational state assessment using ansible.utils collection</h2>
+<p>In <code>ansible.utils</code>, there are a variety of plugins which we can use for
+operational state assessment of network devices. I overviewed the
+<code>ansible.utils</code> collection in part one of this two part blog series. If
+you have not reviewed part one,
+I recommend you do so, since I will build on this information in this
+part two blog. We will see how the <code>ansible.utils</code> collection can be
+useful in operational state assessment as an example use case.</p>
+<p>In general, state assessment workflow has following steps:</p>
+<ul>
+<li>
+<p>Retrieve (Source of Truth)</p>
+<ul>
+<li>Collect the current operational state from the remote host. </li>
+<li>Convert it into normalized structured data. Structured data can
+    be in json, yaml format or any other format.</li>
+<li>Store is an inventory variable.</li>
+</ul>
+</li>
+<li>
+<p>Validate</p>
+<ul>
+<li>Define the desired state criteria in a standard based format,
+    for example, as defined in a json schema format.</li>
+<li>Retrieve operational state at runtime.</li>
+<li>Validate the current state data against the pre-defined criteria
+    to identify if there is any deviation.</li>
+</ul>
+</li>
+<li>
+<p>Remediate</p>
+<ul>
+<li>Implement required configuration changes to correct drift. </li>
+<li>Report on the change as an audit trail.</li>
+</ul>
+</li>
+</ul>
+<h3>How can ansible.utils collection help in this workflow?</h3>
+<p>The <code>ansible.utils</code> collection makes it easier to retrieve and parse the
+data so it can then be further assessed from a structured format.</p>
+<h4>Retrieving operational state in structured format using Ansible.utils.cli_parse</h4>
+<p>This module is available as <code>ansible.utils</code> collection. It has a variety
+of parsers which help to parse CLI output or text output. It can work
+with multiple remote hosts like network, Linux, or windows.it. It
+supports multiple parsing engines and it is extensible which means you
+can create your own parsing engine. It is a single task to run a
+command, parse and set facts.</p>
+<p>Before the utils collection was available, we would need to write three
+different tasks to run commands, parse the output from command and set
+facts. But thanks to <code>cli_parse</code> we only have one task which will return
+structured data from the "show command"
+output.</p>
+<p>Let's see an example of <code>ansible.utils.cli_parse</code> task:</p>
+<div class="code"><pre class="code literal-block">  tasks:
+
+  <span class="k">-</span> name:  Run a command and parse results
+    ansible.utils.cli_parse:
+        command: show interfaces
+        parser:
+            name: ansible.utils.xxxx
+            set_fact: interfaces
+</pre></div>
+
+<p>In this task we need to provide a command which will execute on the
+device. Parser, which is a subplugin of <code>cli_parse</code>, <code>plugin.set_fact</code> sets
+the converted structure in the interfaces key. We can then refer to the
+interfaces key in our playbook. </p>
+<p>The above task will perform following operation:</p>
+<ul>
+<li>Run the command on the device </li>
+<li>Parse using the 'xxxx' engine </li>
+<li>Use a default template folder </li>
+<li>Set parsed data as fact</li>
+<li>Return command output as stdout</li>
+</ul>
+<p>Currently <code>ansible.utils.cli_parse</code> plugin has following parsers:</p>
+<ul>
+<li>
+<code>ansible.utils.textfsm</code>: Python module for parsing semi-formatted
+    text</li>
+<li>
+<code>ansible.utils.ttp</code>: Template based parsing, low regex use,
+    jinja-like DSL</li>
+<li>
+<code>ansible.netcommon.native</code>: Internal jinja, regex, yaml without
+    additional 3rd party libraries required</li>
+<li>
+<code>ansible.netcommon.ntc_templates</code>: Predefined textfsm templates
+    packaged as python library </li>
+<li>
+<code>ansible.netcommon.pyats</code>: Cisco Test Automation &amp; Validation
+    Solution (11 OSs/2500 parsers) </li>
+<li>
+<code>ansible.utils.from_xml</code>: convert XML to json using xmltodict </li>
+</ul>
+<p>All of the generic parsers are part of the <code>ansible.utils</code> collection and
+all network-related parsers are part of the <code>ansible.netcommon</code>
+collection.</p>
+<h4>Validating structured data and report errors using ansible.utils.validate</h4>
+<p>The <code>Ansible.utils.validate</code> module is a new module available as part of
+the <code>ansible.utils</code> collection which works with all platforms. It has
+extensible engine support and currently works with the jsonschema
+validation engine which uses the jsonschema python library underneath.
+It is a single task, which reads structured data and validates it
+against the data model provided in the task. This task will report
+success or error in case the data is valid or invalid as per the
+schema. </p>
+<p>Let's see an example of <code>ansible.utils.validate</code> task:</p>
+<div class="code"><pre class="code literal-block"><span class="x">tasks:</span>
+
+<span class="x">- name:  Validate structured data</span>
+<span class="x">   ansible.utils.validate:</span>
+<span class="x">       data: "</span><span class="cp">{{</span> <span class="nv">input_data</span> <span class="cp">}}</span><span class="x">"</span>
+<span class="x">       criteria:</span>
+<span class="x">       - "</span><span class="cp">{{</span> <span class="nv">lookup</span><span class="o">(</span><span class="s1">'file'</span><span class="o">,</span> <span class="s1">'./criteria.json'</span><span class="o">)</span> <span class="o">|</span> <span class="nf">from_json</span> <span class="cp">}}</span><span class="x">"</span>
+<span class="x">       engine: ansible.utils.xxxx</span>
+</pre></div>
+
+<p>In this task we need to provide data which is supposed to be structured
+data. Criteria is a list of criteria. Since currently we are using
+jsonschema, we have criteria in json format. Engine is a sub-plugin of
+the top level validate plugin. Here it is <code>ansible.utils.jsonschema</code>.
+Again, you can write your own engine as it is extensible. </p>
+<p>The above task will perform following operation:</p>
+<ul>
+<li>Reads the input JSON data and the criteria for data (schema mode)</li>
+<li>Validate using the 'xxxx' engine</li>
+<li>Returns list of errors if data does not conform to the schema criteria</li>
+</ul>
+<p>Currently <code>ansible.utils.validate</code> plugin supports following validation
+engine:</p>
+<ul>
+<li>
+<code>ansible.utils.jsonschema</code>: Python module to validate json data against a schema. </li>
+</ul>
+<p>Now let's use the above plugins from <code>ansible.utils</code> to see how we can
+use them in actual scenarios. In this example we will see how to use
+<code>ansible.utils</code> to fetch BGP operational state data, validate it against
+predefined json schema and also remediate configuration drift when
+detected. </p>
+<p>For this scenario consider we have three CSRv routers which are running
+cisco ios xe. All of them are BGP neighbors to each other and advertise
+three networks each.</p>
+<p><img alt="utils blog 2 image one" src="../../images/posts/archive/utils-blog-one.png"></p>
+<p>Lets check running configuration and operation state data related to BGP.</p>
+<p><img alt="utils blog 2 image two" src="../../images/posts/archive/utils-blog-two.jpeg"></p>
+<p>Let's check the CSRv1 node. Lets execute command <code>show running-config | section bgp</code>.
+As you can see it has two neighbors configured, where
+both of them have the same Remote AS, so they are IBGP neighbors. The
+neighbors are activated and soft reconfiguration inbound is enabled on
+them. This node also advertises three networks.</p>
+<p>Now let's execute the command <code>show bgp summary</code>.</p>
+<p><img alt="utils blog 2 image three" src="../../images/posts/archive/utils-blog-three.png"></p>
+<p>The above screenshot tells us the neighbor relationships with the other
+two nodes established and the current node receiving 3 prefixes from the
+other two nodes.</p>
+<p>Now let's validate it using routing table entries.
+Lets execute command <code>show ip route bgp</code>.</p>
+<p><img alt="utils blog 2 image four" src="../../images/posts/archive/utils-blog-four.png"></p>
+<p>The above screenshot shows route table entries from node 1. As you can
+see, this node is aware of six routes, with the next hop being the
+respective BGP neighbors advertising them.</p>
+<p>Similarly we have configured CSRv2 and CSRv3.</p>
+<p>Now let's check the playbooks which we are using in this example with
+detailed steps.</p>
+<p>Checkout this <a href="https://github.com/ashwini-mhatre/bgp_demo/">code</a>
+if you want to learn more details.</p>
+<p>Playbooks are divided into two parts:</p>
+<ul>
+<li>Gather facts and store them in a yaml file as the Source of Truth (SOT)</li>
+<li>Validate structured data against SOT and rectify drift if it is detected</li>
+</ul>
+<p><strong>Gather facts and store it in a yaml file for SOT</strong></p>
+<p>Let's check the content of <a href="https://github.com/ashwini-mhatre/bgp_demo/blob/main/playbooks/facts.yaml">facts.yaml</a>.</p>
+<p><img alt="utils blog 2 image five" src="../../images/posts/archive/utils-blog-five.png"></p>
+<p>In the first task we are gathering bgp_global and bgp_address_family
+facts from target devices. In the second task we are storing them in a
+flat file under the hostvars directory. These files will act as SOT
+(source of truth) for BGP config on target devices.</p>
+<p>Lets run the above playbook with <code>ansible-navigator run playbooks/facts.yaml</code> using this command.
+See <a href="https://ansible-navigator.readthedocs.io/en/latest/">ansible-navigator</a> docs for more details.</p>
+<p>How does this data look after execution of the playbook? Let's check
+<a href="https://github.com/ashwini-mhatre/bgp_demo/blob/fest21/playbooks/host_vars/csrv-1.yaml">playbooks/host_vars/csrv-1.yaml.</a></p>
+<p><img alt="utils blog 2 image six" src="../../images/posts/archive/utils-blog-six.png"></p>
+<p><strong>Validate structured data against SOT and rectify drift if it is detected</strong></p>
+<p>In this step we will inspect BGP operational state data for all the
+nodes in our topology and then determine if they are running as expected
+or if there is any configuration drift.</p>
+<p>Now let's see the
+<a href="https://github.com/ashwini-mhatre/bgp_demo/blob/fest21/playbooks/verify.yaml">playbooks/verify.yaml</a>
+playbook which will validate and rectify drift if it is present.</p>
+<p><img alt="utils blog 2 image seven" src="../../images/posts/archive/utils-blog-seven.png"></p>
+<p>In the first task we have used the <code>ansible.utils.cli_parse</code> plugin to
+execute the <code>show ip route bgp</code> command on the target device and then
+pass the output of this command to <code>pyats parser</code>.</p>
+<p>The pyats parser then converts the output to structured data which is
+stored in the result variable.</p>
+<p>In the next task we pass the value in the result variable along with a
+predefined schema to the <code>ansible.utils.validate</code> plugin. The plugin
+then compares the data against the schema or the criteria using the
+jsonschema engine. Each node has a schema file that defines the prefix
+ranges which they received from the other two neighbors .</p>
+<p>As we saw from the topology and the CLI that these nodes are supposed to
+receive six routes (three in total) from each of the neighbor nodes. Now
+these prefixes are represented as patterns in the schema along with
+other properties like source_protocol, route_preferences, metric and
+active state.</p>
+<p>The schema also sets the additional properties to false and defines
+minimum and maximum number of properties as six. This ensures that
+validating against the schema will always tell us whether the devices
+are receiving exactly the set of routes which they are supposed to
+receive or not.</p>
+<p>Following is the example of a
+<a href="https://github.com/ashwini-mhatre/bgp_demo/blob/fest21/playbooks/bgp_schema/csrv-1.json">schema file</a>
+for node CSRv1.</p>
+<p><img alt="utils-blog-eight" src="../../images/posts/archive/utils-blog-eight.png"></p>
+<p>Let's check further tasks of
+<a href="https://github.com/ashwini-mhatre/bgp_demo/blob/fest21/playbooks/verify.yaml">verify.yaml</a></p>
+<p>If the schema validation in the second task fails, the playbook enters
+the rescue section. This is where we used the BGP resource modules to
+enforce the SOT which we have saved previously in yaml files on the
+target devices. The end result will be remediating any configuration
+drift which causes failure in operation state validation.</p>
+<p>If we execute the verify.yaml playbook with the <code>ansible-navigator run playbooks/verify.yaml</code>
+command, as we have not made changes to any
+of the target devices, we see that they are working as expected and
+schema validation passes. See
+<a href="https://ansible-navigator.readthedocs.io/en/latest/">ansible-navigator</a>
+docs for more details.</p>
+<p><img alt="utils-blog-nine" src="../../images/posts/archive/utils-blog-nine.png"></p>
+<p>Let's manually introduce erroneous changes on all devices. Then we
+will run the same playbook again and see how it behaves. Let's remove
+the routes to make the erroneous changes they are
+advertising.</p>
+<p><img alt="utils-blog-ten" src="../../images/posts/archive/utils-blog-ten.png"></p>
+<p>Now we have made changes in all the routers. Let's run the playbook
+again with <code>ansible-navigator run playbooks/verify.yaml.</code></p>
+<p>This time the schema validation fails. Remediation tasks are executed
+and they add facts that are missing prefixes on all three nodes. Let's
+take a detailed look into this.</p>
+<p><img alt="utils-blog-eleven" src="../../images/posts/archive/utils-blog-eleven.jpg"></p>
+<p>The first task, as usual, fetches the output of the show command and
+converts it to structured data.</p>
+<p>The second task fails because the schema validation fails with multiple
+errors. The data doesn't match the constraints defined in the schema.
+This causes the remediation tasks to execute one by one. </p>
+<p>After the remediation tasks are complete, the configure BGP task showed
+no changes because we did not make any changes to the BGP global
+attribute.</p>
+<p>The second one is where the BGP address family detects the drifts and
+reconfigures the missing prefixes. </p>
+<p>As we can see in the commands sent for all the target devices, the
+playbook adds facts to the routes that are deleted.</p>
+<p>If we run this playbook once again it will be idempotent and report no
+changes, thereby indicating everything working as expected. </p>
+<p>In a production environment, this playbook can be triggered based on
+external events or also can be scheduled as a periodic job in Red Hat
+Ansible Automation Platform's Automation controller to ensure compliance
+with the expected operational state.</p>
+<h3>Takeaways &amp; Next Steps</h3>
+<p>As shown above, the <code>ansible.utils</code> collection: </p>
+<ul>
+<li>Makes operational state assessment easier, complementing Ansible
+    Automation Platform's configuration management capabilities.</li>
+<li>Acts as a single entry point for gathering the operational state of
+    the entire inventory.</li>
+<li>Provides a standardized way to define and validate the operational
+    criteria as a structured data model.</li>
+<li>Adds the steps for operational state assessment as a workflow
+    template in Automation controller which can trigger other events,
+    like running a playbook for automated remediation or reporting to an
+    external tool, etc. </li>
+</ul>
+</div>
+    <aside class="postpromonav"><nav><ul class="pager hidden-print">
+<li class="previous">
+                <a href="../bullhorn-42/" rel="prev" title="Bullhorn #42">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../getting-started-with-ansible.utils-collection-for-playbook-creators-part-1/" rel="next" title="Getting Started with Ansible.utils Collection for Playbook Creators">Next post</a>
+            </li>
+        </ul></nav></aside></article><!--End of body content-->
+</div>
+        <div class="content-slim redhat-footer">
+      <div class="footer-left">
+        <ul class="footer-left-links">
+<li>
+            <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-SA 4.0</a>
+          </li>
+          <li>
+            <a href="https://www.redhat.com/en/about/privacy-policy" target="_blank">Privacy policy</a>
+          </li>
+          <li>
+            <a href="https://docs.ansible.com/ansible/latest/community/code_of_conduct.html" target="_blank">Code of conduct</a>
+          </li>
+        </ul>
+</div>
+      <div class="footer-right">
+        <span class="redhat">Powered by</span>
+        <span class="redhat-logo">
+          <a href="https://www.redhat.com/en/technologies/management/ansible" target="_blank">
+            <img src="../../assets/images/redhat_reversed.svg" alt="Red Hat logo." width="96" height="28"></a>
+        </span>
+      </div>
+    </div>
+
+</div>
+
+            <script src="../../assets/js/jquery.min.js"></script><script src="../../assets/js/popper.min.js"></script><script src="../../assets/js/bootstrap.min.js"></script><script src="../../assets/js/baguetteBox.min.js"></script><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+</script><script src="../../assets/js/clipboard.min.js" type="text/javascript"></script><script src="../../assets/js/clipboard.js" type="text/javascript"></script>
+</body>
+</html>

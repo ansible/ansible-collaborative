@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html prefix="
+og: http://ogp.me/ns# article: http://ogp.me/ns/article#
+" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Matrix &amp; IRC | Size &amp; Stability | Ansible Collaborative</title>
+<link href="../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/baguetteBox.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/rst.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/code.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/theme.css" rel="stylesheet" type="text/css">
+<!-- Red Hat fonts --><link rel="stylesheet" href="https://static.redhat.com/libs/redhat/redhat-font/2.0.0/webfonts/red-hat-font.css">
+<!-- Font Awesome --><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+<!-- Fork Awesome --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css" integrity="sha256-XoaMnoYC5TH6/+ihMEnospgm0J1PM/nioxbOUdnM8HY=" crossorigin="anonymous">
+<!-- Sass compiled css  --><link rel="stylesheet" href="../../assets/css/main.css">
+<link rel="stylesheet" href="../../assets/css/redhat-footer.css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://ansible.com/blog/matrix-irc-size-stability/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Greg Sutcliffe">
+<link rel="prev" href="../bullhorn-30/" title="Bullhorn #30" type="text/html">
+<link rel="next" href="../bullhorn-31/" title="Bullhorn #31" type="text/html">
+<meta property="og:site_name" content="Ansible Collaborative">
+<meta property="og:title" content="Matrix &amp; IRC | Size &amp; Stability">
+<meta property="og:url" content="https://ansible.com/blog/matrix-irc-size-stability/">
+<meta property="og:description" content="Over the last few days since I posted my thoughts on
+Ansible &amp; Matrix, I been getting some really good
+questions and comments - thank you all!
+Two themes have come up that go well together for a data-">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2021-07-20T13:00:00Z">
+<meta property="article:tag" content="community">
+<meta property="article:tag" content="irc">
+<meta property="article:tag" content="matrix">
+<meta property="article:tag" content="strategy">
+</head>
+<body id="top">
+
+<div class="global-container" id="content" role="main">
+<!-- Start menubar -->
+<nav class="navbar navbar-expand-lg static-top mb-4 navbar-padding full-width-bg   navbar-dark   bg-pool   "><div class="masthead">
+    <!-- This keeps the margins nice -->
+    <a class="navbar-brand" href="../../">
+        <img src="../../images/ansible_logo-small-15.png" alt="Ansible community logo" id="logo" class="d-inline-block align-top" width="50" height="50"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon nav-toggle-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="bs-navbar">
+      <ul class="navbar-nav mr-auto"></ul>
+<ul class="navbar-nav navbar-right">
+<li class="nav-item dropdown">
+	        <a href="#" class="nav-link nav-link-color dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <i class=""></i> Documentation
+                </a>
+		<div class="dropdown-menu dropdown-menu-border">
+	    
+                    <a href="https://docs.ansible.com/" class="dropdown-item">
+		        <i class=""></i> Project documentation
+                    </a>
+                    <a href="https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/" class="dropdown-item">
+		        <i class=""></i> Ansible Automation Platform documentation
+                    </a>
+            </div>
+                 </li>
+<li class="nav-item">
+		     <a href="https://galaxy.ansible.com/" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Galaxy
+		     </a>
+		 </li>
+                 <li class="nav-item">
+		     <a href="https://forum.ansible.com/" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Forum
+		     </a>
+		 </li>
+            <li class="nav-item dropdown">
+	        <a href="#" class="nav-link nav-link-color dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <i class=""></i> Resources
+                </a>
+		<div class="dropdown-menu dropdown-menu-border">
+	    
+                    <a href="../../how-ansible-works/" class="dropdown-item">
+		        <i class=""></i> How Ansible works
+                    </a>
+                    <a href="../../ecosystem/" class="dropdown-item">
+		        <i class=""></i> Ansible ecosystem
+                    </a>
+                    <a href="../archive.html" class="dropdown-item">
+		        <i class=""></i> Blog
+                    </a>
+                    <a href="../../faq/" class="dropdown-item">
+		        <i class=""></i> Frequently asked questions
+                    </a>
+                    <a href="../../ansible-community-training/" class="dropdown-item">
+		        <i class=""></i> Ansible community training
+                    </a>
+                    <a href="../../contact-us/" class="dropdown-item">
+		        <i class=""></i> Contact us
+                    </a>
+            </div>
+                 </li>
+<li class="nav-item">
+		     <a href="https://www.redhat.com/en/technologies/management/ansible?sc_cid=7015Y000003szaKQAQ" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Ansible Automation Platform
+		     </a>
+		 </li>
+
+        
+      </ul>
+</div>
+    <!-- /.navbar-collapse -->
+  </div>
+  <!-- /.container -->
+</nav><!-- End default Menubar --><div class="body-content center-band">
+        <!--Body content-->
+        
+  <article class="post-text h-entry hentry postpage ansible-content" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Matrix &amp; IRC | Size &amp; Stability</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard p-author h-card"><span class="byline-name fn p-name" itemprop="author">
+                    <a class="u-url" href="../../authors/greg-sutcliffe/">Greg Sutcliffe</a>
+            </span></p>
+            <p class="dateline">
+            <a href="." rel="bookmark">
+            <time class="published dt-published" datetime="2021-07-20T13:00:00Z" itemprop="datePublished" title="2021-07-20 13:00">2021-07-20 13:00</time></a>
+            </p>
+                    <p class="sourceline"><a href="index.md" class="sourcelink">Source</a></p>
+
+        </div>
+        
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+<p>Over the last few days since I posted my thoughts on
+<a href="../ansible-and-matrix">Ansible &amp; Matrix</a>, I been getting some really good
+questions and comments - thank you all!</p>
+<p>Two themes have come up that go well together for a data-laden blog post, and
+they are:</p>
+<ol>
+<li>How do we know there are users wanting to use Matrix?</li>
+<li>Isn't the bridge to IRC frequently broken?</li>
+</ol>
+<p>These are solid questions - we want to know we're making the right choice, both
+for the future of the community, and for the people who wish to remain on IRC.
+But how can we go about answering them? Gathering data on these things <em>isn't</em>
+easy, but in this post I'm going to do my best - if you know of more / better
+data sources, I'd love to <a href="https://matrix.to/#/@gwmngilfen:ansible.im/">hear about
+it!</a></p>
+<h3>Size of user-base</h3>
+<p>OK, for this we have some decent data sources. Let's tackle IRC first. The best
+data source I know of is https://netsplit.de/networks/top10.php which gives us
+an idea of the change in users over time. Here's a sample:</p>
+<p><img alt="Netsplit.de 2021" src="../../images/posts/archive/2021-08-20-matrix-irc-size-stability/netsplitde2021.png"></p>
+<p>Sadly the graphs are premade images/posts, so we dont have the raw data, but roughly
+I'd say that in July 2021, those ten add up to ~180k users (Libera itself is at
+~50-55k). But Netsplit has historical data:</p>
+<p><img alt="Netsplit.de 2016" src="../../images/posts/archive/2021-08-20-matrix-irc-size-stability/netsplitde2016.png"></p>
+<p>That's 2016, and here it adds up to ~250k with Freenode at 90k. Let's do one
+more:</p>
+<p><img alt="Netsplit.de 2011" src="../../images/posts/archive/2021-08-20-matrix-irc-size-stability/netsplitde2011.png"></p>
+<p>Going back another 5 years to 2011, and the numbers are even higher - 2021 is
+just a fraction of what 2011 was. I spent some time going through other years,
+and it's fairly easy to convince myself that IRC is declining. That's one data
+point, but what about the others?</p>
+<p>Well, the Ansible community already vetoed the use of proprietary options (and
+rightly so, in my view). But for completeness, lets take a quick look. There's
+a lot of "corporations banging their own drum" in this space, but I did find
+this graph:</p>
+<p><img alt="https://slack.com/blog/news/slack-has-10-million-daily-active-users" src="../../images/posts/archive/2021-08-20-matrix-irc-size-stability/slack.png"></p>
+<p>I'm struggling to get anything newer, but 10 million in 2019 is certainly
+higher now. Discord claims to be 150 million (https://discord.com/company).
+That's nice, but both require a separate server and login for each community,
+and anyway the community said no. Let's go back to FOSS...</p>
+<p>I'm struggling to find any data at all on the likes of Rocket.Chat, Mattermost,
+etc, and Gitter has been merged into Matrix anyway. The fact that many of the
+FOSS solutions are self-hosted make it hard to get accurate data in any case.</p>
+<p>What about Matrix? That also turns out to be a surprisingly tricky thing to
+answer, but for <em>very</em> different reasons. Because of it's distributed nature,
+you don't have a single source of data to query. <a href="https://speakerdeck.com/mbbroberg/the-next-generation-of-open-source-contributors-are-not-on-irc-v2?slide=8">This slide from Matt
+Broberg</a>
+puts Element at 18 million (and Slack at 44 million, phew), and while I don't
+know where Matt sourced the numbers, they seem pretty high to me.</p>
+<p><img alt="Matt Broberg" src="../../images/posts/archive/2021-08-20-matrix-irc-size-stability/broberg.png"></p>
+<p>Maybe we can try to get our own value. There are (to my knowledge) two
+"traveller bots" in Matrix, who's job is to join any public room they see
+mentioned, to gather anonymous stats. One is "#@voyager:t2bot.io" which has
+been running for around 3 years, and has seen over 3 million unique Matrix IDs;
+the other is "@server_stats:nordgedanken.dev" which is much newer, but has
+already seen around 0.5 million IDs in it's life time.</p>
+<p>Matrix accounts (and usage) gets weirder still, though. It is <em>highly</em> likely
+that many of these unique IDs seen by the traveller bots are in fact bridged
+users from other networks. Now, you might reasonably argue that this means the
+native users of <em>Matrix</em> are lower, and you'd be right. <strong>However, I don't
+think it matters</strong>, because what we really care about is "addressable IDs" -
+that is, who I can talk to. The power that Matrix has to build communities
+<em>across networks</em> has value, and we should allow for it in our stats.</p>
+<p>Even if you disagree with me, though, let's do a pessimistic comparison. Start
+with 50k for Libera, and 500k (the Nordgedanken bot value) for Matrix, and then
+subtract Libera because of bridging (thus 450k), then Matrix is still 9x
+bigger. If you agree with me, and we pick a value between the two bots (say, 1
+million for simplicity), then Matrix is 20x bigger than Libera, and 3x bigger
+than IRC as a whole.</p>
+<h4>Active users</h4>
+<p>As a footnote to this, I want to address one more thing. So far we've looked at
+any user ID in a room/channel, which obviously includes idle users. What about
+active users?</p>
+<p>I went and got my logs for <em>the last month</em> (19th June -&gt; 19th July) in two IRC
+channels, #ansible and #ansible-community (happily, I can use Matrix to do so
+:P). I'll also do that for the entirely unoffical Matrix room
+"ansible:matrix.org" (which by the way was created in 20<strong>16</strong>). Here's what we
+see:</p>
+<table>
+<thead><tr>
+<th>Room</th>
+<th>Total users (today)</th>
+<th>Messages</th>
+<th>Active users</th>
+<th>Frequent users (&gt; 10 lines)</th>
+<th>Msgs per active user</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>#ansible</td>
+<td>686</td>
+<td>5130</td>
+<td>273</td>
+<td>107</td>
+<td>18.8</td>
+</tr>
+<tr>
+<td>#community</td>
+<td>137</td>
+<td>3036</td>
+<td>52</td>
+<td>33</td>
+<td>58.4</td>
+</tr>
+<tr>
+<td>ansible:matrix.org</td>
+<td>313</td>
+<td>216</td>
+<td>39</td>
+<td>1</td>
+<td>5.5</td>
+</tr>
+</tbody>
+</table>
+<p>I take away few things here. Firstly, as we know from so many other places,
+we're very top-heavy - just a few folk are responsible for much of the chat.</p>
+<p>Second, the Matrix room is interesting - it isn't as active, sure, but we don't
+promote that <em>at all, anywhere</em>. It's entirely organic, and yet it has a
+sizable number of members and a not trivial number of messages for a single
+month (that's still ~7 messages a day).</p>
+<p>Finally though, think bigger. We have 42k members on Reddit, 59k followers on
+Twitter, the "ansible-project" mailing list has 13k subscribers. We have just a
+few hundred <em>actually talking</em>. That's ... concerning. It's almost a rounding
+error (273/59k == 0.005), you could argue we have 0 people discussing Ansible.
+If we truly want to make the community self-supporting, we <em>have</em> to change
+that.</p>
+<h3>Stability</h3>
+<p>On to the second half! Let's talk about stability...</p>
+<p>One of Matrix's key strengths is <a href="https://matrix.org/bridges"><em>bridges</em></a> - the
+ability to chat with users on other platforms. That's a key part of why I'm
+proposing Matrix for the Ansible community, because it allows us to <em>not</em>
+hard-drop IRC. However, that relies on the stability of the Libera bridges.
+This is something I hear a lot about - that the bridge is unstable and it makes
+the experience for both IRC and Matrix a problem.</p>
+<p>That's not unfair - the result of bridge issues is that the community is
+<em>split</em>. Messages cannot travel between the networks, and may well be lost
+forever for recipients on the other side. That's unfortunate, but I will now
+argue that this happens <em>anyway</em> on IRC - via <em>netsplits</em>.</p>
+<p>From a user-experience view, netsplits, aren't really any different to a bridge
+problem. Either way, a chunk of the community (usually about 5-15%)  is
+out-of-contact with the rest, and will not receive messages sent during that
+time. So, how common is that?</p>
+<p>I asked my colleagues with long IRC logs to grep for netsplits, and here's what
+we got:</p>
+<p><img alt="Disconnect stats" src="../../images/posts/archive/2021-08-20-matrix-irc-size-stability/graphs.png"></p>
+<p>(I've added in a simple guess for total-affected-users here, picking 7% of the
+room membership (today) as the number of affected users and just multiplying it
+up. It's <em>entirely</em> made up, but illustrates what the impact of this many
+splits <em>might</em> be.)</p>
+<p>So that's roughly 2 netsplits <em>a week</em> in #ansible. Also interesting is that
+the netsplits were getting more frequent over time - clearly there's a ceiling
+to that, one shouldn't forecast that fit <em>too</em> far, but it's a concerning trend
+nonetheless.</p>
+<p>As for the IRC&lt;-&gt;Matrix bridge, that's a lot harder.  Element told me they
+don't log bridge issues, and the bridge is largely silent when there is a
+problem. However, one <em>can</em> look for times when all the matrix users drop from
+the IRC side - obviously this won't catch issues where the bridge is <em>slow</em>
+rather than <em>dead</em>, but it's <em>something</em>. And lo, the reverse is true, the
+bridge is getting <em>more</em> stable.</p>
+<h3>Conclusion</h3>
+<p>We've looked at 3 key things here - overall size, active users, and stability.
+While much of the data is vague, each part reinforces the story - taken as a
+whole, I think it's a fair statement that Matrix is already larger than IRC,
+while IRC is declining, and while bridge issues are rough, they're decreasing
+with time.</p>
+<p>We must also remember that the bridge tries to recover (and Matrix itself is
+eventually-consistent), so messages frequently arrive later on, rather than not
+at all as with netsplits (although <em>some</em> bridge issues do cause drops, this is
+not a 100% guarantee).</p>
+<p>My first post on Matrix laid out the "what" and "how" of my thoughts on Ansible
+- this post adds some strength to the "why". I still think it's the right
+choice for the future of our community - hopefully I'm convincing you too.</p>
+</div>
+    <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">
+<li><a class="tag p-category" href="../../categories/community/" rel="tag">community</a></li>
+            <li><a class="tag p-category" href="../../categories/irc/" rel="tag">irc</a></li>
+            <li><a class="tag p-category" href="../../categories/matrix/" rel="tag">matrix</a></li>
+            <li><a class="tag p-category" href="../../categories/strategy/" rel="tag">strategy</a></li>
+        </ul>
+<ul class="pager hidden-print">
+<li class="previous">
+                <a href="../bullhorn-30/" rel="prev" title="Bullhorn #30">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../bullhorn-31/" rel="next" title="Bullhorn #31">Next post</a>
+            </li>
+        </ul></nav></aside></article><!--End of body content-->
+</div>
+        <div class="content-slim redhat-footer">
+      <div class="footer-left">
+        <ul class="footer-left-links">
+<li>
+            <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-SA 4.0</a>
+          </li>
+          <li>
+            <a href="https://www.redhat.com/en/about/privacy-policy" target="_blank">Privacy policy</a>
+          </li>
+          <li>
+            <a href="https://docs.ansible.com/ansible/latest/community/code_of_conduct.html" target="_blank">Code of conduct</a>
+          </li>
+        </ul>
+</div>
+      <div class="footer-right">
+        <span class="redhat">Powered by</span>
+        <span class="redhat-logo">
+          <a href="https://www.redhat.com/en/technologies/management/ansible" target="_blank">
+            <img src="../../assets/images/redhat_reversed.svg" alt="Red Hat logo." width="96" height="28"></a>
+        </span>
+      </div>
+    </div>
+
+</div>
+
+            <script src="../../assets/js/jquery.min.js"></script><script src="../../assets/js/popper.min.js"></script><script src="../../assets/js/bootstrap.min.js"></script><script src="../../assets/js/baguetteBox.min.js"></script><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+</script><script src="../../assets/js/clipboard.min.js" type="text/javascript"></script><script src="../../assets/js/clipboard.js" type="text/javascript"></script>
+</body>
+</html>

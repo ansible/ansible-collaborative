@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Ansible Collaborative (Posts by The Getting Started Team)</title><link>https://ansible.com/</link><description></description><atom:link href="https://ansible.com/authors/the-getting-started-team.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2024 &lt;a href="mailto:website@ansible.community"&gt;Ansible Collaborative, et al&lt;/a&gt; </copyright><lastBuildDate>Mon, 18 Mar 2024 19:47:35 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>An Introduction to Windows Security with Ansible</title><link>https://ansible.com/blog/an-introduction-to-windows-security-with-ansible/</link><dc:creator>The Getting Started Team</dc:creator><description>&lt;h2&gt;An Introduction to Windows Security with Ansible&lt;/h2&gt;
+&lt;p&gt;Welcome to another installment of our Windows-centric Getting Started
+Series! In the prior posts we talked about
+connecting to Windows machines, gave a brief introduction on using
+Ansible with Active Directory, and discussed package management options
+on Windows with Ansible. In this post we'll talk a little about applying
+security methodologies and practices in relation to our original topics.&lt;/p&gt;
+&lt;h3&gt;The Triad&lt;/h3&gt;
+&lt;p&gt;In order to discuss security issues in relation to Ansible and Windows,
+we'll be applying concepts from the popular CIA Triad: Confidentiality,
+Integrity, and Availability.&lt;/p&gt;
+&lt;p&gt;Confidentiality is pretty self-evident --- protecting confidentiality
+helps restrict private data to only authorized users and helps to
+prevent non-authorized ones from seeing it. The way this is accomplished
+involves several techniques such as authentication, authorization, and
+encryption. When working with Windows, this means making sure the hosts
+know all of the necessary identities, that each user is appropriately
+verified, and that the data is protected (by, for example, encryption)
+so that it can only be accessed by authorized parties.&lt;/p&gt;
+&lt;p&gt;Integrity is about making sure that the data is not tampered with or
+damaged so that it is unusable. When you're sending data across a
+network you want to make sure that it arrives in the same condition as
+it was sent out. This will apply to the tasks in an Ansible Playbook,
+any files that may be transferred, or packages that are installed (and
+more!).&lt;/p&gt;
+&lt;p&gt;Availability is mainly about making data available to those authorized
+users when they need to access it. Think about things like redundancy,
+resiliency, high-availability, or clustering as ways to help ensure
+availability of systems and data.&lt;/p&gt;
+&lt;h4&gt;Confidentiality&lt;/h4&gt;
+&lt;p&gt;As Bianca mentioned in the first installment of this series, Ansible
+uses WinRM and sends user/password with variables (or, in the case of
+Ansible Tower, by using credentials). In the example below, which shows
+an inventory file that includes variables as &lt;code&gt;[win:vars]&lt;/code&gt;, the
+certificate is ignored:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="k"&gt;[win:vars]&lt;/span&gt;
+&lt;span class="na"&gt;ansible_user&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;vagrant&lt;/span&gt;
+&lt;span class="na"&gt;ansible_connection&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;winrm&lt;/span&gt;
+&lt;span class="na"&gt;ansible_winrm_server_cert_validation&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;ignore&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;In an Active Directory environment the domain-joined hosts won't
+require ignoring certificates that validate if your control node has
+been set to trust the Active Directory CS.&lt;/p&gt;
+&lt;h4&gt;Integrity&lt;/h4&gt;
+&lt;p&gt;Active Directory, discussed by John in the second installment, adds more
+verification to credentials and authority for validating certificates on
+domains in its scope. The directory services provide added strength to
+confidentiality by being the authoritative credential store. Joining a
+host to the domain establishes its trust, so as long as a user
+requesting resources is valid, then a domain-joined host will have
+established integrity.&lt;/p&gt;
+&lt;p&gt;Ansible is able to add and manage users
+(&lt;a href="https://docs.ansible.com/ansible/latest/modules/win_domain_user_module.html#win-domain-user-module"&gt;win_domain_user&lt;/a&gt;),
+groups
+(&lt;a href="https://docs.ansible.com/ansible/latest/modules/win_domain_group_module.html#win-domain-group-module"&gt;win_domain_group&lt;/a&gt;),
+or hosts
+(&lt;a href="https://docs.ansible.com/ansible/latest/modules/win_domain_membership_module.html#win-domain-membership-module"&gt;win_domain_membership&lt;/a&gt;)
+securely and with valid domain credentials. See the example below for
+how these tasks can be done with the use of a playbook:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;Join to domain&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;win_domain_membership&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;dns_domain_name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;tycho.local&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;hostname&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;mydomainclient&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;domain_admin_user&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"{{&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;win_domain_admin_user&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;}}"&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;domain_admin_password&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"{{&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;win_domain_admin_password&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;}}"&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;domain_ou_path&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;"OU=Windows,OU=Servers,DC=tycho,DC=local"&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;state&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;domain&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;register&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;domain_state&lt;/span&gt;
+
+&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;set group with delete protection enabled&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;win_domain_group&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;Users&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;scope&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;domainlocal&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;category&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;security&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;ignore_protection&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;no&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h4&gt;Availability&lt;/h4&gt;
+&lt;p&gt;In the a recent Windows-related
+post, which was about package
+management, Jake gave a few examples that used the Ansible Modules
+&lt;a href="https://docs.ansible.com/ansible/latest/modules/win_package_module.html#win-package-module"&gt;win_package&lt;/a&gt;
+and
+&lt;a href="https://docs.ansible.com/ansible/latest/modules/win_chocolatey_module.html#win-chocolatey-module"&gt;win_chocolatey&lt;/a&gt;.
+This is related to the third part of that security triad because the
+data model's physical and transport layers get a lot of attention in
+terms of obtainability, but fast and efficient software/patch management
+is also a part of maintaining this availability. The less time eaten up
+through rolling out updates reduces downtime. Shaving minutes or even
+seconds in a rollout can pay off with more consistent service delivery.&lt;/p&gt;
+&lt;p&gt;An important availability-related security function which can be
+executed using an Ansible module is related to updates. As the name
+suggests,
+&lt;a href="https://docs.ansible.com/ansible/latest/modules/win_updates_module.html#win-updates-module"&gt;win_updates&lt;/a&gt;
+searches, downloads, and installs updates on all Windows hosts
+simultaneously by automating the Windows update client. Let's explore
+this module further.&lt;/p&gt;
+&lt;p&gt;The example below is taken from the
+&lt;a href="https://raw.githubusercontent.com/ansible/ansible-lockdown/master/meltdown-spectre-windows.yml"&gt;example&lt;/a&gt;
+that's part of a collection of &lt;a href="https://github.com/ansible/ansible-lockdown"&gt;Ansible
+Roles&lt;/a&gt; related to security
+automation. Here you can see the win_updates module in action:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;tasks:
+ &lt;span class="k"&gt;-&lt;/span&gt; name: Install security updates
+   win_updates:
+     category_names:
+       &lt;span class="k"&gt;-&lt;/span&gt; SecurityUpdates
+     Notify: reboot windows system
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Another example shows how you can use this module within a playbook for
+patching Windows nodes, along with the win_reboot module which is used
+for--- you guessed it!--- automating the restarting of Windows machines:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;– name: Install missing updates
+  win_updates:
+    Category_names:
+       – ServicePacks
+       – UpdateRollups
+       – CriticalUpdates
+    Reboot: yes
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h4&gt;Conclusion&lt;/h4&gt;
+&lt;p&gt;Security is a complex and ever-evolving field that's dependent on each
+organization's particular environment, vulnerabilities, and specific
+needs. It's extremely important to read the above as a guideline and not
+a checklist; no amount of implementation is going to have any
+long-lasting effect if continual improvement isn't implemented.&lt;/p&gt;
+&lt;p&gt;We hope you found this information helpful, and that this five-part
+series has provided you with the tools for automating your Windows hosts
+with confidence by using Ansible to do the work for you!&lt;/p&gt;</description><guid>https://ansible.com/blog/an-introduction-to-windows-security-with-ansible/</guid><pubDate>Thu, 21 Jun 2018 00:00:00 GMT</pubDate></item></channel></rss>

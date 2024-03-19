@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html prefix="
+og: http://ogp.me/ns# article: http://ogp.me/ns/article#
+" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="In this blog, you will find instructions on how to add proxy support within Red Hat Ansible Tower.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Adding Proxy Support within Red Hat Ansible Tower | Ansible Collaborative</title>
+<link href="../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/baguetteBox.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/rst.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/code.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/theme.css" rel="stylesheet" type="text/css">
+<!-- Red Hat fonts --><link rel="stylesheet" href="https://static.redhat.com/libs/redhat/redhat-font/2.0.0/webfonts/red-hat-font.css">
+<!-- Font Awesome --><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+<!-- Fork Awesome --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css" integrity="sha256-XoaMnoYC5TH6/+ihMEnospgm0J1PM/nioxbOUdnM8HY=" crossorigin="anonymous">
+<!-- Sass compiled css  --><link rel="stylesheet" href="../../assets/css/main.css">
+<link rel="stylesheet" href="../../assets/css/redhat-footer.css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://ansible.com/blog/getting-started-adding-proxy-support/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Jake Jackson">
+<link rel="next" href="../getting-started-ldap-authentication-in-ansible-tower/" title="Getting Started with LDAP Authentication in Ansible Tower" type="text/html">
+<meta property="og:site_name" content="Ansible Collaborative">
+<meta property="og:title" content="Adding Proxy Support within Red Hat Ansible Tower">
+<meta property="og:url" content="https://ansible.com/blog/getting-started-adding-proxy-support/">
+<meta property="og:description" content="In this blog, you will find instructions on how to add proxy support within Red Hat Ansible Tower.">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2018-01-22T00:00:00Z">
+</head>
+<body id="top">
+
+<div class="global-container" id="content" role="main">
+<!-- Start menubar -->
+<nav class="navbar navbar-expand-lg static-top mb-4 navbar-padding full-width-bg   navbar-dark   bg-pool   "><div class="masthead">
+    <!-- This keeps the margins nice -->
+    <a class="navbar-brand" href="../../">
+        <img src="../../images/ansible_logo-small-15.png" alt="Ansible community logo" id="logo" class="d-inline-block align-top" width="50" height="50"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon nav-toggle-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="bs-navbar">
+      <ul class="navbar-nav mr-auto"></ul>
+<ul class="navbar-nav navbar-right">
+<li class="nav-item dropdown">
+	        <a href="#" class="nav-link nav-link-color dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <i class=""></i> Documentation
+                </a>
+		<div class="dropdown-menu dropdown-menu-border">
+	    
+                    <a href="https://docs.ansible.com/" class="dropdown-item">
+		        <i class=""></i> Project documentation
+                    </a>
+                    <a href="https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/" class="dropdown-item">
+		        <i class=""></i> Ansible Automation Platform documentation
+                    </a>
+            </div>
+                 </li>
+<li class="nav-item">
+		     <a href="https://galaxy.ansible.com/" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Galaxy
+		     </a>
+		 </li>
+                 <li class="nav-item">
+		     <a href="https://forum.ansible.com/" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Forum
+		     </a>
+		 </li>
+            <li class="nav-item dropdown">
+	        <a href="#" class="nav-link nav-link-color dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <i class=""></i> Resources
+                </a>
+		<div class="dropdown-menu dropdown-menu-border">
+	    
+                    <a href="../../how-ansible-works/" class="dropdown-item">
+		        <i class=""></i> How Ansible works
+                    </a>
+                    <a href="../../ecosystem/" class="dropdown-item">
+		        <i class=""></i> Ansible ecosystem
+                    </a>
+                    <a href="../archive.html" class="dropdown-item">
+		        <i class=""></i> Blog
+                    </a>
+                    <a href="../../faq/" class="dropdown-item">
+		        <i class=""></i> Frequently asked questions
+                    </a>
+                    <a href="../../ansible-community-training/" class="dropdown-item">
+		        <i class=""></i> Ansible community training
+                    </a>
+                    <a href="../../contact-us/" class="dropdown-item">
+		        <i class=""></i> Contact us
+                    </a>
+            </div>
+                 </li>
+<li class="nav-item">
+		     <a href="https://www.redhat.com/en/technologies/management/ansible?sc_cid=7015Y000003szaKQAQ" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Ansible Automation Platform
+		     </a>
+		 </li>
+
+        
+      </ul>
+</div>
+    <!-- /.navbar-collapse -->
+  </div>
+  <!-- /.container -->
+</nav><!-- End default Menubar --><div class="body-content center-band">
+        <!--Body content-->
+        
+  <article class="post-text h-entry hentry postpage ansible-content" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Adding Proxy Support within Red Hat Ansible Tower</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard p-author h-card"><span class="byline-name fn p-name" itemprop="author">
+                    <a class="u-url" href="../../authors/jake-jackson/">Jake Jackson</a>
+            </span></p>
+            <p class="dateline">
+            <a href="." rel="bookmark">
+            <time class="published dt-published" datetime="2018-01-22T00:00:00Z" itemprop="datePublished" title="2018-01-22 00:00">2018-01-22 00:00</time></a>
+            </p>
+                    <p class="sourceline"><a href="index.md" class="sourcelink">Source</a></p>
+
+        </div>
+        
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+<h2>Adding Proxy Support within Red Hat Ansible Tower</h2>
+<h3>Getting Started with Adding Proxy Support</h3>
+<p>There are many reasons why proxies are implemented into an environment.
+Some can be put in place for security, others as load balancers for your
+systems. No matter the use, if you have a proxy in place, Red Hat
+Ansible Tower may need to utilize it. For a more in-depth look at what
+we will be doing in this post, you can visit our docs specifically on
+Proxy Support within Ansible Tower
+<a href="http://docs.ansible.com/ansible-tower/3.2.1/html/administration/proxy-support.html">here</a>.</p>
+<h3>Adding a Load Balancer (Reverse Proxy)</h3>
+<p>In some instances, you might have Ansible Tower behind a load balancer
+and need that information added to your instance. Sessions in Ansible
+Tower associate an IP address upon creation, and Ansible Tower's policy
+requires that any use of the session match the original IP address.</p>
+<p>To allow for support of a proxy, you will have to make a few changes to
+your Ansible Tower configuration. Previously, this would have been done
+in a settings.py file found on your Ansible Tower host, but as of 3.2
+you can now make these changes in the UI. To make these edits, you must
+be an admin on the instance and navigate to Settings, and then to
+Ansible Tower configuration.</p>
+<p>Once you are in the Ansible Tower Configuration, select the System tab
+up at the top next to Jobs. Once there, we are going to be making an
+edit to the Remote Host Headers box. There will already be some text in
+there that is set after the installation. By default REMOTE_HOST_HEADERS
+is set to <code>['REMOTE_ADDR', 'REMOTE_HOST']</code>.</p>
+<p>The edit you are going to make should reflect the following line with
+the relevant information from your organization\'s environment.</p>
+<div class="code"><pre class="code literal-block">REMOTE_HOST_HEADERS = ['HTTP_X_FORWARDED_FOR', 'REMOTE_ADDR', 'REMOTE_HOST']
+</pre></div>
+
+<p>Once you have entered the relevant information, click the green Save
+button in the bottom right corner and you'll be all set.</p>
+<h3>Outbound Proxy</h3>
+<p>Setting up Ansible Tower to utilize an outbound proxy is quick and easy.
+One of the things that we see quite often when an outbound proxy needs
+to be in place is a project sync failing (if you aren't using locally
+stored playbooks). This error appears when Ansible Tower cannot resolve
+the source control management (SCM) domain that you are using to manage
+your versioned playbooks, such as github.com. To fix this issue, you
+will need to make some configuration changes to Ansible Tower. To do
+this, navigate to the admin settings (the gear in the top right hand
+corner) and from there, select Configure Ansible Tower.</p>
+<p>Navigate to the Jobs tab that can be found across the top of the page.
+Once you are inside the Jobs tab, scroll down until you find the extra
+environment variables.</p>
+<p>You will need to enter three line entries to add your proxy to your
+instance. Please note, you will need to know the server URL to make
+these changes worth your while.</p>
+<div class="code"><pre class="code literal-block">AWX_TASK_ENV['http_proxy'] = 'http://url:port/'
+
+AWX_TASK_ENV['https_proxy'] = 'http://url:port/'
+
+AWX_TASK_ENV['no_proxy'] = '127.0.0.1,localhost'
+</pre></div>
+
+<p>Once the information has been entered, select the green Save button in
+the bottom right hand corner.</p>
+<p>Please note, if you are upgrading from a prior release, you may need to
+remove prior settings from configuration files before using the Ansible
+Tower interface to configure these settings.</p>
+<p>Now you can use Ansible Tower's power to automate while allowing it to
+utilize your proxy server, ELB or whichever form of filtering you have
+in place for your environment. It is not a hard process to implement,
+but does require some prior knowledge about your particular infrastructure.</p>
+</div>
+    <aside class="postpromonav"><nav><ul class="pager hidden-print">
+<li class="next">
+                <a href="../getting-started-ldap-authentication-in-ansible-tower/" rel="next" title="Getting Started with LDAP Authentication in Ansible Tower">Next post</a>
+            </li>
+        </ul></nav></aside></article><!--End of body content-->
+</div>
+        <div class="content-slim redhat-footer">
+      <div class="footer-left">
+        <ul class="footer-left-links">
+<li>
+            <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-SA 4.0</a>
+          </li>
+          <li>
+            <a href="https://www.redhat.com/en/about/privacy-policy" target="_blank">Privacy policy</a>
+          </li>
+          <li>
+            <a href="https://docs.ansible.com/ansible/latest/community/code_of_conduct.html" target="_blank">Code of conduct</a>
+          </li>
+        </ul>
+</div>
+      <div class="footer-right">
+        <span class="redhat">Powered by</span>
+        <span class="redhat-logo">
+          <a href="https://www.redhat.com/en/technologies/management/ansible" target="_blank">
+            <img src="../../assets/images/redhat_reversed.svg" alt="Red Hat logo." width="96" height="28"></a>
+        </span>
+      </div>
+    </div>
+
+</div>
+
+            <script src="../../assets/js/jquery.min.js"></script><script src="../../assets/js/popper.min.js"></script><script src="../../assets/js/bootstrap.min.js"></script><script src="../../assets/js/baguetteBox.min.js"></script><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+</script><script src="../../assets/js/clipboard.min.js" type="text/javascript"></script><script src="../../assets/js/clipboard.js" type="text/javascript"></script>
+</body>
+</html>

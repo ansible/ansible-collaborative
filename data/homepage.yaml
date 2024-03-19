@@ -1,0 +1,181 @@
+banner:
+  title: Ansible Collaborative
+  intro: A gathering space to build automation skills and success
+  pip_install: pip install ansible
+  install_tooltip: Copy the pip command to install the latest version of Ansible.
+  copy_success_message: Copied!
+  redhat_logo_alt: Red Hat logo
+  welcome_alt: Welcome to the Ansible® Collaborative, a destination for Ansible users, customers, partners, and vendors to learn and share automation content.
+  join_forum: Join the Ansible forum
+  forum_url: https://forum.ansible.com
+  platform_learn: Learn about Red Hat Ansible Automation Platform
+ansible:
+  join: How Ansible works
+  join_url: link://slug/how-ansible-works
+  title: What is Ansible?
+  intro: No matter your role, or your automation goals, Ansible can help you connect teams and deliver efficiencies.
+  body1: Ansible is an open source IT automation engine that automates provisioning, configuration management, application deployment, orchestration, and many other IT processes. It is free to use, and the project benefits from the experience and intelligence of its thousands of contributors.
+  body2: <a href="https://www.redhat.com/en/technologies/management/ansible?sc_cid=7015Y000003szaeQAA">Red Hat® Ansible Automation Platform</a> combines more than a dozen upstream projects into a unified, security-hardened enterprise platform for mission-critical automation. It builds on the foundation of the open source project to create an end-to-end automation experience for cross-functional teams.
+learn:
+  title: Learn Ansible skills
+  learn_link_text: Explore Red Hat Ansible Automation Platform learning materials and tools
+  learn_url: https://www.redhat.com/en/technologies/management/ansible/learn?sc_cid=7015Y000003szaeQAA
+  skills:
+    documentation:
+      heading: Documentation
+      link1: Introduction to Ansible
+      link1_url: https://docs.ansible.com/ansible/latest/getting_started/introduction.html
+      link2: Start automating with Ansible
+      link2_url: https://docs.ansible.com/ansible/latest/getting_started/get_started_ansible.html
+      link3: Create a playbook
+      link3_url: https://docs.ansible.com/ansible/latest/getting_started/get_started_playbook.html
+      link4: Explore Ansible concepts
+      link4_url: https://docs.ansible.com/ansible/latest/getting_started/basic_concepts.html
+      link5: Build an inventory
+      link5_url: https://docs.ansible.com/ansible/latest/getting_started/get_started_inventory.html
+    interactive_labs:
+      heading: Interactive labs
+      link1: Create an Ansible collection
+      link1_url: https://play.instruqt.com/embedv2/redhat/tracks/ansible-community-creating-your-own-collection?token=em_zcnbza2ex66zqptw
+      link2: Test a pull request locally
+      link2_url: https://play.instruqt.com/embedv2/redhat/tracks/ansible-community-testing-pull-request-locally?token=em_6ke967cktu5m9cww
+      link3: Develop an Ansible module
+      link3_url: https://play.instruqt.com/embedv2/redhat/tracks/ansible-community-developing-ansible-module?token=em_W1mnN4dZouYAhFBI
+      link4: Fix bugs in Ansible code
+      link4_url: https://play.instruqt.com/embedv2/redhat/tracks/community-fixing-a-bug?token=em_l4flalsa12evd97a
+      link5: Add integration tests
+      link5_url: https://play.instruqt.com/embedv2/redhat/tracks/adding-integration-tests-to-ansible-collections?token=em_6uMp_ZmBv4Fuug-z
+collection:
+  title: Ansible collections
+  intro: With Ansible Galaxy, you can jump-start your automation with pre-packaged roles and collections. Use this content in Ansible Playbooks to automate your work faster and improve productivity.
+  link_title: Explore all collections on Ansible Galaxy
+  url: https://galaxy.ansible.com/ui/collections/
+  main_heading: Featured collections
+  collections:
+    collection1:
+      heading: middleware_automation
+      description: Build, deploy, and manage multi-cloud application infrastructure at scale by automating Kafka, WildFly, Infinispan, Keyclock and more with the Ansible Middleware Collections.
+      link: https://galaxy.ansible.com/ui/namespaces/middleware_automation/
+    collection2:
+      heading: kubernetes.core
+      description: Automate the provisioning and maintenance of Kubernetes and OpenShift clusters as well as the management of applications with the kubernetes.core Collection.
+      link: https://galaxy.ansible.com/ui/repo/published/kubernetes/core/
+    collection3:
+      heading: community.vmware
+      description: Manage all your VMWare infrastructure, including vSphere, the Datacenters, Clusters and your Virtual Machines with the Ansible community.vmware Collection.
+      link: https://galaxy.ansible.com/ui/repo/published/community/vmware/
+adoption:
+  title: Automation adoption
+  intro: Expanding automation in your organization requires expertise in both technology and culture. Red Hat excels in creating and supporting successful communities, and we can help you build yours.
+  url: 
+community:
+  section_icon: /assets/images/community-cyan.svg
+  icon_alt: Ansible community icon
+  title: Community
+  ansible_community: Join us and get involved with our amazing community!
+  socials:
+    title: Hang out with us
+    links:
+      forum:
+        url: https://forum.ansible.com/
+        icon: fab fa-discourse
+        text: Forum
+      matrix:
+        url: https://matrix.to/#/#social:ansible.com
+        icon: fa fa-matrix-org
+        text: Matrix
+      mastodon:
+        url: https://fosstodon.org/@ansible
+        icon: fa fa-mastodon
+        text: Mastodon
+      youtube:
+        url: https://www.youtube.com/ansiblecommunity
+        icon: fab fa-youtube
+        text: YouTube
+      linkedin:
+        url: https://www.linkedin.com/groups/4648083/
+        icon: fab fa-linkedin
+        text: LinkedIn
+events:
+  section_icon: /assets/images/calendar-cyan.svg
+  icon_alt: Ansible community event icon
+  title: Events
+  intro: Share and learn about automation at Ansible events, in person or online.
+  url: https://forum.ansible.com/c/events/
+  view_calendar: View more
+  event_descriptions:
+    # This section contains various event descriptions.
+    # Copy and paste these descriptions as needed when updating event details.
+    # Changing below does not change text on the homepage. The value of the "events_list.<event>.description" key is used on the homepage.
+    community_day: Get together with a broad community of users, contributors, entusiasts, IT professionals and more to learn and share about Ansible automation.
+    contributor_summit: Interact with the Ansible contributor community and Ansible at Red Hat engineers to improve collaboration and possibly do some hacking.
+  events_list:
+    event_one:
+      name: Configuration Management Camp
+      # If the event is community day or contributor summit, you can copy the description from event_descriptions.
+      # Important: To prevent reflow and text wrapping issues on the homepage descriptions should be approximately 100 characters long.
+      description: Configuration Management Camp is the event for technologists interested in open source infrastructure automation and related topics.
+      date: February 5 to 7, 2024
+      location: Ghent, Belgium
+      image: cfgmgmtcamp-logo.png
+      alt: CfgMgmtCamp logo
+      link: https://forum.ansible.com/t/config-management-camp/91
+    event_two:
+      name: Ansible Minneapolis Meetup
+      # If the event is community day or contributor summit, you can copy the description from event_descriptions.
+      # Important: To prevent reflow and text wrapping issues on the homepage descriptions should be approximately 100 characters long.
+      description: Join a group of systems engineers and DevOps folks who want to Ansible all the things. Learn more and share your Ansible knowledge.
+      date: January 18, 2024
+      location: Minneapolis, MN, USA
+      image: ansible-meetup.svg
+      alt: Ansible meetup logo
+      link: https://forum.ansible.com/t/ansible-minneapolis-meetup-topic-tba-2024-01-18/1863
+platform:
+  main: Ready to move from patchwork to platform?
+  discover: You already know the benefits of upstream Ansible tools. But if your organization is ready to take automation to the next level, it's time to consider Red Hat Ansible Automation Platform. It delivers more capabilities-like event-driven automation and generative AI-that reduce manual effort and increase efficiency, as well as enhanced security and end-to-end technical support.
+  learn: Get the details
+  learn_link: https://www.redhat.com/en/engage/replace-patchwork-automation?sc_cid=7015Y000003szaZQAQ
+  logo_alt: Red Hat Ansible Automation Platform logo
+ecosystem:
+  title: Ansible ecosystem
+  intro: The projects in the Ansible collaborative let you expand automation to an unlimited set of use cases.
+  link_title: View all projects
+  url: link://slug/ecosystem
+  label: Read the docs
+  projects:
+    core:
+      heading: Ansible Core
+      description: Learn about the Ansible programming language, automation tooling, and architectural framework.
+      link: https://ansible.readthedocs.io/projects/ansible-core/
+      logo: project-logos/ansible-core.svg
+      alt: Ansible Core project logo
+    eda:
+      heading: Event-Driven Ansible
+      description: Subscribe to event sources to scale automation and deliver more efficient IT operations.
+      link: https://ansible.readthedocs.io/projects/rulebook/
+      logo: project-logos/eda.svg
+      alt: Event-Driven Ansible project logo
+    devtools:
+      heading: Developer tools
+      description: Use tooling to develop and test Ansible content for consistent, trusted automation.
+      link: https://ansible.readthedocs.io/projects/dev-tools/
+      logo: project-logos/ansible-community.svg
+      alt: Ansible DevTools project logo
+blog:
+  section_icon: /assets/images/blog-cyan.svg
+  icon_alt: Ansible community blog icon
+  title: Blog
+  intro: Check out some recent blog posts from the Ansible community.
+  url: /blog/
+labels:
+  learn_more: Learn more
+  view_more: View more
+  back_to_top: Back to top
+  get_started: Get started with Ansible
+  get_started_tooltip: Quickly get up and running with Ansible automation.
+links:
+  ansible:
+    get_started_url: https://docs.ansible.com/ansible/latest/getting_started/index.html
+  platform:
+    home: https://www.redhat.com/en/technologies/management/ansible
+    use_cases: https://www.redhat.com/en/technologies/management/ansible/use-cases

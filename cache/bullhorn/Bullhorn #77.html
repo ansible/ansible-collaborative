@@ -1,0 +1,119 @@
+<p><img alt="Ansible Bullhorn banner" src="/images/bullhorn-banner-mango.png"></p>
+<p><em>A Newsletter for the Ansible Developer Community</em>
+<em>Issue #77, 2022-10-07 (<a href="https://us19.campaign-archive.com/home/?u=56d874e027110e35dea0e03c1&amp;id=d6635f5420">Past Issues</a>)</em></p>
+<p>Welcome to <a href="https://github.com/ansible/community/wiki/News#the-bullhorn">The Bullhorn</a>, our newsletter for the Ansible developer community. If you have any questions or content you’d like to share, you're welcome to chat with us in the <a href="https://matrix.to/#/#social:ansible.com">Ansible Social room on Matrix</a>, and mention <a href="https://matrix.to/#/@newsbot:ansible.im"><code>newsbot</code></a> to have your news item tagged for review for the next weekly issue!</p>
+<!-- TEASER_END -->
+
+<h2>KEY DATES ⏱️</h2>
+<p><a href="https://matrix.to/#/@cybette:ansible.im">cybette</a> said</p>
+<blockquote>
+<ul>
+<li>2022-10-10: ETA for Ansible-Core 2.13.5 and Ansible-Core 2.12.10 releases</li>
+<li>2022-10-11: <a href="https://docs.ansible.com/ansible/devel/roadmap/COLLECTIONS_6.html">ETA for Ansible 6.5.0 release</a></li>
+<li>2022-10-11: <a href="https://github.com/ansible/community/issues/643">DaWGs meeting</a>, 15:00 UTC</li>
+<li>2022-10-12: <a href="https://github.com/ansible/community/issues/645">Community WG meeting</a>, 18:00 UTC (<a href="https://docs.ansible.com/ansible/devel/roadmap/COLLECTIONS_7.html">topic: List any backwards incompatible collection releases that beta1 should try to accommodate</a>)</li>
+<li>2022-10-13: <a href="https://github.com/ansible/community/wiki/News#the-bullhorn">Bullhorn #78 content deadline</a>, 18:00 UTC</li>
+<li><strong>2022-10-17: <a href="https://hackmd.io/@ansible-community/contrib-summit-202210">Ansible Contributor Summit 2022.10</a></strong></li>
+<li>2022-10-17: <a href="https://docs.ansible.com/ansible-core/devel/roadmap/ROADMAP_2_14.html">ansible-core 2.14 release candidate 1</a></li>
+<li><strong>2022-10-18/19: <a href="https://www.ansible.com/ansiblefest?sc_cid=7013a000002i5g3AAA">AnsibleFest 2022</a></strong></li>
+</ul>
+</blockquote>
+<h2>GENERAL NEWS UPDATES 🔈️</h2>
+<p><a href="https://matrix.to/#/@gundalow:ansible.im">gundalow</a> said</p>
+<blockquote>
+<p>Will you be joining <a href="https://hacktoberfest.com/">Hacktoberfest</a>?
+* We've got some great first issues in the  <a href="https://github.com/ansible/awx/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22">awx</a> and <a href="https://github.com/ansible/awx-operator/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22">awx-operator</a> repos
+* New to contributing to AWX, checkout the <a href="https://github.com/ansible/awx/blob/devel/CONTRIBUTING.md">AWX Contributor Guide</a>
+* Want to chat, join us in <a href="https://docs.ansible.com/ansible/latest/community/communication.html#ansible-community-on-matrix">Matrix</a> or post a message in the <a href="https://groups.google.com/g/awx-project">AWX Google Group</a>
+* Don't forget to register via the <a href="https://hacktoberfest.com/">Hacktoberfest</a> portal to make your contributions count!</p>
+</blockquote>
+<h2>MAJOR NEW RELEASES 🏆️</h2>
+<p><a href="https://matrix.to/#/@relrod:matrix.org">relrod</a> said</p>
+<blockquote>
+<p>We're happy to announce that the next release of AWX, version 21.7.0 is now available!
+Some notable features include:
+* Improves visibility of workflow approval notification bell
+* Adds project revision hash to inventory source views
+* Prompt on launch on templates
+* Ability to add execution nodes at runtime
+* Add a new Instance.health_check_started field
+* Add tooltips to Instance form; change <code>name</code> field to <code>host name</code>
+* Adding <code>prevent_instance_group_fallback</code> to job templates and inventory</p>
+<p>In addition AWX Operator version 0.30.0 has also been released!
+Some notable features include:
+* change receptor ca secret to tls secret... with migration
+* Add docs for adding execution nodes and custom CA</p>
+<p>Please see the releases pages for more details:
+AWX: <a href="https://github.com/ansible/awx/releases/tag/21.7.0">https://github.com/ansible/awx/releases/tag/21.7.0</a>
+Operator: <a href="https://github.com/ansible/awx-operator/releases/tag/0.30.0">https://github.com/ansible/awx-operator/releases/tag/0.30.0</a></p>
+</blockquote>
+<h3>DevTools <a href="https://github.com/ansible/vscode-ansible">↗</a> ⛏️</h3>
+<p>Projects to make it easier to write and test Ansible Content. Includes <a href="https://github.com/ansible/vscode-ansible">VScode extension</a>, <a href="https://github.com/ansible/ansible-language-server">language server</a>, <a href="https://github.com/ansible-community/ansible-lint">ansible-lint</a>, <a href="https://github.com/ansible-community/molecule">molecule</a>, <a href="https://github.com/ansible/ansible-navigator">ansible-navigator</a> and potentially other development goodies. To see what's planned, and how you can help checkout the <a href="https://github.com/orgs/ansible/projects/86/views/4">foundation-devtools project board</a></p>
+<p><a href="https://matrix.to/#/@ssbarnea:matrix.org">ssbarnea</a> shared</p>
+<blockquote>
+<p>ansible-lint 6.8.0 is out and contains a huge number of bugfixes, also adding a nice summary report. Details at https://github.com/ansible/ansible-lint/discussions/2568</p>
+</blockquote>
+<h3>Antsibull <a href="https://github.com/ansible-community/antsibull">↗</a> 🐂</h3>
+<p>Tooling for building the <code>Ansible</code> package and collection documentation.</p>
+<p><a href="https://matrix.to/#/@felixfontein:libera.chat">felixfontein</a> said</p>
+<blockquote>
+<p>antsibull 0.51.0 (<a href="https://github.com/ansible-community/antsibull/blob/main/CHANGELOG.rst#v0-51-0">changelog</a>) has been released for Ansible 7. The <code>python_requires</code> information from ansible-core is now stored in the <code>.deps</code> files as well for easier access, and is used directly in the Ansible package instead of guessing its value based on the ansible-core version number.</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@felixfontein:libera.chat">felixfontein</a> contributed</p>
+<blockquote>
+<p>antsibull-docs 1.7.0 (<a href="https://github.com/ansible-community/antsibull-docs/blob/main/CHANGELOG.rst#v1-7-0">changelog</a>) has been released with some new features and bugfixes. Use <code>antsibull-docs lint-collection-docs --plugin-docs /path/to/collection-root</code> to check whether the docs in your collection will render OK on the docsite!</p>
+</blockquote>
+<h2>COLLECTION UPDATES 🪄</h2>
+<p><a href="https://matrix.to/#/@jillr:libera.chat">jillr</a> contributed</p>
+<blockquote>
+<p>The <a href="https://github.com/ansible-collections/community.aws">community.aws</a> collection version 5.0.0 has been released. See the <a href="https://github.com/ansible-collections/community.aws/blob/stable-5/CHANGELOG.rst">changelog</a> for details on new modules and features.</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@jillr:libera.chat">jillr</a> shared</p>
+<blockquote>
+<p>The <a href="https://github.com/ansible-collections/amazon.aws">amazon.aws</a> collection version 5.0.0 has been released. See the <a href="https://github.com/ansible-collections/amazon.aws/blob/stable-5/CHANGELOG.rst">changelog</a> for details on new modules and features.</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@felixfontein:libera.chat">felixfontein</a> shared</p>
+<blockquote>
+<p>community.general 5.7.0 (<a href="https://github.com/ansible-collections/community.general/blob/stable-5/CHANGELOG.rst#v5-7-0">changelog</a>) has been released with new modules, features, and bugfixes. Please note that the next minor release (5.8.0) will be the last minor 5.x.0 release, from then on only bugfix releases 5.8.x will be released. After 5.8.0, the 6.0.0 release will be made; see <a href="https://github.com/ansible-collections/community.general/issues/582#issuecomment-1264404378">the current planning in the collection repository</a> for details.</p>
+</blockquote>
+<h3>Collection removal</h3>
+<p><a href="https://matrix.to/#/@mariolenz:matrix.org">mariolenz</a> contributed</p>
+<blockquote>
+<p>The <code>dellemc.os6</code> collection <a href="https://github.com/ansible-community/community-topics/issues/132">is considered unmaintained</a> and will be removed from Ansible 8 if no one starts maintaining it again before Ansible 8. See <a href="https://github.com/ansible-collections/overview/blob/main/removal_from_ansible.rst#cancelling-removal-of-an-unmaintained-collection">the removal process for details on how this works</a>.</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@mariolenz:matrix.org">mariolenz</a> shared</p>
+<blockquote>
+<p>The <code>dellemc.os9</code> collection <a href="https://github.com/ansible-community/community-topics/issues/133">is considered unmaintained</a> and will be removed from Ansible 8 if no one starts maintaining it again before Ansible 8. See <a href="https://github.com/ansible-collections/overview/blob/main/removal_from_ansible.rst#cancelling-removal-of-an-unmaintained-collection">the removal process for details on how this works</a>.</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@mariolenz:matrix.org">mariolenz</a> contributed</p>
+<blockquote>
+<p>The <code>dellemc.os10</code> collection <a href="https://github.com/ansible-community/community-topics/issues/134">is considered unmaintained</a> and will be removed from Ansible 8 if no one starts maintaining it again before Ansible 8. See <a href="https://github.com/ansible-collections/overview/blob/main/removal_from_ansible.rst#cancelling-removal-of-an-unmaintained-collection">the removal process for details on how this works</a>.</p>
+</blockquote>
+<h2>HELP WANTED 🙏</h2>
+<p><a href="https://matrix.to/#/@andersson007_:matrix.org">andersson007_</a> contributed</p>
+<blockquote>
+<p>The following collection inclusion requests are waiting for your review:</p>
+<ul>
+<li><a href="https://github.com/ansible-collections/ansible-inclusion/discussions/32">dellemc.unity</a></li>
+<li><a href="https://github.com/ansible-collections/ansible-inclusion/discussions/52">grafana.grafana</a></li>
+</ul>
+<p>See the <a href="https://github.com/ansible-collections/ansible-inclusion#review-process">process description</a> to learn how to do it.</p>
+<p>If you have any questions, just ping <code>andersson007</code> on <a href="https://docs.ansible.com/ansible/devel/community/communication.html#ansible-community-on-matrix">Matrix</a> in the <a href="https://matrix.to/#/#community:ansible.com">#community:ansible.com</a> channel or on <a href="https://docs.ansible.com/ansible/devel/community/communication.html#ansible-community-on-irc">Libera.Chat IRC</a> in the <code>#ansible-community</code> channel or directly.</p>
+<p>Please help the community extend the Ansible package!</p>
+</blockquote>
+<h2>PROPOSALS - DISCUSS AND VOTE! 🗳️</h2>
+<p><a href="https://matrix.to/#/@briantist:libera.chat">briantist</a> shared</p>
+<blockquote>
+<p><strong>Vote ends on 2022-10-12:</strong> <a href="https://github.com/ansible-community/community-topics/discussions/146">Clarify inclusion requirements on temp files and editor configs</a>.</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@mariolenz:matrix.org">mariolenz</a> shared</p>
+<blockquote>
+<p>As mentioned in <a href="https://mailchi.mp/redhat/the-bullhorn-72">The Bullhorn #72</a>, we consider mellanox.onyx an effectively unmaintained collection. Therefore, we’ve opened a community / steering committee <a href="https://github.com/ansible-community/community-topics/discussions/144">vote</a> on removing it from the Ansible 8 community package.</p>
+</blockquote>
+<h2>COMMUNITY EVENTS AND MEETUPS 📅</h2>
+<p><a href="https://matrix.to/#/@cybette:ansible.im">cybette</a> contributed</p>
+<blockquote>
+<p><a href="https://www.meetup.com/ansible-singapore/">Ansible Singapore</a> is having their next in-person event on October 13, 2022 at 6:30 PM SST. Check out the <a href="https://www.meetup.com/ansible-singapore/events/288946268/">details</a> and register!</p>
+</blockquote>
+<h2>THAT'S ALL FOR NOW!</h2>
+<p>Have any questions you’d like to ask, or issues you’d like to see covered? Please ask in <a href="https://matrix.to/#/#social:ansible.com">#social:ansible.com</a>! See you next time!</p>

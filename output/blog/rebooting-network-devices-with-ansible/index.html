@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html prefix="
+og: http://ogp.me/ns# article: http://ogp.me/ns/article#
+" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="With the Red Hat Ansible Automation Platform release in November, we released over 50 network resource modules to help make automating network devices easier and more turn-key for network engineers.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rebooting Network Devices with Ansible | Ansible Collaborative</title>
+<link href="../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/baguetteBox.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/rst.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/code.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/theme.css" rel="stylesheet" type="text/css">
+<!-- Red Hat fonts --><link rel="stylesheet" href="https://static.redhat.com/libs/redhat/redhat-font/2.0.0/webfonts/red-hat-font.css">
+<!-- Font Awesome --><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+<!-- Fork Awesome --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css" integrity="sha256-XoaMnoYC5TH6/+ihMEnospgm0J1PM/nioxbOUdnM8HY=" crossorigin="anonymous">
+<!-- Sass compiled css  --><link rel="stylesheet" href="../../assets/css/main.css">
+<link rel="stylesheet" href="../../assets/css/redhat-footer.css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://ansible.com/blog/rebooting-network-devices-with-ansible/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Sean Cavanaugh">
+<link rel="prev" href="../getting-started-with-ansible-collections/" title="Getting Started With Ansible Content Collections" type="text/html">
+<link rel="next" href="../how-useful-is-ansible-in-a-cloud-native-kubernetes-environment/" title="How useful is Ansible in a Cloud-Native Kubernetes Environment?" type="text/html">
+<meta property="og:site_name" content="Ansible Collaborative">
+<meta property="og:title" content="Rebooting Network Devices with Ansible">
+<meta property="og:url" content="https://ansible.com/blog/rebooting-network-devices-with-ansible/">
+<meta property="og:description" content="With the Red Hat Ansible Automation Platform release in November, we released over 50 network resource modules to help make automating network devices easier and more turn-key for network engineers.">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-12-20T00:00:00Z">
+</head>
+<body id="top">
+
+<div class="global-container" id="content" role="main">
+<!-- Start menubar -->
+<nav class="navbar navbar-expand-lg static-top mb-4 navbar-padding full-width-bg   navbar-dark   bg-pool   "><div class="masthead">
+    <!-- This keeps the margins nice -->
+    <a class="navbar-brand" href="../../">
+        <img src="../../images/ansible_logo-small-15.png" alt="Ansible community logo" id="logo" class="d-inline-block align-top" width="50" height="50"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon nav-toggle-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="bs-navbar">
+      <ul class="navbar-nav mr-auto"></ul>
+<ul class="navbar-nav navbar-right">
+<li class="nav-item dropdown">
+	        <a href="#" class="nav-link nav-link-color dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <i class=""></i> Documentation
+                </a>
+		<div class="dropdown-menu dropdown-menu-border">
+	    
+                    <a href="https://docs.ansible.com/" class="dropdown-item">
+		        <i class=""></i> Project documentation
+                    </a>
+                    <a href="https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/" class="dropdown-item">
+		        <i class=""></i> Ansible Automation Platform documentation
+                    </a>
+            </div>
+                 </li>
+<li class="nav-item">
+		     <a href="https://galaxy.ansible.com/" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Galaxy
+		     </a>
+		 </li>
+                 <li class="nav-item">
+		     <a href="https://forum.ansible.com/" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Forum
+		     </a>
+		 </li>
+            <li class="nav-item dropdown">
+	        <a href="#" class="nav-link nav-link-color dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <i class=""></i> Resources
+                </a>
+		<div class="dropdown-menu dropdown-menu-border">
+	    
+                    <a href="../../how-ansible-works/" class="dropdown-item">
+		        <i class=""></i> How Ansible works
+                    </a>
+                    <a href="../../ecosystem/" class="dropdown-item">
+		        <i class=""></i> Ansible ecosystem
+                    </a>
+                    <a href="../archive.html" class="dropdown-item">
+		        <i class=""></i> Blog
+                    </a>
+                    <a href="../../faq/" class="dropdown-item">
+		        <i class=""></i> Frequently asked questions
+                    </a>
+                    <a href="../../ansible-community-training/" class="dropdown-item">
+		        <i class=""></i> Ansible community training
+                    </a>
+                    <a href="../../contact-us/" class="dropdown-item">
+		        <i class=""></i> Contact us
+                    </a>
+            </div>
+                 </li>
+<li class="nav-item">
+		     <a href="https://www.redhat.com/en/technologies/management/ansible?sc_cid=7015Y000003szaKQAQ" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Ansible Automation Platform
+		     </a>
+		 </li>
+
+        
+      </ul>
+</div>
+    <!-- /.navbar-collapse -->
+  </div>
+  <!-- /.container -->
+</nav><!-- End default Menubar --><div class="body-content center-band">
+        <!--Body content-->
+        
+  <article class="post-text h-entry hentry postpage ansible-content" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Rebooting Network Devices with Ansible</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard p-author h-card"><span class="byline-name fn p-name" itemprop="author">
+                    <a class="u-url" href="../../authors/sean-cavanaugh/">Sean Cavanaugh</a>
+            </span></p>
+            <p class="dateline">
+            <a href="." rel="bookmark">
+            <time class="published dt-published" datetime="2019-12-20T00:00:00Z" itemprop="datePublished" title="2019-12-20 00:00">2019-12-20 00:00</time></a>
+            </p>
+                    <p class="sourceline"><a href="index.md" class="sourcelink">Source</a></p>
+
+        </div>
+        
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+<h2>Rebooting Network Devices with Ansible</h2>
+<p>With the Red Hat Ansible Automation Platform release in November, we
+released over 50 network resource modules to help make automating
+network devices easier and more turn-key for network engineers.  In
+addition to the new resource modules, Andrius also discussed fact
+gathering enhancements in his blog post,
+which means with every new resource module, users gain increased fact
+coverage for network devices.  For this blog post I want to cover
+another cool enhancement that may have gone unnoticed. This is the
+ability for network devices to make use of the
+<a href="https://docs.ansible.com/ansible/latest/modules/wait_for_connection_module.html">wait_for_connection</a>
+module.  If you are a network engineer that has operational Ansible
+Playbooks that need to reboot devices or take them offline, this module
+will help you make more programmatic playbooks to handle disconnects. 
+By leveraging wait_for_connection network automation playbooks can look
+and behave more like playbooks for Linux or Windows hosts.</p>
+<h3>Comparing wait_for and wait_for_connection</h3>
+<p>There are two great modules that can wait for a condition to be met,
+<a href="https://docs.ansible.com/ansible/latest/modules/wait_for_module.html">wait_for</a>
+and the wait_for_connection.  I highly recommend against using the pause
+module if you can get away with it, and I equate it to using a
+programming equivalent of a sleep within an Ansible Playbook.  Using
+either of these two wait_for modules is superior to random pauses within
+your Ansible Playbook because they are a more programmatic solution that
+is more adaptable to devices taking different amounts of time to
+complete a task.  The other problem with the pause module is that using
+prompts does not work within Ansible Tower. A much better solution for
+human interaction would be to use an Ansible Tower workflow with an
+<a href="https://docs.ansible.com/ansible-tower/latest/html/userguide/workflow_templates.html#approval-nodes">approval node</a>.</p>
+<p>The wait_for module can wait until a path on a filesystem exists, or
+until a port is active again.  This works great for most reboot use
+cases, except for when a system is not able to be logged into
+immediately after the port is up.  The wait_for_connection extends the
+functionality of the wait_for use case a bit further. The
+wait_for_connection module will make sure that Ansible can log back into
+the device and receive the appropriate prompts before finishing
+completing the task. For Linux and Windows hosts it will use the ping or
+win_ping module, for network devices it will make sure the
+<a href="https://docs.ansible.com/ansible/latest/plugins/connection.html">connection plugin</a>
+that was last used can fully connect to the device.  At the time of this
+blog post this only works with the <code>network_cli</code> connection plugin.  This
+means that subsequent tasks can begin operating as intended as soon as
+wait_for_connection completes versus where wait_for just knows that port
+is open.</p>
+<h3>Dealing with prompts</h3>
+<p>With networking devices when we perform operational tasks such as a
+reboot, there is often a prompt to confirm that you want to take an
+action.</p>
+<p>For example on a Juniper vSRX device:</p>
+<div class="code"><pre class="code literal-block">admin@rtr3&gt;<span class="w"> </span>request<span class="w"> </span>system<span class="w"> </span>reboot
+Reboot<span class="w"> </span>the<span class="w"> </span>system<span class="w"> </span>?<span class="w"> </span><span class="o">[</span>yes,no<span class="o">]</span><span class="w"> </span><span class="o">(</span>no<span class="o">)</span>
+</pre></div>
+
+<p>The user has to confirm the reload to be able to proceed.
+Something I neglected to cover on my deep dive with <code>cli_command</code> blog was that <a href="https://docs.ansible.com/ansible/latest/modules/cli_command_module.html">cli_command module</a> can handle prompts.
+The <code>cli_command</code> module can even handle multiple prompts!
+For this example the Cisco router had not saved its config, and we are performing a reload.
+First the Cisco router will alert me that the System configuration has been modified, and ask me if I want to save this before I lose my running-configuration:</p>
+<div class="code"><pre class="code literal-block">rtr1#reload
+
+System<span class="w"> </span>configuration<span class="w"> </span>has<span class="w"> </span>been<span class="w"> </span>modified.<span class="w"> </span>Save?<span class="w"> </span><span class="o">[</span>yes/no<span class="o">]</span>:
+</pre></div>
+
+<p>After confirming <code>yes</code> or <code>no</code>, you will receive a second prompt:</p>
+<div class="code"><pre class="code literal-block">Proceed<span class="w"> </span>with<span class="w"> </span>reload?<span class="w"> </span><span class="o">[</span>confirm<span class="o">]</span>
+</pre></div>
+
+<p>We need to build a task that can handle both prompts using the <code>cli_command</code> module:</p>
+<div class="code"><pre class="code literal-block"><span class="nn">---</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">reboot ios device</span>
+<span class="w">  </span><span class="nt">cli_command</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">reload</span>
+<span class="w">    </span><span class="nt">prompt</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Save?</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">confirm</span>
+<span class="w">    </span><span class="nt">answer</span><span class="p">:</span>
+<span class="w">     </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">y</span>
+<span class="w">     </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">y</span>
+</pre></div>
+
+<p>The above task will answer yes to both prompts, saving the config and reloading the device.
+The list for prompt answer and the list for answer must match and be in the same order.
+This means that the answer for <code>prompt[0]</code> must be <code>answer[0]</code>.</p>
+<p>If you want to see a more detailed example of handling multiple prompts,
+<a href="https://github.com/ansible/workshops/blob/master/provisioner/roles/configure_routers/tasks/juniper_default.yml">here is an example of a password reset on a Juniper vSRX device</a>.</p>
+<h3>Using reset_connection in combination</h3>
+<p>Now that you understand how to reboot the device with cli_command we can combine that with the wait_for_connection to create a reusable Ansible Playbook.
+However, we need to add one more task, a <a href="https://docs.ansible.com/ansible/latest/modules/meta_module.html">meta: reset_connection</a> to make this work programmatically.  </p>
+<p>We need to make sure the current connection to the network device is
+closed so that the socket can be reestablished to the network device
+after the reboot takes place.  If the connection is not closed and the
+command timeout is longer than the time it takes to reboot, the
+persistent connection will attempt to reuse the closed SSH connection
+resulting in the failure "Socket is closed". A correct Ansible Playbook
+looks like this:</p>
+<div class="code"><pre class="code literal-block"><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">reboot task (this is a snippet, full task removed for brevity)</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">reset the connection</span>
+<span class="w">  </span><span class="nt">meta</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">reset_connection</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Wait for the network device to reload</span>
+<span class="w">  </span><span class="nt">wait_for_connection</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">delay</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
+</pre></div>
+
+<p>Now we have an Ansible Playbook that can reconnect to network devices after a reboot is issued!
+For a full example please <a href="https://gist.github.com/IPvSean/56f6522cc73629984d3e47013240a1fa">refer to this reboot.yml</a> Ansible Playbook for Arista vEOS network devices.</p>
+<h3>Where to go next?</h3>
+<p>This blog helped outline how to create reusable Ansible Playbooks for
+rebooting network devices.  One of the next steps is obviously building
+out an Ansible Role that can reboot multiple network platforms.  I have
+gone ahead and <a href="https://github.com/network-automation/tower_workshop/blob/master/network_reload.yml">created one and uploaded it to Github here</a>. 
+This role will work on Juniper Junos, Cisco IOS and Arista EOS devices
+and can be easily modified to handle many more network operating systems.</p>
+</div>
+    <aside class="postpromonav"><nav><ul class="pager hidden-print">
+<li class="previous">
+                <a href="../getting-started-with-ansible-collections/" rel="prev" title="Getting Started With Ansible Content Collections">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../how-useful-is-ansible-in-a-cloud-native-kubernetes-environment/" rel="next" title="How useful is Ansible in a Cloud-Native Kubernetes Environment?">Next post</a>
+            </li>
+        </ul></nav></aside></article><!--End of body content-->
+</div>
+        <div class="content-slim redhat-footer">
+      <div class="footer-left">
+        <ul class="footer-left-links">
+<li>
+            <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-SA 4.0</a>
+          </li>
+          <li>
+            <a href="https://www.redhat.com/en/about/privacy-policy" target="_blank">Privacy policy</a>
+          </li>
+          <li>
+            <a href="https://docs.ansible.com/ansible/latest/community/code_of_conduct.html" target="_blank">Code of conduct</a>
+          </li>
+        </ul>
+</div>
+      <div class="footer-right">
+        <span class="redhat">Powered by</span>
+        <span class="redhat-logo">
+          <a href="https://www.redhat.com/en/technologies/management/ansible" target="_blank">
+            <img src="../../assets/images/redhat_reversed.svg" alt="Red Hat logo." width="96" height="28"></a>
+        </span>
+      </div>
+    </div>
+
+</div>
+
+            <script src="../../assets/js/jquery.min.js"></script><script src="../../assets/js/popper.min.js"></script><script src="../../assets/js/bootstrap.min.js"></script><script src="../../assets/js/baguetteBox.min.js"></script><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+</script><script src="../../assets/js/clipboard.min.js" type="text/javascript"></script><script src="../../assets/js/clipboard.js" type="text/javascript"></script>
+</body>
+</html>

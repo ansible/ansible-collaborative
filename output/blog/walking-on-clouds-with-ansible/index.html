@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html prefix="
+og: http://ogp.me/ns# article: http://ogp.me/ns/article#
+" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="The Collection available on Ansible automation hub as of today allows for the management and provisioning of cloud infrastructure as code with Terraform within an automation execution environment.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Walking on Clouds with Ansible | Ansible Collaborative</title>
+<link href="../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/baguetteBox.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/rst.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/code.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/theme.css" rel="stylesheet" type="text/css">
+<!-- Red Hat fonts --><link rel="stylesheet" href="https://static.redhat.com/libs/redhat/redhat-font/2.0.0/webfonts/red-hat-font.css">
+<!-- Font Awesome --><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+<!-- Fork Awesome --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css" integrity="sha256-XoaMnoYC5TH6/+ihMEnospgm0J1PM/nioxbOUdnM8HY=" crossorigin="anonymous">
+<!-- Sass compiled css  --><link rel="stylesheet" href="../../assets/css/main.css">
+<link rel="stylesheet" href="../../assets/css/redhat-footer.css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://ansible.com/blog/walking-on-clouds-with-ansible/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Nuno Martins">
+<link rel="prev" href="../bullhorn-82/" title="Bullhorn #82" type="text/html">
+<link rel="next" href="../bullhorn-83/" title="Bullhorn #83" type="text/html">
+<meta property="og:site_name" content="Ansible Collaborative">
+<meta property="og:title" content="Walking on Clouds with Ansible">
+<meta property="og:url" content="https://ansible.com/blog/walking-on-clouds-with-ansible/">
+<meta property="og:description" content="The Collection available on Ansible automation hub as of today allows for the management and provisioning of cloud infrastructure as code with Terraform within an automation execution environment.">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2022-11-28T00:00:00Z">
+</head>
+<body id="top">
+
+<div class="global-container" id="content" role="main">
+<!-- Start menubar -->
+<nav class="navbar navbar-expand-lg static-top mb-4 navbar-padding full-width-bg   navbar-dark   bg-pool   "><div class="masthead">
+    <!-- This keeps the margins nice -->
+    <a class="navbar-brand" href="../../">
+        <img src="../../images/ansible_logo-small-15.png" alt="Ansible community logo" id="logo" class="d-inline-block align-top" width="50" height="50"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon nav-toggle-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="bs-navbar">
+      <ul class="navbar-nav mr-auto"></ul>
+<ul class="navbar-nav navbar-right">
+<li class="nav-item dropdown">
+	        <a href="#" class="nav-link nav-link-color dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <i class=""></i> Documentation
+                </a>
+		<div class="dropdown-menu dropdown-menu-border">
+	    
+                    <a href="https://docs.ansible.com/" class="dropdown-item">
+		        <i class=""></i> Project documentation
+                    </a>
+                    <a href="https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/" class="dropdown-item">
+		        <i class=""></i> Ansible Automation Platform documentation
+                    </a>
+            </div>
+                 </li>
+<li class="nav-item">
+		     <a href="https://galaxy.ansible.com/" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Galaxy
+		     </a>
+		 </li>
+                 <li class="nav-item">
+		     <a href="https://forum.ansible.com/" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Forum
+		     </a>
+		 </li>
+            <li class="nav-item dropdown">
+	        <a href="#" class="nav-link nav-link-color dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <i class=""></i> Resources
+                </a>
+		<div class="dropdown-menu dropdown-menu-border">
+	    
+                    <a href="../../how-ansible-works/" class="dropdown-item">
+		        <i class=""></i> How Ansible works
+                    </a>
+                    <a href="../../ecosystem/" class="dropdown-item">
+		        <i class=""></i> Ansible ecosystem
+                    </a>
+                    <a href="../archive.html" class="dropdown-item">
+		        <i class=""></i> Blog
+                    </a>
+                    <a href="../../faq/" class="dropdown-item">
+		        <i class=""></i> Frequently asked questions
+                    </a>
+                    <a href="../../ansible-community-training/" class="dropdown-item">
+		        <i class=""></i> Ansible community training
+                    </a>
+                    <a href="../../contact-us/" class="dropdown-item">
+		        <i class=""></i> Contact us
+                    </a>
+            </div>
+                 </li>
+<li class="nav-item">
+		     <a href="https://www.redhat.com/en/technologies/management/ansible?sc_cid=7015Y000003szaKQAQ" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Ansible Automation Platform
+		     </a>
+		 </li>
+
+        
+      </ul>
+</div>
+    <!-- /.navbar-collapse -->
+  </div>
+  <!-- /.container -->
+</nav><!-- End default Menubar --><div class="body-content center-band">
+        <!--Body content-->
+        
+  <article class="post-text h-entry hentry postpage ansible-content" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Walking on Clouds with Ansible</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard p-author h-card"><span class="byline-name fn p-name" itemprop="author">
+                    <a class="u-url" href="../../authors/nuno-martins/">Nuno Martins</a>
+            </span></p>
+            <p class="dateline">
+            <a href="." rel="bookmark">
+            <time class="published dt-published" datetime="2022-11-28T00:00:00Z" itemprop="datePublished" title="2022-11-28 00:00">2022-11-28 00:00</time></a>
+            </p>
+                    <p class="sourceline"><a href="index.md" class="sourcelink">Source</a></p>
+
+        </div>
+        
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+<h2>Walking on Clouds with Ansible</h2>
+<p>Today is a good day, and when it's a day like this we often feel like
+we are walking on clouds. With this latest announcement for the newest
+Red Hat Ansible Certified Collections available to our customers on the
+28th of November, I am sure many cloud practitioners will be
+anticipating what the future will bring for their cloud automation. </p>
+<p>Over the last few months, there has been a fair amount of activity in
+the Ansible team showing how Red Hat Ansible Automation Platform can
+extend and connect different technologies. This has been a crucial
+component of Ansible's success in cloud automation for many customers.</p>
+<p><img alt="cloud automation uses diagram" src="../../images/posts/archive/cloud-automation-uses.png"></p>
+<p>Cloud automation requires the ability to perform many different
+complicated tasks and cover just as many domains. Often, organizations
+have different technologies to meet specific requirements and needs. One
+of the technologies widely used is Terraform.  </p>
+<p>We have done a number of blogs recently on the topic, ranging from a
+simple example of using Terraform with Ansible Automation Platform,
+to in-depth looks at the differences between the tools.
+AnsibleFest 2022 even featured a lab where we got to work with Terraform
+through automation controller, allowing us to centralize the
+provisioning and de-provisioning of cloud infrastructure with Terraform
+while running post-provisioning configuration through Ansible.</p>
+<p>Traditionally the modules used to work with Terraform have come from the
+community, however, with the greater demand for an official Collection
+with the backing of Red Hat support, we have announced cloud.terraform,
+a Red Hat Ansible Certified Collection for Terraform. </p>
+<h3>So what is the cloud.terraform collection?</h3>
+<p>This Collection is available on Ansible automation hub as of today and
+allows for the management and provisioning of cloud infrastructure as
+code with Terraform within an automation execution environment. The
+Collection currently contains two modules and example roles to assist
+you in bringing your Terraform workloads onto Ansible Automation
+Platform in a certified and supported way. </p>
+<p>These modules allow Ansible to apply Terraform plans as well as to
+provision and deprovision infrastructure. Currently, we support <strong>AWS</strong>,
+<strong>Azure</strong>, and <strong>Google Cloud</strong> as providers for Terraform and we
+support <strong>azurerm</strong>, <strong>gcs,</strong> and <strong>s3</strong> as backends. One important note
+is that we do not support the local backend for Terraform, and there are
+two reasons for this.  Firstly, many practitioners of Terraform agree
+that using the local backend is not a best practice to follow in
+production, and secondly, since we trigger automation from execution
+environments, the local backend storage is not persistent or the same
+with each execution. </p>
+<p>Let us have a look at what module usage will look like in an Ansible
+Playbook:</p>
+<p><strong>Module:</strong> <strong>cloud.terraform.terraform</strong></p>
+<p>This replaces the current community.general.terraform module for general
+functionality.</p>
+<div class="code"><pre class="code literal-block"><span class="x">… example:</span>
+
+<span class="x">- name: Apply plan</span>
+<span class="x">  cloud.terraform.terraform:</span>
+<span class="x">    project_path: "</span><span class="cp">{{</span> <span class="nv">repo_dir</span> <span class="cp">}}</span><span class="x">"</span>
+<span class="x">    plan_file: "</span><span class="cp">{{</span> <span class="nv">plan_file</span> <span class="cp">}}</span><span class="x">"</span>
+<span class="x">    state: present  # applying a plan doesn't have a switch for this</span>
+<span class="x">    # optional config</span>
+<span class="x">    state_file: "</span><span class="cp">{{</span> <span class="nv">terraform_options.state_file</span> <span class="o">|</span> <span class="nf">default</span><span class="o">(</span><span class="nv">omit</span><span class="o">)</span> <span class="cp">}}</span><span class="x">"</span>
+<span class="x">    force_init: "</span><span class="cp">{{</span> <span class="nv">terraform_options.force_init</span> <span class="o">|</span> <span class="nf">default</span><span class="o">(</span><span class="nv">omit</span><span class="o">)</span> <span class="cp">}}</span><span class="x">"</span>
+<span class="x">    binary_path: "</span><span class="cp">{{</span> <span class="nv">terraform_options.binary_path</span> <span class="o">|</span> <span class="nf">default</span><span class="o">(</span><span class="nv">omit</span><span class="o">)</span> <span class="cp">}}</span><span class="x">"</span>
+<span class="x">    plugin_paths: "</span><span class="cp">{{</span> <span class="nv">terraform_options.plugin_paths</span> <span class="o">|</span> <span class="nf">default</span><span class="o">(</span><span class="nv">omit</span><span class="o">)</span> <span class="cp">}}</span><span class="x">"</span>
+<span class="x">    workspace: "</span><span class="cp">{{</span> <span class="nv">terraform_options.workspace</span> <span class="o">|</span> <span class="nf">default</span><span class="o">(</span><span class="nv">omit</span><span class="o">)</span> <span class="cp">}}</span><span class="x">"</span>
+<span class="x">    lock: "</span><span class="cp">{{</span> <span class="nv">terraform_options.lock</span> <span class="o">|</span> <span class="nf">default</span><span class="o">(</span><span class="nv">omit</span><span class="o">)</span> <span class="cp">}}</span><span class="x">"</span>
+<span class="x">    lock_timeout: "</span><span class="cp">{{</span> <span class="nv">terraform_options.lock_timeout</span> <span class="o">|</span> <span class="nf">default</span><span class="o">(</span><span class="nv">omit</span><span class="o">)</span> <span class="cp">}}</span><span class="x">"</span>
+<span class="x">    parallelism: "</span><span class="cp">{{</span> <span class="nv">terraform_options.parallelism</span> <span class="o">|</span> <span class="nf">default</span><span class="o">(</span><span class="nv">omit</span><span class="o">)</span> <span class="cp">}}</span><span class="x">"</span>
+</pre></div>
+
+<p><strong>Module:</strong> <strong>cloud.terraform.output</strong></p>
+<p>This module allows us to extract values from Terraform state files and
+allows you to store them as facts.</p>
+<div class="code"><pre class="code literal-block"><span class="err">…</span><span class="w"> </span><span class="n">example</span><span class="p">:</span>
+
+<span class="o">-</span><span class="w"> </span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="n">Read</span><span class="w"> </span><span class="n">outputs</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="n">file</span>
+<span class="w">  </span><span class="n">cloud</span><span class="o">.</span><span class="n">terraform</span><span class="o">.</span><span class="n">terraform_output</span><span class="p">:</span>
+<span class="w">    </span><span class="n">state_file</span><span class="p">:</span><span class="w"> </span><span class="s2">"{{ state_file }}"</span>
+<span class="w">  </span><span class="n">register</span><span class="p">:</span><span class="w"> </span><span class="n">terraform_output_state_file</span>
+<span class="w">  </span><span class="n">when</span><span class="p">:</span><span class="w"> </span><span class="n">state_file</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">defined</span>
+
+<span class="o">-</span><span class="w"> </span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="n">Add</span><span class="w"> </span><span class="n">hosts</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="n">terraform_output</span>
+<span class="w">  </span><span class="n">ansible</span><span class="o">.</span><span class="n">builtin</span><span class="o">.</span><span class="n">add_host</span><span class="p">:</span>
+<span class="w">   </span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="s2">"{{ item[mapping_variables.name] }}"</span>
+<span class="w">    </span><span class="n">groups</span><span class="p">:</span><span class="w"> </span><span class="s2">"{{ item[mapping_variables.group] }}"</span>
+<span class="w">    </span><span class="n">ansible_host</span><span class="p">:</span><span class="w"> </span><span class="s2">"{{ item[mapping_variables.ip] }}"</span>
+<span class="w">    </span><span class="n">ansible_user</span><span class="p">:</span><span class="w"> </span><span class="s2">"{{ item[mapping_variables.user] }}"</span>
+<span class="w">  </span><span class="n">loop</span><span class="p">:</span><span class="w"> </span><span class="s2">"{{ terraform_output.outputs[mapping_variables.host_list].value }}"</span>
+<span class="w">  </span><span class="n">vars</span><span class="p">:</span>
+<span class="w">    </span><span class="n">terraform_output</span><span class="p">:</span><span class="w"> </span><span class="s2">"{{ (terraform_output_project_path is success) | ternary(terraform_output_project_path,</span>
+<span class="n">terraform_output_state_file</span><span class="p">)</span><span class="w"> </span><span class="p">}}</span><span class="err">”</span>
+</pre></div>
+
+<p>In addition to these modules, the Collection also includes two example
+roles to retrieve project files from Git repositories as well as a role
+to create the in-memory inventory in the above example. </p>
+<h3>Ansible Automation Platform with Terraform, but why?</h3>
+<p>Although both Ansible and Terraform can provision infrastructure and
+cloud workloads, many customers find themselves using Terraform for its
+ease of use with infrastructure as code, however, after provisioning
+there is a gap in the Terraform tooling. Being able to use Ansible
+allows us to address this and bring a fully automated workflow with both
+tools. This also means that customers who have spent time and money
+building their Terraform manifests do not need to replace Terraform but
+rather allow Ansible Automation Platform to orchestrate the provisioning
+as well as configuration management. These tools are better together! </p>
+<p><img alt="tooling diagram" src="../../images/posts/archive/github-platform-terraform.png"></p>
+<p>This is just the beginning, but great things are coming!</p>
+</div>
+    <aside class="postpromonav"><nav><ul class="pager hidden-print">
+<li class="previous">
+                <a href="../bullhorn-82/" rel="prev" title="Bullhorn #82">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../bullhorn-83/" rel="next" title="Bullhorn #83">Next post</a>
+            </li>
+        </ul></nav></aside></article><!--End of body content-->
+</div>
+        <div class="content-slim redhat-footer">
+      <div class="footer-left">
+        <ul class="footer-left-links">
+<li>
+            <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-SA 4.0</a>
+          </li>
+          <li>
+            <a href="https://www.redhat.com/en/about/privacy-policy" target="_blank">Privacy policy</a>
+          </li>
+          <li>
+            <a href="https://docs.ansible.com/ansible/latest/community/code_of_conduct.html" target="_blank">Code of conduct</a>
+          </li>
+        </ul>
+</div>
+      <div class="footer-right">
+        <span class="redhat">Powered by</span>
+        <span class="redhat-logo">
+          <a href="https://www.redhat.com/en/technologies/management/ansible" target="_blank">
+            <img src="../../assets/images/redhat_reversed.svg" alt="Red Hat logo." width="96" height="28"></a>
+        </span>
+      </div>
+    </div>
+
+</div>
+
+            <script src="../../assets/js/jquery.min.js"></script><script src="../../assets/js/popper.min.js"></script><script src="../../assets/js/bootstrap.min.js"></script><script src="../../assets/js/baguetteBox.min.js"></script><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+</script><script src="../../assets/js/clipboard.min.js" type="text/javascript"></script><script src="../../assets/js/clipboard.js" type="text/javascript"></script>
+</body>
+</html>

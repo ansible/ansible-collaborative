@@ -1,0 +1,246 @@
+<h1>What's New with Cloud Automation with amazon.aws 6.0.0</h1>
+<p>When it comes to Amazon Web Services (AWS) infrastructure automation,
+the latest release of the certified
+<a href="https://console.redhat.com/ansible/automation-hub/repo/published/amazon/aws">amazon.aws</a>
+Collection for Red Hat Ansible Automation Platform brings a number of
+enhancements to improve the overall user experience and speed up the
+process from development to production.</p>
+<p>This blog post goes through changes and highlights what's new in the
+6.0.0 release of this Ansible Content Collection. We have included
+numerous bug fixes, features, and code quality improvements that further
+enhance the amazon.aws Collection. Let's go through some of them!</p>
+<h2>Forward-looking Changes</h2>
+<h3>New boto3/botocore Versioning</h3>
+<p>The amazon.aws Collection has dropped support for
+<code>botocore&lt;1.25.0</code> and <code>boto3&lt;1.22.0</code>. Most modules
+will continue to work with older versions of the AWS Software
+Development Kit (SDK), however, compatibility with older versions of the
+AWS SDK is not guaranteed and will not be tested. When using older
+versions of the AWS SDK, a warning will be displayed by Ansible. Check
+out the module
+<a href="https://docs.ansible.com/ansible/devel/collections/amazon/aws/index.html">documentation</a>
+for the minimum required version for each module. </p>
+<h3>New Python Support Policy</h3>
+<p>On July 30, 2022, AWS
+<a href="https://aws.amazon.com/blogs/developer/python-support-policy-updates-for-aws-sdks-and-tools/">announced</a>
+that the AWS Command Line Interface (AWS CLI) v1 and AWS SDK for Python
+(<a href="https://github.com/boto/boto3">boto3</a> and
+<a href="https://github.com/boto/botocore">botocore</a>), will no longer support
+Python 3.6. To continue supporting Red Hat's customers with secure and
+maintainable tools, we will be aligning with these deprecations and we
+will deprecate support for Python versions less than 3.7 by this
+collection. However, support for Python versions less than 3.7 by this
+collection will be removed in release 7.0.0. Additionally, support for
+Python versions less than 3.8 is expected to be removed in a release
+after 2024-12-01 based on currently available
+<a href="https://aws.amazon.com/blogs/developer/python-support-policy-updates-for-aws-sdks-and-tools/">schedules</a>.</p>
+<h2>Removed Features</h2>
+<p>The following features have been removed from this collection release.</p>
+<ul>
+<li><code>ec2_vpc_endpoint_info</code> - Support for the query parameter has been removed.
+  The <code>amazon.aws.ec2_vpc_endpoint_info</code> module now only queries for endpoints.
+  Services can be queried using the amazon.aws.ec2_vpc_endpoint_service_info module.</li>
+<li><code>s3_object</code> - Support for creating and deleting S3 buckets using the <code>amazon.aws.s3_object</code> module has been removed.
+  S3 buckets can be created and deleted using the <code>amazon.aws.s3_bucket</code> module.</li>
+</ul>
+<h2>Deprecated Features</h2>
+<p>This collection release also introduces some deprecations. For
+consistency between the collection and AWS documentation, the
+<code>boto3_profile</code> alias for the <code>profile</code> option has been
+deprecated. Please use <code>profile</code> instead.</p>
+<p>The <code>amazon.aws.s3_object</code> and <code>amazon.aws.s3_object_info</code>
+modules have also undergone several deprecations.</p>
+<ul>
+<li>Passing contemporarily <code>dualstack</code> and <code>endpoint_url</code> has been deprecated.
+    The <code>dualstack</code> parameter is ignored when <code>endpoint_url</code>  is passed.
+    Support will be removed in a release after 2024-12-01 .</li>
+<li>Support for passing values of <code>overwrite</code> other than <code>always</code>, <code>never</code>, <code>different</code> or <code>last</code> has been deprecated.
+    Boolean values should be replaced by the strings <code>always</code> or <code>never</code>.
+    Support will be removed in a release after 2024-12-01.</li>
+</ul>
+<h2>Code quality and CI improvement</h2>
+<p>Part of the effort in this release was dedicated to improving the
+quality of the collection's code. We have adopted several linting and
+formatting tools that help enforce coding conventions and best
+practices, with all code following the same style and standards. The
+linting tools help detect and flag code that may not be optimal, such as
+unused variables or functions, unnecessary loops or conditions, detect
+security vulnerabilities, and other inefficiencies. Formatting tools
+help to automatically format and style the code to ensure consistency
+and readability. </p>
+<p>Overall, this code quality improvement initiative aims to lead to more
+reliable, efficient and maintainable software that provides a better
+user experience and ultimately benefits both developers and end users.
+In addition, several plugins have undergone refactoring (e.g., removing
+duplicate code, simplifying complex logic and using design patterns
+where appropriate) to make the code more efficient and maintainable. We
+have also extended the coverage of unit tests so the code behaves as
+expected.</p>
+<p>This initiative does not stop here. We have also decided to move to
+GitHub actions for CI from Zuul. This decision helps us simplify the CI
+pipeline as it is natively integrated with GitHub and improves
+scalability, collaboration, workflow management and the efficiency of
+the development process.</p>
+<p>Because improving code quality is a continuous process that requires
+ongoing effort and attention, this work is ongoing and will be reflected
+in future releases.</p>
+<h2>Renamings</h2>
+<p>As naming might be generally tedious, a misleading module or option's
+name may complicate the user experience.</p>
+<p>We decided to rename the <code>amazon.aws.aws_secret</code> lookup plugin in this collection release.
+This decision is a follow up of the renaming initiative started in release 5.0.0 of this collection.
+Therefore, the <code>amazon.aws.aws_secret</code> module has been renamed to <code>amazon.aws.secretsmanager_secret</code>. </p>
+<p>We have also decided to rename the <code>amazon.aws.aws_ssm</code> lookup plugin to <code>amazon.aws.ssm_parameter</code>.</p>
+<p>However, <code>aws_secret</code> and <code>aws_ssm</code> remain as aliases and they will be deprecated in the future. </p>
+<p>For consistency amongst our plugins and modules, we renamed the following options:</p>
+<ul>
+<li><code>aws_profile</code> renamed to <code>profile</code> (<code>aws_profile</code> remains as an alias)</li>
+<li><code>aws_access_key</code> renamed to <code>access_key</code> (<code>aws_access_key</code> remains as an alias)</li>
+<li><code>aws_secret_key</code> renamed to <code>secret_key</code> (<code>aws_secret_key</code>  remains as an alias)</li>
+<li><code>aws_security_token</code> renamed to <code>security_token</code> (<code>aws_security_token</code> remains as an alias)</li>
+</ul>
+<p>These changes should not have observable effect for users outside the module/plugin documentation.</p>
+<h2>New Modules</h2>
+<p>This release brings a number of new base supported modules that
+implement AWS Backup capabilities. </p>
+<p>AWS Backup is a fully managed backup service that enables you to
+centralize and automate the backup of data across AWS services and
+on-premises applications,  eliminating the need for custom scripts and
+manual processes. </p>
+<p>With AWS Backup, you can create backup policies that define backup
+schedules and retention periods for your AWS resources, including Amazon
+EBS volumes, Amazon RDS databases, Amazon DynamoDB tables, Amazon EFS
+file systems, and Amazon EC2 instances. </p>
+<p>The following table highlights the functionalities covered by these new
+Red Hat supported modules:</p>
+<ul>
+<li><code>backup_restore_job_info</code> - Get detailed information about AWS Backup restore jobs initiated to restore a saved resource.</li>
+<li><code>backup_vault</code> - Manage AWS Backup vaults.</li>
+<li><code>backup_vault_info</code> - Get detailed information about an AWS Backup vault.</li>
+<li><code>backup_plan</code> - Manage AWS Backup plans.</li>
+<li><code>backup_plan_info</code> - Get detailed information about an AWS Backup Plan.</li>
+<li><code>backup_selection</code> - Manages AWS Backup selections.</li>
+<li><code>backup_selection_info</code> - Get detailed information about AWS Backup selections.</li>
+<li><code>backup_tag</code> - Manage tags on an  AWS backup plan, AWS backup vault, AWS recovery point.</li>
+<li><code>backup_tag_info</code> - List tags on AWS Backup resources.</li>
+</ul>
+<h3>Automate backups of your AWS resources with the new AWS Backup supported modules</h3>
+<p>In this example, I show you how to backup an RDS instance tagged <code>backup: "daily"</code>. This example can
+be extended to all currently supported resource types (e.g., EC2, EFS, EBS, DynamoDB) which are tagged with
+<code>backup: "daily"</code>. The following playbook shows the the steps necessary to achieve that:</p>
+<div class="code"><pre class="code literal-block"><span class="o">-</span><span class="w"> </span><span class="nx">name</span><span class="p">:</span><span class="w"> </span><span class="nx">Automated</span><span class="w"> </span><span class="nx">backups</span><span class="w"> </span><span class="nx">of</span><span class="w"> </span><span class="nx">your</span><span class="w"> </span><span class="nx">AWS</span><span class="w"> </span><span class="nx">resources</span><span class="w"> </span><span class="nx">with</span><span class="w"> </span><span class="nx">AWS</span><span class="w"> </span><span class="nx">Backup</span>
+<span class="w">  </span><span class="nx">hosts</span><span class="p">:</span><span class="w"> </span><span class="nx">localhost</span>
+<span class="w">  </span><span class="nx">gather_facts</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+
+
+<span class="w">  </span><span class="nx">tasks</span><span class="p">:</span>
+<span class="w">  </span><span class="o">-</span><span class="w"> </span><span class="nx">name</span><span class="p">:</span><span class="w"> </span><span class="nx">Create</span><span class="w"> </span><span class="nx">a</span><span class="w"> </span><span class="nx">mariadb</span><span class="w"> </span><span class="nx">instance</span><span class="w"> </span><span class="nx">tagged</span><span class="w"> </span><span class="nx">with</span><span class="w"> </span><span class="err">“</span><span class="nx">backup</span><span class="err">”</span><span class="p">;</span><span class="w"> </span><span class="err">“</span><span class="nx">daily</span><span class="err">”</span>
+<span class="w">     </span><span class="nx">amazon</span><span class="p">.</span><span class="nx">aws</span><span class="p">.</span><span class="nx">rds_instance</span><span class="p">:</span>
+<span class="w">       </span><span class="nx">id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;demo-backup-rdsinstance&quot;</span>
+<span class="w">       </span><span class="nx">state</span><span class="p">:</span><span class="w"> </span><span class="nx">present</span>
+<span class="w">       </span><span class="nx">engine</span><span class="p">:</span><span class="w"> </span><span class="nx">mariadb</span>
+<span class="w">       </span><span class="nx">username</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;</span><span class="nx">test</span><span class="err">&#39;</span>
+<span class="w">       </span><span class="nx">password</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;</span><span class="nx">test12345678</span><span class="err">&#39;</span>
+<span class="w">       </span><span class="nx">db_instance_class</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;</span><span class="nx">db</span><span class="p">.</span><span class="nx">t3</span><span class="p">.</span><span class="nx">micro</span><span class="err">&#39;</span>
+<span class="w">       </span><span class="nx">allocated_storage</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span>
+<span class="w">       </span><span class="nx">deletion_protection</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">       </span><span class="nx">tags</span><span class="p">:</span>
+<span class="w">         </span><span class="nx">backup</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;daily&quot;</span>
+<span class="w">     </span><span class="nx">register</span><span class="p">:</span><span class="w"> </span><span class="nx">result</span>
+
+
+<span class="w">   </span><span class="o">-</span><span class="w"> </span><span class="nx">name</span><span class="p">:</span><span class="w"> </span><span class="nx">Create</span><span class="w"> </span><span class="nx">an</span><span class="w"> </span><span class="nx">IAM</span><span class="w"> </span><span class="nx">Role</span><span class="w"> </span><span class="nx">that</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="nx">needed</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nx">AWS</span><span class="w"> </span><span class="nx">Backup</span>
+<span class="w">     </span><span class="nx">community</span><span class="p">.</span><span class="nx">aws</span><span class="p">.</span><span class="nx">iam_role</span><span class="p">:</span>
+<span class="w">       </span><span class="nx">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;backup-role&quot;</span>
+<span class="w">       </span><span class="nx">assume_role_policy_document</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;</span><span class="p">{{</span><span class="w"> </span><span class="nx">lookup</span><span class="p">(</span><span class="s">&quot;file&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;backup-policy.json&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">}}</span><span class="err">&#39;</span>
+<span class="w">       </span><span class="nx">create_instance_profile</span><span class="p">:</span><span class="w"> </span><span class="nx">no</span>
+<span class="w">       </span><span class="nx">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Ansible AWS Backup Role&quot;</span>
+<span class="w">       </span><span class="nx">managed_policy</span><span class="p">:</span>
+<span class="w">         </span><span class="o">-</span><span class="w"> </span><span class="s">&quot;arn:aws:iam::aws:policy/service-role/AWSBackupServiceRolePolicyForBackup&quot;</span>
+<span class="w">     </span><span class="nx">register</span><span class="p">:</span><span class="w"> </span><span class="nx">iam_role</span>
+
+
+<span class="w">   </span><span class="o">-</span><span class="w"> </span><span class="nx">name</span><span class="p">:</span><span class="w"> </span><span class="nx">Create</span><span class="w"> </span><span class="nx">an</span><span class="w"> </span><span class="nx">AWS</span><span class="w"> </span><span class="nx">Backup</span><span class="w"> </span><span class="nx">vault</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">plan</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">target</span>
+<span class="w">     </span><span class="err">#</span><span class="w"> </span><span class="nx">The</span><span class="w"> </span><span class="nx">AWS</span><span class="w"> </span><span class="nx">Backup</span><span class="w"> </span><span class="nx">vault</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">data</span><span class="w"> </span><span class="nx">store</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">backed</span><span class="w"> </span><span class="nx">up</span><span class="w"> </span><span class="nx">data</span><span class="p">.</span>
+<span class="w">     </span><span class="nx">amazon</span><span class="p">.</span><span class="nx">aws</span><span class="p">.</span><span class="nx">backup_vault</span><span class="p">:</span>
+<span class="w">       </span><span class="nx">backup_vault_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;demo-backup-vault&quot;</span>
+
+
+<span class="w">   </span><span class="o">-</span><span class="w"> </span><span class="nx">name</span><span class="p">:</span><span class="w"> </span><span class="nx">Get</span><span class="w"> </span><span class="nx">detailed</span><span class="w"> </span><span class="nx">information</span><span class="w"> </span><span class="nx">about</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">AWS</span><span class="w"> </span><span class="nx">Backup</span><span class="w"> </span><span class="nx">vault</span>
+<span class="w">     </span><span class="nx">amazon</span><span class="p">.</span><span class="nx">aws</span><span class="p">.</span><span class="nx">backup_vault_info</span><span class="p">:</span>
+<span class="w">       </span><span class="nx">backup_vault_names</span><span class="p">:</span>
+<span class="w">         </span><span class="o">-</span><span class="w"> </span><span class="s">&quot;demo-backup-vault&quot;</span>
+<span class="w">     </span><span class="nx">register</span><span class="p">:</span><span class="w"> </span><span class="nx">_info</span>
+
+
+<span class="w">   </span><span class="o">-</span><span class="w"> </span><span class="nx">name</span><span class="p">:</span><span class="w"> </span><span class="nx">Tag</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">AWS</span><span class="w"> </span><span class="nx">backup</span><span class="w"> </span><span class="nx">vault</span>
+<span class="w">     </span><span class="nx">amazon</span><span class="p">.</span><span class="nx">aws</span><span class="p">.</span><span class="nx">backup_tag</span><span class="p">:</span>
+<span class="w">       </span><span class="nx">resource</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{ _info.backup_vaults.backup_vault_arn }}&quot;</span>
+<span class="w">       </span><span class="nx">tags</span><span class="p">:</span>
+<span class="w">           </span><span class="nx">environment</span><span class="p">:</span><span class="w"> </span><span class="nx">test</span>
+
+
+<span class="w">   </span><span class="o">-</span><span class="w"> </span><span class="nx">name</span><span class="p">:</span><span class="w"> </span><span class="nx">Create</span><span class="w"> </span><span class="nx">an</span><span class="w"> </span><span class="nx">AWS</span><span class="w"> </span><span class="nx">Backup</span><span class="w"> </span><span class="nx">plan</span>
+<span class="w">     </span><span class="err">#</span><span class="w"> </span><span class="nx">A</span><span class="w"> </span><span class="nx">backup</span><span class="w"> </span><span class="nx">plan</span><span class="w"> </span><span class="nx">tells</span><span class="w"> </span><span class="nx">AWS</span><span class="w"> </span><span class="nx">Backup</span><span class="w"> </span><span class="nx">service</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">backup</span><span class="w"> </span><span class="nx">resources</span><span class="w"> </span><span class="nx">each</span><span class="w"> </span><span class="nx">day</span><span class="w"> </span><span class="nx">at</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="nx">o</span><span class="err">’</span><span class="nx">clock</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">morning</span><span class="p">.</span><span class="w"> </span><span class="nx">In</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">backup</span><span class="w"> </span><span class="nx">rules</span><span class="w"> </span><span class="nx">we</span><span class="w"> </span><span class="nx">specify</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">AWS</span><span class="w"> </span><span class="nx">Backup</span><span class="w"> </span><span class="nx">vault</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">target</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nx">storing</span><span class="w"> </span><span class="nx">recovery</span><span class="w"> </span><span class="nx">points</span><span class="p">.</span>
+<span class="w">     </span><span class="nx">amazon</span><span class="p">.</span><span class="nx">aws</span><span class="p">.</span><span class="nx">backup_plan</span><span class="p">:</span>
+<span class="w">       </span><span class="nx">backup_plan_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;demo-backup-plan&quot;</span>
+<span class="w">       </span><span class="nx">rules</span><span class="p">:</span>
+<span class="w">         </span><span class="o">-</span><span class="w"> </span><span class="nx">rule_name</span><span class="p">:</span><span class="w"> </span><span class="nx">daily</span>
+<span class="w">           </span><span class="nx">target_backup_vault_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;demo-backup-vault&quot;</span>
+<span class="w">           </span><span class="nx">schedule_expression</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;cron(0 5 ? * * *)&quot;</span>
+<span class="w">           </span><span class="nx">start_window_minutes</span><span class="p">:</span><span class="w"> </span><span class="mi">60</span>
+<span class="w">           </span><span class="nx">completion_window_minutes</span><span class="p">:</span><span class="w"> </span><span class="mi">1440</span>
+<span class="w">     </span><span class="nx">register</span><span class="p">:</span><span class="w"> </span><span class="nx">backup_plan_create_result</span>
+
+
+<span class="w">   </span><span class="o">-</span><span class="w"> </span><span class="nx">name</span><span class="p">:</span><span class="w"> </span><span class="nx">Get</span><span class="w"> </span><span class="nx">detailed</span><span class="w"> </span><span class="nx">information</span><span class="w"> </span><span class="nx">about</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">AWS</span><span class="w"> </span><span class="nx">Backup</span><span class="w"> </span><span class="nx">plan</span>
+<span class="w">     </span><span class="nx">amazon</span><span class="p">.</span><span class="nx">aws</span><span class="p">.</span><span class="nx">backup_plan_info</span><span class="p">:</span>
+<span class="w">       </span><span class="nx">backup_plan_names</span><span class="p">:</span>
+<span class="w">         </span><span class="o">-</span><span class="w"> </span><span class="s">&quot;demo-backup-plan&quot;</span>
+<span class="w">     </span><span class="nx">register</span><span class="p">:</span><span class="w"> </span><span class="nx">backup_plan_info_result</span>
+
+
+<span class="w">   </span><span class="o">-</span><span class="w"> </span><span class="nx">name</span><span class="p">:</span><span class="w"> </span><span class="nx">Create</span><span class="w"> </span><span class="nx">an</span><span class="w"> </span><span class="nx">AWS</span><span class="w"> </span><span class="nx">Backup</span><span class="w"> </span><span class="nx">selection</span>
+<span class="w">     </span><span class="err">#</span><span class="w"> </span><span class="nx">AWS</span><span class="w"> </span><span class="nx">Backup</span><span class="w"> </span><span class="nx">selection</span><span class="w"> </span><span class="nx">supports</span><span class="w"> </span><span class="nx">tag</span><span class="o">-</span><span class="nx">based</span><span class="w"> </span><span class="nx">resource</span><span class="w"> </span><span class="nx">selection</span><span class="p">.</span><span class="w"> </span><span class="nx">This</span><span class="w"> </span><span class="nx">means</span><span class="w"> </span><span class="nx">that</span><span class="w"> </span><span class="nx">resources</span><span class="w"> </span><span class="nx">that</span><span class="w"> </span><span class="nx">should</span><span class="w"> </span><span class="nx">be</span><span class="w"> </span><span class="nx">backed</span><span class="w"> </span><span class="nx">up</span><span class="w"> </span><span class="nx">by</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">AWS</span><span class="w"> </span><span class="nx">Backup</span><span class="w"> </span><span class="nx">plan</span><span class="w"> </span><span class="nx">needs</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">be</span><span class="w"> </span><span class="nx">tagged</span><span class="w"> </span><span class="nx">with</span><span class="w"> </span><span class="err">“</span><span class="nx">backup</span><span class="err">”</span><span class="p">:</span><span class="w"> </span><span class="err">“</span><span class="nx">daily</span><span class="err">”</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="nx">they</span><span class="w"> </span><span class="nx">are</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="nx">automatically</span><span class="w"> </span><span class="nx">backed</span><span class="w"> </span><span class="nx">up</span><span class="w"> </span><span class="nx">by</span><span class="w"> </span><span class="nx">AWS</span><span class="w"> </span><span class="nx">Backup</span><span class="p">.</span>
+<span class="w">     </span><span class="nx">amazon</span><span class="p">.</span><span class="nx">aws</span><span class="p">.</span><span class="nx">backup_selection</span><span class="p">:</span>
+<span class="w">      </span><span class="nx">selection_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;demo-backup-selection&quot;</span>
+<span class="w">      </span><span class="nx">backup_plan_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;demo-backup-plan&quot;</span>
+<span class="w">      </span><span class="nx">iam_role_arn</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{ iam_role.iam_role.arn }}&quot;</span>
+<span class="w">      </span><span class="nx">list_of_tags</span><span class="p">:</span>
+<span class="w">         </span><span class="o">-</span><span class="w"> </span><span class="nx">condition_type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;STRINGEQUALS&quot;</span>
+<span class="w">           </span><span class="nx">condition_key</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;backup&quot;</span>
+<span class="w">           </span><span class="nx">condition_value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;daily&quot;</span>
+<span class="w">     </span><span class="nx">register</span><span class="p">:</span><span class="w"> </span><span class="nx">backup_selection_create_result</span>
+
+
+<span class="w">   </span><span class="o">-</span><span class="w"> </span><span class="nx">name</span><span class="p">:</span><span class="w"> </span><span class="nx">Get</span><span class="w"> </span><span class="nx">detailed</span><span class="w"> </span><span class="nx">information</span><span class="w"> </span><span class="nx">about</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">AWS</span><span class="w"> </span><span class="nx">Backup</span><span class="w"> </span><span class="nx">selection</span>
+<span class="w">     </span><span class="nx">amazon</span><span class="p">.</span><span class="nx">aws</span><span class="p">.</span><span class="nx">backup_selection_info</span><span class="p">:</span>
+<span class="w">       </span><span class="nx">backup_plan_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;demo-backup-plan&quot;</span>
+</pre></div>
+
+<p>Once this playbook has finished the execution, AWS Backup will start to
+create daily backups of the resources tagged with
+<code>backup=daily</code>. You can
+monitor the status of the backup service demo on the AWS console. If we
+go to Jobs, we see some backup jobs that have already been completed. A
+backup job is the result of an AWS Backup plan rule and resource
+selection. It will attempt to backup the selected resources, within the
+time window defined in the backup plan rule.</p>
+<p><img alt="screenshot" src="/images/posts/archive/aws-backup-jobs.png"></p>
+<p>If we're taking a look at the AWS Backup vault we created, you can see
+it contains the recovery points of the RDS instance. A recovery point is
+either a snapshot or a point-in-time recovery backup. The data inside a
+recovery point cannot be edited. Tags and retention period can be
+changed if the backup vault allows it. You can use the recovery point to
+restore data.</p>
+<p><img alt="screenshot" src="aws-recovery-points.png"></p>
+<p>An AWS Backup restore job is used to restore data from backups taken
+with AWS Backup service. This release does not include the module that
+enables you to create an AWS backup restore job, but we are planning to
+include this feature in the future. However, in this release, we have
+included the <code>amazon.aws.backup_restore_job_info</code> module to get
+information about the restore job.</p>
+<div class="code"><pre class="code literal-block"><span class="x">- name: Get detailed information about the AWS Backup restore job</span>
+<span class="x">  amazon.aws.backup_restore_job_info:</span>
+<span class="x">    restore_job_id: &quot;</span><span class="cp">{{</span> <span class="nv">restore_job_id</span> <span class="cp">}}</span><span class="x">&quot;</span>
+</pre></div>

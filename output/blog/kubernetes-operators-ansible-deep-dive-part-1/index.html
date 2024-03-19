@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html prefix="
+og: http://ogp.me/ns# article: http://ogp.me/ns/article#
+" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="Part one of this series Senior Principal Software Engineer at Ansible, James Cammarata walks through Kubernetes Operators and writing Operators in Ansible">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kubernetes Operators with Ansible Deep Dive, Part 1 | Ansible Collaborative</title>
+<link href="../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/baguetteBox.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/rst.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/code.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/theme.css" rel="stylesheet" type="text/css">
+<!-- Red Hat fonts --><link rel="stylesheet" href="https://static.redhat.com/libs/redhat/redhat-font/2.0.0/webfonts/red-hat-font.css">
+<!-- Font Awesome --><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+<!-- Fork Awesome --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css" integrity="sha256-XoaMnoYC5TH6/+ihMEnospgm0J1PM/nioxbOUdnM8HY=" crossorigin="anonymous">
+<!-- Sass compiled css  --><link rel="stylesheet" href="../../assets/css/main.css">
+<link rel="stylesheet" href="../../assets/css/redhat-footer.css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://ansible.com/blog/kubernetes-operators-ansible-deep-dive-part-1/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="James Cammarata">
+<link rel="prev" href="../the-future-of-ansible-content-delivery/" title="The Future of Ansible Content Delivery" type="text/html">
+<link rel="next" href="../kubernetes-operators-ansible-deep-dive-part-2/" title="Kubernetes Operators with Ansible Deep Dive, Part 2" type="text/html">
+<meta property="og:site_name" content="Ansible Collaborative">
+<meta property="og:title" content="Kubernetes Operators with Ansible Deep Dive, Part 1">
+<meta property="og:url" content="https://ansible.com/blog/kubernetes-operators-ansible-deep-dive-part-1/">
+<meta property="og:description" content="Part one of this series Senior Principal Software Engineer at Ansible, James Cammarata walks through Kubernetes Operators and writing Operators in Ansible">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-07-25T00:00:00Z">
+</head>
+<body id="top">
+
+<div class="global-container" id="content" role="main">
+<!-- Start menubar -->
+<nav class="navbar navbar-expand-lg static-top mb-4 navbar-padding full-width-bg   navbar-dark   bg-pool   "><div class="masthead">
+    <!-- This keeps the margins nice -->
+    <a class="navbar-brand" href="../../">
+        <img src="../../images/ansible_logo-small-15.png" alt="Ansible community logo" id="logo" class="d-inline-block align-top" width="50" height="50"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon nav-toggle-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="bs-navbar">
+      <ul class="navbar-nav mr-auto"></ul>
+<ul class="navbar-nav navbar-right">
+<li class="nav-item dropdown">
+	        <a href="#" class="nav-link nav-link-color dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <i class=""></i> Documentation
+                </a>
+		<div class="dropdown-menu dropdown-menu-border">
+	    
+                    <a href="https://docs.ansible.com/" class="dropdown-item">
+		        <i class=""></i> Project documentation
+                    </a>
+                    <a href="https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/" class="dropdown-item">
+		        <i class=""></i> Ansible Automation Platform documentation
+                    </a>
+            </div>
+                 </li>
+<li class="nav-item">
+		     <a href="https://galaxy.ansible.com/" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Galaxy
+		     </a>
+		 </li>
+                 <li class="nav-item">
+		     <a href="https://forum.ansible.com/" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Forum
+		     </a>
+		 </li>
+            <li class="nav-item dropdown">
+	        <a href="#" class="nav-link nav-link-color dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <i class=""></i> Resources
+                </a>
+		<div class="dropdown-menu dropdown-menu-border">
+	    
+                    <a href="../../how-ansible-works/" class="dropdown-item">
+		        <i class=""></i> How Ansible works
+                    </a>
+                    <a href="../../ecosystem/" class="dropdown-item">
+		        <i class=""></i> Ansible ecosystem
+                    </a>
+                    <a href="../archive.html" class="dropdown-item">
+		        <i class=""></i> Blog
+                    </a>
+                    <a href="../../faq/" class="dropdown-item">
+		        <i class=""></i> Frequently asked questions
+                    </a>
+                    <a href="../../ansible-community-training/" class="dropdown-item">
+		        <i class=""></i> Ansible community training
+                    </a>
+                    <a href="../../contact-us/" class="dropdown-item">
+		        <i class=""></i> Contact us
+                    </a>
+            </div>
+                 </li>
+<li class="nav-item">
+		     <a href="https://www.redhat.com/en/technologies/management/ansible?sc_cid=7015Y000003szaKQAQ" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Ansible Automation Platform
+		     </a>
+		 </li>
+
+        
+      </ul>
+</div>
+    <!-- /.navbar-collapse -->
+  </div>
+  <!-- /.container -->
+</nav><!-- End default Menubar --><div class="body-content center-band">
+        <!--Body content-->
+        
+  <article class="post-text h-entry hentry postpage ansible-content" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Kubernetes Operators with Ansible Deep Dive, Part 1</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard p-author h-card"><span class="byline-name fn p-name" itemprop="author">
+                    <a class="u-url" href="../../authors/james-cammarata/">James Cammarata</a>
+            </span></p>
+            <p class="dateline">
+            <a href="." rel="bookmark">
+            <time class="published dt-published" datetime="2019-07-25T00:00:00Z" itemprop="datePublished" title="2019-07-25 00:00">2019-07-25 00:00</time></a>
+            </p>
+                    <p class="sourceline"><a href="index.md" class="sourcelink">Source</a></p>
+
+        </div>
+        
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+<h2>Kubernetes Operators with Ansible Deep Dive, Part 1</h2>
+<p>This deep dive series assumes the reader has access to a Kubernetes test
+environment. A tool like minikube is an acceptable platform for the
+purposes of this article. If you are an existing Red Hat customer,
+another option is spinning up an OpenShift cluster
+through <a href="https://cloud.redhat.com/">cloud.redhat.com</a>. This
+SaaS portal makes trying OpenShift a turnkey operation.</p>
+<p>In this part of this deep dive series, we'll:</p>
+<ol>
+<li>Take a look at operators overall, and what they do in OpenShift/Kubernetes.</li>
+<li>Take a quick look at the Operator SDK, and why you'd want to use an Ansible operator rather than other kinds of operators provided by the SDK.</li>
+<li>And finally, how Ansible Operators are structured and the relevant files created by the Operator SDK.</li>
+</ol>
+<h3>What Are Operators?</h3>
+<p>For those who may not be very familiar with Kubernetes, it is, in its
+most simplistic description - a resource manager. Users specify how much
+of a given resource they want and Kubernetes manages those resources to
+achieve the state the user specified. These resources can be pods (which
+contain one or more containers), persistent volumes, or even custom
+resources defined by users.</p>
+<p>This makes Kubernetes useful for managing resources that don't contain
+any state (like pods of web servers or load balancing resources).
+However, Kubernetes doesn't provide any built-in logic for managing
+resources like databases or caches which are stateful and sensitive to
+restarts. Operators were created to bridge this gap by providing a way
+for users to specify a piece of code (traditionally written in Golang)
+tied to <a href="https://docs.openshift.com/container-platform/4.1/applications/crds/crd-extending-api-with-crds.html">custom resource definitions</a>
+in Kubernetes.</p>
+<p>Operators were so named because they allow you to embed your operational logic of an application into an automated manager running on Kubernetes/OpenShift.</p>
+<h3>The Operator SDK, and a quick overview of Ansible Operators</h3>
+<p>Red Hat created the <a href="https://blog.openshift.com/introducing-the-operator-framework/%26sa=D%26ust=1563546779219000">Operator Framework</a>
+to make the job of creating and managing operators easier across their full
+lifetime. As part of the framework, the Operator SDK is tasked with
+creating and building operators in an automated manner for users. Over
+time it has grown to add several operator types. In 2018, we began work
+on adding the Ansible Operator type to the SDK. We want to make it
+easier to build operators in Kubernetes environments based on Ansible.</p>
+<h4>Why use Ansible for Operators?</h4>
+<p>At first, operators were written in Golang. This immediately sets the
+bar somewhat high for anyone who wants to write an operator --- someone
+has to know a relatively low-level programming language to get started.
+On top of this, you must also be familiar with Kubernetes internals,
+such as the API and how events are generated for resources.</p>
+<p>The Ansible Operator was created to address this short-coming. The
+Ansible Operator consists of two main pieces:</p>
+<ol>
+<li>A small chunk of Golang code, which handles the interface between Kubernetes/OpenShift and the operator.</li>
+<li>A container, which receives events from the above code and runs Ansible Playbooks as required.</li>
+</ol>
+<p>That's it! The Ansible and Operator SDK abstract away all of the
+difficult parts of writing an operator and allows you to focus on what
+matters --- managing your applications. If you already have a large base
+of Ansible knowledge in your organization, you can immediately begin
+managing applications using Ansible Operator. A further added bonus of
+using Ansible for your operators is that you immediately have access to
+any module that Ansible can run. This allows folks to incorporate
+off-cluster management tasks related to your application. For example:</p>
+<ol>
+<li>Creating DNS entries for your newly deployed applications</li>
+<li>Spinning up resources external to your cluster, such as storage or
+    networking</li>
+<li>More easily do off-site backups to external cloud services</li>
+<li>Manage external load balancing based on custom metrics</li>
+</ol>
+<p>There are a number of possibilities that Kubernetes Operators written with Ansible can provide a potential solution for.</p>
+<h3>Creating a Kubernetes Operator with Ansible from scratch</h3>
+<p>First, <a href="https://github.com/operator-framework/operator-sdk/blob/master/doc/user/install-operator-sdk.md">install the Operator SDK</a>
+following their instructions. Once the install is complete, we can create a new operator with the following command:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>operator-sdk<span class="w"> </span>new<span class="w"> </span>test-operator<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--api-version<span class="o">=</span>test.ansible-operator.com/v1<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--kind<span class="o">=</span>Test<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--type<span class="o">=</span>ansible
+
+INFO<span class="o">[</span><span class="m">0000</span><span class="o">]</span><span class="w"> </span>Creating<span class="w"> </span>new<span class="w"> </span>Ansible<span class="w"> </span>operator<span class="w"> </span><span class="s1">'test-operator'</span>.
+...
+INFO<span class="o">[</span><span class="m">0000</span><span class="o">]</span><span class="w"> </span>Project<span class="w"> </span>creation<span class="w"> </span>complete.
+
+$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>test-operator/
+</pre></div>
+
+<h3>Kubernetes Operator with Ansible structure and files</h3>
+<p>[Now that we have our Operator skeleton, let's take a look at some of
+the main files used when deploying Operators in general, as well as what
+the Ansible Operator type generated specifically. These are the:</p>
+<ol>
+<li>
+<code>watches.yaml</code> file.</li>
+<li>
+<code>build</code> directory.</li>
+<li>
+<code>deploy</code> directory.</li>
+<li>
+<code>roles</code> directory.</li>
+</ol>
+<p>One other directory is present here as well: the molecule directory,
+which contains files to automate testing your roles/playbooks
+using <a href="https://molecule.readthedocs.io/en/stable/%26sa=D%26ust=1563546779225000">Molecule</a>.
+We will not be covering the use of Molecule here it's noted for the sake
+of being complete.</p>
+<p>If you run <code>ls -l</code> in the above <code>test-operator</code> directory, you see these files/directories there after creating the new operator skeleton.</p>
+<h4>The watches.yaml file</h4>
+<p>This file is used by the Ansible Operator to tell Kubernetes/OpenShift
+which custom resources (based on the Group/Version/Kind fields) the
+operator is responsible in handling. It is the glue that ties our custom
+code to the Kubernetes API:</p>
+<div class="code"><pre class="code literal-block"><span class="nn">---</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
+<span class="w">  </span><span class="nt">group</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">test.ansible-operator.com</span>
+<span class="w">  </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Test</span>
+<span class="w">  </span><span class="nt">role</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/opt/ansible/roles/test</span>
+</pre></div>
+
+<p>specifying any other playbook boilerplate. However if you are running
+more than one role in your operator you can change that line to be:</p>
+<div class="code"><pre class="code literal-block">playbook:<span class="w"> </span>/opt/ansible/playbook.yaml
+</pre></div>
+
+<p>Also, you'll need to tweak the <code>build/Dockerfile</code> (more on this below) to
+copy the playbook into the container so add this line:</p>
+<div class="code"><pre class="code literal-block">COPY<span class="w"> </span>playbook.yaml<span class="w"> </span><span class="si">${</span><span class="nv">HOME</span><span class="si">}</span>/playbook.yaml
+</pre></div>
+
+<p>You would then create the specified playbook in the same directory as
+the <code>watches.yaml</code> file.</p>
+<h4>The build directory</h4>
+<p>This directory contains a few files related to building the operator
+artifact. Because operators are just another application to
+OpenShift/Kubernetes, this artifact is a container built using
+a <code>Dockerfile</code>. The other files here are related to testing via Molecule, which we are not
+going to cover in this blog series.</p>
+<p>The <code>Dockerfile</code> is very simple, so we won't delve into it much other than to say it is based on
+the ansible-operator image from <a href="https://quay.io/%26sa=D%26ust=1563546779229000">quay.io</a>, and copies the roles and watches.yml file into
+the container image.</p>
+<h4>The deploy directory</h4>
+<p>This directory contains YAML files for deploying the operator into
+OpenShift/K8s using the <code>oc</code> CLI commands.</p>
+<p>The CustomResourceDefinition (CRD) and CustomResource (CR) are defined
+in the <code>deploy/crds/</code> directory. The CRD is what
+the <code>watches.yaml</code> file references, meaning
+all instances (CRs) of this definition will be controlled by our operator.</p>
+<p>The CRD is defined in <code>deploy/crds/test_v1_test_crd.yaml</code> and is mostly boilerplate
+for OpenShift/Kubernetes:</p>
+<div class="code"><pre class="code literal-block"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">apiextensions.k8s.io/v1beta1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CustomResourceDefinition</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tests.test.ansible-operator.com</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+</pre></div>
+
+<p>You can see the operator-sdk command above filled in most of these
+fields with the values we specified. By themselves, CRDs are not very
+useful, you need actual instances of what they define --- this is what
+CustomResources do. Our CustomResource (CR) is defined
+in <code>deploy/crds/test_v1_test_cr.yaml</code>, and is relatively short
+(compared to the other YAML files, anyway):</p>
+<div class="code"><pre class="code literal-block"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">test.ansible-operator.com/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Test</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">example-test</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
+</pre></div>
+
+<p>Each of the values set under the spec entry become variables passed into
+Ansible as extra variables. Using these, we can customize the behavior
+of our operator. The default example creates an entry named size, which
+we can use in our roles to dynamically scale the application our
+operator is managing.</p>
+<p>The <code>deploy/role.yaml</code> and <code>deploy/role_binding.yaml</code>
+(not shown), define some RBAC controls which give your login access to
+manage the custom resources defined above. Role Based Access Control
+(RBAC) is not covered in this post, so again we're just mentioning them
+for completeness.</p>
+<p>Finally, the <code>deploy/operator.yaml</code>:</p>
+<div class="code"><pre class="code literal-block"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">apps/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Deployment</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">test-operator</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+</pre></div>
+
+<p>This file is quite long, but mainly it creates a new Deployment
+resource in OpenShift/Kubernetes, which helps ensure that our operator
+stays up and running.</p>
+<h4>The roles directory</h4>
+<p>This is the directory where you place any roles you wish to include
+with your operator, and should be familiar to experienced Ansible users.
+As noted above, this directory is copied completely into the Ansible
+Operator container, and roles here can be referenced in the <code>watches.yaml</code>
+file or other playbooks you include.</p>
+<p>Roles commonly use the <code>k8s</code> module (included in Red
+Hat Ansible Automation since the 2.6 release) to manage resources on the
+cluster. If you are familiar with Kubernetes resource files, this module
+will be very intuitive (the YAML from a resource file can be copy/pasted
+directly as the input to this module). To learn more, you can read the
+documentation for the k8s module here:</p>
+<p><a href="https://docs.ansible.com/ansible/latest/modules/k8s_module.html%26sa=D%26ust=1563546779234000">https://docs.ansible.com/ansible/latest/modules/k8s_module.html</a></p>
+<h3>Summary</h3>
+<p>This concludes our deep dive into operators, Operator SDK, and Ansible
+Operator creation and structure. Operators written using Ansible give
+you the power of operators in general, while allowing you to leverage
+preexisting Ansible expertise to quickly get up to speed on deploying
+applications on OpenShift or Kubernetes.</p>
+</div>
+    <aside class="postpromonav"><nav><ul class="pager hidden-print">
+<li class="previous">
+                <a href="../the-future-of-ansible-content-delivery/" rel="prev" title="The Future of Ansible Content Delivery">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../kubernetes-operators-ansible-deep-dive-part-2/" rel="next" title="Kubernetes Operators with Ansible Deep Dive, Part 2">Next post</a>
+            </li>
+        </ul></nav></aside></article><!--End of body content-->
+</div>
+        <div class="content-slim redhat-footer">
+      <div class="footer-left">
+        <ul class="footer-left-links">
+<li>
+            <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-SA 4.0</a>
+          </li>
+          <li>
+            <a href="https://www.redhat.com/en/about/privacy-policy" target="_blank">Privacy policy</a>
+          </li>
+          <li>
+            <a href="https://docs.ansible.com/ansible/latest/community/code_of_conduct.html" target="_blank">Code of conduct</a>
+          </li>
+        </ul>
+</div>
+      <div class="footer-right">
+        <span class="redhat">Powered by</span>
+        <span class="redhat-logo">
+          <a href="https://www.redhat.com/en/technologies/management/ansible" target="_blank">
+            <img src="../../assets/images/redhat_reversed.svg" alt="Red Hat logo." width="96" height="28"></a>
+        </span>
+      </div>
+    </div>
+
+</div>
+
+            <script src="../../assets/js/jquery.min.js"></script><script src="../../assets/js/popper.min.js"></script><script src="../../assets/js/bootstrap.min.js"></script><script src="../../assets/js/baguetteBox.min.js"></script><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+</script><script src="../../assets/js/clipboard.min.js" type="text/javascript"></script><script src="../../assets/js/clipboard.js" type="text/javascript"></script>
+</body>
+</html>

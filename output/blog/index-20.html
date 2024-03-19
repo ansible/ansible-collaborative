@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html prefix="
+og: http://ogp.me/ns# article: http://ogp.me/ns/article#
+" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="Ansible Collaborative Website">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ansible Collaborative (old posts, page 20) | Ansible Collaborative</title>
+<link href="../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="../assets/css/baguetteBox.min.css" rel="stylesheet" type="text/css">
+<link href="../assets/css/rst.css" rel="stylesheet" type="text/css">
+<link href="../assets/css/code.css" rel="stylesheet" type="text/css">
+<link href="../assets/css/theme.css" rel="stylesheet" type="text/css">
+<!-- Red Hat fonts --><link rel="stylesheet" href="https://static.redhat.com/libs/redhat/redhat-font/2.0.0/webfonts/red-hat-font.css">
+<!-- Font Awesome --><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+<!-- Fork Awesome --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css" integrity="sha256-XoaMnoYC5TH6/+ihMEnospgm0J1PM/nioxbOUdnM8HY=" crossorigin="anonymous">
+<!-- Sass compiled css  --><link rel="stylesheet" href="../assets/css/main.css">
+<link rel="stylesheet" href="../assets/css/redhat-footer.css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../rss.xml">
+<link rel="canonical" href="https://ansible.com/blog/index-20.html">
+<link rel="prev" href="index-21.html" type="text/html">
+<link rel="next" href="index-19.html" type="text/html">
+<!--[if lt IE 9]><script src="../assets/js/html5.js"></script><![endif]-->
+</head>
+<body id="top">
+
+<div class="global-container" id="content" role="main">
+<!-- Start menubar -->
+<nav class="navbar navbar-expand-lg static-top mb-4 navbar-padding full-width-bg   navbar-dark   bg-pool   "><div class="masthead">
+    <!-- This keeps the margins nice -->
+    <a class="navbar-brand" href="../">
+        <img src="../images/ansible_logo-small-15.png" alt="Ansible community logo" id="logo" class="d-inline-block align-top" width="50" height="50"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon nav-toggle-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="bs-navbar">
+      <ul class="navbar-nav mr-auto"></ul>
+<ul class="navbar-nav navbar-right">
+<li class="nav-item dropdown">
+	        <a href="#" class="nav-link nav-link-color dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <i class=""></i> Documentation
+                </a>
+		<div class="dropdown-menu dropdown-menu-border">
+	    
+                    <a href="https://docs.ansible.com/" class="dropdown-item">
+		        <i class=""></i> Project documentation
+                    </a>
+                    <a href="https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/" class="dropdown-item">
+		        <i class=""></i> Ansible Automation Platform documentation
+                    </a>
+            </div>
+                 </li>
+<li class="nav-item">
+		     <a href="https://galaxy.ansible.com/" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Galaxy
+		     </a>
+		 </li>
+                 <li class="nav-item">
+		     <a href="https://forum.ansible.com/" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Forum
+		     </a>
+		 </li>
+            <li class="nav-item dropdown">
+	        <a href="#" class="nav-link nav-link-color dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <i class=""></i> Resources
+                </a>
+		<div class="dropdown-menu dropdown-menu-border">
+	    
+                    <a href="../how-ansible-works/" class="dropdown-item">
+		        <i class=""></i> How Ansible works
+                    </a>
+                    <a href="../ecosystem/" class="dropdown-item">
+		        <i class=""></i> Ansible ecosystem
+                    </a>
+                    <a href="archive.html" class="dropdown-item">
+		        <i class=""></i> Blog
+                    </a>
+                    <a href="../faq/" class="dropdown-item">
+		        <i class=""></i> Frequently asked questions
+                    </a>
+                    <a href="../ansible-community-training/" class="dropdown-item">
+		        <i class=""></i> Ansible community training
+                    </a>
+                    <a href="../contact-us/" class="dropdown-item">
+		        <i class=""></i> Contact us
+                    </a>
+            </div>
+                 </li>
+<li class="nav-item">
+		     <a href="https://www.redhat.com/en/technologies/management/ansible?sc_cid=7015Y000003szaKQAQ" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Ansible Automation Platform
+		     </a>
+		 </li>
+
+        
+      </ul>
+</div>
+    <!-- /.navbar-collapse -->
+  </div>
+  <!-- /.container -->
+</nav><!-- End default Menubar --><div class="body-content center-band">
+        <!--Body content-->
+        
+    
+  <div class="postindex ansible-content">
+      <article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title">
+            <a href="bullhorn-87/" class="u-url">Bullhorn #87</a>
+          </h1>
+          <div class="metadata">
+            <p class="byline author vcard">
+              <span class="byline-name fn" itemprop="author">
+                  <a href="../authors/ansible-collaborative-et-al/">Ansible Collaborative, et al</a>
+              </span>
+            </p>
+            <p class="dateline">
+              <a href="bullhorn-87/" rel="bookmark">
+                <time class="published dt-published" datetime="2023-01-12T00:45:00Z" itemprop="datePublished" title="2023-01-12 00:45">2023-01-12 00:45</time></a>
+            </p>
+          </div>
+        </header><div class="p-summary entry-summary">
+            <div>
+<p><img alt="Ansible Bullhorn banner" src="../images/bullhorn-banner-mango.png"></p>
+<p><em>A Newsletter for the Ansible Developer Community</em>
+<em>Issue #87, 2023-01-11 (<a href="https://us19.campaign-archive.com/home/?u=56d874e027110e35dea0e03c1&amp;id=d6635f5420">Past Issues</a>)</em></p>
+<p>Welcome to <a href="https://github.com/ansible/community/wiki/News#the-bullhorn">The Bullhorn</a>, our newsletter for the Ansible developer community. If you have any questions or content you’d like to share, you're welcome to chat with us in the <a href="https://matrix.to/#/#social:ansible.com">Ansible Social room on Matrix</a>, and mention <a href="https://matrix.to/#/@newsbot:ansible.im"><code>newsbot</code></a> to have your news item tagged for review for the next weekly issue!</p>
+</div>
+          </div>
+      </article><br><hr>
+<br><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title">
+            <a href="bullhorn-86/" class="u-url">Bullhorn #86</a>
+          </h1>
+          <div class="metadata">
+            <p class="byline author vcard">
+              <span class="byline-name fn" itemprop="author">
+                  <a href="../authors/ansible-collaborative-et-al/">Ansible Collaborative, et al</a>
+              </span>
+            </p>
+            <p class="dateline">
+              <a href="bullhorn-86/" rel="bookmark">
+                <time class="published dt-published" datetime="2022-12-24T00:45:00Z" itemprop="datePublished" title="2022-12-24 00:45">2022-12-24 00:45</time></a>
+            </p>
+          </div>
+        </header><div class="p-summary entry-summary">
+            <div>
+<p><img alt="Ansible Bullhorn banner" src="../images/bullhorn-banner-mango.png"></p>
+<p><em>A Newsletter for the Ansible Developer Community</em>
+<em>Issue #86, 2022-12-23 (<a href="https://us19.campaign-archive.com/home/?u=56d874e027110e35dea0e03c1&amp;id=d6635f5420">Past Issues</a>)</em></p>
+<p>Welcome to <a href="https://github.com/ansible/community/wiki/News#the-bullhorn">The Bullhorn</a>, our newsletter for the Ansible developer community. If you have any questions or content you’d like to share, you're welcome to chat with us in the <a href="https://matrix.to/#/#social:ansible.com">Ansible Social room on Matrix</a>, and mention <a href="https://matrix.to/#/@newsbot:ansible.im"><code>newsbot</code></a> to have your news item tagged for review for the next issue!</p>
+</div>
+          </div>
+      </article><br><hr>
+<br><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title">
+            <a href="bullhorn-85/" class="u-url">Bullhorn #85</a>
+          </h1>
+          <div class="metadata">
+            <p class="byline author vcard">
+              <span class="byline-name fn" itemprop="author">
+                  <a href="../authors/ansible-collaborative-et-al/">Ansible Collaborative, et al</a>
+              </span>
+            </p>
+            <p class="dateline">
+              <a href="bullhorn-85/" rel="bookmark">
+                <time class="published dt-published" datetime="2022-12-16T00:35:00Z" itemprop="datePublished" title="2022-12-16 00:35">2022-12-16 00:35</time></a>
+            </p>
+          </div>
+        </header><div class="p-summary entry-summary">
+            <div>
+<p><img alt="Ansible Bullhorn banner" src="../images/bullhorn-banner-mango.png"></p>
+<p><em>A Newsletter for the Ansible Developer Community</em>
+<em>Issue #85, 2022-12-15 (<a href="https://us19.campaign-archive.com/home/?u=56d874e027110e35dea0e03c1&amp;id=d6635f5420">Past Issues</a>)</em></p>
+<p>Welcome to <a href="https://github.com/ansible/community/wiki/News#the-bullhorn">The Bullhorn</a>, our newsletter for the Ansible developer community. If you have any questions or content you’d like to share, you're welcome to chat with us in the <a href="https://matrix.to/#/#social:ansible.com">Ansible Social room on Matrix</a>, and mention <a href="https://matrix.to/#/@newsbot:ansible.im"><code>newsbot</code></a> to have your news item tagged for review for the next weekly issue!</p>
+</div>
+          </div>
+      </article><br><hr>
+<br><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title">
+            <a href="creating-custom-rules-for-ansible-lint/" class="u-url">Creating Custom Rules for Ansible Lint</a>
+          </h1>
+          <div class="metadata">
+            <p class="byline author vcard">
+              <span class="byline-name fn" itemprop="author">
+                  <a href="../authors/vineeth-reddy-katuru/">Vineeth Reddy Katuru</a>
+              </span>
+            </p>
+            <p class="dateline">
+              <a href="creating-custom-rules-for-ansible-lint/" rel="bookmark">
+                <time class="published dt-published" datetime="2022-12-15T00:00:00Z" itemprop="datePublished" title="2022-12-15 00:00">2022-12-15 00:00</time></a>
+            </p>
+          </div>
+        </header><div class="p-summary entry-summary">
+            <h2>Creating Custom Rules for Ansible Lint</h2>
+<h3>What is Ansible Lint?</h3>
+<p>Ansible Lint is a command-line tool, part of the
+<a href="https://github.com/ansible/ansible-lint">ansible-lint upstream community project</a>,
+for linting of Ansible Playbooks, Roles, and Collections. Ok, so what
+exactly is "linting?" Its fundamental objective is to promote proven
+behaviors, patterns, and practices while avoiding typical traps that can
+quickly result in errors or make code more difficult to maintain. That
+is - leverage community recommendations and opinions in writing Ansible
+content by means of a tool to help ensure what you're writing is
+generally valid.</p>
+<p>Additionally, Ansible Lint is designed to assist users in updating
+their code to function with more recent Ansible versions. Even though
+the version of Ansible being used in production can be an older version
+of ansible-core, we advise utilizing it with the most recent
+version.</p>
+<p>Ansible Lint is opinionated just like any other linter. However,
+because community members contributed to its rules, each user has the
+option to enable or disable them on an individual or category
+basis.</p>
+<h3>Why should I use Ansible Lint?</h3>
+<p>The goal of Ansible Lint is to flag
+programming errors, bugs, stylistic errors and suspicious constructs and
+also ensure that content created by different
+people has a similar look and feel. This makes the adoption and use of
+Ansible content easier in the community, and by extension, the
+enterprise. By keeping the number of configurable features at a minimum,
+authors can achieve more consistent outcomes.</p>
+<p>Ansible Lint should be considered a trusted advisor to Ansible content
+creators, helping them write and package higher quality Ansible content.
+While not all rules may be applicable in all situations, they should be
+followed whenever possible.</p>
+<p>In 2022, additional rules have been added to help content creators
+ready their content for production. With <code>ansible-lint</code>
+and these rules, developers can have confidence that their playbooks,
+roles, and task files are easy to understand and produce consistent
+results, whether deployed  on servers in a home lab, or mission-critical
+systems in the cloud.</p>
+<p>Adopting Ansible Lint will save time by focusing on the quality of the
+content and less so on the nuances of formatting and style. As code
+formatting is not an art, we can save  time and effort on a project by
+applying a standardized code style and formatting.</p>
+<h3>Guidelines to add new rule</h3>
+<p>Multiple rules may be added based on the requirements. Adding a new rule
+should combine implementation, testing and documentation. </p>
+<p>Some guidelines to create a new Ansible Lint rule include the following:</p>
+<ul>
+<li>Use a short but clear class name, which must match the filename.</li>
+<li>Pick an unused ID; the first number is used to determine the rule section.
+    Refer to the rules page and pick one that matches the best your new rule and see which one fits best.</li>
+<li>Include experimental tags.
+    Any new rule must stay as experimental for at least two weeks until this tag is removed in the next major release.</li>
+<li>Update all class level variables.</li>
+<li>Implement linting methods needed by your rule, these are the ones starting with match prefix.
+    Implement only those you need. For the moment you will need to look at how similar rules were implemented to figure out what to do.</li>
+<li>Update the tests. It must have at least one test and likely also a negative match one.</li>
+<li>If the rule is task specific, it may be best to include a test to verify its use inside blocks as well.</li>
+<li>Optionally run only the rule specific tests with a command like: <code>tox -e py38-core -- -k NewRule</code>
+</li>
+<li>Run tox in order to run all ansible-lint tests. Adding a new rule can break some other tests. Update them if needed.</li>
+<li>Run <code>ansible-lint -L</code> and check that the rule description renders correctly.</li>
+<li>Build the documentation using the <code>tox -e docs</code> command and check that the new rule is displayed correctly in them.</li>
+</ul>
+<p>Here is a reference example <a href="https://github.com/ansible/ansible-lint/blob/main/src/ansiblelint/rules/meta_no_tags.py">MetaTagValidRule</a>
+that may be useful to create new rules.</p>
+<h3>Creating Custom Rules</h3>
+<p>Rules are described using a class file per rule. For example, default
+rules are named <code>DeprecatedVariableRule.py</code>, etc.</p>
+<p>Each rule definition should have the following:</p>
+<ul>
+<li>ID: A unique identifier.</li>
+<li>Short description: Brief description of the rule.</li>
+<li>Description: What the rule is looking for.</li>
+<li>Tags: One or more tags that may be used to include or exclude the rule.</li>
+<li>At least one of the following methods:<ul>
+<li>Match that takes a line and returns none or false; if the line
+    doesn't match the test, and true or a custom message, when it
+    does. (This allows one rule to test multiple behaviors - see
+    e.g. the CommandsInsteadOfModulesRule.)</li>
+<li>Matchtask that operates on a single task or handler, such that
+    tasks get standardized to always contain a module key and
+    module_arguments key. Other common task modifiers, such as when,
+    with_items, etc., are also available as keys, if present in the
+    task.</li>
+</ul>
+</li>
+</ul>
+<p>An example rule using <code>match</code> is:</p>
+<div class="code"><pre class="code literal-block"><span class="kn">from</span> <span class="nn">ansiblelint.rules</span> <span class="kn">import</span> <span class="n">AnsibleLintRule</span>
+<span class="k">class</span> <span class="nc">DeprecatedVariableRule</span><span class="p">(</span><span class="n">AnsibleLintRule</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Deprecated variable declarations."""</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="s1">'EXAMPLE002'</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="s1">'Check for lines that have old style $</span><span class="si">{var}</span><span class="s1"> '</span> <span class="o">+</span> \ <span class="s1">'declarations'</span>
+    <span class="n">tags</span> <span class="o">=</span> <span class="p">{</span> <span class="s1">'deprecations'</span> <span class="p">}</span>
+    <span class="k">def</span> <span class="nf">match</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="s1">'${'</span> <span class="ow">in</span> <span class="n">line</span>
+</pre></div>
+
+<p>An example rule using <code>matchtask</code> is:</p>
+<div class="code"><pre class="code literal-block"><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">import</span> <span class="nn">ansiblelint.utils</span>
+<span class="kn">from</span> <span class="nn">ansiblelint.rules</span> <span class="kn">import</span> <span class="n">AnsibleLintRule</span>
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">ansiblelint.file_utils</span> <span class="kn">import</span> <span class="n">Lintable</span>
+<span class="k">class</span> <span class="nc">TaskHasTag</span><span class="p">(</span><span class="n">AnsibleLintRule</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Tasks must have tag."""</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="s1">'EXAMPLE001'</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="s1">'Tasks must have tag'</span>
+    <span class="n">tags</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'productivity'</span><span class="p">]</span>
+    <span class="k">def</span> <span class="nf">matchtask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">file</span><span class="p">:</span> <span class="s1">'Lintable'</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="c1"># If the task include another task or make the playbook fail</span>
+        <span class="c1"># Don't force to have a tag</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">set</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="o">.</span><span class="n">isdisjoint</span><span class="p">([</span><span class="s1">'include'</span><span class="p">,</span><span class="s1">'fail'</span><span class="p">]):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="c1"># Task should have tags</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">task</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="s1">'tags'</span><span class="p">):</span>
+              <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span>
+</pre></div>
+
+<p>The task argument to matchtask contains a number of keys - the critical
+one is action. The value of task <code>action</code> contains the module being
+used, and the arguments passed, both as key-value pairs and a list of
+other arguments (e.g. the command used with shell).</p>
+<p>In ansible-lint 2.0.0, task <code>action</code> <code>args</code> was renamed
+task <code>action</code> <code>module_arguments</code> to avoid a clash when a
+module actually takes args as a parameter key (e.g. ec2_tag)</p>
+<p>In ansible-lint 3.0.0 task <code>action module</code> was renamed
+task <code>action __ansible_module__</code> to avoid a clash when a
+module takes a module as an argument. As a precaution,
+task <code>action module_arguments</code> was renamed
+task <code>action __ansible_arguments__</code>.</p>
+<h3>Packaging Custom Rules</h3>
+<p>The ansible-lint provides a sub directory named custom in its built-in
+rules, <code>/usr/lib/python3.8/site-packages/ansiblelint/rules/custom/</code> for
+example, to install custom rules since v4.3.1. The custom rules, which
+are packaged as a Python package installed into this directory, will be
+loaded and enabled automatically by ansible-lint.</p>
+<p>To make custom rules loaded automatically, you need the following:</p>
+<ul>
+<li>Packaging your custom rules as a Python package named some descriptive ones like <code>ansible_lint_custom_rules_foo</code>.</li>
+<li>Install it into <code>&lt;ansible_lint_custom_rules_dir&gt;/custom/&lt;your_custom_rules_subdir&gt;</code>.</li>
+</ul>
+<p>You may accomplish the second by adding some configurations into the
+<code>[options]</code> section of the <code>setup.cfg</code> of your custom rules python package
+like the following:</p>
+<div class="code"><pre class="code literal-block"><span class="k">[options]</span>
+<span class="na">packages</span><span class="w"> </span><span class="o">=</span>
+<span class="w">    </span><span class="na">ansiblelint.rules.custom.&lt;your_custom_rules_subdir&gt;</span>
+<span class="na">Package_dir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">ansiblelint.rules.custom.&lt;your_custom_rules_subdir&gt; = &lt;your_rules_source_code_subdir&gt;</span>
+</pre></div>
+
+<h3>Getting Started and Next Steps with Ansible Lint</h3>
+<h4>Where is the repo?</h4>
+<p>Ansible repository is open source code, which you can find on GitHub:</p>
+<p>https://github.com/ansible/ansible-lint</p>
+<h4>Any resources/documentation?</h4>
+<p>Full, in-depth upstream community documentation of Ansible Lint can be found at:</p>
+<p>https://ansible-lint.readthedocs.io/</p>
+<h4>How to contribute</h4>
+<p>As ansible-lint is open source, anyone in the community can also contribute new rules to the project.</p>
+<p>Here are the steps that everyone should follow:</p>
+<ul>
+<li>First create pull requests on a branch of your own fork.</li>
+<li>After creating your fork on GitHub, do the following at the command-line:</li>
+</ul>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>git<span class="w"> </span>clone<span class="w"> </span>git@github.com:your-name/ansible-lint
+$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>ansible-lint
+$<span class="w"> </span>git<span class="w"> </span>checkout<span class="w"> </span>-b<span class="w"> </span>your-branch-name
+<span class="c1"># DO SOME CODING HERE</span>
+$<span class="w"> </span>git<span class="w"> </span>add<span class="w"> </span>your<span class="w"> </span>new<span class="w"> </span>files
+$<span class="w"> </span>git<span class="w"> </span>commit<span class="w"> </span>-v
+$<span class="w"> </span>git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>your-branch-name
+</pre></div>
+          </div>
+      </article><br><hr>
+<br><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title">
+            <a href="bullhorn-84/" class="u-url">Bullhorn #84</a>
+          </h1>
+          <div class="metadata">
+            <p class="byline author vcard">
+              <span class="byline-name fn" itemprop="author">
+                  <a href="../authors/ansible-collaborative-et-al/">Ansible Collaborative, et al</a>
+              </span>
+            </p>
+            <p class="dateline">
+              <a href="bullhorn-84/" rel="bookmark">
+                <time class="published dt-published" datetime="2022-12-12T08:00:00Z" itemprop="datePublished" title="2022-12-12 08:00">2022-12-12 08:00</time></a>
+            </p>
+          </div>
+        </header><div class="p-summary entry-summary">
+            <div>
+<p><img alt="Ansible Bullhorn banner" src="../images/bullhorn-banner-mango.png"></p>
+<p><em>A Newsletter for the Ansible Developer Community</em>
+<em>Issue #84, 2022-12-09 (<a href="https://us19.campaign-archive.com/home/?u=56d874e027110e35dea0e03c1&amp;id=d6635f5420">Past Issues</a>)</em></p>
+<p>Welcome to <a href="https://github.com/ansible/community/wiki/News#the-bullhorn">The Bullhorn</a>, our newsletter for the Ansible developer community. If you have any questions or content you’d like to share, you're welcome to chat with us in the <a href="https://matrix.to/#/#social:ansible.com">Ansible Social room on Matrix</a>, and mention <a href="https://matrix.to/#/@newsbot:ansible.im"><code>newsbot</code></a> to have your news item tagged for review for the next weekly issue!</p>
+</div>
+          </div>
+      </article><br><hr>
+<br><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title">
+            <a href="bullhorn-83/" class="u-url">Bullhorn #83</a>
+          </h1>
+          <div class="metadata">
+            <p class="byline author vcard">
+              <span class="byline-name fn" itemprop="author">
+                  <a href="../authors/ansible-collaborative-et-al/">Ansible Collaborative, et al</a>
+              </span>
+            </p>
+            <p class="dateline">
+              <a href="bullhorn-83/" rel="bookmark">
+                <time class="published dt-published" datetime="2022-12-03T03:00:00Z" itemprop="datePublished" title="2022-12-03 03:00">2022-12-03 03:00</time></a>
+            </p>
+          </div>
+        </header><div class="p-summary entry-summary">
+            <div>
+<p><img alt="Ansible Bullhorn banner" src="../images/bullhorn-banner-mango.png"></p>
+<p><em>A Newsletter for the Ansible Developer Community</em>
+<em>Issue #83, 2022-12-02 (<a href="https://us19.campaign-archive.com/home/?u=56d874e027110e35dea0e03c1&amp;id=d6635f5420">Past Issues</a>)</em></p>
+<p>Welcome to <a href="https://github.com/ansible/community/wiki/News#the-bullhorn">The Bullhorn</a>, our newsletter for the Ansible developer community. If you have any questions or content you’d like to share, you're welcome to chat with us in the <a href="https://matrix.to/#/#social:ansible.com">Ansible Social room on Matrix</a>, and mention <a href="https://matrix.to/#/@newsbot:ansible.im"><code>newsbot</code></a> to have your news item tagged for review for the next weekly issue!</p>
+</div>
+          </div>
+      </article><br><hr>
+<br><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title">
+            <a href="walking-on-clouds-with-ansible/" class="u-url">Walking on Clouds with Ansible</a>
+          </h1>
+          <div class="metadata">
+            <p class="byline author vcard">
+              <span class="byline-name fn" itemprop="author">
+                  <a href="../authors/nuno-martins/">Nuno Martins</a>
+              </span>
+            </p>
+            <p class="dateline">
+              <a href="walking-on-clouds-with-ansible/" rel="bookmark">
+                <time class="published dt-published" datetime="2022-11-28T00:00:00Z" itemprop="datePublished" title="2022-11-28 00:00">2022-11-28 00:00</time></a>
+            </p>
+          </div>
+        </header><div class="p-summary entry-summary">
+            <h2>Walking on Clouds with Ansible</h2>
+<p>Today is a good day, and when it's a day like this we often feel like
+we are walking on clouds. With this latest announcement for the newest
+Red Hat Ansible Certified Collections available to our customers on the
+28th of November, I am sure many cloud practitioners will be
+anticipating what the future will bring for their cloud automation. </p>
+<p>Over the last few months, there has been a fair amount of activity in
+the Ansible team showing how Red Hat Ansible Automation Platform can
+extend and connect different technologies. This has been a crucial
+component of Ansible's success in cloud automation for many customers.</p>
+<p><img alt="cloud automation uses diagram" src="../images/posts/archive/cloud-automation-uses.png"></p>
+<p>Cloud automation requires the ability to perform many different
+complicated tasks and cover just as many domains. Often, organizations
+have different technologies to meet specific requirements and needs. One
+of the technologies widely used is Terraform.  </p>
+<p>We have done a number of blogs recently on the topic, ranging from a
+simple example of using Terraform with Ansible Automation Platform,
+to in-depth looks at the differences between the tools.
+AnsibleFest 2022 even featured a lab where we got to work with Terraform
+through automation controller, allowing us to centralize the
+provisioning and de-provisioning of cloud infrastructure with Terraform
+while running post-provisioning configuration through Ansible.</p>
+<p>Traditionally the modules used to work with Terraform have come from the
+community, however, with the greater demand for an official Collection
+with the backing of Red Hat support, we have announced cloud.terraform,
+a Red Hat Ansible Certified Collection for Terraform. </p>
+<h3>So what is the cloud.terraform collection?</h3>
+<p>This Collection is available on Ansible automation hub as of today and
+allows for the management and provisioning of cloud infrastructure as
+code with Terraform within an automation execution environment. The
+Collection currently contains two modules and example roles to assist
+you in bringing your Terraform workloads onto Ansible Automation
+Platform in a certified and supported way. </p>
+<p>These modules allow Ansible to apply Terraform plans as well as to
+provision and deprovision infrastructure. Currently, we support <strong>AWS</strong>,
+<strong>Azure</strong>, and <strong>Google Cloud</strong> as providers for Terraform and we
+support <strong>azurerm</strong>, <strong>gcs,</strong> and <strong>s3</strong> as backends. One important note
+is that we do not support the local backend for Terraform, and there are
+two reasons for this.  Firstly, many practitioners of Terraform agree
+that using the local backend is not a best practice to follow in
+production, and secondly, since we trigger automation from execution
+environments, the local backend storage is not persistent or the same
+with each execution. </p>
+<p>Let us have a look at what module usage will look like in an Ansible
+Playbook:</p>
+<p><strong>Module:</strong> <strong>cloud.terraform.terraform</strong></p>
+<p>This replaces the current community.general.terraform module for general
+functionality.</p>
+<div class="code"><pre class="code literal-block"><span class="x">… example:</span>
+
+<span class="x">- name: Apply plan</span>
+<span class="x">  cloud.terraform.terraform:</span>
+<span class="x">    project_path: "</span><span class="cp">{{</span> <span class="nv">repo_dir</span> <span class="cp">}}</span><span class="x">"</span>
+<span class="x">    plan_file: "</span><span class="cp">{{</span> <span class="nv">plan_file</span> <span class="cp">}}</span><span class="x">"</span>
+<span class="x">    state: present  # applying a plan doesn't have a switch for this</span>
+<span class="x">    # optional config</span>
+<span class="x">    state_file: "</span><span class="cp">{{</span> <span class="nv">terraform_options.state_file</span> <span class="o">|</span> <span class="nf">default</span><span class="o">(</span><span class="nv">omit</span><span class="o">)</span> <span class="cp">}}</span><span class="x">"</span>
+<span class="x">    force_init: "</span><span class="cp">{{</span> <span class="nv">terraform_options.force_init</span> <span class="o">|</span> <span class="nf">default</span><span class="o">(</span><span class="nv">omit</span><span class="o">)</span> <span class="cp">}}</span><span class="x">"</span>
+<span class="x">    binary_path: "</span><span class="cp">{{</span> <span class="nv">terraform_options.binary_path</span> <span class="o">|</span> <span class="nf">default</span><span class="o">(</span><span class="nv">omit</span><span class="o">)</span> <span class="cp">}}</span><span class="x">"</span>
+<span class="x">    plugin_paths: "</span><span class="cp">{{</span> <span class="nv">terraform_options.plugin_paths</span> <span class="o">|</span> <span class="nf">default</span><span class="o">(</span><span class="nv">omit</span><span class="o">)</span> <span class="cp">}}</span><span class="x">"</span>
+<span class="x">    workspace: "</span><span class="cp">{{</span> <span class="nv">terraform_options.workspace</span> <span class="o">|</span> <span class="nf">default</span><span class="o">(</span><span class="nv">omit</span><span class="o">)</span> <span class="cp">}}</span><span class="x">"</span>
+<span class="x">    lock: "</span><span class="cp">{{</span> <span class="nv">terraform_options.lock</span> <span class="o">|</span> <span class="nf">default</span><span class="o">(</span><span class="nv">omit</span><span class="o">)</span> <span class="cp">}}</span><span class="x">"</span>
+<span class="x">    lock_timeout: "</span><span class="cp">{{</span> <span class="nv">terraform_options.lock_timeout</span> <span class="o">|</span> <span class="nf">default</span><span class="o">(</span><span class="nv">omit</span><span class="o">)</span> <span class="cp">}}</span><span class="x">"</span>
+<span class="x">    parallelism: "</span><span class="cp">{{</span> <span class="nv">terraform_options.parallelism</span> <span class="o">|</span> <span class="nf">default</span><span class="o">(</span><span class="nv">omit</span><span class="o">)</span> <span class="cp">}}</span><span class="x">"</span>
+</pre></div>
+
+<p><strong>Module:</strong> <strong>cloud.terraform.output</strong></p>
+<p>This module allows us to extract values from Terraform state files and
+allows you to store them as facts.</p>
+<div class="code"><pre class="code literal-block"><span class="err">…</span><span class="w"> </span><span class="n">example</span><span class="p">:</span>
+
+<span class="o">-</span><span class="w"> </span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="n">Read</span><span class="w"> </span><span class="n">outputs</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="n">file</span>
+<span class="w">  </span><span class="n">cloud</span><span class="o">.</span><span class="n">terraform</span><span class="o">.</span><span class="n">terraform_output</span><span class="p">:</span>
+<span class="w">    </span><span class="n">state_file</span><span class="p">:</span><span class="w"> </span><span class="s2">"{{ state_file }}"</span>
+<span class="w">  </span><span class="n">register</span><span class="p">:</span><span class="w"> </span><span class="n">terraform_output_state_file</span>
+<span class="w">  </span><span class="n">when</span><span class="p">:</span><span class="w"> </span><span class="n">state_file</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">defined</span>
+
+<span class="o">-</span><span class="w"> </span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="n">Add</span><span class="w"> </span><span class="n">hosts</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="n">terraform_output</span>
+<span class="w">  </span><span class="n">ansible</span><span class="o">.</span><span class="n">builtin</span><span class="o">.</span><span class="n">add_host</span><span class="p">:</span>
+<span class="w">   </span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="s2">"{{ item[mapping_variables.name] }}"</span>
+<span class="w">    </span><span class="n">groups</span><span class="p">:</span><span class="w"> </span><span class="s2">"{{ item[mapping_variables.group] }}"</span>
+<span class="w">    </span><span class="n">ansible_host</span><span class="p">:</span><span class="w"> </span><span class="s2">"{{ item[mapping_variables.ip] }}"</span>
+<span class="w">    </span><span class="n">ansible_user</span><span class="p">:</span><span class="w"> </span><span class="s2">"{{ item[mapping_variables.user] }}"</span>
+<span class="w">  </span><span class="n">loop</span><span class="p">:</span><span class="w"> </span><span class="s2">"{{ terraform_output.outputs[mapping_variables.host_list].value }}"</span>
+<span class="w">  </span><span class="n">vars</span><span class="p">:</span>
+<span class="w">    </span><span class="n">terraform_output</span><span class="p">:</span><span class="w"> </span><span class="s2">"{{ (terraform_output_project_path is success) | ternary(terraform_output_project_path,</span>
+<span class="n">terraform_output_state_file</span><span class="p">)</span><span class="w"> </span><span class="p">}}</span><span class="err">”</span>
+</pre></div>
+
+<p>In addition to these modules, the Collection also includes two example
+roles to retrieve project files from Git repositories as well as a role
+to create the in-memory inventory in the above example. </p>
+<h3>Ansible Automation Platform with Terraform, but why?</h3>
+<p>Although both Ansible and Terraform can provision infrastructure and
+cloud workloads, many customers find themselves using Terraform for its
+ease of use with infrastructure as code, however, after provisioning
+there is a gap in the Terraform tooling. Being able to use Ansible
+allows us to address this and bring a fully automated workflow with both
+tools. This also means that customers who have spent time and money
+building their Terraform manifests do not need to replace Terraform but
+rather allow Ansible Automation Platform to orchestrate the provisioning
+as well as configuration management. These tools are better together! </p>
+<p><img alt="tooling diagram" src="../images/posts/archive/github-platform-terraform.png"></p>
+<p>This is just the beginning, but great things are coming!</p>
+          </div>
+      </article><br><hr>
+<br><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title">
+            <a href="bullhorn-82/" class="u-url">Bullhorn #82</a>
+          </h1>
+          <div class="metadata">
+            <p class="byline author vcard">
+              <span class="byline-name fn" itemprop="author">
+                  <a href="../authors/ansible-collaborative-et-al/">Ansible Collaborative, et al</a>
+              </span>
+            </p>
+            <p class="dateline">
+              <a href="bullhorn-82/" rel="bookmark">
+                <time class="published dt-published" datetime="2022-11-25T01:00:00Z" itemprop="datePublished" title="2022-11-25 01:00">2022-11-25 01:00</time></a>
+            </p>
+          </div>
+        </header><div class="p-summary entry-summary">
+            <div>
+<p><img alt="Ansible Bullhorn banner" src="../images/bullhorn-banner-mango.png"></p>
+<p><em>A Newsletter for the Ansible Developer Community</em>
+<em>Issue #82, 2022-11-24 (<a href="https://us19.campaign-archive.com/home/?u=56d874e027110e35dea0e03c1&amp;id=d6635f5420">Past Issues</a>)</em></p>
+<p>Welcome to <a href="https://github.com/ansible/community/wiki/News#the-bullhorn">The Bullhorn</a>, our newsletter for the Ansible developer community. If you have any questions or content you’d like to share, you're welcome to chat with us in the <a href="https://matrix.to/#/#social:ansible.com">Ansible Social room on Matrix</a>, and mention <a href="https://matrix.to/#/@newsbot:ansible.im"><code>newsbot</code></a> to have your news item tagged for review for the next weekly issue!</p>
+</div>
+          </div>
+      </article><br><hr>
+<br><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title">
+            <a href="bullhorn-81/" class="u-url">Bullhorn #81</a>
+          </h1>
+          <div class="metadata">
+            <p class="byline author vcard">
+              <span class="byline-name fn" itemprop="author">
+                  <a href="../authors/ansible-collaborative-et-al/">Ansible Collaborative, et al</a>
+              </span>
+            </p>
+            <p class="dateline">
+              <a href="bullhorn-81/" rel="bookmark">
+                <time class="published dt-published" datetime="2022-11-12T06:45:00Z" itemprop="datePublished" title="2022-11-12 06:45">2022-11-12 06:45</time></a>
+            </p>
+          </div>
+        </header><div class="p-summary entry-summary">
+            <div>
+<p><img alt="Ansible Bullhorn banner" src="../images/bullhorn-banner-mango.png"></p>
+<p><em>A Newsletter for the Ansible Developer Community</em>
+<em>Issue #81, 2022-11-11 (<a href="https://us19.campaign-archive.com/home/?u=56d874e027110e35dea0e03c1&amp;id=d6635f5420">Past Issues</a>)</em></p>
+<p>Welcome to <a href="https://github.com/ansible/community/wiki/News#the-bullhorn">The Bullhorn</a>, our newsletter for the Ansible developer community. If you have any questions or content you’d like to share, you're welcome to chat with us in the <a href="https://matrix.to/#/#social:ansible.com">Ansible Social room on Matrix</a>, and mention <a href="https://matrix.to/#/@newsbot:ansible.im"><code>newsbot</code></a> to have your news item tagged for review for the next weekly issue!</p>
+</div>
+          </div>
+      </article><br><hr>
+<br><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title">
+            <a href="find-and-delete-servicenow-records-en-masse-with-the-updated-ansible-content-collection/" class="u-url">Find and delete ServiceNow records en masse with the updated Ansible Content Collection</a>
+          </h1>
+          <div class="metadata">
+            <p class="byline author vcard">
+              <span class="byline-name fn" itemprop="author">
+                  <a href="../authors/colin-mcnaughton/">Colin McNaughton</a>
+              </span>
+            </p>
+            <p class="dateline">
+              <a href="find-and-delete-servicenow-records-en-masse-with-the-updated-ansible-content-collection/" rel="bookmark">
+                <time class="published dt-published" datetime="2022-11-07T00:00:00Z" itemprop="datePublished" title="2022-11-07 00:00">2022-11-07 00:00</time></a>
+            </p>
+          </div>
+        </header><div class="p-summary entry-summary">
+            <h2>Find and delete ServiceNow records en masse with the updated Ansible Content Collection</h2>
+<p>Have you ever had to query and remove a long list of ServiceNow records?
+Yeah, neither have I until recently. Nobody broke into my instance, and
+this isn't a one-time operation, I just happen to maintain an instance
+that we use to test our Red Hat Ansible Certified Content Collection
+for ServiceNow ITSM. </p>
+<p>To set up the environment, I use a demo system and another workflow to
+create a random user and then allow a learner to progress through some
+challenges using full Red Hat Ansible Automation Platform deployments
+and a shared ServiceNow instance. Because this is a real live instance,
+there's no telling what sort of records learners will create. For this
+reason, I recently had to develop some automation to clean up records
+created by these demo user accounts.</p>
+<p>Although my use-case was to clean up demo user accounts, this could just
+as well have been a critical ServiceNow instance that had erroneous
+records that needed cleaning up. This Collection can be leveraged to
+create, update, modify, or delete just about anything on ServiceNow.</p>
+<p>If you're following along, make sure you install a version of the
+servicenow.itsm Collection equal to or greater than 2.0.0 (Community on
+<a href="https://galaxy.ansible.com/servicenow/itsm">Ansible Galaxy</a> |
+Certified on <a href="https://console.redhat.com/ansible/automation-hub/servicenow/itsm">Ansible automation
+hub</a>).</p>
+<h3>How did I do it?</h3>
+<h4>Using sys_tags</h4>
+<p>I have a tag setup in ServiceNow that gets applied to everything these
+demo users create. I like this approach because tag creation and
+auto-application of tags is something that can be limited to accounts
+with elevated permissions. The tag is applied to any records created by
+users as a part of my hands-on lab, and helps me to locate and clean up
+anything those particular users created. First, I need to grab the
+sys_id (this is like a global ID of a particular record) of the tag. For
+this, I leverage the API module shipped in the servicenow.itsm
+Collection against ServiceNow's label table:</p>
+<div class="code"><pre class="code literal-block"><span class="x">- name: Find tag ID by name</span>
+<span class="x">  servicenow.itsm.api_info:</span>
+<span class="x">    resource: label</span>
+<span class="x">    sysparm_query: name=</span><span class="cp">{{</span> <span class="nv">tag_name</span> <span class="cp">}}</span>
+<span class="x">      columns:</span>
+<span class="x">        - name</span>
+<span class="x">        - sys_id</span>
+<span class="x">  register: tag_info</span>
+</pre></div>
+
+<p>Once I have located the appropriate tag by name, I can query the
+incident table for active records that have that tag applied:</p>
+<div class="code"><pre class="code literal-block"><span class="x">- name: Get tagged incidents</span>
+<span class="x">  servicenow.itsm.incident_info:</span>
+<span class="x">    sysparm_query:</span>
+<span class="x">    sys_tags.</span><span class="cp">{{</span> <span class="nv">tag_info.record</span><span class="o">[</span><span class="m">0</span><span class="o">]</span><span class="nv">.sys_id</span> <span class="cp">}}</span><span class="x">=</span><span class="cp">{{</span> <span class="nv">tag_info.record</span><span class="o">[</span><span class="m">0</span><span class="o">]</span><span class="nv">.sys_id</span> <span class="cp">}}</span>
+<span class="x">    ^active=true</span>
+<span class="x">    sysparm_display_value: false</span>
+<span class="x">  register: incidents</span>
+</pre></div>
+
+<p><em>What's</em> sysparm_display_value<em>?</em> Fair enough, good question. This
+parameter instructs my query to return the actual values, and not the
+display values. Display values vary depending on the type of field, and,
+in this case, sys_tags does not include the name of the tag returned by
+the query. Setting this parameter to false means that this query returns
+the actual value. </p>
+<p>After querying all active records in the incident table that have that
+tag applied and registering the output as a variable called incidents, I
+wanted to simplify things by creating an array of objects that contain
+incident numbers and the date/time they were opened:</p>
+<div class="code"><pre class="code literal-block"><span class="x">- name: query incident number and creation time</span>
+<span class="x">  ansible.builtin.set_fact:</span>
+<span class="x">    incident_list: '</span><span class="cp">{{</span> <span class="nv">incident_list</span> <span class="o">+</span> <span class="o">[{</span><span class="s2">"number"</span><span class="o">:</span> <span class="nv">item.number</span><span class="o">,</span> <span class="s2">"opened_at"</span><span class="o">:</span> <span class="nv">item.opened_at</span><span class="o">}]</span> <span class="cp">}}</span><span class="x">'</span>
+<span class="x">  loop: "</span><span class="cp">{{</span> <span class="nv">incidents.json.result</span> <span class="cp">}}</span><span class="x">"</span>
+<span class="x">  when: incidents</span>
+</pre></div>
+
+<p>Each object in the array should look something like:</p>
+<div class="code"><pre class="code literal-block"><span class="k">-</span> number: INC00001234
+  opened_at: 2022-04-26 18:34:16
+</pre></div>
+
+<p>For my use case, having the time the record was created is super useful.
+I don't really want to destroy records that were created less than two
+hours ago. After all, I don't want to remove records in use by learners
+progressing through my challenges.</p>
+<p>The last task is to take my list of incidents, and remove them if
+they're over two hours old. For this, I use the
+servicenow.itsm.incident module and some conditional check against the
+record creation time:</p>
+<div class="code"><pre class="code literal-block"><span class="x">- name: close old incidents from list</span>
+<span class="x">  servicenow.itsm.incident:</span>
+<span class="x">    state: closed</span>
+<span class="x">    number: "</span><span class="cp">{{</span> <span class="nv">item.number</span> <span class="cp">}}</span><span class="x">"</span>
+<span class="x">    close_code: "Solved (Permanently)"</span>
+<span class="x">    close_notes: "Closed with ansible servicenow.itsm"</span>
+<span class="x">  loop: "</span><span class="cp">{{</span> <span class="nv">incident_list</span> <span class="cp">}}</span><span class="x">"</span>
+<span class="x">  when:</span>
+<span class="x">    - incident_list is defined</span>
+<span class="x">    - (( (ansible_date_time.date + ' ' + ansible_date_time.time) | to_datetime) - (item.opened_at | to_datetime)).total_seconds() &gt; 7200</span>
+</pre></div>
+
+<p><strong>See that second line under</strong> <strong>when?</strong> It's not super pretty, but
+it's basically making sure that the two time formats are the same
+before trying to evaluate the difference in seconds between the two
+dates. The first date/time is current execution time, the second
+date/time is the time the record was created. If the difference is
+greater than two hours (7200 seconds), then the condition is true, the
+task continues and the record is closed.</p>
+<h4>Without using sys_tags</h4>
+<p>What if I didn't have tags automatically applied to all of these
+records? In that case, I can query records by other keys using
+<code>servicenow.itsm.*_info</code> modules. For instance, I can query and close
+all active incident records created by a specific user:</p>
+<div class="code"><pre class="code literal-block"><span class="x">- name: find user created incidents</span>
+<span class="x">  servicenow.itsm.incident_info:</span>
+<span class="x">    query:</span>
+<span class="x">        - sys_created_by: = </span><span class="cp">{{</span> <span class="nv">username</span> <span class="cp">}}</span>
+<span class="x">        active: = true</span>
+<span class="x">  register: incidents</span>
+
+<span class="x">- name: query incident number and creation time</span>
+<span class="x">  ansible.builtin.set_fact:</span>
+<span class="x">    incident_list: '</span><span class="cp">{{</span> <span class="nv">incident_list</span> <span class="o">+</span> <span class="o">[{</span><span class="s2">"number"</span><span class="o">:</span> <span class="nv">item.number</span><span class="o">,</span> <span class="s2">"opened_at"</span><span class="o">:</span> <span class="nv">item.opened_at</span><span class="o">}]</span> <span class="cp">}}</span><span class="x">'</span>
+<span class="x">  loop: "</span><span class="cp">{{</span> <span class="nv">incidents.records</span> <span class="cp">}}</span><span class="x">"</span>
+<span class="x">  when: incidents</span>
+
+<span class="x">- name: close incidents from list</span>
+<span class="x">  servicenow.itsm.incident:</span>
+<span class="x">    state: closed</span>
+<span class="x">    number: "</span><span class="cp">{{</span> <span class="nv">item.number</span> <span class="cp">}}</span><span class="x">"</span>
+<span class="x">    close_code: "Solved (Permanently)"</span>
+<span class="x">    close_notes: "Closed with ansible servicenow.itsm"</span>
+<span class="x">    other:</span>
+<span class="x">      active: false</span>
+<span class="x">  loop: "</span><span class="cp">{{</span> <span class="nv">incident_list</span> <span class="cp">}}</span><span class="x">"</span>
+<span class="x">  when:</span>
+<span class="x">    - incident_list is defined</span>
+</pre></div>
+
+<h3>Completing the picture</h3>
+<p>I have tasks that do similar things for different record types like
+problems, change requests, etc., but they all follow the same pattern as
+tasks shown above. I arrange these tasks in a workflow within automation
+controller that executes each day to keep this ServiceNow instance tidy.</p>
+<p>The 2.0.0 release of servicenow.itsm made all of these tasks much easier
+by introducing performance improvements and new API modules to perform
+operations on arbitrary tables. For instance, perhaps you'd like to
+attach a role to a user. That is super easy by leveraging the API module
+against the sys_user_has_role table:</p>
+<div class="code"><pre class="code literal-block"><span class="x">- name: attach role to new user</span>
+<span class="x">  servicenow.itsm.api:</span>
+<span class="x">    resource: sys_user_has_role</span>
+<span class="x">    action: post</span>
+<span class="x">    data:</span>
+<span class="x">      user: "</span><span class="cp">{{</span> <span class="nv">username</span> <span class="cp">}}</span><span class="x">"</span>
+<span class="x">      role: "</span><span class="cp">{{</span> <span class="nv">role</span> <span class="cp">}}</span><span class="x">"</span>
+</pre></div>
+
+<p>Boom!</p>
+<p>This is probably a non-standard operation. Why would you normally need
+to destroy or close out records in your organization's source of truth?
+I'm not sure! What I do know is that extending your organization's
+automation strategy to other mainstay ITSM processes is made so much
+easier by leveraging Ansible Automation Platform and the Red Hat Ansible
+Certified Content Collection for ServiceNow ITSM.</p>
+<h3>Anything else?</h3>
+<p>Yeah! Did you know there is a place to get hands-on experience with
+Ansible Automation Platform right
+<a href="https://www.redhat.com/en/engage/redhat-ansible-automation-202108061218">HERE</a>?
+That is where you'll find my ServiceNow automation challenges that walk
+through the functionality of the Collection I leverage to keep my
+instance tidy and CMDB up to date.</p>
+          </div>
+      </article><br><hr>
+<br>
+</div>
+          <ul class="pager postindexpager clearfix">
+<li class="previous"><a href="index-21.html" rel="prev">Newer posts</a></li>
+            <li class="next"><a href="index-19.html" rel="next">Older posts</a></li>
+        </ul>
+<!--End of body content-->
+</div>
+        <div class="content-slim redhat-footer">
+      <div class="footer-left">
+        <ul class="footer-left-links">
+<li>
+            <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-SA 4.0</a>
+          </li>
+          <li>
+            <a href="https://www.redhat.com/en/about/privacy-policy" target="_blank">Privacy policy</a>
+          </li>
+          <li>
+            <a href="https://docs.ansible.com/ansible/latest/community/code_of_conduct.html" target="_blank">Code of conduct</a>
+          </li>
+        </ul>
+</div>
+      <div class="footer-right">
+        <span class="redhat">Powered by</span>
+        <span class="redhat-logo">
+          <a href="https://www.redhat.com/en/technologies/management/ansible" target="_blank">
+            <img src="../assets/images/redhat_reversed.svg" alt="Red Hat logo." width="96" height="28"></a>
+        </span>
+      </div>
+    </div>
+
+</div>
+
+            <script src="../assets/js/jquery.min.js"></script><script src="../assets/js/popper.min.js"></script><script src="../assets/js/bootstrap.min.js"></script><script src="../assets/js/baguetteBox.min.js"></script><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+</script><script src="../assets/js/clipboard.min.js" type="text/javascript"></script><script src="../assets/js/clipboard.js" type="text/javascript"></script>
+</body>
+</html>

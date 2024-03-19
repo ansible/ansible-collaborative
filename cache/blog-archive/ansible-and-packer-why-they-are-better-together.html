@@ -1,0 +1,148 @@
+<h1>Using Ansible and Packer, From Provisioning to Orchestration</h1>
+<p>Red Hat Ansible Automation Platform can help you orchestrate,
+operationalize and govern your hybrid cloud deployments.  In my last
+public cloud blog, I talked about "Two Simple Ways Automation Can Save
+You Money on Your AWS Bill"
+and similarly to Ashton's blog "Bringing Order to the Cloud: Day 2
+Operations in AWS with Ansible",
+we both wanted to look outside the common public cloud use-case of
+provisioning and deprovisioning resources and instead look at automating
+common operational tasks.  For this blog post I want to cover how the
+Technical Marketing team for Ansible orchestrates a pipeline for demos
+and workshops with Ansible and how we integrate that with custom AMIs
+(Amazon Machine Images) created with <a href="https://www.packer.io/">Packer</a>. 
+Packer is an open source tool that allows IT operators to standardize
+and automate the process of building system images.</p>
+<p>For some of our <a href="https://red.ht/ansible_labs">self-paced interactive hands-on labs on Ansible.com</a>, we can quickly spin up images
+in seconds.  In an example automation pipeline we will:</p>
+<ol>
+<li>Provision a virtual instance.</li>
+<li>Use Ansible Automation Platform to install an application; in my
+    case, I am literally installing our product Ansible Automation
+    Platform (is that too meta?).</li>
+<li>After the application install, set up the lab guides, pre-load
+    automation controller with some job templates, create inventory and
+    credentials and even set up SSL certificates.  </li>
+</ol>
+<p>While this is fast, it might take a few minutes to load, and web users
+are unlikely to be patient.  The Netflix era means that people want
+instant gratification!  Installing automation controller might take five
+to 10 minutes, so I need a faster method to deploy.</p>
+<p><img alt="cloud automation pipeline diagram" src="/images/posts/archive/ansible-packer-blog-one.png"></p>
+<p>What I can do is combine our normal Ansible automation pipeline with
+Packer and pre-build the cloud instances so they already have the
+application installed, and are configured and ready to go as soon as it
+boots.  Packer will provision a specific machine image on my public
+cloud (Azure, AWS, GCP), run the commands and changes I need, and then
+publish a new image with all the changes I made to the base image.  In
+my case I use Ansible the same way.  In my packer
+<a href="https://www.packer.io/docs/templates/hcl_templates">HCL</a> (HashiCorp
+Configuration Language ) file I have an Ansible provisioner:</p>
+<div class="code"><pre class="code literal-block"><span class="w"> </span><span class="err">provisio</span><span class="kc">ner</span><span class="w"> </span><span class="s2">&quot;ansible&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="err">comma</span><span class="kc">n</span><span class="err">d</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="s2">&quot;ansible-playbook&quot;</span>
+<span class="w">      </span><span class="err">playbook_</span><span class="kc">f</span><span class="err">ile</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="s2">&quot;pre_build_controller.yml&quot;</span>
+<span class="w">      </span><span class="err">user</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="s2">&quot;ec2-user&quot;</span>
+<span class="w">      </span><span class="err">i</span><span class="kc">n</span><span class="err">ve</span><span class="kc">nt</span><span class="err">ory_</span><span class="kc">f</span><span class="err">ile_</span><span class="kc">te</span><span class="err">mpla</span><span class="kc">te</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="s2">&quot;controller ansible_host={{ .Host }} ansible_user={{ .User }} ansible_port={{ .Port }}&quot;</span>
+<span class="w">      </span><span class="err">ex</span><span class="kc">tra</span><span class="err">_argume</span><span class="kc">nts</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="err">local.ex</span><span class="kc">tra</span><span class="err">_args</span>
+
+<span class="w">    </span><span class="p">}</span>
+</pre></div>
+
+<p>Red Hat Ansible Tech Marketing Example can be found on
+<a href="https://github.com/ansible/workshops/blob/devel/provisioner/packer/automation-controller.pkr.hcl">Github</a></p>
+<p>This simple provisioner plugin is executing the Ansible Playbook
+pre_build_controller.yml.  I can also use Ansible Automation Platform to
+orchestrate the whole process by kicking off Packer and then continuing
+on.  Anything that I can do ahead of time, I can pre-build into the
+image.  This means there is less automation I need to do at boot time
+(or what is sometimes referred to as "automation just in time").  The
+new process looks like this diagram:</p>
+<p><img alt="create pre-built image diagram" src="/images/posts/archive/ansible-packer-blog-two.png"></p>
+<p>These two processes, building images and serving a demo environment, are
+actually independent of each other.  Depending on how often a pre-built
+image needs to be executed, we can schedule that in automation
+controller, or even generate them on-demand via
+<a href="https://docs.ansible.com/automation-controller/latest/html/userguide/webhooks.html">webhooks</a>.
+On-demand generation means as soon as someone changes an Ansible
+Playbook relevant to anything pre_build, we can have Ansible Automation
+Platform create the new image immediately, and even test it!</p>
+<h1>Sharing and copying cloud instances</h1>
+<p>Once we create a pre_built AMI, we need to make sure we can use it in
+multiple regions, and on other accounts. With public marketplace
+instances you can use cool automation tricks like using the
+<a href="https://docs.ansible.com/ansible/latest/collections/amazon/aws/ec2_ami_info_module.html">ec2_ami_info module</a> for dynamic lookups,
+but we have now essentially created private AMIs we can copy to other
+regions, or share to other AWS accounts so they have access to these
+pre_built images.  To solve this problem we can use automation, and I
+have created an Ansible Content Collection for
+<a href="https://galaxy.ansible.com/ansible_cloud/share_ami">ansible_cloud.share_ami</a>.  </p>
+<p>This Collection currently has two roles available that will assist cloud
+administrators, copy and share.</p>
+<h2>Copy</h2>
+<p>This role will copy an AMI from one region, to any other specified
+regions.  This means you can use Packer to create it just once, and have
+Ansible take care of copying it to any other regions and return you with
+a list of new AMIs per region.</p>
+<div class="code"><pre class="code literal-block"><span class="o">-</span><span class="w"> </span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="n">copy</span><span class="w"> </span><span class="n">ami</span>
+<span class="w">    </span><span class="n">include_role</span><span class="p">:</span>
+<span class="w">      </span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="n">ansible_cloud</span><span class="o">.</span><span class="n">share_ami</span><span class="o">.</span><span class="n">copy</span>
+<span class="w">    </span><span class="n">vars</span><span class="p">:</span>
+<span class="w">      </span><span class="n">ami_list</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{{ my_ami_list }}&quot;</span>
+<span class="w">      </span><span class="n">copy_to_regions</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{{ my_copy_to_regions }}&quot;</span>
+</pre></div>
+
+<p>Where your variable file looks like this:</p>
+<div class="code"><pre class="code literal-block"><span class="n">my_ami_list</span><span class="o">:</span>
+<span class="w">  </span><span class="n">ap</span><span class="o">-</span><span class="n">northeast</span><span class="o">-</span><span class="mi">1</span><span class="o">:</span><span class="w"> </span><span class="n">ami</span><span class="o">-</span><span class="mi">01334</span><span class="n">example</span>
+<span class="w">  </span><span class="n">ap</span><span class="o">-</span><span class="n">southeast</span><span class="o">-</span><span class="mi">1</span><span class="o">:</span><span class="w"> </span><span class="n">ami</span><span class="o">-</span><span class="mi">0</span><span class="n">b3f3example</span>
+<span class="w">  </span><span class="n">eu</span><span class="o">-</span><span class="n">central</span><span class="o">-</span><span class="mi">1</span><span class="o">:</span><span class="w"> </span><span class="n">ami</span><span class="o">-</span><span class="mi">03</span><span class="n">a5732example</span>
+<span class="w">  </span><span class="n">us</span><span class="o">-</span><span class="n">east</span><span class="o">-</span><span class="mi">1</span><span class="o">:</span><span class="w"> </span><span class="n">ami</span><span class="o">-</span><span class="mi">01</span><span class="n">da94de9cexample</span>
+<span class="n">my_copy_to_regions</span><span class="o">:</span>
+<span class="w">  </span><span class="o">-</span><span class="w"> </span><span class="n">us</span><span class="o">-</span><span class="n">west</span><span class="o">-</span><span class="mi">1</span>
+<span class="w">  </span><span class="o">-</span><span class="w"> </span><span class="n">us</span><span class="o">-</span><span class="n">east</span><span class="o">-</span><span class="mi">2</span>
+</pre></div>
+
+<p>In this case, there will be four AMIs copied to us-west-1 and us-east-2
+with a new AMI identifier returned to your terminal window or the
+automation controller console.</p>
+<h2>Share</h2>
+<p>This role will share an AMI
+from one account and region to another account (in the same region). 
+This allows you to share your pre_built AMIs to as many accounts as you
+want really quickly.</p>
+<div class="code"><pre class="code literal-block"><span class="o">-</span><span class="w"> </span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="n">share</span><span class="w"> </span><span class="n">ami</span>
+<span class="w">  </span><span class="n">include_role</span><span class="p">:</span>
+<span class="w">    </span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="n">ansible_cloud</span><span class="o">.</span><span class="n">share_ami</span><span class="o">.</span><span class="n">share</span>
+<span class="w">  </span><span class="n">vars</span><span class="p">:</span>
+<span class="w">    </span><span class="n">user_id_list</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{{ account_list }}&quot;</span>
+<span class="w">    </span><span class="n">ami_list</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{{ my_ami_list }}&quot;</span>
+</pre></div>
+
+<p>Where your variable file looks like this:</p>
+<div class="code"><pre class="code literal-block"><span class="n">my_ami_list</span><span class="o">:</span>
+<span class="w">  </span><span class="n">ap</span><span class="o">-</span><span class="n">northeast</span><span class="o">-</span><span class="mi">1</span><span class="o">:</span><span class="w"> </span><span class="n">ami</span><span class="o">-</span><span class="mi">01334</span><span class="n">example</span>
+<span class="w">  </span><span class="n">ap</span><span class="o">-</span><span class="n">southeast</span><span class="o">-</span><span class="mi">1</span><span class="o">:</span><span class="w"> </span><span class="n">ami</span><span class="o">-</span><span class="mi">0</span><span class="n">b3f3example</span>
+<span class="w">  </span><span class="n">eu</span><span class="o">-</span><span class="n">central</span><span class="o">-</span><span class="mi">1</span><span class="o">:</span><span class="w"> </span><span class="n">ami</span><span class="o">-</span><span class="mi">03</span><span class="n">a5732example</span>
+<span class="w">  </span><span class="n">us</span><span class="o">-</span><span class="n">east</span><span class="o">-</span><span class="mi">1</span><span class="o">:</span><span class="w"> </span><span class="n">ami</span><span class="o">-</span><span class="mi">01</span><span class="n">da94de9cexample</span>
+<span class="w">  </span><span class="n">us</span><span class="o">-</span><span class="n">east</span><span class="o">-</span><span class="mi">2</span><span class="o">:</span><span class="w"> </span><span class="n">ami</span><span class="o">-</span><span class="mi">009</span><span class="n">f8b2c6dexample</span>
+<span class="n">account_list</span><span class="o">:</span>
+<span class="w">  </span><span class="o">-</span><span class="w"> </span><span class="s2">&quot;11463example&quot;</span>
+<span class="w">  </span><span class="o">-</span><span class="w"> </span><span class="s2">&quot;90073example&quot;</span>
+<span class="w">  </span><span class="o">-</span><span class="w"> </span><span class="s2">&quot;71963example&quot;</span>
+<span class="w">  </span><span class="o">-</span><span class="w"> </span><span class="s2">&quot;07923example&quot;</span>
+</pre></div>
+
+<p>This would share these five AMIs to the four accounts listed.  There are
+also two optional variables for share AMI, new_ami_name and new_tag
+which will name (e.g. add the tag name: "whatever you put") and add a
+hard coded ansiblecloud tag (e.g. add the tag ansiblecloud: "whatever
+you put").  This could be further customized to add as many tags as you
+want to your AMIs to help keep track of them.</p>
+<div class="code"><pre class="code literal-block">new_ami_name: &quot;RHEL 8.6 with automation controller&quot;
+new_tag: &quot;my test&quot;
+</pre></div>
+
+<p>Now you can see one of the many ways that Ansible Automation Platform
+and Packer can easily and seamlessly work together to accomplish cloud
+automation tasks.  If you want more blogs on Ansible and Packer or
+Ansible and Terraform, please let us know!</p>

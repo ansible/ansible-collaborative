@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Ansible Collaborative (Posts by Joe Pisciotta)</title><link>https://ansible.com/</link><description></description><atom:link href="https://ansible.com/authors/joe-pisciotta.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2024 &lt;a href="mailto:website@ansible.community"&gt;Ansible Collaborative, et al&lt;/a&gt; </copyright><lastBuildDate>Mon, 18 Mar 2024 19:47:36 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Event-Driven Ansible is Here</title><link>https://ansible.com/blog/event-driven-ansible-is-here/</link><dc:creator>Joe Pisciotta</dc:creator><description>&lt;p&gt;As you may recall, we introduced Event-Driven Ansible in developer preview last fall at AnsibleFest. Since that time, much work has been done across the community, the Red Hat development teams, customers, and last but not least, Red Hat partners. Today, &lt;a href="https://www.redhat.com/en/about/press-releases/red-hat-accelerates-it-automation-event-driven-ansible"&gt;we are pleased to announce&lt;/a&gt; that Event-Driven Ansible will be concluding its developer preview and will become generally available as part of Red Hat Ansible Automation Platform 2.4.&lt;/p&gt;
+&lt;p&gt;If you are new to Event-Driven Ansible, check out the &lt;a href="https://www.ansible.com/blog/introducing-event-driven-ansible"&gt;developer preview blog&lt;/a&gt; I wrote last fall to learn the basics, and you may also be interested in this &lt;a href="https://www.youtube.com/watch?v=PtevBKX1SYI&amp;amp;list=PLdu06OJoEf2a3fFl6uaoyGV526ilwD97R&amp;amp;index=3"&gt;video on Ansible Rulebooks&lt;/a&gt;, as well as others in this playlist.&lt;/p&gt;
+&lt;h3&gt;Transform your work with Event-Driven Ansible&lt;/h3&gt;
+&lt;p&gt;For many IT teams, there is too much work to do and not enough time to get it all done. Event-Driven Ansible can help your team work smarter, not harder. How often are you doing routine tasks that get in the way of key priorities? How often are you needing to "drop everything" to respond to a ticket enrichment request or handle a user administration issue? Have you had to wake up at night to remediate an issue? How often are you adjusting applications and underlying technologies to support fluctuating workloads?&lt;/p&gt;
+&lt;p&gt;You will be happy to know there is a better way, and it is event-driven automation. Many pieces of recurring operational logic and processes can be automated by capturing them in Ansible Rulebooks, including issue remediation, fact gathering for service tickets, user administration tasks, and many more. But what are Ansible Rulebooks? Based on YAML, they are the basis of Event-Driven Ansible and contain conditional "if-this-then-that" logic.&lt;/p&gt;
+&lt;p&gt;Event-Driven Ansible can also be used with scalability logic, or using rulebooks to codify scalability actions for rapid and seamless response, such as adding capacity or adjusting buffer pool size when an application or workload calls for it, or scaling out hybrid-cloud solutions when certain conditions are met, and so on.&lt;/p&gt;
+&lt;p&gt;Event-driven patterns of automation make it faster to act on recurring events and also provide a simple way of distributing operational or scalability knowledge as an easy to read and verifiable structure. Event-Driven Ansible is accessible enough to be used by IT domain experts to solve a range of needs across use cases including infrastructure, networking, security, cloud and others.&lt;/p&gt;
+&lt;p&gt;When your organization adopts event-driven automation techniques, your entire team can execute in a consistent and accurate way. You gain new levels of efficiency and can better focus on the innovations that give your business an edge.&lt;/p&gt;
+&lt;h3&gt;New features and enhancements&lt;/h3&gt;
+&lt;p&gt;What can you expect from Event-Driven Ansible as part of this release? Several new components and features have been added.  These include:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Event-Driven Ansible controller&lt;/strong&gt;, which enables orchestration of multiple rulebooks and provides a single interface to manage and audit all responses across all event sources. These event sources are often third party monitoring and observability tools, but can be any source that provides intelligence about your IT environment.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Integration with automation controller in Ansible Automation Platform&lt;/strong&gt;, which allows you to call existing workflows that you’ve already built using the run_job_template action, thus extending existing, trusted automation into event-driven automation scenarios. This is an optional way to specify actions from within rulebooks. You can also call an existing Ansible Playbook within your rulebooks, if you prefer.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Event throttling&lt;/strong&gt;, which allows you to handle "event storms" using either a reactive approach with the once_within &lt;time&gt; condition or a passive approach with the once_after &lt;time&gt; condition. This allows greater control over when and how actions are executed in response to many events. The Event-Driven Ansible controller also allows default throttling mechanisms that limit scenarios which may result in a greater number of actions than anticipated.&lt;/time&gt;&lt;/time&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Event-Driven Ansible ecosystem integrations&lt;/h3&gt;
+&lt;p&gt;An ecosystem of Ansible Content Collections is important for Event-Driven Ansible because it works on the intelligence of changing IT conditions that come from event sources such as third party monitoring and observability tools. Ansible Content Collections are a variety of assets that help you jumpstart new automation projects. In the Event-Driven Ansible case, these assets typically are source plug-ins and rulebooks, but may also include other types of useful content. Red Hat Ansible Certified Content Collections are supported by Red Hat and/or partners and typically focus on the "how-to" of some type of automation. Ansible validated content focuses more on "what-to-do" scenarios, including best practices.&lt;/p&gt;
+&lt;p&gt;There has been extensive work done across the Event-Driven Ansible ecosystem in terms of new content, by both the community and third party Red Hat partners. The following is an overview of the work that has been done and what is to come:&lt;/p&gt;
+&lt;h4&gt;Certified and validated content&lt;/h4&gt;
+&lt;p&gt;The initial list of partners who are or will be certifying or validating content includes: Cisco ThousandEyes, CrowdStrike, CyberArk, Dynatrace, F5, IBM, Palo Alto Networks, and Zabbix and there are more to come. Red Hat has also developed key integrations including  Apache Kafka, webhooks, Red Hat Insights, Red Hat OpenShift, Cisco NX-OS and Model-Driven Telemetry, AWS and more. Refer to the image below. More integrations are coming soon, including ServiceNow, Microsoft Azure, Google Cloud Platform and others.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Certified Content for Event-Driven Ansible generally is  certified event source plugins, written in python, which connect an event source to Ansible Rulebooks. Validated Content for Event-Driven Ansible is generally Ansible Rulebooks which have been validated and contains best practices for common use cases.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h4&gt;Community- and custom-developed content&lt;/h4&gt;
+&lt;p&gt;Community and custom content is available either upstream or through private customer sources. Community-developed integrations have included gcp pubsub and syslogd, among others.&lt;/p&gt;
+&lt;p&gt;Whether you have homegrown monitoring tools or need a specific solution immediately, you can build your own plug-ins for Event-Driven Ansible. Once you build your plug-in, consider whether this can be contributed to the Ansible community.&lt;/p&gt;
+&lt;h3&gt;Getting Involved with Event-Driven Ansible&lt;/h3&gt;
+&lt;p&gt;Ready to start exploring Event-Driven Ansible? There are a number of ways to do this.  Visit &lt;a href="https://www.redhat.com/en/technologies/management/ansible/event-driven-ansible"&gt;Red Hat's Event-Driven Ansible page&lt;/a&gt; where you will find a series of free, self-paced interactive labs, information and analyst research.&lt;/p&gt;
+&lt;p&gt;You can also join a getting started with &lt;a href="https://www.redhat.com/en/events/webinar/work-smarter-using-event-driven-automation-across-IT-operations"&gt;Event-Driven Ansiblewebinar&lt;/a&gt; on June 20, 2023.&lt;/p&gt;
+&lt;h3&gt;Additional resources&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://www.redhat.com/en/about/press-releases/red-hat-accelerates-it-automation-event-driven-ansible"&gt;Press release: Red Hat Accelerates IT Automation with Event-Driven Ansible&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.redhat.com/en/technologies/management/ansible/event-driven-ansible"&gt;Web page: Event-Driven Ansible&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=PtevBKX1SYI"&gt;Video: Creating Ansible Rulebooks&lt;/a&gt;  and &lt;a href="https://www.youtube.com/watch?v=TH7_OqBmXD4&amp;amp;list=PLdu06OJoEf2a3fFl6uaoyGV526ilwD97R"&gt;Event-Driven Ansible playlist&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.redhat.com/en/events/webinar/work-smarter-using-event-driven-automation-across-IT-operations"&gt;Event-Driven Ansible webinar&lt;/a&gt;, June 20, 2023&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.redhat.com/en/engage/event-driven-ansible-20220907"&gt;Event-Driven Ansible self paced labs&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;451 Research paper: &lt;a href="https://www.redhat.com/en/resources/event-driven-impact-on-it-operations-analyst-material"&gt;The Impact of Event-Driven Automation&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.redhat.com/en/engage/build-innovation-automation-20230414"&gt;Event-driven automation e-book&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description><category>announcement</category><category>eda</category><category>event-driven-ansible</category><category>release</category><guid>https://ansible.com/blog/event-driven-ansible-is-here/</guid><pubDate>Tue, 23 May 2023 13:00:00 GMT</pubDate></item><item><title>Introducing the Event-Driven Ansible developer preview</title><link>https://ansible.com/blog/introducing-event-driven-ansible/</link><dc:creator>Joe Pisciotta</dc:creator><description>&lt;h2&gt;Introducing the Event-Driven Ansible developer preview&lt;/h2&gt;
+&lt;p&gt;Today at AnsibleFest 2022, Red Hat announced an exciting new developer
+preview for Event-Driven Ansible. Most customers are on a journey toward
+full end-to-end automation and there are many paths you take along this
+journey.  Event-Driven Ansible is a new way to enhance and expand
+automation. It improves IT speed and agility, while enabling consistency
+and resilience. &lt;/p&gt;
+&lt;p&gt;By fully automating necessary but routine tasks, you and your team will
+have more time to focus on interesting engineering challenges and new
+innovations. For example, what if you no longer needed to pause critical
+work to manually add technical detail to  a service ticket?  Or address
+a user password reset request? Or reset a router as a first
+troubleshooting step? With Event-Driven Ansible, the friction in your
+day can be dramatically reduced, leaving more time to work on important
+projects, with some added work-life balance.  &lt;/p&gt;
+&lt;h3&gt;Why a developer preview?&lt;/h3&gt;
+&lt;p&gt;The Event-Driven Ansible technology was developed by Red Hat and is
+available on &lt;a href="https://github.com/ansible/event-driven-ansible"&gt;GitHub&lt;/a&gt;
+as a developer preview. Community input is essential. Since we are
+building a solution to best meet your needs, we're providing an
+opportunity for you to advocate for those needs. We ask that both
+technology providers and end users give it a try and tell us what you
+think. There are several ways you can give feedback - via comments in
+GitHub, during our &lt;a href="https://www.redhat.com/en/events/webinar/event-driven-ansible-office-hours-november"&gt;office hours on November 16,
+2022&lt;/a&gt;,
+or via the
+&lt;a href="mailto:event-driven-automation@redhat.com"&gt;event-driven-automation@redhat.com&lt;/a&gt;
+email. &lt;/p&gt;
+&lt;h3&gt;Event-driven automation is part of an ecosystem&lt;/h3&gt;
+&lt;p&gt;Any event-driven solution must be able to work within multi-vendor
+environments. So, we ask technology partners to not only try the
+Event-Driven Ansible developer preview, but also begin building Ansible
+Content Collections so that our solutions complement each other and make
+it faster and easier for joint customers to use them.&lt;/p&gt;
+&lt;h3&gt;Designed for simplicity&lt;/h3&gt;
+&lt;p&gt;Event-Driven Ansible is designed for simplicity and flexibility, much
+like we offer today in Red Hat Ansible Automation Platform.  What do we
+mean by this for Event-Driven Ansible? &lt;/p&gt;
+&lt;p&gt;Until now, most event driven and "self-healing" automation projects have
+been complex and time-consuming to deliver because much of the solution
+is custom developed to meet a singular need. For example, automatically
+shut down network firewalls when certain activity patterns occur, then
+notify responsible teams.  This is a great and essential solution--for
+this one need. &lt;/p&gt;
+&lt;p&gt;Event-Driven Ansible is designed to be more flexible with faster and
+more cost-effective ways to stand up new automation projects across any
+use case.  By writing an Ansible Rulebook (similar to Ansible Playbooks,
+but more oriented to "if-then"  scenarios) and allowing Event-Driven
+Ansible to subscribe to an event listening source, your teams can more
+quickly and easily automate a variety of tasks across the organization.&lt;/p&gt;
+&lt;p&gt;Think of it like a crescent wrench: a single tool that is easy to adjust
+to different size bolts.  Same idea here - a single automation tool that
+addresses a broad variety of IT automation needs. &lt;/p&gt;
+&lt;h3&gt;What is Event-Driven Ansible?&lt;/h3&gt;
+&lt;p&gt;Event-Driven Ansible is a highly scalable, flexible automation
+capability that works with event sources such as other software
+vendors'  monitoring tools. In an automatic remediation use case, these
+vendor tools watch your IT solutions and identify "events," such as an
+outage. Event-Driven Ansible documents your team's technical information
+on how you want to act on the identified event (an outage in our
+example) as rules in Ansible Rulebooks. When this event (outage) occurs,
+Event-Driven Ansible  matches the rule to the "event" (the outage), and
+automatically implements the documented changes or response in the
+rulebook to handle the event. In our outage example, this may be an
+action such as resetting or rebooting the non-responding asset.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="EDA diagram" src="https://ansible.com/images/posts/archive/eda-rulebooks.png"&gt;&lt;/p&gt;
+&lt;p&gt;There are three major building blocks in the Event-Driven Ansible model,
+sources, rules and actions that play key roles in completing the
+workflow described above:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Sources&lt;/strong&gt; are third party vendor tools that provide the events.
+    They define and identify where events occur, then pass them to
+    Event-Driven Ansible.  Current source support includes Prometheus,
+    Sensu, Red Hat solutions, webhooks and Kafka, as well as custom
+    "bring your own" sources.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Rules&lt;/strong&gt; document your desired handling of the event via Ansible
+    Rulebooks. They use familiar YAML-like structures and follow an "if
+    this then that" model.  Ansible Rulebooks may call Ansible Playbooks
+    or have direct module execution functions.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Actions&lt;/strong&gt; are the result of executing the Ansible Rulebook's
+    instructions when the event occurs.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;More about integrations&lt;/h3&gt;
+&lt;p&gt;Event-Driven Ansible allows you to subscribe to sources, listen for
+events and then act on those events. Currently we have a number of
+source plugins that have been created and can be used. &lt;/p&gt;
+&lt;p&gt;We are enabling events from partner technologies by providing event
+source plugins for webhooks and for Kafka. Many partner tools can
+utilize Kafka and webhooks for integration into the Event-Driven Ansible
+ecosystem. Once Event-Driven Ansible receives events from these sources,
+it can allocate rules against them from the instructions you have
+specified in Ansible Rulebooks. Technology providers can also develop
+event source plugins, which more directly integrate their tools with
+Event-Driven Ansible and distribute them via Content Collections.&lt;/p&gt;
+&lt;p&gt;Open source plugins are also supported. These plugins enable
+Event-Driven Ansible to process a number of different events. They
+include: &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Kafka for event streams&lt;/li&gt;
+&lt;li&gt;webhooks&lt;/li&gt;
+&lt;li&gt;watchdog, a file system watcher&lt;/li&gt;
+&lt;li&gt;url_check to check the status of a url &lt;/li&gt;
+&lt;li&gt;Range, an event generation plugin&lt;/li&gt;
+&lt;li&gt;File, which loads facts from YAML&lt;/li&gt;
+&lt;li&gt;Roadmap integrations support processing from the cloud service
+    providers&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;In addition to all these integrations that enable events to prompt
+action, it is important to note that Red Hat Ansible Automation Platform
+does not require an agent to be present on a target solution receiving
+an automated action.  This is convenient and ideal for technologies that
+cannot host an agent, such as an edge device or network router--- and it
+makes Event-Driven Ansible a simpler solution to
+deploy.&lt;/p&gt;
+&lt;h3&gt;Starting small, thinking big: recommended use cases&lt;/h3&gt;
+&lt;p&gt;Red Hat often recommends a "start small, think big" approach to growing
+your automation maturity and Even-Driven Ansible is no exception. We
+think IT service management is a great place to start and we suggest you
+look for simple tasks that get repeated very often to see the most
+benefit.  &lt;/p&gt;
+&lt;p&gt;You can use Event-Driven Ansible Rulebooks to enhance service tickets,
+do basic remediation of tickets and issues and also manage the variety
+of end-user requests that you receive everyday, like password resets.  &lt;/p&gt;
+&lt;p&gt;Additionally, you can automate use cases across all of the common areas
+where you automate today -- infrastructure, network, cloud, security,
+and edge -- for service management and other tasks.  Once you get the
+basics down, growing the number, scope and sophistication of your
+Ansible Rulebooks is easy.&lt;/p&gt;
+&lt;h3&gt;Getting started and sharing feedback&lt;/h3&gt;
+&lt;p&gt;Start by reviewing this &lt;a href="http://ansible.com/event-driven"&gt;web page&lt;/a&gt; where you will
+find more details on Event-Driven Ansible and can access additional
+resources such as a self-paced lab, how-to-video and more details about
+this solution. You will also find a registration link to our first
+Office Hours event, where you can ask questions and learn tips and
+techniques.  &lt;/p&gt;
+&lt;p&gt;Once you have some familiarity, use the developer preview code found
+&lt;a href="https://github.com/ansible/event-driven-ansible"&gt;here&lt;/a&gt;. In summary,
+your basic steps will be to download and install Event-Driven Ansible
+from the GitHub repository, configure sources of events so Event-Driven
+Ansible is subscribed, write your Ansible Rulebook(s) and start
+listening to events.&lt;/p&gt;
+&lt;p&gt;As a community project, we ask for your feedback through GitHub
+comments, on our Office Hours, or via email at
+&lt;a href="mailto:event-driven-automation@redhat.com"&gt;event-driven-automation@redhat.com&lt;/a&gt;. &lt;/p&gt;
+&lt;h3&gt;Looking ahead for Event-Driven Ansible&lt;/h3&gt;
+&lt;p&gt;While this technology is a community project, we have bigger ideas to
+shape this capability to meet your needs.  In addition, we hope to
+integrate Event-Driven Ansible as a component in Red Hat Ansible
+Automation Platform in the future. With Red Hat Ansible Automation
+Platform, you could gain access to all the platform has to offer,
+including RBAC and other controls, and the ability to use a single
+automation platform even more flexibly for both manually-initiated
+automation via Ansible Playbooks and also for your fully automated
+actions via Ansible Rulebooks.   &lt;/p&gt;
+&lt;p&gt;I hope this has provided a good overview of Event-Driven Ansible.&lt;/p&gt;</description><guid>https://ansible.com/blog/introducing-event-driven-ansible/</guid><pubDate>Wed, 19 Oct 2022 00:00:00 GMT</pubDate></item></channel></rss>

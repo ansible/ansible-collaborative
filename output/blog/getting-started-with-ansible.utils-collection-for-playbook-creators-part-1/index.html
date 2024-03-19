@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html prefix="
+og: http://ogp.me/ns# article: http://ogp.me/ns/article#
+" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="The Ansible ansible.utils collection includes a variety of plugins that aid in the management, manipulation and visibility of data for the Ansible playbook developer.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Getting Started with Ansible.utils Collection for Playbook Creators | Ansible Collaborative</title>
+<link href="../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/baguetteBox.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/rst.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/code.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/theme.css" rel="stylesheet" type="text/css">
+<!-- Red Hat fonts --><link rel="stylesheet" href="https://static.redhat.com/libs/redhat/redhat-font/2.0.0/webfonts/red-hat-font.css">
+<!-- Font Awesome --><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+<!-- Fork Awesome --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css" integrity="sha256-XoaMnoYC5TH6/+ihMEnospgm0J1PM/nioxbOUdnM8HY=" crossorigin="anonymous">
+<!-- Sass compiled css  --><link rel="stylesheet" href="../../assets/css/main.css">
+<link rel="stylesheet" href="../../assets/css/redhat-footer.css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://ansible.com/blog/getting-started-with-ansible.utils-collection-for-playbook-creators-part-1/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Ashwini Mhatre">
+<link rel="prev" href="../getting-started-with-ansible.utils-collection-for-playbook-creators-part-2/" title="Getting Started with Ansible.utils Collection for Playbook Creators" type="text/html">
+<link rel="next" href="../bullhorn-43/" title="Bullhorn #43" type="text/html">
+<meta property="og:site_name" content="Ansible Collaborative">
+<meta property="og:title" content="Getting Started with Ansible.utils Collection for Playbook Creators">
+<meta property="og:url" content="https://ansible.com/blog/getting-started-with-ansible.utils-collection-for-playbook-creators-part-1/">
+<meta property="og:description" content="The Ansible ansible.utils collection includes a variety of plugins that aid in the management, manipulation and visibility of data for the Ansible playbook developer.">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2022-01-24T00:00:00Z">
+</head>
+<body id="top">
+
+<div class="global-container" id="content" role="main">
+<!-- Start menubar -->
+<nav class="navbar navbar-expand-lg static-top mb-4 navbar-padding full-width-bg   navbar-dark   bg-pool   "><div class="masthead">
+    <!-- This keeps the margins nice -->
+    <a class="navbar-brand" href="../../">
+        <img src="../../images/ansible_logo-small-15.png" alt="Ansible community logo" id="logo" class="d-inline-block align-top" width="50" height="50"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon nav-toggle-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="bs-navbar">
+      <ul class="navbar-nav mr-auto"></ul>
+<ul class="navbar-nav navbar-right">
+<li class="nav-item dropdown">
+	        <a href="#" class="nav-link nav-link-color dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <i class=""></i> Documentation
+                </a>
+		<div class="dropdown-menu dropdown-menu-border">
+	    
+                    <a href="https://docs.ansible.com/" class="dropdown-item">
+		        <i class=""></i> Project documentation
+                    </a>
+                    <a href="https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/" class="dropdown-item">
+		        <i class=""></i> Ansible Automation Platform documentation
+                    </a>
+            </div>
+                 </li>
+<li class="nav-item">
+		     <a href="https://galaxy.ansible.com/" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Galaxy
+		     </a>
+		 </li>
+                 <li class="nav-item">
+		     <a href="https://forum.ansible.com/" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Forum
+		     </a>
+		 </li>
+            <li class="nav-item dropdown">
+	        <a href="#" class="nav-link nav-link-color dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <i class=""></i> Resources
+                </a>
+		<div class="dropdown-menu dropdown-menu-border">
+	    
+                    <a href="../../how-ansible-works/" class="dropdown-item">
+		        <i class=""></i> How Ansible works
+                    </a>
+                    <a href="../../ecosystem/" class="dropdown-item">
+		        <i class=""></i> Ansible ecosystem
+                    </a>
+                    <a href="../archive.html" class="dropdown-item">
+		        <i class=""></i> Blog
+                    </a>
+                    <a href="../../faq/" class="dropdown-item">
+		        <i class=""></i> Frequently asked questions
+                    </a>
+                    <a href="../../ansible-community-training/" class="dropdown-item">
+		        <i class=""></i> Ansible community training
+                    </a>
+                    <a href="../../contact-us/" class="dropdown-item">
+		        <i class=""></i> Contact us
+                    </a>
+            </div>
+                 </li>
+<li class="nav-item">
+		     <a href="https://www.redhat.com/en/technologies/management/ansible?sc_cid=7015Y000003szaKQAQ" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Ansible Automation Platform
+		     </a>
+		 </li>
+
+        
+      </ul>
+</div>
+    <!-- /.navbar-collapse -->
+  </div>
+  <!-- /.container -->
+</nav><!-- End default Menubar --><div class="body-content center-band">
+        <!--Body content-->
+        
+  <article class="post-text h-entry hentry postpage ansible-content" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Getting Started with Ansible.utils Collection for Playbook Creators</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard p-author h-card"><span class="byline-name fn p-name" itemprop="author">
+                    <a class="u-url" href="../../authors/ashwini-mhatre/">Ashwini Mhatre</a>
+            </span></p>
+            <p class="dateline">
+            <a href="." rel="bookmark">
+            <time class="published dt-published" datetime="2022-01-24T00:00:00Z" itemprop="datePublished" title="2022-01-24 00:00">2022-01-24 00:00</time></a>
+            </p>
+                    <p class="sourceline"><a href="index.md" class="sourcelink">Source</a></p>
+
+        </div>
+        
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+<h2>Part 1: The Ansible.utils Collection for Playbook Creators</h2>
+<p>The Ansible <code>ansible.utils</code> collection includes a variety of plugins that
+aid in the management, manipulation and visibility of data for the
+Ansible playbook developer. The most common use case for this collection
+is when you want to work with the complex data structures present in an
+Ansible playbook, inventory, or returned from modules. See each plugin
+<a href="https://docs.ansible.com/ansible/latest/collections/ansible/utils/index.html">documentation</a>
+page for detailed examples for how these utilities can be used in tasks.
+In this two-part blog we will overview this collection in part one and
+see an example use case of using the utils collection in detail in part
+two.</p>
+<h2>Plugins inside ansible.utils</h2>
+<p>Plugins are code which will augment ansible core functionality. This
+code executes on control node.it and gives options and extensions for
+the core features of Red Hat Ansible Automation Platform. This
+<code>ansible.utils</code> plugin collection includes:</p>
+<ul>
+<li>Filter plugins</li>
+<li>Lookup plugins</li>
+<li>Test plugins</li>
+<li>Modules</li>
+</ul>
+<h3>Filter plugins</h3>
+<p>Filter plugins manipulate data. With the right filter you can extract a
+particular value, transform data types and formats, perform mathematical
+calculations, split and concatenate strings, insert dates and times, and
+do much more. Ansible Automation Platform uses the <a href="https://jinja.palletsprojects.com/en/3.0.x/templates/#builtin-filters">standard filters</a>
+shipped with Jinja2 and adds some specialized filter plugins. You can
+<a href="https://docs.ansible.com/ansible/latest/dev_guide/developing_plugins.html#developing-filter-plugins">create custom Ansible filters as plugins</a>.
+Please refer to the
+<a href="https://docs.ansible.com/ansible/latest/plugins/filter.html">docs</a> for
+more information.</p>
+<p>The <code>ansible.utils</code> filter plugins include the following:</p>
+<ul>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.from_xml_filter.rst">ansible.utils.from_xml</a> - Convert a given XML string to native python dictionary.</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.get_path_filter.rst">ansible.utils.get_path</a> - Retrieve the value in a variable using a path</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.index_of_filter.rst">ansible.utils.index_of</a> - Find the indices of items in a list matching some criteria</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.param_list_compare_filter.rst">ansible.utils.param_list_compare</a> - Generate the final param list combining/comparing base and provided parameters.</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.to_paths_filter.rst">ansible.utils.to_paths</a> - Flatten a complex object into a dictionary of paths and values</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.to_xml_filter.rst">ansible.utils.to_xml</a> - Convert given JSON string to XML</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.usable_range_filter.rst">ansible.utils.usable_range</a> - Expand the usable IP addresses</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.validate_filter.rst">ansible.utils.validate</a> - Validate data with provided criteria</li>
+</ul>
+<h3>Lookup plugins</h3>
+<p>Lookup plugins are an Ansible-specific extension to the Jinja2
+templating language. You can use lookup plugins to access data from
+outside sources (files, databases, key/value stores, APIs, and other
+services) within your playbooks. Like all
+<a href="https://docs.ansible.com/ansible/latest/user_guide/playbooks_templating.html#playbooks-templating">templating</a>,
+lookups execute and are evaluated on the Ansible Automation Platform
+control machine. Ansible makes the data returned by a lookup plugin
+available using the standard templating system. You can use lookup
+plugins to load variables or templates with information from external
+sources. You can also<a href="https://docs.ansible.com/ansible/latest/dev_guide/developing_plugins.html#developing-lookup-plugins">create custom lookup plugins</a>.
+Please refer to the <a href="https://docs.ansible.com/ansible/latest/plugins/lookup.html">docs</a> for more information.</p>
+<p>The <code>ansible.utils</code> lookup plugins include:</p>
+<ul>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.get_path_lookup.rst">ansible.utils.get_path</a> - Retrieve the value in a variable using a path</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.index_of_lookup.rst">ansible.utils.index_of</a> - Find the indices of items in a list matching some criteria</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.to_paths_lookup.rst">ansible.utils.to_paths</a> - Flatten a complex object into a dictionary of paths and values</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.validate_lookup.rst">ansible.utils.validate</a> - Validate data with provided criteria</li>
+</ul>
+<p>Note: In <code>ansible.utils</code> some plugins were
+implemented as both filter and lookup plugins to give the playbook
+developer flexibility depending on their use case.</p>
+<h3>Test plugins</h3>
+<p>Test plugins evaluate template expressions and return a value of True or
+False. With test plugins you can create
+<a href="https://docs.ansible.com/ansible/latest/user_guide/playbooks_conditionals.html#playbooks-conditionals">conditionals</a>
+to implement the logic of your tasks, blocks, plays, playbooks, and
+roles. Ansible Automation Platform uses the standard tests shipped as
+part of Jinja, and adds some specialized test plugins. Please refer to
+the <a href="https://docs.ansible.com/ansible/latest/plugins/test.html">docs</a>
+for more information.</p>
+<p>The <code>ansible.utils</code> test plugins include:</p>
+<ul>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.in_any_network_test.rst">ansible.utils.in_any_network</a> - Test if an IP or network falls in any network</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.in_network_test.rst">ansible.utils.in_network</a> - Test if IP address falls in the network</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.in_one_network_test.rst">ansible.utils.in_one_network</a> - Test if IP address belongs in any one of the networks in the list</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.ip_test.rst">ansible.utils.ip</a> - Test if something in an IP address or network</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.ip_address_test.rst">ansible.utils.ip_address</a> - Test if something in an IP address</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.ipv4_test.rst">ansible.utils.ipv4</a> - Test if something is an IPv4 address or network</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.ipv4_address_test.rst">ansible.utils.ipv4_address</a> - Test if something is an IPv4 address</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.ipv4_hostmask_test.rst">ansible.utils.ipv4_hostmask</a> - Test if an address is a valid hostmask</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.ipv4_netmask_test.rst">ansible.utils.ipv4_netmask</a> - Test if an address is a valid netmask</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.ipv6_test.rst">ansible.utils.ipv6</a> - Test if something is an IPv6 address or network</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.ipv6_address_test.rst">ansible.utils.ipv6_address</a> - Test if something is an IPv6 address</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.ipv6_ipv4_mapped_test.rst">ansible.utils.ipv6_ipv4_mapped</a> - Test if something appears to be a mapped IPv6 to IPv4 mapped address</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.ipv6_sixtofour_test.rst">ansible.utils.ipv6_sixtofour</a> - Test if something appears to be a 6to4 address</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.ipv6_teredo_test.rst">ansible.utils.ipv6_teredo</a> - Test if something appears to be an IPv6 teredo address</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.loopback_test.rst">ansible.utils.loopback</a> - Test if an IP address is a loopback</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.mac_test.rst">ansible.utils.mac</a> - Test if something appears to be a valid MAC address</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.multicast_test.rst">ansible.utils.multicast</a> - Test for a multicast IP address</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.private_test.rst">ansible.utils.private</a> - Test if an IP address is private</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.public_test.rst">ansible.utils.public</a> - Test if an IP address is public</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.reserved_test.rst">ansible.utils.reserved</a> - Test for a reserved IP address</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.resolvable_test.rst">ansible.utils.resolvable</a> - Test if an IP or name can be resolved via /etc/hosts or DNS</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.subnet_of_test.rst">ansible.utils.subnet_of</a> - Test if a network is a subnet of another network</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.supernet_of_test.rst">ansible.utils.supernet_of</a> - Test if a network is a supernet of another network</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.unspecified_test.rst">ansible.utils.unspecified</a> - Test for an unspecified IP address</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.validate_test.rst">ansible.utils.validate</a> - Validate data with provided criteria</li>
+</ul>
+<h3>Modules</h3>
+<p>Modules are the main building blocks of Ansible playbooks. Although we
+do not generally speak of "module plugins", a module is a type of
+plugin. For a developer-focused description of the differences between
+modules and other plugins, see
+<a href="https://docs.ansible.com/ansible/latest/dev_guide/developing_locally.html#modules-vs-plugins">Modules and plugins: what is the difference?</a>.
+Please refer to the <a href="https://docs.ansible.com/ansible/latest/plugins/module.html">docs</a> for more information.</p>
+<p>The <code>ansible.utils</code> modules include:</p>
+<ul>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.cli_parse_module.rst">ansible.utils.cli_parse</a> - Parse cli output or text using a variety of parsers</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.fact_diff_module.rst">ansible.utils.fact_diff</a> - Find the difference between currently set facts</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.update_fact_module.rst">ansible.utils.update_fact</a> - Update currently set facts</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.validate_module.rst">ansible.utils.validate</a> - Validate data with provided criteria</li>
+</ul>
+<h3>Accessing and using the ansible.utils Collection</h3>
+<p>To download the utils Collection, refer to Automation hub (fully
+supported, requires a Red Hat Ansible Automation Platform subscription)
+or Ansible Galaxy (upstream):</p>
+<ul>
+<li>
+<a href="https://console.redhat.com/ansible/automation-hub/repo/published/ansible/utils">Automation hub Collection</a>: <code>ansible.utils</code>
+</li>
+<li>
+<a href="https://galaxy.ansible.com/ansible/utils">Ansible Galaxy Collection</a>: <code>ansible.utils</code>
+</li>
+</ul>
+<p>​​Ansible.utils is also available in the Supported Execution environment
+along with its required python libraries. Please refer to
+<a href="https://docs.ansible.com/automation-controller/latest/html/userguide/execution_environments.html">docs for more details about Execution Environments.</a></p>
+<h3>Different use cases of Utils</h3>
+<p>As we know, <code>ansible.utils</code> has a variety of plugins and it has various
+use cases. The following are the most common use cases of <code>ansible.utils</code>:</p>
+<ul>
+<li>Validating business logic before pushing configurations using validate and test plugins</li>
+<li>Auditing architectural deposition and layouts using test plugins</li>
+<li>Managing complex data structure in ansible playbook using <code>get_path</code>, <code>to_path</code> plugins</li>
+<li>Conducting minor checks related to network address using test plugins</li>
+<li>Operational state assessment using cli_parse, validate plugins</li>
+</ul>
+<h3>Future scope</h3>
+<p>Here are some additional <code>ansible.utils</code> capabilities that are on the
+horizon:</p>
+<ul>
+<li>
+<p><strong>Ipaddr filter plugin supports:</strong></p>
+<ul>
+<li>The Ipaddr filter is designed to provide an interface to the <a href="https://pypi.org/project/netaddr/">netaddr</a> Python package from within Ansible.</li>
+<li>It can operate on strings or lists of items, test various data to check if they are valid IP addresses, and manipulate the input data to extract requested information.</li>
+<li>
+<code>ipaddr()</code> works with both IPv4 and IPv6 addresses in various forms. </li>
+<li>There are also additional functions available to manipulate IP subnets and MAC addresses.</li>
+<li>We are currently working on supporting the <code>ipaddr</code> filter as part of <code>ansible.utils</code> collection.</li>
+</ul>
+</li>
+<li>
+<p><strong>Support of more number of validate engines in ansible.utils.validation plugin:</strong></p>
+<ul>
+<li>Currently the validate plugin is supporting only <code>ansible.utils.jsonschema</code> validation engines, but there is plan to add more validation engines.</li>
+</ul>
+</li>
+<li>
+<p><strong>Support different filter plugins to manipulate input data:</strong></p>
+<ul>
+<li>Recursive plugins: <code>remove_keys</code>, <code>replace_keys</code>, <code>keep_keys</code>
+</li>
+</ul>
+</li>
+</ul>
+<h3>Contributing to this collection</h3>
+<p>This collection is intended for plugins that are not platform or
+discipline specific. Simple plugin examples should be generic in nature.
+More complex examples can include real world platform modules to
+demonstrate the utility of the plugin in a playbook.</p>
+<p>We welcome community contributions to this collection. If you find
+problems, please open an issue or create a PR against the
+<a href="https://github.com/ansible-collections/ansible.utils">ansible.utils collection repository</a>.
+See <a href="https://docs.ansible.com/ansible/devel/community/contributing_maintained_collections.html#contributing-maintained-collections">Contributing to Ansible-maintained collections</a>
+for complete details.
+See the <a href="https://docs.ansible.com/ansible/latest/community/index.html">Ansible Community Guide</a>
+for details on contributing to Ansible.</p>
+<h3>Takeaways and next steps</h3>
+<ul>
+<li>
+<code>ansible.utils</code> plugins makes playbook writing experience simple and smooth</li>
+<li>Implementation of <code>ansible.utils</code> plugins is very fast as they executed locally</li>
+<li>Easy to understand, code, use, and integrate with other modules</li>
+<li>As its plugins ecosystem, it is so easy to add new plugins in <code>ansible.utils</code>
+</li>
+</ul>
+</div>
+    <aside class="postpromonav"><nav><ul class="pager hidden-print">
+<li class="previous">
+                <a href="../getting-started-with-ansible.utils-collection-for-playbook-creators-part-2/" rel="prev" title="Getting Started with Ansible.utils Collection for Playbook Creators">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../bullhorn-43/" rel="next" title="Bullhorn #43">Next post</a>
+            </li>
+        </ul></nav></aside></article><!--End of body content-->
+</div>
+        <div class="content-slim redhat-footer">
+      <div class="footer-left">
+        <ul class="footer-left-links">
+<li>
+            <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-SA 4.0</a>
+          </li>
+          <li>
+            <a href="https://www.redhat.com/en/about/privacy-policy" target="_blank">Privacy policy</a>
+          </li>
+          <li>
+            <a href="https://docs.ansible.com/ansible/latest/community/code_of_conduct.html" target="_blank">Code of conduct</a>
+          </li>
+        </ul>
+</div>
+      <div class="footer-right">
+        <span class="redhat">Powered by</span>
+        <span class="redhat-logo">
+          <a href="https://www.redhat.com/en/technologies/management/ansible" target="_blank">
+            <img src="../../assets/images/redhat_reversed.svg" alt="Red Hat logo." width="96" height="28"></a>
+        </span>
+      </div>
+    </div>
+
+</div>
+
+            <script src="../../assets/js/jquery.min.js"></script><script src="../../assets/js/popper.min.js"></script><script src="../../assets/js/bootstrap.min.js"></script><script src="../../assets/js/baguetteBox.min.js"></script><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+</script><script src="../../assets/js/clipboard.min.js" type="text/javascript"></script><script src="../../assets/js/clipboard.js" type="text/javascript"></script>
+</body>
+</html>

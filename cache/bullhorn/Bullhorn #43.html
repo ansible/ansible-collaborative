@@ -1,0 +1,113 @@
+<p><img alt="Ansible Bullhorn banner" src="/images/bullhorn-banner-mango.png"></p>
+<p><em>A Newsletter for the Ansible Developer Community</em>
+<em>Issue #43, 2022-01-28 (<a href="https://us19.campaign-archive.com/home/?u=56d874e027110e35dea0e03c1&amp;id=d6635f5420">Past Issues</a>)</em></p>
+<p>Welcome to the Bullhorn, our newsletter for the Ansible developer community. If you have any questions or content you’d like to share, please reach out to us at the-bullhorn@redhat.com, or chat with us in the <a href="https://matrix.to/#/#social:ansible.com">Ansible Social room on Matrix</a>.</p>
+<!-- TEASER_END -->
+
+<h2>KEY DATES</h2>
+<p><a href="https://matrix.to/#/@cybette:ansible.im">cybette</a> contributed</p>
+<blockquote>
+<ul>
+<li>2022-01-28/29: <a href="https://devconf.cz/">DevConf.CZ 2022</a> featuring a number of <a href="https://devconfcz2022.sched.com/?searchstring=ansible">Ansible sessions</a></li>
+<li>2022-01-31: ETA for Ansible-Core 2.12.2, Ansible-Core 2.11.8, and Ansible-Base 2.10.17 releases</li>
+<li>2022-02-01: <a href="https://docs.ansible.com/ansible/devel/roadmap/COLLECTIONS_5.html">ETA for Ansible 5.3.0 release</a></li>
+<li>2022-02-01: <a href="https://github.com/ansible/community/issues/643">DaWGs meeting</a>, 16:00 UTC</li>
+<li>2022-02-02: <a href="https://github.com/ansible/community/issues/645">Community WG meeting</a>, 18:00 UTC (propose topics <a href="https://github.com/ansible-community/community-topics/issues">here</a>)</li>
+<li>2022-02-03: <a href="https://github.com/ansible/community/wiki/News#the-bullhorn">Bullhorn #44 content deadline</a></li>
+<li>2022-02-05/06: <a href="https://fosdem.org/2022/search/?q=ansible">FOSDEM 2022</a></li>
+<li>2022-02-08: <a href="https://github.com/ansible/community/issues/643">DaWGs meeting</a>, 16:00 UTC</li>
+<li>2022-02-09: <a href="https://github.com/ansible/community/issues/645">Community WG meeting</a>, 18:00 UTC (propose topics <a href="https://github.com/ansible-community/community-topics/issues">here</a>)</li>
+</ul>
+</blockquote>
+<h2>GENERAL NEWS UPDATES</h2>
+<p><a href="https://matrix.to/#/@andersson007_:matrix.org">andersson007_</a> contributed</p>
+<blockquote>
+<p>Dear collection maintainers,</p>
+<p>This is important for your collections!</p>
+<ul>
+<li>In accordance with the <a href="https://github.com/ansible-community/community-topics/issues/51">Community decision</a>, we have created the <a href="https://github.com/ansible-collections/news-for-maintainers">news-for-maintainers</a> repository for announcements of changes impacting collection maintainers (see the <a href="https://github.com/ansible-collections/news-for-maintainers#examples-of-news-posted-via-this-repository">examples</a>) instead of <a href="https://github.com/ansible-collections/overview/issues/45">Issue 45</a> that has just been closed.</li>
+<li>To keep yourself well-informed and, therefore, things in your collection working, please subscribe to the <a href="https://github.com/ansible-collections/news-for-maintainers">repository</a> by using the <code>Watch</code> button in the upper right corner on the repository's home page.</li>
+<li>If you do not want to get notifications about related discussions, please subscribe only to <code>Issues</code>.</li>
+<li>Please read the brief <a href="https://github.com/ansible-collections/news-for-maintainers#guidelines">guidelines</a> on how the repository should be used.</li>
+<li>Please avoid unnecessary discussions in issues, use the <a href="https://github.com/ansible-collections/news-for-maintainers/discussions">Discussions</a> feature. Every comment posted will notify <strong>a lot</strong> of folks!</li>
+</ul>
+<p>Thank you!</p>
+</blockquote>
+<h2>COLLECTION UPDATES</h2>
+<p><a href="https://matrix.to/#/@andersson007_:matrix.org">andersson007_</a> shared</p>
+<blockquote>
+<p><a href="https://github.com/ansible-collections/community.postgresql/blob/1.6.1/CHANGELOG.rst#v161">community.postgresql</a> 1.6.1 has been released. Among other improvements, the <code>postgresql_info</code> module now works with AWS RDS PostgreSQL instances, thanks to <a href="https://github.com/marcosdiez">marcosdiez</a>!</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@andersson007_:matrix.org">andersson007_</a> said</p>
+<blockquote>
+<p><a href="https://github.com/ansible-collections/community.mysql">community.mysql</a> 3.1.0, 2.3.3, and 1.4.4 have been released.</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@markuman:libera.chat">markuman</a> shared</p>
+<blockquote>
+<p>community.aws 3.0.1 has just been released.</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@mariolenz:matrix.org">mariolenz</a> shared</p>
+<blockquote>
+<p><a href="https://github.com/ansible-collections/community.vmware/blob/main/CHANGELOG.rst#v2-0-0">community.vmware 2.0.0</a> has been released. Note that this is a new major version, <a href="https://semver.org/">meaning</a> backwards incompatible changes like breaking changes and removed features.</p>
+</blockquote>
+<h2>PROPOSALS - DISCUSS AND VOTE!</h2>
+<p><a href="https://matrix.to/#/@felixfontein:libera.chat">felixfontein</a> contributed</p>
+<blockquote>
+<p>The proposal on semantic markup in plugin/module DOCUMENTATION has been updated to allow to more easily reference plugins in the <code>seealso:</code> section. See <a href="https://github.com/ansible-community/community-topics/issues/53#issuecomment-1015714024">this message</a> for details.</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@felixfontein:libera.chat">felixfontein</a> shared</p>
+<blockquote>
+<p>The vote on whether to use FQCN for ansible.builtin modules (https://github.com/ansible-community/community-topics/issues/58) is completed. The proposal has been accepted with a broad majority both in the steering committee and in the community.</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@felixfontein:libera.chat">felixfontein</a> shared</p>
+<blockquote>
+<p>There is a new active vote on simplifying the collection inclusion procedure for adding new collections to the Ansible community package: https://github.com/ansible-community/community-topics/issues/63 The vote is active until 2022-02-02.</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@felixfontein:libera.chat">felixfontein</a> contributed</p>
+<blockquote>
+<p>The voting on the <a href="https://github.com/ansible/ansible/pull/76772">proposed roadmap for Ansible 6</a> has concluded on 2022-01-26. You can see the discussions and result in <a href="https://github.com/ansible-community/community-topics/issues/56">this issue</a>.</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@smccann:matrix.org">samccann</a> contributed</p>
+<blockquote>
+<p>We're looking for feedback on how to write better changelogs so our porting guides give better information to users. Please comment at https://github.com/ansible-community/community-topics/issues/64 with your ideas.</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@gundalow:ansible.im">gundalow</a> shared</p>
+<blockquote>
+<p><em>Changelogs</em> are an important way to let users know about new features, and more importantly potentially backwards incompatible changes which might require you to update how you use a certain Collection. Based on feedback, we've realised that these aren't always written consistently. We are looking for your feedback (especially from end users and maintainers) on how we can give a better experience. We'd love your thoughts via <a href="https://github.com/ansible-community/community-topics/issues/64">community-topics#64</a>.</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@smccann:matrix.org">samccann</a> contributed</p>
+<blockquote>
+<p>We're working on better community and contributor guidlines for Ansible. Please comment at https://github.com/ansible-community/community-topics/issues/60 with your ideas!</p>
+</blockquote>
+<h3>Ansible-Core <a href="https://github.com/ansible/ansible">↗</a></h3>
+<p>The <code>ansible-core</code> package contains the base engine and a small subset of modules and plugins. To see what's planned for the next release, look at the <a href="https://docs.ansible.com/ansible-core/devel/roadmap/ansible_core_roadmap_index.html"><code>ansible-core</code> roadmaps</a>.</p>
+<p><a href="https://matrix.to/#/@gundalow:ansible.im">gundalow</a> said</p>
+<blockquote>
+<p><code>ansible-galaxy</code> is currently being updated to allow collection verification using gpg, this will be released in <a href="https://docs.ansible.com/ansible-core/devel/roadmap/ROADMAP_2_13.html">ansible-core 2.13</a>. 
+This will allow verifying the authenticity of <code>MANIFEST.json</code> before installing and manually at any time.</p>
+<p>The Galaxy server will be queried for signatures and a list of supplemental URLs can be provided in the requirements file:
+```
+collections:
+  - name: ns.coll
+    signatures:
+      - https://.../test.asc
+      - file:///.../test.asc</p>
+<p>```
+You can check out the progress and let us know if the proposal works for your use case. We'd love your feedback via <a href="https://github.com/ansible/ansible/pull/76681">ansible#76681</a>.</p>
+</blockquote>
+<h2>COMMUNITY UPDATES</h2>
+<p><a href="https://matrix.to/#/@csmart:matrix.org">csmart</a> said</p>
+<blockquote>
+<p>In case it's useful, a blog post on how I'm currently setting up my Ansible dev environment https://blog.christophersmart.com/2021/12/27/setting-up-an-ansible-dev-environment/</p>
+</blockquote>
+<h2>COMMUNITY EVENTS AND MEETUPS</h2>
+<p><a href="https://matrix.to/#/@cybette:ansible.im">cybette</a> said</p>
+<blockquote>
+<p><a href="https://devconf.cz/">DevConf.cz 2022</a> is happening right now (Jan 28-29), and you can find a list of Ansible related talks <a href="https://devconfcz2022.sched.com/?searchstring=ansible">here</a>. Sessions of note include <a href="https://sched.co/siJx">Ansible Community Meetup</a> Jan 28 @ 16:00 UTC, and <a href="https://sched.co/siJE">What’s New &amp; Ahead in the Ansible Community</a> Jan 29 @ 15:30 UTC.</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@cybette:ansible.im">cybette</a> shared</p>
+<blockquote>
+<p>There's an "Ansible Anwendertreffen" (Ansible user meeting) which will be held on Feb 15, 2022. This is a virtual event conducted in German. If you are interested, you can find the details and registration info <a href="https://www.ansible-anwender.de/post/2022/01/register/">here</a>. The <a href="https://www.ansible-anwender.de/cfp">CFP</a> is still available until Jan 31, so act fast if you'd like to present at this event!</p>
+</blockquote>
+<h2>THAT'S ALL FOR NOW!</h2>
+<p>Have any questions you’d like to ask, or issues you’d like to see covered? Please ask in <a href="https://matrix.to/#/#social:ansible.com">#social:ansible.com</a>! See you next time!</p>

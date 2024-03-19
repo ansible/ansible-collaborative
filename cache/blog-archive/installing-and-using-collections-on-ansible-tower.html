@@ -1,0 +1,66 @@
+<h1>Installing and using collections on Ansible Tower</h1>
+<p>Ansible Collections are the new way to distribute and manage content.
+Ansible content can be modules, roles, plugins and even Ansible
+Playbooks. In my previous blog, I
+provide a walkthrough of using Ansible Collections from Ansible Galaxy
+and Automation Hub.  Ansible Galaxy is the upstream community for
+sharing Ansible Collections.  Any community user can create a namespace
+and share content with anyone. Access to Automation Hub is included with
+a Red Hat Ansible Automation Platform subscription. Automation Hub only
+contains fully supported and certified content from Red Hat and our
+partners.</p>
+<p>In this blog post we'll walk through using Ansible Collections with
+Ansible Tower, part of the Red Hat Ansible Automation Platform.  There
+are a few differences between using command-line Ansible for syncing
+with Ansible Galaxy or the Automation Hub versus using Ansible Tower.
+However, it is really easy and I will show you how!</p>
+<h2>Accessing collections content from Automation Hub and Galaxy from Ansible Tower.</h2>
+<p>If the Ansible Collections are included in your project you do not need
+to authenticate to Automation Hub. This method is where you are
+downloading dynamically using a requirements file.
+In general there are three strategies for using Ansible Collections with
+your environment:</p>
+<ol>
+<li>Install the collection into your runtime environment or virtual
+    environment</li>
+<li>Provide the collection as part of your SCM tree </li>
+<li>Use a requirements file</li>
+</ol>
+<p>When accessing content from Automation Hub, the authentication token and
+authentication URL configuration has to be made in Ansible Tower's
+settings. </p>
+<p><em>Note: Even if you have the authorization details in your ansible.cfg
+file within the project repo, it will not be picked up by Ansible Tower.
+You will need to enter these details in the Ansible Tower settings</em></p>
+<p>In order to do this, navigate to the <em>Settings &gt; Jobs</em>  sidebar link
+from the Ansible Tower administration section.</p>
+<p><img alt="tower jobs ui" src="/images/posts/archive/tower-jobs-ui.png"></p>
+<p>Click on <em>Jobs</em> and update the following fields:</p>
+<ol>
+<li>PRIMARY GALAXY SERVER URL: <code>https://cloud.redhat.com/api/automation-hub/</code></li>
+<li>PRIMARY GALAXY AUTHENTICATION URL: <code>https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token</code></li>
+<li>PRIMARY GALAXY SERVER TOKEN: <code>xxxxxxxxxxxxxxxxxxxxxxxxx......</code></li>
+</ol>
+<blockquote>
+<p>Red Hat recommends using Automation Hub for your primary Galaxy Server URL to ensure you are using certified content that is fully supported via your Red Hat Ansible Automation Platform subscription</p>
+</blockquote>
+<p><img alt="tower ui screenshot" src="/images/posts/archive/tower-galaxy-connect-parameters.png"></p>
+<p>This is the only step you need to do in Ansible Tower in order to
+download the certified collection from Automation Hub which was defined
+in the <em>collections/requirements.yml</em> file.</p>
+<p>The playbook is invoked via a job template as usual.</p>
+<p><img alt="tower ui screenshot" src="/images/posts/archive/tower-ui-demo-collections.png"></p>
+<p>Launching this job template results in the collections being pulled down
+from Automation Hub and Galaxy and invoking modules made available
+through those collections.</p>
+<p><img alt="ajay collections" src="/images/posts/archive/ajay-blog-collections.png"></p>
+<h2>Conclusion</h2>
+<p>Ansible Collections introduce a way to modularize and package automation
+content effectively. The Red Hat Automation Hub hosts certified
+collections that are validated and supported by Red Hat. Ansible Galaxy
+hosts community contributed collections. Customers can access
+collections from both content repositories. I think of collections as
+superchargers to the "batteries included" approach that Ansible takes.
+It up-levels the nuances involved in building out automation, allowing
+users to plug-n-play the latest and greatest automation content being
+built by certified partners and the community.</p>

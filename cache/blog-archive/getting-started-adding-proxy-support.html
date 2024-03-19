@@ -1,0 +1,64 @@
+<h1>Adding Proxy Support within Red Hat Ansible Tower</h1>
+<h2>Getting Started with Adding Proxy Support</h2>
+<p>There are many reasons why proxies are implemented into an environment.
+Some can be put in place for security, others as load balancers for your
+systems. No matter the use, if you have a proxy in place, Red Hat
+Ansible Tower may need to utilize it. For a more in-depth look at what
+we will be doing in this post, you can visit our docs specifically on
+Proxy Support within Ansible Tower
+<a href="http://docs.ansible.com/ansible-tower/3.2.1/html/administration/proxy-support.html">here</a>.</p>
+<h2>Adding a Load Balancer (Reverse Proxy)</h2>
+<p>In some instances, you might have Ansible Tower behind a load balancer
+and need that information added to your instance. Sessions in Ansible
+Tower associate an IP address upon creation, and Ansible Tower's policy
+requires that any use of the session match the original IP address.</p>
+<p>To allow for support of a proxy, you will have to make a few changes to
+your Ansible Tower configuration. Previously, this would have been done
+in a settings.py file found on your Ansible Tower host, but as of 3.2
+you can now make these changes in the UI. To make these edits, you must
+be an admin on the instance and navigate to Settings, and then to
+Ansible Tower configuration.</p>
+<p>Once you are in the Ansible Tower Configuration, select the System tab
+up at the top next to Jobs. Once there, we are going to be making an
+edit to the Remote Host Headers box. There will already be some text in
+there that is set after the installation. By default REMOTE_HOST_HEADERS
+is set to <code>['REMOTE_ADDR', 'REMOTE_HOST']</code>.</p>
+<p>The edit you are going to make should reflect the following line with
+the relevant information from your organization\'s environment.</p>
+<div class="code"><pre class="code literal-block">REMOTE_HOST_HEADERS = [&#39;HTTP_X_FORWARDED_FOR&#39;, &#39;REMOTE_ADDR&#39;, &#39;REMOTE_HOST&#39;]
+</pre></div>
+
+<p>Once you have entered the relevant information, click the green Save
+button in the bottom right corner and you'll be all set.</p>
+<h2>Outbound Proxy</h2>
+<p>Setting up Ansible Tower to utilize an outbound proxy is quick and easy.
+One of the things that we see quite often when an outbound proxy needs
+to be in place is a project sync failing (if you aren't using locally
+stored playbooks). This error appears when Ansible Tower cannot resolve
+the source control management (SCM) domain that you are using to manage
+your versioned playbooks, such as github.com. To fix this issue, you
+will need to make some configuration changes to Ansible Tower. To do
+this, navigate to the admin settings (the gear in the top right hand
+corner) and from there, select Configure Ansible Tower.</p>
+<p>Navigate to the Jobs tab that can be found across the top of the page.
+Once you are inside the Jobs tab, scroll down until you find the extra
+environment variables.</p>
+<p>You will need to enter three line entries to add your proxy to your
+instance. Please note, you will need to know the server URL to make
+these changes worth your while.</p>
+<div class="code"><pre class="code literal-block">AWX_TASK_ENV[&#39;http_proxy&#39;] = &#39;http://url:port/&#39;
+
+AWX_TASK_ENV[&#39;https_proxy&#39;] = &#39;http://url:port/&#39;
+
+AWX_TASK_ENV[&#39;no_proxy&#39;] = &#39;127.0.0.1,localhost&#39;
+</pre></div>
+
+<p>Once the information has been entered, select the green Save button in
+the bottom right hand corner.</p>
+<p>Please note, if you are upgrading from a prior release, you may need to
+remove prior settings from configuration files before using the Ansible
+Tower interface to configure these settings.</p>
+<p>Now you can use Ansible Tower's power to automate while allowing it to
+utilize your proxy server, ELB or whichever form of filtering you have
+in place for your environment. It is not a hard process to implement,
+but does require some prior knowledge about your particular infrastructure.</p>

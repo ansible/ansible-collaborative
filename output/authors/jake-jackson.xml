@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Ansible Collaborative (Posts by Jake Jackson)</title><link>https://ansible.com/</link><description></description><atom:link href="https://ansible.com/authors/jake-jackson.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2024 &lt;a href="mailto:website@ansible.community"&gt;Ansible Collaborative, et al&lt;/a&gt; </copyright><lastBuildDate>Mon, 18 Mar 2024 19:47:35 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Windows Package Management</title><link>https://ansible.com/blog/windows-package-management/</link><dc:creator>Jake Jackson</dc:creator><description>&lt;h2&gt;Windows Package Management&lt;/h2&gt;
+&lt;p&gt;Welcome to the third installment of our Windows-centric Getting Started Series!&lt;/p&gt;
+&lt;p&gt;In the previous post we covered
+how you can use Ansible and Ansible Tower to help manage your Active
+Directory environment. This post will go into how you can configure some
+of those machines on your domain. Most of this post is going to be
+dominated by specific modules. Ansible has a plethora of Windows modules
+that can be &lt;a href="https://docs.ansible.com/ansible/latest/collections/index_module.html#ansible-windows"&gt;found here&lt;/a&gt;.
+As time is not a flat circle, I can't discuss all of them today but only
+a few that are widely used.&lt;/p&gt;
+&lt;h3&gt;MSIs and the win_package Module&lt;/h3&gt;
+&lt;p&gt;So you got your domain up, you have machines added to it, now let's
+install some stuff on those machines. I do have a few notes before
+moving forward in regards to the modules we'll be discussing. The module
+win_msi is deprecated and will be removed in Ansible 2.8 (current
+version as of this post is 2.5). In its place you can use
+&lt;a href="http://docs.ansible.com/ansible/latest/modules/win_package_module.html#win-package-module"&gt;win_package&lt;/a&gt;
+which I will be using throughout this post.&lt;/p&gt;
+&lt;p&gt;Alright, back to installing stuff. The win_package module is the place
+to be. It is used specifically for &lt;code&gt;.msi&lt;/code&gt; and &lt;code&gt;.exe&lt;/code&gt; files that need to
+be installed or uninstalled. These files can also be sourced locally,
+from a URL or from a network resource.&lt;/p&gt;
+&lt;p&gt;The parameters within the module add a lot of flexibility. As of Ansible
+2.5, you can now list your arguments and the module will escape the
+arguments as necessary. However, it is recommended to use a string when
+dealing with MSI packages due to the unique escaping issues with
+MsiExec.&lt;/p&gt;
+&lt;p&gt;Below are a few examples of how you can use the win_package module. The
+first one shows how to install Visual C++ and list arguments:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Install&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Visual&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;C&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;thingy&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;with&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;list&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;of&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;arguments&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;instead&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;of&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;string&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="n"&gt;win_package&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="n"&gt;http&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="n"&gt;download&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;microsoft&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;com&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;download&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;6&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;B&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;16&lt;/span&gt;&lt;span class="n"&gt;B06F60&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="n"&gt;B20&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="n"&gt;FF2&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;B699&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;5E9&lt;/span&gt;&lt;span class="n"&gt;B7962F9AE&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;VSU_4&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;vcredist_x64&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;exe&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="n"&gt;product_id&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;'{CF2BEA3C-26EA-32F8-AA9B-331F7E34BA97}'&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="n"&gt;arguments&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;install&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;passive&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;norestart&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Above, we see that the product ID is listed. While Ansible can and does
+extract the ID from the MSI when it's local, we don't want to force
+the host to download the MSI if it's not necessary. When you supply the
+product ID, Ansible can quickly check to see if the package is already
+installed without downloading a potentially huge MSI from the internet
+first. You can install without the product ID. An example of this can be
+found below: &lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Install&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Remote&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Desktop&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Connection&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Manager&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;locally&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;omitting&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;the&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;product_id&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nx"&gt;win_package&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nx"&gt;path&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;C&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="err"&gt;\&lt;/span&gt;&lt;span class="nx"&gt;temp&lt;/span&gt;&lt;span class="err"&gt;\&lt;/span&gt;&lt;span class="nx"&gt;rdcman&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;msi&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nx"&gt;state&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;present&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;As I stated earlier, you can also download from a network share and
+specify the credentials needed to access that share. The example below
+shows it in action, installing 7-zip from a network resource: &lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Install&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;7&lt;/span&gt;&lt;span class="nx"&gt;zip&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;from&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;a&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;network&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;share&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;specifying&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;the&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;credentials&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nx"&gt;win_package&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nx"&gt;path&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;\\&lt;/span&gt;&lt;span class="nx"&gt;domain&lt;/span&gt;&lt;span class="err"&gt;\&lt;/span&gt;&lt;span class="nx"&gt;programs&lt;/span&gt;&lt;span class="err"&gt;\&lt;/span&gt;&lt;span class="mi"&gt;7&lt;/span&gt;&lt;span class="nx"&gt;z&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;exe&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nx"&gt;product_id&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;7&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nx"&gt;Zip&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nx"&gt;arguments&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nx"&gt;S&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nx"&gt;state&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;present&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nx"&gt;user_name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;DOMAIN&lt;/span&gt;&lt;span class="err"&gt;\&lt;/span&gt;&lt;span class="nx"&gt;User&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nx"&gt;user_password&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Password&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3&gt;Windows Package Management and Chocolatey&lt;/h3&gt;
+&lt;p&gt;Unlike most Linux distros, Windows does not have a built-in package
+manager. Windows does have the Windows App Store but I don't think that
+a whole lot of those products are making their way into data centers.&lt;/p&gt;
+&lt;p&gt;There is, however, a community project called Chocolatey that provides a
+full package management experience for Windows users. It helps take away
+some of the pain that comes with managing raw &lt;code&gt;setup.exe&lt;/code&gt; and &lt;code&gt;.msi&lt;/code&gt;
+files. And wouldn't you know, we have a module for it!&lt;/p&gt;
+&lt;p&gt;But before we get into talking about the module, let's talk a little bit
+more about Chocolatey. A good comparison for people who might be Mac
+users, Chocolatey is similar to that of Homebrew. Chocolatey is designed
+to easily work with all aspects of managing Windows software
+(installers, zip archives, runtime binaries, internal and 3rd party
+software) using a packaging framework that understands both versioning
+and dependency requirements.&lt;/p&gt;
+&lt;p&gt;The Chocolatey module is similar in use as its *nix counterparts,
+simple and powerful. It does have a soft requirement in regards to the
+version. And what I mean by soft requirement is that it needs v. 0.10.5
+to run but if Chocolatey doesn't see that version, it will update it for
+you. And to add some more sugar to that dessert, if Chocolatey is not
+present on the machine, the module will install it for you as well
+before going through with its assigned tasks.&lt;/p&gt;
+&lt;p&gt;To get started with the module, one of the easiest examples could be
+installing a lightweight CLI tool. Let's use git because people's
+workflows are all the same, right?&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="k"&gt;-&lt;/span&gt; name: Install git
+  win_chocolatey:
+    name: git
+    state: present
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;All joking aside, it is that easy to install git. It is just as easy to
+install a different version of something as well if you need to have a
+specific version of something. Let's say you need Notepad++, version
+6.6. It would look something like this: &lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="k"&gt;-&lt;/span&gt; name: Install notepadplusplus version 6.6
+  win_chocolatey:
+    name: notepadplusplus
+    version: '6.6'
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;One key thing to note when you're stating a version: make sure to enter
+it as a string (see the two tick marks around 6.6). Reason being is that
+if it is not entered as a string, it's considered a YAML &lt;code&gt;float&lt;/code&gt;. Many
+valid version numbers don't translate properly into a &lt;code&gt;float&lt;/code&gt; and
+yield the same result (eg, '6.10' != '6.1' for most versioning
+schemes, but 6.10 as a &lt;code&gt;float&lt;/code&gt; will become 6.1), so it's a good habit
+to always quote version numbers to ensure that they're not
+re-formatted.&lt;/p&gt;
+&lt;p&gt;Some packages might require an interactive user logon to make an
+installation. To pass the correct credentials, you can use &lt;code&gt;become&lt;/code&gt; to
+achieve this. The example below shows an installation of a package that
+requires the use of &lt;code&gt;become&lt;/code&gt;. Note that you can become: System and it
+will not require you to supply a password.&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Install&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;a&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kn"&gt;package&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;that&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;requires&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;'&lt;/span&gt;&lt;span class="nx"&gt;become&lt;/span&gt;&lt;span class="err"&gt;'&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nx"&gt;win_chocolatey&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nx"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;officepro2013&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nx"&gt;become&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;yes&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nx"&gt;become_user&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Administrator&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nx"&gt;become_method&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;runas&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The
+&lt;a href="http://docs.ansible.com/ansible/latest/modules/win_chocolatey_module.html#win-chocolatey-module"&gt;win_chocolatey&lt;/a&gt;
+module is strong and powerful but in some scenarios will not work
+without become. There is no easy way to find out if a package requires
+become so the best course is to try it without and use &lt;code&gt;become&lt;/code&gt; if that
+fails. &lt;/p&gt;
+&lt;h3&gt;Packages and Chocolate Bars in Windows Automation&lt;/h3&gt;
+&lt;p&gt;To wrap up this blog post, we covered a couple of ways you can automate
+the installation of packages for your Windows environment. Whether you
+are all in on using Chocolatey or need to install some packages, Ansible
+has the power to do all of that and more for you, in a simple and
+easy-to-read format.&lt;/p&gt;
+&lt;p&gt;In our next and final post of the Getting Started with Windows
+Automation series, we will talk about Security and Updates in Windows
+using Ansible!&lt;/p&gt;</description><guid>https://ansible.com/blog/windows-package-management/</guid><pubDate>Mon, 14 May 2018 00:00:00 GMT</pubDate></item><item><title>Getting Started with Ansible Tower's API</title><link>https://ansible.com/blog/getting-started-ansible-towers-api/</link><dc:creator>Jake Jackson</dc:creator><description>&lt;h2&gt;Getting Started with Ansible Tower's API&lt;/h2&gt;
+&lt;p&gt;Welcome to another entry in the Getting Started series.
+The API (Application Programming
+Interface) or, as I like to refer to it, the Magical Land of Automation
+Information, can be used in quite a few ways. In this Getting Started
+post, we will be discussing Red Hat Ansible Tower's API and how you can
+use it to extract information to utilize in your playbooks and other
+tools.&lt;/p&gt;
+&lt;p&gt;The idea for this blog post came about when David
+Federlein was developing a new Ansible
+Tower demo and presentation. I will be making references to &lt;a href="https://github.com/dfederlein/ansible-tower-demo"&gt;that
+codebase&lt;/a&gt;, which you
+can follow along with throughout this post. Please note that this demo
+utilizes Vagrant and VirtualBox so you'll need to have those
+applications installed if you would like to stand up the demo yourself.&lt;/p&gt;
+&lt;h3&gt;Ansible Tower's API&lt;/h3&gt;
+&lt;p&gt;Ansible Tower's API is fully browsable. You can navigate to your
+instance's REST API by typing this into your
+browser: &lt;code&gt;http://&amp;lt;Tower server name&amp;gt;/api/v2&lt;/code&gt;. Once there, you can click
+any of the listed links and view the current objects loaded for that
+particular attribute in Ansible Tower. Everything you can do in Ansible
+Tower's UI can be done from the API; you can also use it to view
+everything from credentials to users. As we'll review in the next
+section, you can manually post to the API or make calls through a
+playbook.&lt;/p&gt;
+&lt;h3&gt;Posting to the API&lt;/h3&gt;
+&lt;p&gt;There are many different ways that you can make calls to the API, but
+today we are going to focus on two of the most basic:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Manually from the REST API interface of Ansible Tower&lt;/li&gt;
+&lt;li&gt;From a playbook&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;What I mean by "basic" here is that these methods are done only through
+Ansible Tower. As most of you might know, you can do some pretty amazing
+stuff with the information from Ansible Tower with other applications.&lt;/p&gt;
+&lt;p&gt;We'll not only be able to configure and modify Ansible Tower via these
+methods, but we'll also demonstrate that you can kick off jobs via API
+call as well. This will allow tighter integration with other aspects of
+your enterprise infrastructure and give the ability to run Red Hat
+Ansible Engine workloads while still restrained by
+the role-based access controls configured around those resources and Job
+Templates.&lt;/p&gt;
+&lt;h4&gt;Posting Manually&lt;/h4&gt;
+&lt;p&gt;For starters, the easiest (albeit not the quickest or most automated)
+way to post to the API is from the API interface. Here you can select an
+object to post to. Each object has a template at the bottom of the page
+that displays the fields that can be contained in a post.&lt;/p&gt;
+&lt;p&gt;For example, let's say you want to add a project to your Ansible Tower
+instance via the API. All you would have to do is navigate to your
+Ansible Tower's API screen &lt;code&gt;(https://&amp;lt;towerip&amp;gt;/api/v2)&lt;/code&gt;
+select the project URL &lt;code&gt;(/api/v2/projects/)&lt;/code&gt; and then scroll down to the
+bottom. Displayed there will be the content, which will look like this:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;"name"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;""&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;"description"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;""&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;"local_path"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;""&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;"scm_type"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;""&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;"scm_url"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;""&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;"scm_branch"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;""&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;"scm_clean"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kc"&gt;false&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;"scm_delete_on_update"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kc"&gt;false&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;"credential"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kc"&gt;null&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;"timeout"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;"organization"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kc"&gt;null&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;"scm_update_on_launch"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kc"&gt;false&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;"scm_update_cache_timeout"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Once you have that content, fill in the quotes with the relative
+information from your environment. After you paste it into your field,
+hit POST. If that posted successfully, you can view the project in the
+Ansible Tower UI and also through the API.&lt;/p&gt;
+&lt;p&gt;If it failed, you will receive a notification of a bad request. The
+method for fixing the error will show up in quotes below it. For
+example, if you are creating a user and fail to enter a password for
+that user, it will fail and return the following error:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;"password"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="s2"&gt;"This field may not be blank."&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;If you run into any issues with making a post to the API (like the above
+error), the OPTIONS button found at the top right of the UI next to GET
+can be of great help. The OPTIONS button describes the acceptable values
+for POST, PUT and PATCH for the specific object or endpoint you are
+wishing to post to.&lt;/p&gt;
+&lt;p&gt;Once the error you have found is fixed in the content field, hit
+"Post" one more time and note that the object has now been added to
+Ansible Tower successfully.&lt;/p&gt;
+&lt;h4&gt;Posting Via a Playbook&lt;/h4&gt;
+&lt;p&gt;Another way to post to Ansible Tower's API is through a playbook. The
+GitHub repo that I linked earlier in the post does this throughout the
+post installation plays. Almost everything done after the installation
+is done through the API.&lt;/p&gt;
+&lt;p&gt;To see it in action, let's sync that project that you just added into
+your instance. This will require some prior knowledge on the
+construction of Ansible Playbooks. If you need help or want to brush up
+on your playbook knowledge, you can visit our
+&lt;a href="http://docs.ansible.com/ansible/latest/playbooks.html"&gt;documentation&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The play that kicks off the job sync utilizes the
+&lt;a href="http://docs.ansible.com/ansible/latest/modules/uri_module.html"&gt;URI module&lt;/a&gt;
+within Ansible. This module is used to interact with web services, such
+as the Ansible Tower API. This exact play can be found in the codebase
+that I linked above at &lt;code&gt;/roles/tower/main.yml&lt;/code&gt;.&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="x"&gt;- name: kick off project sync&lt;/span&gt;
+&lt;span class="x"&gt;  uri:&lt;/span&gt;
+&lt;span class="x"&gt;    url:  https://localhost/api/v1/projects/7/update/&lt;/span&gt;
+&lt;span class="x"&gt;    method: POST&lt;/span&gt;
+&lt;span class="x"&gt;    user: admin&lt;/span&gt;
+&lt;span class="x"&gt;    password: "&lt;/span&gt;&lt;span class="cp"&gt;{{&lt;/span&gt; &lt;span class="nv"&gt;towerpass&lt;/span&gt; &lt;span class="cp"&gt;}}&lt;/span&gt;&lt;span class="x"&gt;"&lt;/span&gt;
+&lt;span class="x"&gt;    validate_certs: False&lt;/span&gt;
+&lt;span class="x"&gt;    status_code:&lt;/span&gt;
+&lt;span class="x"&gt;      - 200&lt;/span&gt;
+&lt;span class="x"&gt;      - 201&lt;/span&gt;
+&lt;span class="x"&gt;      - 202&lt;/span&gt;
+&lt;span class="x"&gt;  when: response.status == 201&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;In this playbook task, we are telling Ansible to navigate to the API URL
+for your project. In this instance, it's
+&lt;code&gt;https://localhost/api/v2/projects/7/update/&lt;/code&gt;. Notice that the project
+has a number before update. Projects are assigned a number in Ansible
+Tower based on the timing of their entry into Ansible Tower. This number
+can only be found by navigating to the API interface for projects
+&lt;code&gt;https://&amp;lt;your_ip_here&amp;gt;/api/v2/projects/&lt;/code&gt;. Once there, you will need to
+find the project you wish to sync and then make a post to the update
+endpoint of that project number. The example does the update on project
+number 7.&lt;/p&gt;
+&lt;p&gt;Once you have found the correct project you want to update, you will
+need to make a post to the update endpoint. In this example, since we
+are updating project 7, the endpoint is
+&lt;code&gt;https://localhost/api/v1/projects/7/update/&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;For this post to work successfully with the URI module, you will need to
+also pass the API your user credentials that you log into Tower with. In
+this example, we are using the default admin user. You can use whichever
+user that has sufficient access to make such a post.&lt;/p&gt;
+&lt;h4&gt;Kicking Off a Job&lt;/h4&gt;
+&lt;p&gt;Now, the header might seem a little ambiguous. "Jake, kicking off a job
+isn't that hard in Ansible Tower." This is correct, but for this
+example, we are going to kick off a job in Ansible Tower from a playbook
+task, which is yet another thing you can do by making a call to the API.
+The specific example I am going to reference can be found in the
+vagrant-common role (&lt;code&gt;/roles/vagrant-common/main.yml&lt;/code&gt;).&lt;/p&gt;
+&lt;p&gt;Now once you get your spectacles out, the task that I am narrowing is
+found in the example below:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;kick&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;off&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;the&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;provisioning&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;job&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;template&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="n"&gt;shell&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="s2"&gt;"curl -f -H 'Content-Type: application/json' -XPOST --user&lt;/span&gt;
+&lt;span class="s2"&gt;admin:{{ towerpass }}&lt;/span&gt;
+&lt;span class="s2"&gt;https://172.16.2.42/api/v2/job_templates/8/launch/ --insecure"&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="n"&gt;when&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;inventory_hostname&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;==&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;'demovm4'&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;At first glance, you are seeing the shell module in use, running a curl
+command to a specific https endpoint. It just so happens that this https
+endpoint is the API endpoint for launching a specific job template.&lt;/p&gt;
+&lt;p&gt;That specific job template is assigned a number in Ansible Tower. In
+order to not have to go digging through the API to find your specific
+job template endpoint, a quick and easy way to find it is to navigate to
+the job template that you want to launch via the API. Once there, look
+at the URL and the number it's assigned to will be there.&lt;/p&gt;
+&lt;p&gt;Once you find the correct job template, the https endpoint will look
+something like &lt;code&gt;api/v2/job_templates/8/launch/&lt;/code&gt;. Hit that endpoint with
+a &lt;code&gt;-XPOST&lt;/code&gt; in a curl command and you should be cooking with gas.&lt;/p&gt;</description><guid>https://ansible.com/blog/getting-started-ansible-towers-api/</guid><pubDate>Tue, 03 Apr 2018 00:00:00 GMT</pubDate></item><item><title>Adding Proxy Support within Red Hat Ansible Tower</title><link>https://ansible.com/blog/getting-started-adding-proxy-support/</link><dc:creator>Jake Jackson</dc:creator><description>&lt;h2&gt;Adding Proxy Support within Red Hat Ansible Tower&lt;/h2&gt;
+&lt;h3&gt;Getting Started with Adding Proxy Support&lt;/h3&gt;
+&lt;p&gt;There are many reasons why proxies are implemented into an environment.
+Some can be put in place for security, others as load balancers for your
+systems. No matter the use, if you have a proxy in place, Red Hat
+Ansible Tower may need to utilize it. For a more in-depth look at what
+we will be doing in this post, you can visit our docs specifically on
+Proxy Support within Ansible Tower
+&lt;a href="http://docs.ansible.com/ansible-tower/3.2.1/html/administration/proxy-support.html"&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;h3&gt;Adding a Load Balancer (Reverse Proxy)&lt;/h3&gt;
+&lt;p&gt;In some instances, you might have Ansible Tower behind a load balancer
+and need that information added to your instance. Sessions in Ansible
+Tower associate an IP address upon creation, and Ansible Tower's policy
+requires that any use of the session match the original IP address.&lt;/p&gt;
+&lt;p&gt;To allow for support of a proxy, you will have to make a few changes to
+your Ansible Tower configuration. Previously, this would have been done
+in a settings.py file found on your Ansible Tower host, but as of 3.2
+you can now make these changes in the UI. To make these edits, you must
+be an admin on the instance and navigate to Settings, and then to
+Ansible Tower configuration.&lt;/p&gt;
+&lt;p&gt;Once you are in the Ansible Tower Configuration, select the System tab
+up at the top next to Jobs. Once there, we are going to be making an
+edit to the Remote Host Headers box. There will already be some text in
+there that is set after the installation. By default REMOTE_HOST_HEADERS
+is set to &lt;code&gt;['REMOTE_ADDR', 'REMOTE_HOST']&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;The edit you are going to make should reflect the following line with
+the relevant information from your organization\'s environment.&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;REMOTE_HOST_HEADERS = ['HTTP_X_FORWARDED_FOR', 'REMOTE_ADDR', 'REMOTE_HOST']
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Once you have entered the relevant information, click the green Save
+button in the bottom right corner and you'll be all set.&lt;/p&gt;
+&lt;h3&gt;Outbound Proxy&lt;/h3&gt;
+&lt;p&gt;Setting up Ansible Tower to utilize an outbound proxy is quick and easy.
+One of the things that we see quite often when an outbound proxy needs
+to be in place is a project sync failing (if you aren't using locally
+stored playbooks). This error appears when Ansible Tower cannot resolve
+the source control management (SCM) domain that you are using to manage
+your versioned playbooks, such as github.com. To fix this issue, you
+will need to make some configuration changes to Ansible Tower. To do
+this, navigate to the admin settings (the gear in the top right hand
+corner) and from there, select Configure Ansible Tower.&lt;/p&gt;
+&lt;p&gt;Navigate to the Jobs tab that can be found across the top of the page.
+Once you are inside the Jobs tab, scroll down until you find the extra
+environment variables.&lt;/p&gt;
+&lt;p&gt;You will need to enter three line entries to add your proxy to your
+instance. Please note, you will need to know the server URL to make
+these changes worth your while.&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;AWX_TASK_ENV['http_proxy'] = 'http://url:port/'
+
+AWX_TASK_ENV['https_proxy'] = 'http://url:port/'
+
+AWX_TASK_ENV['no_proxy'] = '127.0.0.1,localhost'
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Once the information has been entered, select the green Save button in
+the bottom right hand corner.&lt;/p&gt;
+&lt;p&gt;Please note, if you are upgrading from a prior release, you may need to
+remove prior settings from configuration files before using the Ansible
+Tower interface to configure these settings.&lt;/p&gt;
+&lt;p&gt;Now you can use Ansible Tower's power to automate while allowing it to
+utilize your proxy server, ELB or whichever form of filtering you have
+in place for your environment. It is not a hard process to implement,
+but does require some prior knowledge about your particular infrastructure.&lt;/p&gt;</description><guid>https://ansible.com/blog/getting-started-adding-proxy-support/</guid><pubDate>Mon, 22 Jan 2018 00:00:00 GMT</pubDate></item></channel></rss>

@@ -1,0 +1,241 @@
+<h1>Audit your VMware vCenter Server using Ansible</h1>
+<p>vCenter has a graphical user interface if you want to interact with it,
+but what if you manage multiple vCenter servers and want to automate
+audits or the maintenance of those servers? In this blog, we will see
+how we can retrieve details about the VMware vCenter Server directly
+using Ansible. The practices laid out in the blog will help system
+administrators responsible for managing multiple vCenter servers. In
+addition, Ansible automation becomes imperative in development
+environments for testing against multiple instances in your CI/CD
+pipeline.</p>
+<p>The new
+<a href="https://cloud.redhat.com/ansible/automation-hub/repo/published/vmware/vmware_rest">vmware.vmware_rest</a>
+Collection has recently been released and published, and it comes with a
+new set of modules dedicated to vCenter Server (VCSA) management.</p>
+<p>VMware vSphere (Product bundle that includes vCenter Server and other
+features) 7.0.2 (a.k.a 7.0U2) comes with some new REST end-points. This
+REST API does not cover all the features exposed over the SOAP
+interface. Modules in the vmware.vmware_rest Collection are built on top
+of this API and face the same limitations.</p>
+<p>The vmware.vmware_rest Collection contains these modules, which is
+supported by Red Hat and available on
+<a href="https://cloud.redhat.com/ansible/automation-hub/repo/published/vmware/vmware_rest">Ansible automation hub</a>.</p>
+<h2>Validate the state of a vCenter Server instance from Ansible</h2>
+<p>Taking our own dogfooding example (or drinking our own champagne!), our
+cloud/infrastructure team maintains a CI to validate the VMware Ansible
+modules. Everytime a new change is submitted, the full test suite is run
+against a freshly deployed VMware lab. The initial deployment takes 15
+minutes and so we cannot spawn a new environment before each of the
+dozen of tests are run. Hence, it becomes important to keep our test
+environments as clean as possible.</p>
+<p>We use these new appliance modules to build an audit report of the
+vCenter instance before and at the end of the test suite run. This way,
+it will be easier to spot any inconsistency between test runs.</p>
+<p>The appliance modules cover the following use cases.</p>
+<ul>
+<li>Access → localaccounts, audit and control the Console, Direct
+    Console UI, the Shell or even SSH.</li>
+<li>Health → retrieve information about the state of the system
+    component.</li>
+<li>Networking → collect information about the network configuration and
+    adjust it.</li>
+<li>System → manage services, reboot the system, get the storage
+    configuration, get the state of the updates, etc.</li>
+<li>Time management → configure the NTP server, adjust the timezone.</li>
+</ul>
+<h2>How to start using these modules</h2>
+<p>The latest release of vmware_rest Collection available on
+<a href="https://cloud.redhat.com/ansible/automation-hub/repo/published/vmware/vmware_rest">Ansible automation hub</a>
+supports vSphere 7.0.2 and greater.</p>
+<p>We can pass the authentication keys either through some environment
+variables or with the module parameters. In the following example, we
+use the first option. For example:</p>
+<div class="code"><pre class="code literal-block"><span class="nv">VMWARE_HOST</span><span class="o">=</span>&lt;vsphere_host&gt;
+<span class="nv">VMWARE_PASSWORD</span><span class="o">=</span>&lt;vsphere_password&gt;
+<span class="nv">VMWARE_USER</span><span class="o">=</span>&lt;vsphere_username&gt;
+</pre></div>
+
+<p>Note: The community.vmware Collection uses the same environment variables.</p>
+<p>We will try to explain some sample use cases below for the readers to
+understand how you can start using these modules.</p>
+<h2>Collect information about a VCSA instance</h2>
+<p>In this first example, we secure the appliance by turning off any
+potential user interfaces. The REST interface that the modules use
+remains available. Here's how you can check that using the modules
+available.</p>
+<div class="code"><pre class="code literal-block">-<span class="w"> </span>name:<span class="w"> </span>Shell<span class="w"> </span>access<span class="w"> </span>should<span class="w"> </span>be<span class="w"> </span>disabled
+<span class="w">  </span>vmware.vmware_rest.appliance_access_shell_info:
+-<span class="w"> </span>name:<span class="w"> </span>The<span class="w"> </span>Direct<span class="w"> </span>Console<span class="w"> </span>User<span class="w"> </span>Interface<span class="w"> </span>should<span class="w"> </span>also<span class="w"> </span>be<span class="w"> </span>disabled
+<span class="w">  </span>vmware.vmware_rest.appliance_access_dcui_info:
+-<span class="w"> </span>name:<span class="w"> </span>We<span class="w"> </span>need<span class="w"> </span>the<span class="w"> </span>SSH<span class="w"> </span>access
+<span class="w">  </span>vmware.vmware_rest.appliance_access_ssh_info:
+</pre></div>
+
+<p>Response:</p>
+<div class="code"><pre class="code literal-block"><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;changed&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;enabled&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;timeout&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;changed&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="p">}</span>
+
+<span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;changed&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="p">}</span>
+</pre></div>
+
+<h2>The health states</h2>
+<p>We can rely either on the appliance_health modules or the other info
+modules to audit the state of your VCSA. For instance, here we check
+that the system load and the database are in a <em>green</em> state.</p>
+<div class="code"><pre class="code literal-block">-<span class="w"> </span>name:<span class="w"> </span>Ensure<span class="w"> </span>the<span class="w"> </span>database<span class="w"> </span>health<span class="w"> </span>status<span class="w"> </span>is<span class="w"> </span>green
+<span class="w">  </span>vmware.vmware_rest.appliance_health_database_info:
+
+
+-<span class="w"> </span>name:<span class="w"> </span>Get<span class="w"> </span>the<span class="w"> </span>system<span class="w"> </span>load<span class="w"> </span>status
+<span class="w">  </span>vmware.vmware_rest.appliance_health_load_info:
+
+
+-<span class="w"> </span>name:<span class="w"> </span>Get<span class="w"> </span>the<span class="w"> </span>system<span class="w"> </span>load<span class="w"> </span>status
+<span class="w">  </span>vmware.vmware_rest.appliance_health_system_info:
+</pre></div>
+
+<p>Response:</p>
+<div class="code"><pre class="code literal-block"><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;changed&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;messages&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                    </span><span class="nt">&quot;args&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
+<span class="w">                    </span><span class="nt">&quot;default_message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DB state is Degraded&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;desc&quot;</span>
+<span class="w">                </span><span class="p">},</span>
+<span class="w">                </span><span class="nt">&quot;severity&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;WARNING&quot;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">],</span>
+<span class="w">        </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DEGRADED&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;changed&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gray&quot;</span>
+<span class="p">}</span>
+
+<span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;changed&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gray&quot;</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>In this example, our database is in a degraded state and the rest of the
+system is not in the optimal GREEN state.</p>
+<h2>Network configuration</h2>
+<p>Ansible is also able to read and set the network configuration of the
+VCSA. The appliance_networking_info modules return a system-wide
+overview of the network configuration:</p>
+<div class="code"><pre class="code literal-block">-<span class="w"> </span>name:<span class="w"> </span>Get<span class="w"> </span>network<span class="w"> </span>information
+<span class="w">  </span>vmware.vmware_rest.appliance_networking_info:
+</pre></div>
+
+<p>Response: </p>
+<div class="code"><pre class="code literal-block"><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;changed&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;dns&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;hostname&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vcenter.test&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;mode&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DHCP&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;servers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                </span><span class="s2">&quot;192.168.123.1&quot;</span>
+<span class="w">            </span><span class="p">]</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;interfaces&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;nic0&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;ipv4&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                    </span><span class="nt">&quot;address&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;192.168.123.8&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;configurable&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;default_gateway&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;192.168.123.1&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;mode&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DHCP&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;prefix&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">24</span>
+<span class="w">                </span><span class="p">},</span>
+<span class="w">                </span><span class="nt">&quot;mac&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;52:54:00:c9:06:64&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;nic0&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;up&quot;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;vcenter_base_url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://vcenter.test:443&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>But we can also collect the details one specific NIC:</p>
+<div class="code"><pre class="code literal-block"><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Get details about one network interfaces</span>
+<span class="w">  </span><span class="nt">vmware.vmware_rest.appliance_networking_interfaces_info</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">interface_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nic0</span>
+</pre></div>
+
+<p>Response:</p>
+<div class="code"><pre class="code literal-block"><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;changed&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;nic0&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;ipv4&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;address&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;192.168.123.8&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;configurable&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;default_gateway&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;192.168.123.1&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;mode&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DHCP&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;prefix&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">24</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;mac&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;52:54:00:c9:06:64&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;nic0&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;up&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+<h2>DNS configuration</h2>
+<p>The appliance_networking_dns_hostname_info module can be use to retrieve
+the hostname of the VCSA.</p>
+<div class="code"><pre class="code literal-block"><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Get the hostname configuration</span>
+<span class="w">  </span><span class="nt">vmware.vmware_rest.appliance_networking_dns_hostname_info</span><span class="p">:</span>
+</pre></div>
+
+<p>Response:</p>
+<div class="code"><pre class="code literal-block"><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;changed&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vcenter.test&quot;</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>Use the appliance_networking_dns_servers_info to get DNS servers
+currently in use:</p>
+<div class="code"><pre class="code literal-block"><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Get the DNS servers</span>
+<span class="w">  </span><span class="nt">vmware.vmware_rest.appliance_networking_dns_servers_info</span><span class="p">:</span>
+</pre></div>
+
+<p>Response:</p>
+<div class="code"><pre class="code literal-block"><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;changed&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;mode&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;dhcp&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;servers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="s2">&quot;192.168.123.1&quot;</span>
+<span class="w">        </span><span class="p">]</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+<h2>Conclusion and next steps</h2>
+<p>These new modules are helpful to quickly retrieve information from a
+running VCSA instance without relying on SSH. The outputs will fit well
+in a regular Ansible Playbook. Finally, you can also use them to adjust
+the configuration of the system (network, firewall, etc). An unsupported
+version of this Collection is also available on <a href="https://galaxy.ansible.com/vmware/vmware_rest">Ansible Galaxy</a>.</p>

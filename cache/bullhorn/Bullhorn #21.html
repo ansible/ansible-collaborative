@@ -1,0 +1,68 @@
+<p><img alt="Ansible Bullhorn banner" src="/images/bullhorn-banner-mango.png"></p>
+<h2>The Bullhorn</h2>
+<p><em>A Newsletter for the Ansible Developer Community</em>
+<em>Issue #21, 2021-03-05 (<a href="https://us19.campaign-archive.com/home/?u=56d874e027110e35dea0e03c1&amp;id=d6635f5420">Past Issues</a>)</em></p>
+<p>Welcome to the Bullhorn, our newsletter for the Ansible developer community. If you have any questions or content you’d like to share, please reach out to us at the-bullhorn@redhat.com, or comment on this <a href="https://github.com/ansible/community/issues/546">GitHub issue</a>.</p>
+<!-- TEASER_END -->
+
+<p><strong>KEY DATES</strong></p>
+<ul>
+<li>2021-03-09: <a href="https://www.eventbrite.com/e/ansible-contributor-summit-202103-registration-141735886853?aff=bullhorn">Ansible Contributor Summit 2021.03</a>, 12:00 UTC (more info below)</li>
+<li>2021-03-09: <a href="https://docs.ansible.com/ansible/devel/roadmap/COLLECTIONS_3_0.html">ETA for Ansible 3.1.0 release</a></li>
+<li>2021-03-10: Hackathon/PR Day in #ansible-community, 12:00 UTC</li>
+<li>2021-03-16: <a href="https://github.com/ansible/community/issues/546">Bullhorn #22 content deadline</a></li>
+<li>2021-03-17: <a href="https://github.com/ansible/community/issues/539">community IRC meeting</a>, 19:00 UTC</li>
+<li>2021-03-18: <a href="https://github.com/ansible/community/issues/577">D&amp;I working group meeting</a>, 19:00 UTC</li>
+<li>2021-03-29: <a href="https://github.com/ansible/ansible/blob/devel/docs/docsite/rst/roadmap/ROADMAP_2_11.rst">ETA for ansible-core 2.11 release candidate</a></li>
+<li>2021-05-18: ETA for Ansible 4.0.0 general release (more info below)</li>
+</ul>
+<p><strong>ANSIBLE 4.0.0 ROADMAP AND DATES</strong></p>
+<ul>
+<li>2021-04-13: Last day for new collections to be <a href="https://github.com/ansible-collections/ansible-inclusion/discussions/">submitted for inclusion in Ansible 4</a>. Note that collections MUST be reviewed and approved before being included. There is no guarantee that we will review every collection. The earlier your collection is submitted, the more likely it will be that your collection will be reviewed and the necessary feedback can be addressed in time for inclusion.</li>
+<li>2021-04-26: Last day for collections to make backwards incompatible releases that will be accepted into Ansible 4.</li>
+<li>2021-04-27: Ansible-4.0.0 beta1 – feature freeze 1 (weekly beta releases. Collection owners and interested users should test for bugs).</li>
+<li>2021-05-18: Ansible-4.0.0 general release.</li>
+</ul>
+<p>For the full Ansible 4.0.0 schedule please see the <a href="https://docs.ansible.com/ansible/devel/roadmap/COLLECTIONS_4.html">Ansible 4.0.0 roadmap</a>.</p>
+<p><strong>ANSIBLE-BASE 2.10.6 NOW GENERALLY AVAILABLE</strong></p>
+<p>The Ansible Core team announced the general release of Ansible-Base 2.10.6 on February 19th. This ansible-base package consists of only the Ansible execution engine, related tools (e.g. ansible-galaxy, ansible-test), and a very small set of built-in plugins, and is also bundled with the larger Ansible distribution. For more information on what's new, how to download, and report issues, read <a href="https://groups.google.com/g/ansible-devel/c/QzKCxTIWbYQ">Rick Elrod’s announcement to the ansible-devel mailing list</a>.</p>
+<p><strong>ANSIBLE 2.9.18 AND 2.8.19 RELEASED</strong></p>
+<p>The Ansible Core team announced the availability of Ansible 2.9.18 and Ansible 2.8.19 on February 19th, both of which are maintenance releases. Follow <a href="https://groups.google.com/g/ansible-devel/c/BjUj4PB8C_s">this link</a> for Rick Elrod’s email to the ansible-devel mailing list, to obtain details on what’s new, installation instructions, and links to the full changelogs.</p>
+<p><strong>CHANGES IMPACTING COLLECTION OWNERS</strong></p>
+<p><strong>Breaking change:</strong> Vendored <code>ipaddress</code> in <code>ansible.netcommon</code> 2.0.0 has been removed. In case your collection uses the vendored <code>ipaddress</code> module from ansible.netcommon, either directly (<code>import ansible_collections.ansible.netcommon.plugins.module_utils.compat.ipaddress</code>) or indirectly (<code>import ansible.module_utils.compat.ipaddress</code>, see <a href="https://github.com/ansible/ansible/blob/78d3810fdf7c579be5d9be8412844ae79d3f313b/lib/ansible/config/ansible_builtin_runtime.yml#L7618-L7619">ansible-core's module_utils routing</a>): it has been <strong>removed</strong> from ansible.netcommon 2.0.0 (released 3 days ago) and these imports will no longer work! Check out <a href="https://github.com/ansible-collections/overview/issues/45#issuecomment-791194436">how to update your code</a>.</p>
+<p>In your <code>galaxy.yml</code> we strongly suggest you pin to major versions to avoid accidentally bringing in breaking changes, i.e.:
+<code>yaml=
+dependencies:
+  "ansible.netcommon": "&gt;=2.0.0,&lt;3.0.0"</code></p>
+<p><code>ansible.netcommon</code> 2.0.0 also removes deprecated connection arguments from netconf_config. See the <a href="https://github.com/ansible-collections/ansible.netcommon/blob/main/changelogs/CHANGELOG.rst#v2-0-0">changelog</a>.</p>
+<p>As always, please subscribe to <a href="https://github.com/ansible-collections/overview/issues/45">Changes impacting collection owners</a> to be informed about changes as soon as they happen.</p>
+<p><strong>NEW/UPDATED COMMUNITY COLLECTIONS</strong></p>
+<p>The <a href="https://galaxy.ansible.com/community/hashi_vault">Community HashiVault Collection</a> <a href="https://github.com/ansible-collections/community.hashi_vault">community.hashi_vault</a> 1.1.1 was released on 2021-02-24 (<a href="https://github.com/ansible-collections/community.hashi_vault/blob/main/CHANGELOG.rst#v1-1-1">changelog</a>).</p>
+<p>The <a href="https://galaxy.ansible.com/theforeman/foreman">Foreman Ansible Collection</a> v2.0.0 was released (<a href="https://theforeman.github.io/foreman-ansible-modules/v2.0.0/CHANGELOG.html#v2-0-0">full changelog</a>). Most notable changes include:
+- new modules: <a href="https://theforeman.github.io/foreman-ansible-modules/v2.0.0/plugins/host_info_module.html#ansible-collections-theforeman-foreman-host-info-module">host_info</a>, <a href="https://theforeman.github.io/foreman-ansible-modules/v2.0.0/plugins/repository_info_module.html#ansible-collections-theforeman-foreman-repository-info-module">repository_info</a> and <a href="https://theforeman.github.io/foreman-ansible-modules/v2.0.0/plugins/puppetclasses_import_module.html#ansible-collections-theforeman-foreman-puppetclasses-import-module">puppetclasses_import</a>
+- new roles: activation_keys, lifecycle_environments, repositories, sync_plans
+- host module can now look up the correct network id for a network given as part of interfaces_attributes</p>
+<p>Breaking changes:
+- All role variables are now prefixed with <code>foreman_</code> to avoid clashes with similarly named variables from roles outside this collection.</p>
+<p><strong>REQUEST FOR FEEDBACK - ANSIBLE NETWORKING</strong></p>
+<p>The Ansible Networking team would like to gather feedback from the network community on how to improve the behaviour of network config module warning messages. Please add your comments in this <a href="https://github.com/ansible/network/discussions/48">discussion on GitHub</a>.</p>
+<p><strong>DIVERSITY AND INCLUSION WG SEEKING EXPERIENCE IN ACCESSIBLE DESIGN</strong></p>
+<p>The Ansible <a href="https://github.com/ansible/community/wiki/Diversity">Diversity and Inclusion</a> Working Group is seeking members of the community with experience in accessible design or use of assistive technologies to help identify areas for improvement and implement changes to our online media (documentation, GitHub templates and forms, etc). Please reach out to the group on <a href="https://webchat.freenode.net/#ansible-diversity">Freenode IRC in channel #ansible-diversity</a> if you would like to participate.</p>
+<p><strong>CONTENT FROM THE ANSIBLE COMMUNITY</strong></p>
+<ul>
+<li>At <a href="https://fosdem.org/2021/">FOSDEM 2021</a>, <a href="https://twitter.com/zhenech">Evgeni Golov</a> gave a talk titled "your management layer should be cattle too". <a href="https://fosdem.org/2021/schedule/event/yourmanagementlayershouldbecattletoo/">Video, slides and further links are available on the FOSDEM talk page</a>.</li>
+<li><a href="https://medium.com/@AbhijeetKasurde/ansible-assign-tag-to-object-in-vcenter-b23382371cf8">Ansible: Assign Tag to object in vCenter</a> by <a href="https://github.com/Akasurde">Abhijeet Kasurde</a></li>
+<li><a href="https://blog.while-true-do.io/ansible-release-3-0-0/">Ansible - Release 3.0.0</a> by <a href="https://github.com/daniel-wtd">Daniel Schier</a></li>
+<li><a href="https://medium.com/@AbhijeetKasurde/ansible-using-virtualbox-inventory-plugin-222cc0becfc6">Ansible: Using ‘virtualbox’ inventory plugin</a> by <a href="https://github.com/Akasurde">Abhijeet Kasurde</a></li>
+</ul>
+<p><strong>ANSIBLE CONTRIBUTOR SUMMIT 2021.03</strong></p>
+<p>The next Ansible Contributor Summit will be held on <strong>Tuesday, March 9, from <a href="https://www.timeanddate.com/worldclock/fixedtime.html?msg=Ansible+Contributor+Summit+2021.03&amp;iso=20210309T12">12:00-20:00 UTC</a></strong>. Please see the details and register on <a href="https://www.eventbrite.com/e/ansible-contributor-summit-202103-registration-141735886853?aff=bullhorn">Eventbrite</a>, and check out the agenda and participation links in this <a href="https://hackmd.io/@ansible-community/contrib-summit-202103">HackMD note</a>.</p>
+<p>We will follow up on Wednesday, March 10, with a Hackathon/PR day from 12:00 UTC. This will take place on <a href="https://webchat.freenode.net/#ansible-community">Freenode IRC in channel #ansible-community</a>.</p>
+<p><strong>ANSIBLE VIRTUAL MEETUPS</strong></p>
+<p>The following virtual meetups are being held in the Ansible community over the next month:</p>
+<ul>
+<li>Wed, Mar 17 · 6:00 PM GMT+1 - <a href="https://www.meetup.com/Ansible-Meetup-Dresden/events/276690420/">Ansible Meetup Dresden</a> - Meetup 03.2021</li>
+<li>Thu, Mar 18 · 3:00 PM EDT - <a href="https://www.meetup.com/Ansible-Quebec/events/276567692/">Ansible Québec</a> and <a href="https://www.meetup.com/Ansible-Montreal/events/276525794/">Ansible Montréal</a> - Rencontre Mars 2021</li>
+</ul>
+<p><strong>FEEDBACK</strong></p>
+<p>Have any questions you’d like to ask, or issues you’d like to see covered? Please send us an email at the-bullhorn@redhat.com.</p>

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html prefix="
+og: http://ogp.me/ns# article: http://ogp.me/ns/article#
+" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="Jürgen Etzlstorfer from Dynatrace gives an overview of the features in the Ansible and Dynatrace integration.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Enable self-healing applications with Ansible and Dynatrace | Ansible Collaborative</title>
+<link href="../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/baguetteBox.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/rst.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/code.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/theme.css" rel="stylesheet" type="text/css">
+<!-- Red Hat fonts --><link rel="stylesheet" href="https://static.redhat.com/libs/redhat/redhat-font/2.0.0/webfonts/red-hat-font.css">
+<!-- Font Awesome --><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+<!-- Fork Awesome --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css" integrity="sha256-XoaMnoYC5TH6/+ihMEnospgm0J1PM/nioxbOUdnM8HY=" crossorigin="anonymous">
+<!-- Sass compiled css  --><link rel="stylesheet" href="../../assets/css/main.css">
+<link rel="stylesheet" href="../../assets/css/redhat-footer.css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://ansible.com/blog/enable-self-healing-applications-with-ansible-and-dynatrace/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Jürgen Etzlstorfer">
+<link rel="prev" href="../getting-started-ansible-towers-api/" title="Getting Started with Ansible Tower's API" type="text/html">
+<link rel="next" href="../using-ansible-to-mitigate-network-vulnerabilities/" title="Using Ansible to Mitigate Network Vulnerabilities" type="text/html">
+<meta property="og:site_name" content="Ansible Collaborative">
+<meta property="og:title" content="Enable self-healing applications with Ansible and Dynatrace">
+<meta property="og:url" content="https://ansible.com/blog/enable-self-healing-applications-with-ansible-and-dynatrace/">
+<meta property="og:description" content="Jürgen Etzlstorfer from Dynatrace gives an overview of the features in the Ansible and Dynatrace integration.">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2018-04-13T00:00:00Z">
+</head>
+<body id="top">
+
+<div class="global-container" id="content" role="main">
+<!-- Start menubar -->
+<nav class="navbar navbar-expand-lg static-top mb-4 navbar-padding full-width-bg   navbar-dark   bg-pool   "><div class="masthead">
+    <!-- This keeps the margins nice -->
+    <a class="navbar-brand" href="../../">
+        <img src="../../images/ansible_logo-small-15.png" alt="Ansible community logo" id="logo" class="d-inline-block align-top" width="50" height="50"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon nav-toggle-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="bs-navbar">
+      <ul class="navbar-nav mr-auto"></ul>
+<ul class="navbar-nav navbar-right">
+<li class="nav-item dropdown">
+	        <a href="#" class="nav-link nav-link-color dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <i class=""></i> Documentation
+                </a>
+		<div class="dropdown-menu dropdown-menu-border">
+	    
+                    <a href="https://docs.ansible.com/" class="dropdown-item">
+		        <i class=""></i> Project documentation
+                    </a>
+                    <a href="https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/" class="dropdown-item">
+		        <i class=""></i> Ansible Automation Platform documentation
+                    </a>
+            </div>
+                 </li>
+<li class="nav-item">
+		     <a href="https://galaxy.ansible.com/" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Galaxy
+		     </a>
+		 </li>
+                 <li class="nav-item">
+		     <a href="https://forum.ansible.com/" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Forum
+		     </a>
+		 </li>
+            <li class="nav-item dropdown">
+	        <a href="#" class="nav-link nav-link-color dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <i class=""></i> Resources
+                </a>
+		<div class="dropdown-menu dropdown-menu-border">
+	    
+                    <a href="../../how-ansible-works/" class="dropdown-item">
+		        <i class=""></i> How Ansible works
+                    </a>
+                    <a href="../../ecosystem/" class="dropdown-item">
+		        <i class=""></i> Ansible ecosystem
+                    </a>
+                    <a href="../archive.html" class="dropdown-item">
+		        <i class=""></i> Blog
+                    </a>
+                    <a href="../../faq/" class="dropdown-item">
+		        <i class=""></i> Frequently asked questions
+                    </a>
+                    <a href="../../ansible-community-training/" class="dropdown-item">
+		        <i class=""></i> Ansible community training
+                    </a>
+                    <a href="../../contact-us/" class="dropdown-item">
+		        <i class=""></i> Contact us
+                    </a>
+            </div>
+                 </li>
+<li class="nav-item">
+		     <a href="https://www.redhat.com/en/technologies/management/ansible?sc_cid=7015Y000003szaKQAQ" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Ansible Automation Platform
+		     </a>
+		 </li>
+
+        
+      </ul>
+</div>
+    <!-- /.navbar-collapse -->
+  </div>
+  <!-- /.container -->
+</nav><!-- End default Menubar --><div class="body-content center-band">
+        <!--Body content-->
+        
+  <article class="post-text h-entry hentry postpage ansible-content" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Enable self-healing applications with Ansible and Dynatrace</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard p-author h-card"><span class="byline-name fn p-name" itemprop="author">
+                    <a class="u-url" href="../../authors/jurgen-etzlstorfer/">Jürgen Etzlstorfer</a>
+            </span></p>
+            <p class="dateline">
+            <a href="." rel="bookmark">
+            <time class="published dt-published" datetime="2018-04-13T00:00:00Z" itemprop="datePublished" title="2018-04-13 00:00">2018-04-13 00:00</time></a>
+            </p>
+                    <p class="sourceline"><a href="index.md" class="sourcelink">Source</a></p>
+
+        </div>
+        
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+<h2>Enable self-healing applications with Ansible and Dynatrace</h2>
+<p>The size, complexity and high rate of change in today's IT environments
+can be overwhelming. Enabling the performance and availability of these
+modern microservice environments is a constant challenge for IT
+organizations.</p>
+<p>One trend contributing to this rate of change is the adoption of IT
+automation for provisioning, configuration management and ongoing
+operations. For this blog, we want to highlight the repeatable and
+consistent outcomes allowed by IT automation, and explore what is
+possible when Ansible automation is extended to the application
+monitoring platform Dynatrace.</p>
+<h3>Monitoring Today</h3>
+<p>Considering the size, complexity and high rate of change in today\'s IT
+environments, traditional methods of monitoring application performance
+and availability are often necessary and commonplace in most operations
+teams. Application performance monitoring (APM) platforms are used to
+detect bottlenecks and problems that can impact the experience of your
+customers.</p>
+<p>Monitoring alone, however, isn't always enough to help keep your
+applications running at peak performance. When issues are detected, APM
+platforms are designed to alert the operator of the problem and its
+root-cause. The Ops team can then agree on a corrective action, and
+implement this action against the impacted systems.</p>
+<p>What if common or time-consuming corrective actions could be automated?</p>
+<h3>Dynatrace Automates Remediation</h3>
+<p>The Dynatrace APM platform provides AI-powered, full stack performance
+monitoring of your microservice environments and its underlying
+infrastructure. Dynatrace enables insights into your IT operation and
+detects if areas of your environment do not meet performance or error
+rate thresholds by an automated baselining.</p>
+<p>Once Dynatrace detects abnormal system behavior that affects real users,
+a problem alert is created that groups all incidents that share the same
+root-cause.</p>
+<p>Demo application triggers a Problem alert. Dynatrace detected a
+degradation in response time, impacting 54 real users and more than 300
+service calls:</p>
+<p><img alt="Dynatrace Problem Alert" src="../../images/posts/archive/Ansible-Dynatrace-2.png"></p>
+<p>As soon as Dynatrace detects a problem within an environment, a problem
+notification can be sent out to third party systems to notify them about
+the incidents. Dynatrace allows users to integrate with Ansible Tower as
+a Notification System, allowing operators to launch Ansible Tower job
+templates from Dynatrace Problem Notifications.</p>
+<p>Ansible Tower is now available as a featured third-party integration
+within the Dynatrace Notification System:</p>
+<p><img alt="Ansible Tower integration with Dynatrace" src="../../images/posts/archive/Ansible-Dynatrace-4.png"></p>
+<p>The integration also allows transferring contextual information for the
+detected problem. This means Ansible job templates can leverage these
+extra variables for a context-aware, finer grained remediation in terms
+of executing a predefined playbook. </p>
+<p>Specify the Ansible Tower job template URL, credentials and an optional
+custom message. The Notification can be saved and will be triggered as
+soon as Dynatrace detects a problem in your
+environment:</p>
+<p><img alt="Ansible Tower job template" src="../../images/posts/archive/Ansible-Dynatrace-3.png"></p>
+<p>Execution of a job template triggered by the Dynatrace problem
+notification sent to\
+Ansible Tower:</p>
+<p><img alt="Dynatrace executes Ansible Tower job" src="../../images/posts/archive/Ansible-Dynatrace-1.png"></p>
+<p>Note that extra variables are passed with the job template, designed to eliminate the need for the operator to provide this contextual information.</p>
+<h3>Self-Healing Applications in Action</h3>
+<p>Once your Ansible job templates are in place and customized for
+facilitating remediation tasks and the integration within Dynatrace is
+set up, the workflow for your self-healing applications looks as
+follows:</p>
+<ul>
+<li>Dynatrace monitors your environment and detects problems once they
+    affect real users</li>
+<li>Dynatrace sends a problem notification to Ansible Tower</li>
+<li>Ansible Tower launches the specified job template to start the
+    remediation</li>
+<li>Once the problem is resolved, Dynatrace closes the problem</li>
+</ul>
+<p>As you can see, the Dynatrace - Ansible Tower integration is designed to
+simplify the setup of IT management automation tasks. Furthermore, the
+integration of Ansible Tower into the Dynatrace Problem Notifications
+workflow enables self-healing applications by triggering pre-defined,
+automatable Ansible job templates that are executed by Ansible Tower
+each time a problem is detected.</p>
+</div>
+    <aside class="postpromonav"><nav><ul class="pager hidden-print">
+<li class="previous">
+                <a href="../getting-started-ansible-towers-api/" rel="prev" title="Getting Started with Ansible Tower's API">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../using-ansible-to-mitigate-network-vulnerabilities/" rel="next" title="Using Ansible to Mitigate Network Vulnerabilities">Next post</a>
+            </li>
+        </ul></nav></aside></article><!--End of body content-->
+</div>
+        <div class="content-slim redhat-footer">
+      <div class="footer-left">
+        <ul class="footer-left-links">
+<li>
+            <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-SA 4.0</a>
+          </li>
+          <li>
+            <a href="https://www.redhat.com/en/about/privacy-policy" target="_blank">Privacy policy</a>
+          </li>
+          <li>
+            <a href="https://docs.ansible.com/ansible/latest/community/code_of_conduct.html" target="_blank">Code of conduct</a>
+          </li>
+        </ul>
+</div>
+      <div class="footer-right">
+        <span class="redhat">Powered by</span>
+        <span class="redhat-logo">
+          <a href="https://www.redhat.com/en/technologies/management/ansible" target="_blank">
+            <img src="../../assets/images/redhat_reversed.svg" alt="Red Hat logo." width="96" height="28"></a>
+        </span>
+      </div>
+    </div>
+
+</div>
+
+            <script src="../../assets/js/jquery.min.js"></script><script src="../../assets/js/popper.min.js"></script><script src="../../assets/js/bootstrap.min.js"></script><script src="../../assets/js/baguetteBox.min.js"></script><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+</script><script src="../../assets/js/clipboard.min.js" type="text/javascript"></script><script src="../../assets/js/clipboard.js" type="text/javascript"></script>
+</body>
+</html>

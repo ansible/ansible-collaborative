@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Ansible Collaborative (Posts by Timothy Appnel)</title><link>https://ansible.com/</link><description></description><atom:link href="https://ansible.com/authors/timothy-appnel.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2024 &lt;a href="mailto:website@ansible.community"&gt;Ansible Collaborative, et al&lt;/a&gt; </copyright><lastBuildDate>Mon, 18 Mar 2024 19:47:36 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>The Zen of Ansible</title><link>https://ansible.com/blog/the-zen-of-ansible/</link><dc:creator>Timothy Appnel</dc:creator><description>&lt;h2&gt;The Zen of Ansible&lt;/h2&gt;
+&lt;p&gt;This blog post is based on my presentation at AnsibleFest 2022 in
+Chicago and &lt;a href="https://events.experiences.redhat.com/widget/redhat/rhaf22/SessionCatalog2022/session/1661879478208001DUNx"&gt;virtually&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Recently, &lt;a href="https://github.com/redhat-cop/automation-good-practices/pull/42"&gt;a suggestion was made&lt;/a&gt;
+to adopt &lt;a href="https://peps.python.org/pep-0020/"&gt;Tim Peters' "The Zen of Python"&lt;/a&gt; as an overall guiding principle for
+designing good automation content. That gave me pause because it didn't
+seem like the right thing to me. While there is definitely some very
+good advice to "The Zen of Python" that can be applied to Ansible
+content, adopting it in its entirety would not provide the best user
+experience that Ansible is capable of and known for. Its presence as a
+guiding principle for content design gives the wrong impression and
+re-enforces a mindset we don't want to recommend.&lt;/p&gt;
+&lt;p&gt;This got me thinking, what is "the zen" of Ansible?&lt;/p&gt;
+&lt;p&gt;I considered the spirit of "The Zen of Python" and then I returned to
+the Ansible best practices talk that I first co-presented back in 2016
+at Red Hat Summit.
+In that talk, I said that Ansible was designed with a philosophy of
+sorts from the very beginning.&lt;/p&gt;
+&lt;p&gt;"The Ansible way" is to provide an automation tool that is simple,
+powerful and agentless. Ansible enables users with no special coding
+skills to do powerful things across multiple IT domains. Its human
+readable automation can be utilized and shared by every IT team so they
+can get productive quickly and contribute their expertise. Its agentless
+architecture provides the flexibility to be applied across all IT
+infrastructure
+domains.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Ansible simple powerful agentless" src="https://ansible.com/images/posts/archive/ansible-simple-powerful-agentless.png"&gt;&lt;/p&gt;
+&lt;p&gt;It is this thinking behind its design that everything in this post
+relates back to in one way or another.&lt;/p&gt;
+&lt;p&gt;Besides "The Zen of Python" and my Ansible best practices talk, I also
+considered what I've heard talking to hundreds of you in my many years
+within the Ansible ecosystem. What I came up with are these 20 aphorisms
+for Ansible.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Ansible zen image" src="https://ansible.com/images/posts/archive/ZenOfAnsibleEmoji.png"&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Ansible is not Python.&lt;/li&gt;
+&lt;li&gt;YAML sucks for coding.&lt;/li&gt;
+&lt;li&gt;Playbooks are not for programming.&lt;/li&gt;
+&lt;li&gt;Ansible users are (most likely) not programmers.&lt;/li&gt;
+&lt;li&gt;Clear is better than cluttered.&lt;/li&gt;
+&lt;li&gt;Concise is better than verbose.&lt;/li&gt;
+&lt;li&gt;Simple is better than complex.&lt;/li&gt;
+&lt;li&gt;Readability counts.&lt;/li&gt;
+&lt;li&gt;Helping users get things done matters most.&lt;/li&gt;
+&lt;li&gt;User experience beats ideological purity.&lt;/li&gt;
+&lt;li&gt;"Magic" conquers the manual.&lt;/li&gt;
+&lt;li&gt;When giving users options, use convention over configuration.&lt;/li&gt;
+&lt;li&gt;Declarative is better than imperative -- most of the time.&lt;/li&gt;
+&lt;li&gt;Focus avoids complexity.&lt;/li&gt;
+&lt;li&gt;Complexity kills productivity.&lt;/li&gt;
+&lt;li&gt;If the implementation is hard to explain, it's a bad idea.&lt;/li&gt;
+&lt;li&gt;Every shell command and UI interaction is an opportunity to automate.&lt;/li&gt;
+&lt;li&gt;Just because something works, doesn't mean it can't be improved.&lt;/li&gt;
+&lt;li&gt;Friction should be eliminated whenever possible.&lt;/li&gt;
+&lt;li&gt;Automation is a journey that never ends.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Your Ansible automation content doesn't necessarily have to follow this
+guidance, but they're good ideas to keep in mind. These aphorisms are
+opinions that can be debated and sometimes can be contradictory. What
+matters is that they communicate a mindset for getting the most from
+Ansible and your automation.&lt;/p&gt;
+&lt;p&gt;Let me take you deeper into each of the aphorisms and explain what they
+mean to your automation practice.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Ansible is not Python. YAML sucks for coding. Playbooks are not for programming. Ansible users are (most probably) not programmers.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;These aphorisms are at the heart of why applying guidelines for a
+programming language to good Ansible automation content didn't seem
+right to me. As I said, it would give the wrong impression and would
+reinforce a mindset we don't recommend -- that Ansible is a programming
+language for coding your playbooks. &lt;/p&gt;
+&lt;p&gt;These aphorisms are all saying the same thing in different ways --
+certainly the first 3. If you're trying to "write code" in your plays
+and roles, you're setting yourself up for failure. Ansible's YAML-based
+playbooks were never meant to be for programming.&lt;/p&gt;
+&lt;p&gt;So it bothers me when I see Python-isms bleeding into what Ansible users
+see and do. It may be natural and make sense if you write code in
+Python, but most Ansible users are not Pythonistas. So, it can be
+challenging and confusing when these isms are incorporated, thereby
+introducing friction that degrades their user experience and the value
+that Ansible provides. &lt;/p&gt;
+&lt;p&gt;By Ansible not being a programming language, all parts of your
+organization can contribute to automating your entire IT stack rather
+than relying on skill programmers to understand your operations to write
+and maintain code for it.&lt;/p&gt;
+&lt;p&gt;If you are a programmer creating Ansible modules and plugins, assume you
+are not the target audience for what you are developing and your target
+audience won't have the same skills and resources you possess.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Clear is better than cluttered. Concise is better than verbose. Simple is better than complex. Readability counts.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;These are really just interpretations of aphorisms in "The Zen of
+Python". The last one is taken directly from it because you can't
+improve on perfection.&lt;/p&gt;
+&lt;p&gt;In the original Ansible best practices talk, we recommended users
+optimize for readability. This holds true even more so today. If done
+properly, your content can be the documentation of your workflow
+automation. Take the time to make your automation as clear and concise
+as possible. Iterate over what you create and always look for
+opportunities to simplify and clarify.&lt;/p&gt;
+&lt;p&gt;These aphorisms don't just apply to those writing playbooks and creating
+roles. If you are a module developer, think about how your work can
+assist users, be clear and concise, do things simply and just get things
+done.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Helping users get things done matters most. User experience beats ideological purity.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Whether you are creating modules, plugins and collections or writing
+playbooks or designing a cross domain hybrid automation workflow --
+Ansible is for helping you get things done. Always consider and look to
+maximize the user experience. Don't get caught up and beholden to some
+strict interpretation of standards or ideological purity that shifts the
+burden on the end user. &lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;"Magic" conquers the manual.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Arthur C. Clarke wrote, "Any sufficiently advanced technology is
+indistinguishable from magic."&lt;/p&gt;
+&lt;p&gt;The "magic" in Ansible is its playbook engine and module system. It is
+how Ansible provides powerful and flexible capabilities in a
+straightforward and accessible way by abstracting users from all of the
+complex implementation details that lie beneath. This frees users from
+doing time consuming and error prone manual operations or writing
+brittle one-off scripts and code, enabling them the time to put their
+valuable expertise to use where it is needed.&lt;/p&gt;
+&lt;p&gt;Design automation that amazes users can make difficult or tedious tasks
+easy and almost effortless. Look to provide powerful time saving
+capabilities that are quick to deploy and utilize them to get things
+done.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;When giving users options, use convention over configuration.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;I am a big proponent of &lt;a href="https://en.wikipedia.org/wiki/Convention_over_configuration"&gt;convention over configuration&lt;/a&gt;
+and don't think it gets enough consideration in the Ansible community.
+Convention over configuration is a design paradigm that attempts to
+decrease the number of decisions that a developer is required to make
+without necessarily losing flexibility so they don't have to repeat
+themselves. It was popularized by Ruby on Rails.&lt;/p&gt;
+&lt;p&gt;A playbook developer utilizing your work should only need to specify
+unique and unconventional aspects of their automation tasks and
+workflows and no more. Look to reduce the number of decisions and
+implementation details a user needs to make. Take the time to handle the
+most common use cases for them. Look to provide as many sensible
+defaults with modules, plugins and roles as possible. Optimize for users
+to get things done quickly. &lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Declarative is better than imperative -- most of the time.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;This aphorism is particularly for Ansible Content Collection developers.
+Ansible is a desired state engine by design. Think declaratively first.
+If there truly is no way to design something declaratively, then use
+imperative (procedural) means. &lt;/p&gt;
+&lt;p&gt;Declarative means that configuration is guaranteed by a set of facts
+instead of by a set of instructions, for example, "there should be 10
+RHEL servers", rather than "depending on how many RHEL servers are
+running, start/stop servers until you have 10, and tell me if it worked
+or not". &lt;/p&gt;
+&lt;p&gt;This aphorism is an example of the "user experience beats ideological
+purity" aphorism in practice. Rather than strictly adhering to a
+declarative approach to automation, Ansible incorporates declarative and
+imperative means. This mix offers you the flexibility to focus on what
+you need to do, rather than strictly adhere to one paradigm.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Focus avoids complexity. Complexity kills productivity.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Remember that complexity kills productivity. The Ansible team at Red Hat
+really means it and believes that. That's not just a marketing slogan.
+Automation can crush complexity and give you the one thing you can't get
+enough of ⎯ time. &lt;/p&gt;
+&lt;p&gt;Follow &lt;a href="https://en.wikipedia.org/wiki/Unix_philosophy#:~:text=This%20is%20the%20Unix%20philosophy,that%20is%20a%20universal%20interface."&gt;Linux principles of doing one thing, and one thing well&lt;/a&gt;.
+Keep roles and playbooks focused on a specific purpose. Multiple simple
+ones are better than having a huge single playbook full of conditionals
+and "programming" that Ansible is not well suited for.&lt;/p&gt;
+&lt;p&gt;We strive to reduce complexity in how we've designed Ansible and
+encourage you to do the same. Strive for simplification in what you
+automate. &lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;If the implementation is hard to explain, it's a bad idea.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;This aphorism, like "readability counts", is also taken directly from
+"The Zen of Python" because you cannot improve upon perfection.&lt;/p&gt;
+&lt;p&gt;In his essay on &lt;a href="https://www-cs-faculty.stanford.edu/~knuth/lp.html"&gt;Literate Programming, Charles Knuth&lt;/a&gt; wrote,
+"Instead of imagining that our main task is to instruct a computer what
+to do, let us concentrate rather on explaining to human beings what we
+want a computer to do." So it goes that if you cannot explain or
+document your implementation easily, then it's a bad idea that needs to
+be rethought or scrapped. If it is hard to explain, what chance do
+others have of understanding it, using it and debugging it? &lt;a href="https://github.com/dwmkerr/hacker-laws#kernighans-law"&gt;Kernighan's
+Law&lt;/a&gt; says
+"Debugging is twice as hard as writing the code in the first place.
+Therefore, if you write the code as cleverly as possible, you are, by
+definition, not smart enough to debug it."&lt;/p&gt;
+&lt;p&gt;Ansible is designed for how real people think and work. Recall earlier
+when I said Ansible Playbooks are human readable automation with no
+special coding skills needed. Take advantage of that. Then, if you are
+having trouble explaining what you are trying to do, pause and
+re-consider your implementation and the process you are trying to
+automate. How can I make it easier to explain? Can my process be
+improved or streamlined? How can I simplify and clarify? Can I break it
+down into smaller more focused parts and iterate over this? &lt;/p&gt;
+&lt;p&gt;This will help you identify a bad idea sooner and avoid the types of
+friction that will slow down you and your organization over time.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Every shell command and UI interaction is an opportunity to automate.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;This aphorism comes from my personal experience talking about Ansible
+and automation for many years. Sometimes I am asked what they should
+automate. Other times, I am challenged that an automation tool like
+Ansible is unnecessary or does not apply to what they are doing. No
+matter if we were talking about RHEL, Windows, networking
+infrastructure, security, edge devices, or cloud services, my response
+has essentially been the same over the years. I have repeated it so
+often, that I have jokingly formulated the point into my own theorem on
+automation. So call it "Appnel's Theorem on Automation" if you will.&lt;/p&gt;
+&lt;p&gt;If you are wondering what should be automated, look for anything anyone
+is typing into a Linux shell and clicking through in a user interface.
+Then ask yourself "is this something that can be automated?" Then ask
+"what is the value of automating this?" Most Ansible modules wrap
+command line tools or use the same APIs behind UIs.&lt;/p&gt;
+&lt;p&gt;Given a sufficient number of things to automate is identified, start
+with those that cause the most pain and those that you can get done
+quickly. Remember you want to create a virtuous cycle of releasing
+reliability, feedback and building trust across your organization.
+Showing progress and business value quickly will help do that.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Just because something works, doesn't mean it can't be improved. Friction should be eliminated whenever possible.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;This first aphorism just so happens to be a quote from the movie Black
+Panther, and it elegantly expresses some important wisdom when it comes
+to Ansible automation.&lt;/p&gt;
+&lt;p&gt;Always iterate and adapt to real world feedback from your operations.
+Optimize readability. Continue to find ways to simplify and reduce
+friction in your organization and its processes. As changes are
+introduced into your environments and IT policies over time, they will
+create new friction and pain points. They will also create new
+opportunities to apply your automation practices to eliminate them.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Automation is a journey that never ends.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Heraclitus, a Greek philosopher, said "change is the only constant in
+life. Nothing endures but change." &lt;/p&gt;
+&lt;p&gt;Anyone who has been around the IT industry for any length of time knows
+there is constant change. This is why it is so vital to be agile and
+prepared to respond to ongoing change, innovation and business demands
+quickly and reliably. &lt;/p&gt;
+&lt;p&gt;Automation is not a destination. It is a practice. It is a culture, a
+mindset and an attitude. Automation is a continuous process of feedback
+and learning and adapting to change and improving upon what you did
+before. &lt;/p&gt;
+&lt;p&gt;Automation creates opportunities and we at Red Hat see opportunities for
+automation everywhere. &lt;/p&gt;
+&lt;p&gt;So the question I pose to you is: Where will your automation journey
+lead you?&lt;/p&gt;
+&lt;h3&gt;Further Reading&lt;/h3&gt;
+&lt;p&gt;If you want to dive more deeply into the application of the zen of
+Ansible and its origins, I recommend these resources.&lt;/p&gt;
+&lt;p&gt;The Ansible Community of Practice (CoP) has assembled
+&lt;a href="https://redhat-cop.github.io/automation-good-practices/"&gt;a comprehensive repository of "good practices" for Ansible content development&lt;/a&gt;.
+The &lt;a href="https://ansible-lint.readthedocs.io/"&gt;Ansible Lint tool&lt;/a&gt; has now
+been added to the Red Hat Ansible Automation Platform and codifies many
+of these practices in rules and profiles to help you quickly identify
+and enforce consistent application to your work.&lt;/p&gt;
+&lt;p&gt;If you are interested in understanding more about "&lt;a href="https://peps.python.org/pep-0020/"&gt;The Zen of Python&lt;/a&gt;", I recommend starting with &lt;a href="https://inventwithpython.com/blog/2018/08/17/the-zen-of-python-explained/"&gt;Al Sweigart's explanation of those aphorisms&lt;/a&gt;.&lt;/p&gt;</description><guid>https://ansible.com/blog/the-zen-of-ansible/</guid><pubDate>Thu, 26 Jan 2023 00:00:00 GMT</pubDate></item></channel></rss>

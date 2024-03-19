@@ -1,0 +1,110 @@
+<p><img alt="Ansible Bullhorn banner" src="/images/bullhorn-banner-mango.png"></p>
+<p><em>A Newsletter for the Ansible Developer Community</em>
+<em>Issue #88, 2023-01-20 (<a href="https://us19.campaign-archive.com/home/?u=56d874e027110e35dea0e03c1&amp;id=d6635f5420">Past Issues</a>)</em></p>
+<p>Welcome to <a href="https://github.com/ansible/community/wiki/News#the-bullhorn">The Bullhorn</a>, our newsletter for the Ansible developer community. If you have any questions or content you’d like to share, you're welcome to chat with us in the <a href="https://matrix.to/#/#social:ansible.com">Ansible Social room on Matrix</a>, and mention <a href="https://matrix.to/#/@newsbot:ansible.im"><code>newsbot</code></a> to have your news item tagged for review for the next weekly issue!</p>
+<!-- TEASER_END -->
+
+<h2>KEY DATES ⏱️</h2>
+<p><a href="https://matrix.to/#/@cybette:ansible.im">cybette</a> contributed</p>
+<blockquote>
+<ul>
+<li>2023-01-24: <a href="https://github.com/ansible/community/issues/678">DaWGs meeting</a>, 16:00 UTC</li>
+<li>2023-01-25: <a href="https://github.com/ansible/community/issues/679">Community WG meeting</a>, 19:00 UTC (propose topics <a href="https://github.com/ansible-community/community-topics/issues">here</a>)</li>
+<li>2023-01-26: <a href="https://github.com/ansible/community/wiki/News#the-bullhorn">Bullhorn #89 content deadline</a>, 18:00 UTC</li>
+<li>2023-01-30: <a href="https://groups.google.com/g/ansible-devel/c/IQ7VPnw9yS8">ETA for Ansible-Core 2.14.2 and 2.13.8 releases</a></li>
+<li>2023-01-31: <a href="https://groups.google.com/g/ansible-devel/c/htFjU7jZVYA">ETA for Ansible 7.2.0 release</a></li>
+<li>2023-02-08: <a href="https://hackmd.io/@ansible-community/cs202302-planning">Ansible Contributor Summit 2023.02</a></li>
+</ul>
+</blockquote>
+<h2>GENERAL NEWS UPDATES 🔈️</h2>
+<p><a href="https://matrix.to/#/@samccann:ansible.im">samccann</a> said</p>
+<blockquote>
+<p>We will redirect Ansible 2.5 documentation requests to <code>/latest/</code> starting next week. If you use Ansible 2.5, please change your bookmarks to the archived location <a href="https://docs.ansible.com/archive/ansible/2.5/">here</a>.</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@mariolenz:matrix.org">mariolenz</a> contributed</p>
+<blockquote>
+<p>There are now some <a href="https://github.com/ansible-community/community-topics/tree/main/scripts">scripts</a> that (we hope) can be helpful to generate the text for Bullhorn announcements, at least for some of our community processes.</p>
+</blockquote>
+<h2>MAJOR NEW RELEASES 🏆️</h2>
+<h3>Antsibull <a href="https://github.com/ansible-community/antsibull">↗</a> 🐂</h3>
+<p>Tooling for building the <code>Ansible</code> package and collection documentation.</p>
+<p><a href="https://matrix.to/#/@felixfontein:libera.chat">felixfontein</a> contributed</p>
+<blockquote>
+<p>antsibull-docs 1.9.0 (<a href="https://github.com/ansible-community/antsibull-docs/blob/1.9.0/CHANGELOG.rst#v1-9-0">changelog</a>) has been released. It improves the build script created by the <code>sphinx-init</code> subcommand (now uses the path of the script instead of something hardcoded), and shows the type of a callback plugin on its docsite page and adds indexes of callback plugins by type.</p>
+</blockquote>
+<h2>COLLECTION UPDATES 🪄</h2>
+<p><a href="https://matrix.to/#/@briantist:libera.chat">briantist</a> contributed</p>
+<blockquote>
+<p>The <code>community.hashi_vault</code> collection has released <a href="https://github.com/ansible-collections/community.hashi_vault/releases/tag/4.1.0">version <code>4.1.0</code></a> with a new <code>vault_list</code> module and lookup from a new contributor! There are also some upcoming deprecation announcements for <code>hvac</code> and <code>ansible-core</code> support.</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@felixfontein:libera.chat">felixfontein</a> shared</p>
+<blockquote>
+<p>community.docker 3.4.0 (<a href="https://github.com/ansible-collections/community.docker/blob/main/CHANGELOG.rst#v3-4-0">changelog</a>) has been released with several bugfixes and a new module <code>docker_container_copy_into</code>, which allows to copy files into a running or stopped container.</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@resmo:libera.chat">resmo</a> contributed</p>
+<blockquote>
+<p>vultr.cloud 1.6.0 (<a href="https://github.com/vultr/ansible-collection-vultr/blob/v1.6.0/CHANGELOG.rst">changelog</a>) has been released and adds the use of IPv6 to the dynamic inventory and improves the documentation.</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@mariolenz:matrix.org">mariolenz</a> said</p>
+<blockquote>
+<p>The <code>community.fortios</code> collection <a href="https://github.com/ansible-community/community-topics/issues/162">is considered unmaintained</a> and will be removed from Ansible 9 if no one starts maintaining it again before Ansible 9. See <a href="https://github.com/ansible-collections/overview/blob/main/removal_from_ansible.rst#cancelling-removal-of-an-unmaintained-collection">the removal process for details on how this works</a>.</p>
+<p>Please note that you can still manually install the collection with <code>ansible-galaxy collection install community.fortios</code> even when it has been removed from Ansible.</p>
+</blockquote>
+<h2>HELP WANTED 🙏</h2>
+<p><a href="https://matrix.to/#/@orandon:ansible.im">Don Naro</a> shared</p>
+<blockquote>
+<p>Call for contributors! You might have noticed that a lot of the docs in the ecosystem have started applying the <a href="https://pypi.org/project/sphinx-ansible-theme/">Ansible Sphinx theme</a> to documentation in recent weeks. <a href="https://ansible.github.io/ansible-sign/">Ansible Sign</a> and <a href="https://ansible-builder.readthedocs.io/en/latest/">Ansible Builder</a> are just two such projects that have recently adopted the theme. And, as more teams start using it for their docs, we're identifying maintaince and improvements to make the Ansible Sphinx theme even better. Fork the <a href="https://github.com/ansible-community/sphinx_ansible_theme">sphinx-ansible-theme repository</a> and lend us your expertise!</p>
+</blockquote>
+<h2>PROPOSALS - DISCUSS AND VOTE! 🗳️</h2>
+<p><a href="https://matrix.to/#/@mariolenz:matrix.org">mariolenz</a> contributed</p>
+<blockquote>
+<p>As mentioned in <a href="https://mailchi.mp/redhat/the-bullhorn-83">The Bullhorn #83</a>, we consider <code>community.google</code> an effectively unmaintained collection. Therefore, we've opened a community / steering committee <a href="https://github.com/ansible-community/community-topics/discussions/181">vote</a> on removing it from the Ansible 9 community package.</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@mariolenz:matrix.org">mariolenz</a> contributed</p>
+<blockquote>
+<p>As mentioned in <a href="https://mailchi.mp/redhat/the-bullhorn-84">The Bullhorn #84</a>, we consider <code>community.skydive</code> an effectively unmaintained collection. Therefore, we've opened a community / steering committee <a href="https://github.com/ansible-community/community-topics/discussions/182">vote</a> on removing it from the Ansible 9 community package.</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@felixfontein:libera.chat">felixfontein</a> contributed</p>
+<blockquote>
+<p>There is a new community vote on <a href="https://github.com/ansible-community/community-topics/discussions/185">cancelling the removal process of cyberark.pas from Ansible 9</a>, since the collection seems to be actively maintained again. See <a href="https://github.com/ansible-community/community-topics/issues/180">the accompanying discussion issue</a> for details.</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@felixfontein:libera.chat">felixfontein</a> said</p>
+<blockquote>
+<p>There is a new community vote on <a href="https://github.com/ansible-community/community-topics/discussions/186">updating the Ansible PyPI description</a> by merging <a href="https://github.com/ansible-community/antsibull/pull/474">the proposal PR as-is</a>. Further updates can be done in follow-up PRs if wanted and necessary.</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@orandon:ansible.im">Don Naro</a> contributed</p>
+<blockquote>
+<p>As a next step on the path to a new and improved Ansible docsite we want to hear from the community! We've narrowed down a set of key personas that we plan to use to create better entry points to Ansible documentation. The goal is to help community users find docs in a way that fully supports their automation journey. Please add your thoughts in this <a href="https://github.com/ansible-community/community-topics/issues/175">community topic</a> or comment directly on the personas <a href="https://hackmd.io/pZb5w5JFRQW3RJ73n23tlw">here</a>.</p>
+</blockquote>
+<h2>COMMUNITY UPDATES 👂️</h2>
+<p><a href="https://matrix.to/#/@xlab_steampunk:matrix.org">steampunks</a> shared</p>
+<blockquote>
+<p>We’ve prepared a <a href="https://steampunk.si/blog/upgrading-your-ansible-playbooks-step-by-step-guide/">step by step guide</a> on how to upgrade your Ansible Playbook in minutes using Ansible Lint and Steampunk Spotter.</p>
+</blockquote>
+<h2>COMMUNITY EVENTS AND MEETUPS 📅</h2>
+<p><a href="https://matrix.to/#/@ompragash:ansible.im">ompragash</a> shared</p>
+<blockquote>
+<p>📣 We are excited to announce the upcoming <strong>Ansible Community Day</strong> in India!</p>
+<p>Join us in-person for a day of presentations, workshops, and networking with other Ansible enthusiasts. Learn about the latest developments in Ansible and how it can help you automate your IT infrastructure. Don't miss out on this opportunity to connect with the Ansible community and take your skills to the next level.</p>
+<p>Register now on <a href="https://www.meetup.com/ansible-pune/events/290492160/">meetup.com</a>. If you have an interesting Ansible use case or experience you would like to share, submit your talk proposal <a href="https://forms.gle/DjTewB8GsgZdzJkc7">here</a>.</p>
+<p>🗓 SAT, FEB 25, 2023, 9:30 AM IST
+📍 Red Hat India Private Limited, Magarpatta Inner Circle · Pune, Maharashtra</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@cybette:ansible.im">cybette</a> said</p>
+<blockquote>
+<p>There are several community meetups coming up! Join <a href="https://www.meetup.com/ansible-singapore/events/290957740/">Ansible Singapore</a> on Jan 31 @ 6:30 PM SST, <a href="https://www.meetup.com/ansible-zurich/events/290204496/">Ansible Zürich</a> on Feb 28 @ 5:00 PM CET, or <a href="https://www.meetup.com/ansible-munchen/events/289768549/">Ansible München</a> also on Feb 28 @ 6:00PM CET. Check out the respective event pages for details and RSVP!</p>
+</blockquote>
+<h2>THE ANSIBLE TEAM IS HIRING 💰️</h2>
+<p><a href="https://matrix.to/#/@samccann:ansible.im">samccann</a> shared</p>
+<blockquote>
+<p>Ansible product documentation (AAP) have a few senior technical writing reqs open. See the following for details:
+* <a href="https://us-redhat.icims.com/jobs/98391/senior-technical-writer/job?hub=7">Senior Technical Writer (US-MA-Westford)</a>
+* <a href="https://us-redhat.icims.com/jobs/98388/senior-technical-writer/job?hub=7">Senior Technical Writer (US-NC-Raleigh)</a>
+* <a href="https://us-redhat.icims.com/jobs/97562/senior-technical-writer---ansible-automation-platform/job?hub=7">Senior Technical Writer (IE-Remote)</a></p>
+</blockquote>
+<p><a href="https://matrix.to/#/@samccann:ansible.im">samccann</a> said</p>
+<blockquote>
+<p>Ansible product documentation (AAP) is looking for a senior content strategist!  See <a href="https://us-redhat.icims.com/jobs/98398/senior-content-strategist/job?hub=7">Senior Content Strategist (US-Remote)</a> for details!</p>
+</blockquote>
+<h2>THAT'S ALL FOR NOW!</h2>
+<p>Have any questions you’d like to ask, or issues you’d like to see covered? Please ask in <a href="https://matrix.to/#/#social:ansible.com">#social:ansible.com</a>! See you next time!</p>

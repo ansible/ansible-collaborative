@@ -1,0 +1,497 @@
+<h1>Command Module Deep Dive for Networks</h1>
+<p>Enterprise customers often ask the Ansible Network team about the most
+common use cases for network automation. For this blog post I want to
+talk about one of the most used (and most versatile) set of network
+modules: the <code>command</code> modules. The command modules let you run
+networking commands with Ansible, the same way a network engineer would
+type them on the command line. With Ansible, though, the output doesn't
+just fly by the terminal window to be lost forever; it can be stored and
+used in subsequent tasks. It can also be captured in variables, parsed
+for use by other tasks, and stored in host variables for future
+reference.
+Today we're going to cover basic use of the network <code>command</code> modules,
+including retaining command output with the <code>register</code> parameter. We'll
+also cover scaling to multiple network devices with <code>hostvars</code> and
+adding conditional requirements with the <code>wait_for</code> parameter and three
+related parameters: <code>interval</code>, <code>retries</code>, and <code>match</code>. The takeaway
+from this blog post is that any repeatable network operations task can
+be automated. Ansible is more than configuration management, it allows
+network operators the freedom to decouple themselves from routine tasks
+and save themselves time.</p>
+<p>There are command modules for a variety of platforms, including all the
+modules <a href="https://access.redhat.com/solutions/3184741">supported</a> under
+the network offering:</p>
+<table>
+<thead>
+<tr>
+<th>Network Platform</th>
+<th>*os_command Module</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Arista EOS</td>
+<td><a href="https://docs.ansible.com/ansible/2.4/eos_command_module.html">eos_command</a></td>
+</tr>
+<tr>
+<td>Cisco IOS / IOS-XE</td>
+<td><a href="http://docs.ansible.com/ansible/latest/modules/ios_command_module.html">ios_command</a></td>
+</tr>
+<tr>
+<td>Cisco IOS-XR</td>
+<td><a href="http://docs.ansible.com/ansible/latest/modules/iosxr_command_module.html">iosxr_command</a></td>
+</tr>
+<tr>
+<td>Cisco NX-OS</td>
+<td><a href="http://docs.ansible.com/ansible/latest/modules/nxos_command_module.html">nxos_command</a></td>
+</tr>
+<tr>
+<td>Juniper Junos</td>
+<td><a href="http://docs.ansible.com/ansible/latest/modules/junos_command_module.html">junos_command</a></td>
+</tr>
+<tr>
+<td>VyOS</td>
+<td><a href="http://docs.ansible.com/ansible/latest/modules/vyos_command_module.html">vyos_command</a></td>
+</tr>
+</tbody>
+</table>
+<h2>Basic Command Module Usage</h2>
+<p>Here is a simple playbook using eos_command to run <strong>show version</strong>:</p>
+<div class="code"><pre class="code literal-block"><span class="nn">---</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">COMMAND MODULE PLAYBOOK</span>
+<span class="w">  </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">eos</span>
+<span class="w">  </span><span class="nt">connection</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">network_cli</span>
+
+<span class="w">  </span><span class="nt">tasks</span><span class="p">:</span>
+<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">EXECUTE ARISTA EOS COMMAND</span>
+<span class="w">     </span><span class="nt">eos_command</span><span class="p">:</span>
+<span class="w">       </span><span class="nt">commands</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">show version</span>
+<span class="w">     </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">output</span>
+
+<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PRINT OUT THE OUTPUT VARIABLE</span>
+<span class="w">     </span><span class="nt">debug</span><span class="p">:</span>
+<span class="w">       </span><span class="nt">var</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">output</span>
+</pre></div>
+
+<p>There are two tasks; the first task uses eos_command with a single
+parameter called <strong>commands</strong>. Since I am only running one command I can
+just type <code>show version</code> on the same line as commands. If I had more
+than one command, I would list each one on a separate line below the
+<strong>commands</strong>: parameter. In this example I use the <a href="http://docs.ansible.com/ansible/latest/user_guide/playbooks_variables.html#registered-variables">register
+keyword</a>
+to save the output of the show version command. You can use the
+<strong>register</strong> parameter at the task level with any Ansible task. The
+register parameter defines a variable to store the output of the task
+for use in subsequent tasks. In my playbook the variable is called
+<strong>output</strong>.</p>
+<p>The second task uses the <a href="http://docs.ansible.com/ansible/latest/modules/debug_module.html">debug
+module</a>
+to print out the content of the variable <strong>output</strong>, from the previous
+task. In this case I will see the same output I would have seen if I'd
+typed "show version" at the command line directly on the EOS device. My
+playbook prints this output in the terminal window where I ran the
+playbook. The Ansible <a href="http://docs.ansible.com/ansible/latest/modules/debug_module.html">debug
+module</a>
+is great for checking variables.</p>
+<p>Below is the output from running the playbook:</p>
+<div class="code"><pre class="code literal-block">PLAY<span class="w"> </span><span class="o">[</span>eos<span class="o">]</span><span class="w"> </span>*************************************************************************
+
+TASK<span class="w"> </span><span class="o">[</span>execute<span class="w"> </span>Arista<span class="w"> </span>eos<span class="w"> </span>command<span class="o">]</span><span class="w"> </span>**************************************************
+ok:<span class="w"> </span><span class="o">[</span>eos<span class="o">]</span>
+
+TASK<span class="w"> </span><span class="o">[</span>print<span class="w"> </span>out<span class="w"> </span>the<span class="w"> </span>output<span class="w"> </span>variable<span class="o">]</span><span class="w"> </span>***********************************************
+ok:<span class="w"> </span><span class="o">[</span>eos<span class="o">]</span><span class="w"> </span><span class="o">=</span>&gt;<span class="w"> </span><span class="o">{</span>
+<span class="w">    </span><span class="s2">&quot;output&quot;</span>:<span class="w"> </span><span class="o">{</span>
+<span class="w">        </span><span class="s2">&quot;changed&quot;</span>:<span class="w"> </span>false,
+<span class="w">        </span><span class="s2">&quot;failed&quot;</span>:<span class="w"> </span>false,
+<span class="w">        </span><span class="s2">&quot;stdout&quot;</span>:<span class="w"> </span><span class="o">[</span>
+<span class="w">            </span><span class="s2">&quot;Arista vEOS\nHardware version:    \nSerial number:       \nSystem MAC address:  0800.27ec.005e\n\nSoftware image version: 4.20.1F\nArchitecture:           i386\nInternal build version: 4.20.1F-6820520.4201F\nInternal build ID:      790a11e8-5aaf-4be7-a11a-e61795d05b91\n\nUptime:                 1 day, 3 hours and 23 minutes\nTotal memory:           2017324 kB\nFree memory:            1111848 kB&quot;</span>
+<span class="w">        </span><span class="o">]</span>,
+<span class="w">        </span><span class="s2">&quot;stdout_lines&quot;</span>:<span class="w"> </span><span class="o">[</span>
+<span class="w">            </span><span class="o">[</span>
+<span class="w">                </span><span class="s2">&quot;Arista vEOS&quot;</span>,
+<span class="w">                </span><span class="s2">&quot;Hardware version:    &quot;</span>,
+<span class="w">                </span><span class="s2">&quot;Serial number:       &quot;</span>,
+<span class="w">                </span><span class="s2">&quot;System MAC address:  0800.27ec.005e&quot;</span>,
+<span class="w">                </span><span class="s2">&quot;&quot;</span>,
+<span class="w">                </span><span class="s2">&quot;Software image version: 4.20.1F&quot;</span>,
+<span class="w">                </span><span class="s2">&quot;Architecture:           i386&quot;</span>,
+<span class="w">                </span><span class="s2">&quot;Internal build version: 4.20.1F-6820520.4201F&quot;</span>,
+<span class="w">                </span><span class="s2">&quot;Internal build ID:      790a11e8-5aaf-4be7-a11a-e61795d05b91&quot;</span>,
+<span class="w">                </span><span class="s2">&quot;&quot;</span>,
+<span class="w">                </span><span class="s2">&quot;Uptime:                 1 day, 3 hours and 23 minutes&quot;</span>,
+<span class="w">                </span><span class="s2">&quot;Total memory:           2017324 kB&quot;</span>,
+<span class="w">                </span><span class="s2">&quot;Free memory:            1111848 kB&quot;</span>
+<span class="w">            </span><span class="o">]</span>
+<span class="w">        </span><span class="o">]</span>
+<span class="w">    </span><span class="o">}</span>
+<span class="o">}</span>
+
+PLAY<span class="w"> </span>RECAP<span class="w"> </span>*************************************************************************
+eos<span class="w">                        </span>:<span class="w"> </span><span class="nv">ok</span><span class="o">=</span><span class="m">2</span><span class="w">    </span><span class="nv">changed</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">unreachable</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">failed</span><span class="o">=</span><span class="m">0</span>
+</pre></div>
+
+<p>You can see in the output above that both tasks were executed
+successfully. The first task with the default verbosity has no output,
+it simply returns the host the task was executed on, <strong>eos</strong>, with
+<strong>ok</strong> and the color green to indicate success. The second task, using
+the debug module, returns output from the command that was executed. You
+see the same information in two different formats:</p>
+<ul>
+<li>stdout</li>
+<li>stdout_lines</li>
+</ul>
+<p>The stdout returns everything a human operator would have seen on the
+command line in one large string. The stdout_lines returns a list of
+strings, making the information easier to read. Each item is a separate
+line that was returned from the command.</p>
+<p>Here is the output to see what that looks like:</p>
+<p><strong>Arista EOS command line output</strong></p>
+<div class="code"><pre class="code literal-block">eos&gt;show<span class="w"> </span>vers
+Arista<span class="w"> </span>vEOS
+Hardware<span class="w"> </span>version:
+Serial<span class="w"> </span>number:
+System<span class="w"> </span>MAC<span class="w"> </span>address:<span class="w"> </span><span class="m">0800</span>.27ec.005e
+Software<span class="w"> </span>image<span class="w"> </span>version:<span class="w"> </span><span class="m">4</span>.20.1F
+Architecture:<span class="w"> </span>i386
+Internal<span class="w"> </span>build<span class="w"> </span>version:<span class="w"> </span><span class="m">4</span>.20.1F-6820520.4201F
+Internal<span class="w"> </span>build<span class="w"> </span>ID:<span class="w"> </span>790a11e8-5aaf-4be7-a11a-e61795d05b91
+Uptime:<span class="w"> </span><span class="m">1</span><span class="w"> </span>day,<span class="w"> </span><span class="m">3</span><span class="w"> </span>hours<span class="w"> </span>and<span class="w"> </span><span class="m">56</span><span class="w"> </span>minutes
+Total<span class="w"> </span>memory:<span class="w"> </span><span class="m">2017324</span><span class="w"> </span>kB
+Free<span class="w"> </span>memory:<span class="w"> </span><span class="m">1116624</span><span class="w"> </span>kB
+</pre></div>
+
+<p><strong>Ansible stdout_lines</strong></p>
+<div class="code"><pre class="code literal-block"><span class="s2">&quot;stdout_lines&quot;</span>:<span class="w"> </span><span class="o">[</span>
+<span class="w">    </span><span class="o">[</span>
+<span class="w">          </span><span class="s2">&quot;Arista vEOS&quot;</span>,
+<span class="w">          </span><span class="s2">&quot;Hardware version:&quot;</span>,
+<span class="w">          </span><span class="s2">&quot;Serial number:&quot;</span>,
+<span class="w">          </span><span class="s2">&quot;System MAC address: 0800.27ec.005e&quot;</span>,
+<span class="w">          </span><span class="s2">&quot;&quot;</span>,
+<span class="w">          </span><span class="s2">&quot;Software image version: 4.20.1F&quot;</span>,
+<span class="w">          </span><span class="s2">&quot;Architecture: i386&quot;</span>,
+<span class="w">          </span><span class="s2">&quot;&quot;</span>,
+<span class="w">          </span><span class="s2">&quot;Internal build version: 4.20.1F-6820520.4201F&quot;</span>,
+<span class="w">          </span><span class="s2">&quot;Internal build ID: 790a11e8-5aaf-4be7-a11a-e61795d05b91&quot;</span>,
+<span class="w">          </span><span class="s2">&quot;&quot;</span>,
+<span class="w">          </span><span class="s2">&quot;Uptime: 1 day, 3 hours and 23 minutes&quot;</span>,
+<span class="w">          </span><span class="s2">&quot;Total memory: 2017324 kB&quot;</span>,
+<span class="w">          </span><span class="s2">&quot;Free memory: 1111848 kB&quot;</span>
+<span class="w">        </span><span class="o">]</span>
+</pre></div>
+
+<p>Engineers and folks familiar with JSON and YAML have already noticed
+another interesting detail: stdout_lines begins with two opening
+brackets</p>
+<div class="code"><pre class="code literal-block"><span class="s2">&quot;stdout_lines&quot;</span>:<span class="w"> </span><span class="o">[</span>
+<span class="w">            </span><span class="o">[</span>
+</pre></div>
+
+<p>The two opening brackets show that stdout_lines actually returned a list
+of lists of strings. If we modify our debug task slightly we use this
+feature to view selections from the output. Since the output only has
+one list within the list, that entire sub-list is referenced as list
+zero, or the first list. Let's look at a single line from the return
+value. I want to grab the <strong>System MAC Address</strong> for our test. Looking
+above at the output, the <strong>System MAC address</strong> is returned in the
+fourth line, which corresponds to line 3 (since computers start counting
+from 0). This means we want to grab line 3 of list 0, which corresponds
+to <code>output.stdout_lines[0][3]</code>.</p>
+<div class="code"><pre class="code literal-block"><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">print out a single line of the output variable</span>
+<span class="w">  </span><span class="nt">debug</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">var</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">output.stdout_lines[0][3]</span>
+</pre></div>
+
+<p>The debug task returns exactly what we need:</p>
+<div class="code"><pre class="code literal-block">TASK<span class="w"> </span><span class="o">[</span>print<span class="w"> </span>out<span class="w"> </span>a<span class="w"> </span>single<span class="w"> </span>line<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>output<span class="w"> </span>variable<span class="o">]</span><span class="w"> </span>******************************
+ok:<span class="w"> </span><span class="o">[</span>eos<span class="o">]</span><span class="w"> </span><span class="o">=</span>&gt;<span class="w"> </span><span class="o">{</span>
+<span class="w">    </span><span class="s2">&quot;output.stdout_lines[0][3]&quot;</span>:<span class="w"> </span><span class="s2">&quot;System MAC address:  0800.27ec.005e&quot;</span>
+<span class="o">}</span>
+</pre></div>
+
+<p>Why would we want that first list to be zero and what is the use case
+for having multiple lists? It is possible to run multiple commands with
+one command task.Here is a playbook with three commands:</p>
+<div class="code"><pre class="code literal-block"><span class="nn">---</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">eos</span>
+<span class="w">  </span><span class="nt">connection</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">network_cli</span>
+<span class="w">  </span><span class="nt">tasks</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">execute Arista eos command</span>
+<span class="w">      </span><span class="nt">eos_command</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">commands</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">show version</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">show ip int br</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">show int status</span>
+<span class="w">      </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">output</span>
+
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">print out command</span>
+<span class="w">      </span><span class="nt">debug</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">var</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">output.stdout_lines</span>
+</pre></div>
+
+<p>The output from output now looks like this:</p>
+<div class="code"><pre class="code literal-block"><span class="s2">&quot;output.stdout_lines&quot;</span>:<span class="w"> </span><span class="o">[</span>
+<span class="w">    </span><span class="o">[</span>
+<span class="w">        </span><span class="s2">&quot;Arista vEOS&quot;</span>,
+<span class="w">        </span><span class="s2">&quot;Hardware version:    &quot;</span>,
+<span class="w">        </span><span class="s2">&quot;Serial number:       &quot;</span>,
+<span class="w">        </span><span class="s2">&quot;System MAC address:  0800.27ec.005e&quot;</span>,
+<span class="w">        </span><span class="s2">&quot;&quot;</span>,
+<span class="w">        </span><span class="s2">&quot;Software image version: 4.20.1F&quot;</span>,
+<span class="w">        </span><span class="s2">&quot;Architecture:           i386&quot;</span>,
+<span class="w">        </span><span class="s2">&quot;Internal build version: 4.20.1F-6820520.4201F&quot;</span>,
+<span class="w">        </span><span class="s2">&quot;Internal build ID:      790a11e8-5aaf-4be7-a11a-e61795d05b91&quot;</span>,
+<span class="w">        </span><span class="s2">&quot;&quot;</span>,
+<span class="w">        </span><span class="s2">&quot;Uptime:                 1 day, 4 hours and 20 minutes&quot;</span>,
+<span class="w">        </span><span class="s2">&quot;Total memory:           2017324 kB&quot;</span>,
+<span class="w">        </span><span class="s2">&quot;Free memory:            1111104 kB&quot;</span>
+<span class="w">    </span><span class="o">]</span>,
+<span class="w">    </span><span class="o">[</span>
+<span class="w">        </span><span class="s2">&quot;Interface              IP Address        Status    Protocol      MTU&quot;</span>,
+<span class="w">        </span><span class="s2">&quot;Ethernet1              172.16.1.1/24      up         up          1500&quot;</span>,
+<span class="w">        </span><span class="s2">&quot;Management1            192.168.2.10/24    up         up          1500&quot;</span>
+<span class="w">    </span><span class="o">]</span>,
+<span class="w">    </span><span class="o">[</span>
+<span class="w">        </span><span class="s2">&quot;Port  Name    Status       Vlan    Duplex  Speed  Type     Flags&quot;</span>,
+<span class="w">        </span><span class="s2">&quot;Et1           connected  routed    full    unconf EbraTestPhyPort   &quot;</span>,
+<span class="w">        </span><span class="s2">&quot;Et2           connected    1       full    unconf EbraTestPhyPort   &quot;</span>,
+<span class="w">        </span><span class="s2">&quot;Et3           connected    1       full    unconf EbraTestPhyPort   &quot;</span>,
+<span class="w">        </span><span class="s2">&quot;Ma1           connected  routed   a-full a-1G   10/100/1000&quot;</span>
+<span class="w">    </span><span class="o">]</span>
+<span class="o">]</span>
+</pre></div>
+
+<p>List zero corresponds to the <code>show version</code> command, list one corresponds
+to the <code>show ip int br</code> command and list two corresponds to the <code>show int status</code> command.
+The list number directly corresponds to the order the command was run in.</p>
+<table>
+<thead>
+<tr>
+<th><strong>Arista EOS Command</strong></th>
+<th><strong>Relevant List</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>show version</code></td>
+<td><code>output.stdout_lines[0]</code></td>
+</tr>
+<tr>
+<td><code>show ip int br</code></td>
+<td><code>output.stdout_lines[1]</code></td>
+</tr>
+<tr>
+<td><code>show int status</code></td>
+<td><code>output.stdout_lines[2]</code></td>
+</tr>
+</tbody>
+</table>
+<h2>Scaling Command Module Use: Host Variables</h2>
+<p>So what happens if we run on two or more network devices at the same time?</p>
+<p><img alt="diagram of Ansible running multiple network devices" src="/images/posts/archive/ansible-multiple-network-devices-run.png"></p>
+<p>The variable output is saved uniquely as a <a href="http://docs.ansible.com/ansible/latest/user_guide/playbooks_variables.html#magic-variables-and-how-to-access-information-about-other-hosts">host
+variable</a>
+per inventory host.  If I had three switches and ran this playbook
+against them, I would have an output variable for each unique host.  For
+a demonstration we will grab the IP address from the <code>show ip int br</code>
+command above for the Ethernet1 port for just one of the switches,
+switch03.  The <code>show ip int br</code> corresponds to the second command we
+run, and the ethernet1 interface shows up in the 2nd line so we know we
+want <code>stdout_lines[1][1]</code>.  To reference vars about a specific host we
+use the keyword <strong>hostvars</strong> and do a dictionary lookup on the host we
+want.</p>
+<p>This is what the debug task will look like:</p>
+<div class="code"><pre class="code literal-block"><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">debug hostvar</span>
+<span class="w">  </span><span class="nt">debug</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">var</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hostvars[&quot;switch03&quot;].output.stdout_lines[1][1]</span>
+</pre></div>
+
+<p>And the output matches what we would expect:</p>
+<div class="code"><pre class="code literal-block">TASK<span class="w"> </span><span class="o">[</span>debug<span class="w"> </span>hostvar<span class="o">]</span><span class="w"> </span>***************************************************************
+ok:<span class="w"> </span><span class="o">[</span>switch03<span class="o">]</span><span class="w"> </span><span class="o">=</span>&gt;<span class="w"> </span><span class="o">{</span>
+<span class="w">    </span><span class="s2">&quot;hostvars[&quot;</span>switch03<span class="s2">&quot;].output.stdout_lines[1][1]&quot;</span>:<span class="w"> </span><span class="s2">&quot;Ethernet1              172.16.1.3/24      up         up              1500&quot;</span>
+<span class="o">}</span>
+</pre></div>
+
+<p>By default a task will use variables specific to that host, but when
+using hostvars you can directly reference other host variables.</p>
+<h2>Conditions in Command Module Tasks: wait_for</h2>
+<p>The <code>wait_for</code> parameter applies conditional logic directly after a
+command is run. This means within the same task you can decide to
+purposely fail if output does not match a desired state. By default,
+with the above tasks, when there is no <code>wait_for</code> parameter specified
+the task is only run one time. However, if the <code>wait_for</code> parameter is
+specified the task is run until the condition is met or the maximum
+retries (the default is 10 retries) is hit. If I turn on command logging
+I can easily see this with a playbook specifically meant to fail for
+demonstration purposes:</p>
+<div class="code"><pre class="code literal-block"><span class="nn">---</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">eos</span>
+<span class="w">  </span><span class="nt">connection</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">network_cli</span>
+<span class="w">  </span><span class="nt">tasks</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">execute Arista eos command</span>
+<span class="w">      </span><span class="nt">eos_command</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">commands</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">show int status</span>
+<span class="w">        </span><span class="nt">wait_for</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">result[0] contains DURHAM</span>
+</pre></div>
+
+<p>This playbook will run show int status 10 times, because it will never
+find the word DURHAM in the output of show int status.</p>
+<p>A <code>show logging</code> command shows me the command was indeed run 10 times:</p>
+<div class="code"><pre class="code literal-block">Mar<span class="w"> </span><span class="m">24</span><span class="w"> </span><span class="m">20</span>:33:52<span class="w"> </span>eos<span class="w"> </span>Aaa:<span class="w"> </span>%ACCOUNTING-6-CMD:<span class="w"> </span>admin<span class="w"> </span>vty6<span class="w"> </span><span class="m">192</span>.168.2.1<span class="w"> </span>stop<span class="w"> </span><span class="nv">task_id</span><span class="o">=</span><span class="m">17</span><span class="w"> </span><span class="nv">start_time</span><span class="o">=</span><span class="m">1521923632</span>.5<span class="w"> </span><span class="nv">timezone</span><span class="o">=</span>UTC<span class="w"> </span><span class="nv">service</span><span class="o">=</span>shell<span class="w"> </span>priv-lvl<span class="o">=</span><span class="m">15</span><span class="w"> </span><span class="nv">cmd</span><span class="o">=</span>show<span class="w"> </span>interfaces<span class="w"> </span>status
+Mar<span class="w"> </span><span class="m">24</span><span class="w"> </span><span class="m">20</span>:33:53<span class="w"> </span>eos<span class="w"> </span>Aaa:<span class="w"> </span>%ACCOUNTING-6-CMD:<span class="w"> </span>admin<span class="w"> </span>vty6<span class="w"> </span><span class="m">192</span>.168.2.1<span class="w"> </span>stop<span class="w"> </span><span class="nv">task_id</span><span class="o">=</span><span class="m">18</span><span class="w"> </span><span class="nv">start_time</span><span class="o">=</span><span class="m">1521923633</span>.71<span class="w"> </span><span class="nv">timezone</span><span class="o">=</span>UTC<span class="w"> </span><span class="nv">service</span><span class="o">=</span>shell<span class="w"> </span>priv-lvl<span class="o">=</span><span class="m">15</span><span class="w"> </span><span class="nv">cmd</span><span class="o">=</span>show<span class="w"> </span>interfaces<span class="w"> </span>status
+Mar<span class="w"> </span><span class="m">24</span><span class="w"> </span><span class="m">20</span>:33:54<span class="w"> </span>eos<span class="w"> </span>Aaa:<span class="w"> </span>%ACCOUNTING-6-CMD:<span class="w"> </span>admin<span class="w"> </span>vty6<span class="w"> </span><span class="m">192</span>.168.2.1<span class="w"> </span>stop<span class="w"> </span><span class="nv">task_id</span><span class="o">=</span><span class="m">19</span><span class="w"> </span><span class="nv">start_time</span><span class="o">=</span><span class="m">1521923634</span>.81<span class="w"> </span><span class="nv">timezone</span><span class="o">=</span>UTC<span class="w"> </span><span class="nv">service</span><span class="o">=</span>shell<span class="w"> </span>priv-lvl<span class="o">=</span><span class="m">15</span><span class="w"> </span><span class="nv">cmd</span><span class="o">=</span>show<span class="w"> </span>interfaces<span class="w"> </span>status
+Mar<span class="w"> </span><span class="m">24</span><span class="w"> </span><span class="m">20</span>:33:55<span class="w"> </span>eos<span class="w"> </span>Aaa:<span class="w"> </span>%ACCOUNTING-6-CMD:<span class="w"> </span>admin<span class="w"> </span>vty6<span class="w"> </span><span class="m">192</span>.168.2.1<span class="w"> </span>stop<span class="w"> </span><span class="nv">task_id</span><span class="o">=</span><span class="m">20</span><span class="w"> </span><span class="nv">start_time</span><span class="o">=</span><span class="m">1521923635</span>.92<span class="w"> </span><span class="nv">timezone</span><span class="o">=</span>UTC<span class="w"> </span><span class="nv">service</span><span class="o">=</span>shell<span class="w"> </span>priv-lvl<span class="o">=</span><span class="m">15</span><span class="w"> </span><span class="nv">cmd</span><span class="o">=</span>show<span class="w"> </span>interfaces<span class="w"> </span>status
+Mar<span class="w"> </span><span class="m">24</span><span class="w"> </span><span class="m">20</span>:33:56<span class="w"> </span>eos<span class="w"> </span>Aaa:<span class="w"> </span>%ACCOUNTING-6-CMD:<span class="w"> </span>admin<span class="w"> </span>vty6<span class="w"> </span><span class="m">192</span>.168.2.1<span class="w"> </span>stop<span class="w"> </span><span class="nv">task_id</span><span class="o">=</span><span class="m">21</span><span class="w"> </span><span class="nv">start_time</span><span class="o">=</span><span class="m">1521923636</span>.99<span class="w"> </span><span class="nv">timezone</span><span class="o">=</span>UTC<span class="w"> </span><span class="nv">service</span><span class="o">=</span>shell<span class="w"> </span>priv-lvl<span class="o">=</span><span class="m">15</span><span class="w"> </span><span class="nv">cmd</span><span class="o">=</span>show<span class="w"> </span>interfaces<span class="w"> </span>status
+Mar<span class="w"> </span><span class="m">24</span><span class="w"> </span><span class="m">20</span>:33:58<span class="w"> </span>eos<span class="w"> </span>Aaa:<span class="w"> </span>%ACCOUNTING-6-CMD:<span class="w"> </span>admin<span class="w"> </span>vty6<span class="w"> </span><span class="m">192</span>.168.2.1<span class="w"> </span>stop<span class="w"> </span><span class="nv">task_id</span><span class="o">=</span><span class="m">22</span><span class="w"> </span><span class="nv">start_time</span><span class="o">=</span><span class="m">1521923638</span>.07<span class="w"> </span><span class="nv">timezone</span><span class="o">=</span>UTC<span class="w"> </span><span class="nv">service</span><span class="o">=</span>shell<span class="w"> </span>priv-lvl<span class="o">=</span><span class="m">15</span><span class="w"> </span><span class="nv">cmd</span><span class="o">=</span>show<span class="w"> </span>interfaces<span class="w"> </span>status
+Mar<span class="w"> </span><span class="m">24</span><span class="w"> </span><span class="m">20</span>:33:59<span class="w"> </span>eos<span class="w"> </span>Aaa:<span class="w"> </span>%ACCOUNTING-6-CMD:<span class="w"> </span>admin<span class="w"> </span>vty6<span class="w"> </span><span class="m">192</span>.168.2.1<span class="w"> </span>stop<span class="w"> </span><span class="nv">task_id</span><span class="o">=</span><span class="m">23</span><span class="w"> </span><span class="nv">start_time</span><span class="o">=</span><span class="m">1521923639</span>.22<span class="w"> </span><span class="nv">timezone</span><span class="o">=</span>UTC<span class="w"> </span><span class="nv">service</span><span class="o">=</span>shell<span class="w"> </span>priv-lvl<span class="o">=</span><span class="m">15</span><span class="w"> </span><span class="nv">cmd</span><span class="o">=</span>show<span class="w"> </span>interfaces<span class="w"> </span>status
+Mar<span class="w"> </span><span class="m">24</span><span class="w"> </span><span class="m">20</span>:34:00<span class="w"> </span>eos<span class="w"> </span>Aaa:<span class="w"> </span>%ACCOUNTING-6-CMD:<span class="w"> </span>admin<span class="w"> </span>vty6<span class="w"> </span><span class="m">192</span>.168.2.1<span class="w"> </span>stop<span class="w"> </span><span class="nv">task_id</span><span class="o">=</span><span class="m">24</span><span class="w"> </span><span class="nv">start_time</span><span class="o">=</span><span class="m">1521923640</span>.32<span class="w"> </span><span class="nv">timezone</span><span class="o">=</span>UTC<span class="w"> </span><span class="nv">service</span><span class="o">=</span>shell<span class="w"> </span>priv-lvl<span class="o">=</span><span class="m">15</span><span class="w"> </span><span class="nv">cmd</span><span class="o">=</span>show<span class="w"> </span>interfaces<span class="w"> </span>status
+Mar<span class="w"> </span><span class="m">24</span><span class="w"> </span><span class="m">20</span>:34:01<span class="w"> </span>eos<span class="w"> </span>Aaa:<span class="w"> </span>%ACCOUNTING-6-CMD:<span class="w"> </span>admin<span class="w"> </span>vty6<span class="w"> </span><span class="m">192</span>.168.2.1<span class="w"> </span>stop<span class="w"> </span><span class="nv">task_id</span><span class="o">=</span><span class="m">25</span><span class="w"> </span><span class="nv">start_time</span><span class="o">=</span><span class="m">1521923641</span>.4<span class="w"> </span><span class="nv">timezone</span><span class="o">=</span>UTC<span class="w"> </span><span class="nv">service</span><span class="o">=</span>shell<span class="w"> </span>priv-lvl<span class="o">=</span><span class="m">15</span><span class="w"> </span><span class="nv">cmd</span><span class="o">=</span>show<span class="w"> </span>interfaces<span class="w"> </span>status
+Mar<span class="w"> </span><span class="m">24</span><span class="w"> </span><span class="m">20</span>:34:02<span class="w"> </span>eos<span class="w"> </span>Aaa:<span class="w"> </span>%ACCOUNTING-6-CMD:<span class="w"> </span>admin<span class="w"> </span>vty6<span class="w"> </span><span class="m">192</span>.168.2.1<span class="w"> </span>stop<span class="w"> </span><span class="nv">task_id</span><span class="o">=</span><span class="m">26</span><span class="w"> </span><span class="nv">start_time</span><span class="o">=</span><span class="m">1521923642</span>.47<span class="w"> </span><span class="nv">timezone</span><span class="o">=</span>UTC<span class="w"> </span><span class="nv">service</span><span class="o">=</span>shell<span class="w"> </span>priv-lvl<span class="o">=</span><span class="m">15</span><span class="w"> </span><span class="nv">cmd</span><span class="o">=</span>show<span class="w"> </span>interfaces<span class="w"> </span>status
+</pre></div>
+
+<p>Here we can look at a real world example. For this playbook everything
+is configured to bring up an OSPF adjacency with another device, except
+the <code>ip ospf area</code> command. We will apply the command and then use the
+<code>wait_for</code> parameter to make sure the adjacency comes up (indicated by
+FULL). If full is not found within 10 retries the task will fail.</p>
+<div class="code"><pre class="code literal-block"><span class="nn">---</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">eos</span>
+<span class="w">  </span><span class="nt">connection</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">network_cli</span>
+<span class="w">  </span><span class="nt">tasks</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">turn on OSPF for interface Ethernet1</span>
+<span class="w">      </span><span class="nt">eos_config</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">lines</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ip ospf area 0.0.0.0</span>
+<span class="w">        </span><span class="nt">parents</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">interface Ethernet1</span>
+
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">execute Arista eos command</span>
+<span class="w">      </span><span class="nt">eos_command</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">commands</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">show ip ospf neigh</span>
+<span class="w">        </span><span class="nt">wait_for</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">result[0] contains FULL</span>
+</pre></div>
+
+<p>Execute the playbook with the <code>ansible-playbook</code> command:</p>
+<div class="code"><pre class="code literal-block">➜<span class="w">  </span>ansible-playbook<span class="w"> </span>ospf.yml
+
+PLAY<span class="w"> </span><span class="o">[</span>eos<span class="o">]</span><span class="w"> </span>*********************************************************************************************
+
+TASK<span class="w"> </span><span class="o">[</span>turn<span class="w"> </span>on<span class="w"> </span>OSPF<span class="w"> </span><span class="k">for</span><span class="w"> </span>interface<span class="w"> </span>Ethernet1<span class="o">]</span><span class="w"> </span>*******************************************************
+changed:<span class="w"> </span><span class="o">[</span>eos<span class="o">]</span>
+
+TASK<span class="w"> </span><span class="o">[</span>execute<span class="w"> </span>Arista<span class="w"> </span>eos<span class="w"> </span>command<span class="o">]</span><span class="w"> </span>****************************************************************
+ok:<span class="w"> </span><span class="o">[</span>eos<span class="o">]</span>
+
+PLAY<span class="w"> </span>RECAP<span class="w"> </span>******************************************************************************************
+eos<span class="w">                    </span>:<span class="w"> </span><span class="nv">ok</span><span class="o">=</span><span class="m">2</span><span class="w">    </span><span class="nv">changed</span><span class="o">=</span><span class="m">1</span><span class="w">    </span><span class="nv">unreachable</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">failed</span><span class="o">=</span><span class="m">0</span>
+</pre></div>
+
+<p>Checking on the command line confirms the playbook ran successfully:</p>
+<div class="code"><pre class="code literal-block">eos#show<span class="w"> </span>ip<span class="w"> </span>ospf<span class="w"> </span>neigh
+Neighbor<span class="w"> </span>ID<span class="w">     </span>VRF<span class="w">      </span>Pri<span class="w"> </span>State<span class="w">             </span>Dead<span class="w"> </span>Time<span class="w">   </span>Address<span class="w">         </span>Interface
+<span class="m">2</span>.2.2.2<span class="w">         </span>default<span class="w">  </span><span class="m">1</span><span class="w">   </span>FULL/DR<span class="w">           </span><span class="m">00</span>:00:33<span class="w">    </span><span class="m">172</span>.16.1.2<span class="w">      </span>Ethernet1
+</pre></div>
+
+<p>In addition to <code>contains</code> we can use:</p>
+<ul>
+<li><code>eq</code>: Equal</li>
+<li><code>neq</code>: Not equal</li>
+<li><code>gt</code>: Greater than</li>
+<li><code>ge</code>: Greater than or equal</li>
+<li><code>lt</code>: Less than</li>
+<li><code>le</code> : Less than or equal</li>
+</ul>
+<p>There are also three parameters that can be used in conjunction with
+wait_for. All of these are documented on the individual module pages:</p>
+<table>
+<thead>
+<tr>
+<th><strong>Parameter</strong></th>
+<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>interval</td>
+<td>Time between each command retry</td>
+</tr>
+<tr>
+<td>retries</td>
+<td>The number of times we retry the task until we fail (or the condition is met)</td>
+</tr>
+<tr>
+<td>match</td>
+<td>Match all of your conditionals or just any of them</td>
+</tr>
+</tbody>
+</table>
+<p>Let's quickly elaborate on the match parameter:</p>
+<div class="code"><pre class="code literal-block"><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">execute Arista eos command</span>
+<span class="w">  </span><span class="nt">eos_command</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">commands</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">show ip ospf neigh</span>
+<span class="w">    </span><span class="nt">match</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">any</span>
+<span class="w">    </span><span class="nt">wait_for</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">result[0] contains FULL</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">result[0] contains 172.16.1.2</span>
+</pre></div>
+
+<p>With <code>match: any</code> set, the task will succeed if the result contains
+either FULL or 172.16.1.2. With <code>match: all</code> (which is the default),
+both must be true before the task can successfully pass. It is far more
+likely if you have multiple conditionals that you want them all met
+versus just one of them to be true.</p>
+<p>Looking for a use-case where you might want to use <code>match: any</code>? Imagine
+that you want to confirm internet access to and from a datacenter. For
+this particular data center you have five ISPs (Internet Service
+Providers), and five discrete BGP connections between your data center
+and those ISPs. An Ansible Playbook could check all five BGP connections
+and continue on if <strong>any</strong> of them are up and working, rather than all
+five. Just remember that <strong>any</strong> implies OR versus <strong>all</strong> which implies
+<strong>and</strong>.</p>
+<table>
+<thead>
+<tr>
+<th><strong>Parameter</strong></th>
+<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>match: any</td>
+<td>Implicit OR, any conditional can be met</td>
+</tr>
+<tr>
+<td>match: all</td>
+<td>Implicit AND, all conditionals must be met</td>
+</tr>
+</tbody>
+</table>
+<h2>Negative Conditions: Handling Inverse Logic</h2>
+<p>Sometimes you are looking for absences or other negative conditions in
+command output. It's tempting to use the <code>neq</code> comparison for any
+negative scenario, but it's not always the right choice. If you want the
+inverse logic of <code>contains</code> (output from this command should not contain
+this) consider using the <strong>register</strong> keyword to store the output
+followed by a <a href="http://docs.ansible.com/ansible/latest/user_guide/playbooks_conditionals.html#the-when-statement">when
+statement</a>
+on a subsequent task. If you want to stop the playbook if conditions are
+not met, consider simply using the <a href="https://docs.ansible.com/ansible/devel/modules/fail_module.html">fail
+module</a>
+or <a href="http://docs.ansible.com/ansible/latest/modules/assert_module.html">assert
+module</a>
+where you can fail on purpose. The <code>neq</code> shown above only makes sense if
+you can grab an exact value (if you can get key-value pairs or JSON)
+versus getting a string or list of strings. Otherwise you are going to
+be doing exact string compares.</p>
+<h2>Going Further</h2>
+<p>Read the documentation on Working with Command Output in Network Modules
+<a href="https://docs.ansible.com/ansible/latest/network/user_guide/network_working_with_command_output.html">here</a>.  </p>
+<p>The more specific conditionals like ge, le, etc. can work really well on
+JSON output from certain networking platforms as shown in the example in
+the documentation.</p>

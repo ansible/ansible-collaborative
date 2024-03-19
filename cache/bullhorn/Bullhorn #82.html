@@ -1,0 +1,116 @@
+<p><img alt="Ansible Bullhorn banner" src="/images/bullhorn-banner-mango.png"></p>
+<p><em>A Newsletter for the Ansible Developer Community</em>
+<em>Issue #82, 2022-11-24 (<a href="https://us19.campaign-archive.com/home/?u=56d874e027110e35dea0e03c1&amp;id=d6635f5420">Past Issues</a>)</em></p>
+<p>Welcome to <a href="https://github.com/ansible/community/wiki/News#the-bullhorn">The Bullhorn</a>, our newsletter for the Ansible developer community. If you have any questions or content you’d like to share, you're welcome to chat with us in the <a href="https://matrix.to/#/#social:ansible.com">Ansible Social room on Matrix</a>, and mention <a href="https://matrix.to/#/@newsbot:ansible.im"><code>newsbot</code></a> to have your news item tagged for review for the next weekly issue!</p>
+<!-- TEASER_END -->
+
+<h2>KEY DATES ⏱️</h2>
+<p><a href="https://matrix.to/#/@cybette:ansible.im">cybette</a> shared</p>
+<blockquote>
+<ul>
+<li>2022-11-29: <a href="https://github.com/ansible/community/issues/643">DaWGs meeting</a>, 16:00 UTC</li>
+<li>2022-11-30: <a href="https://github.com/ansible/community/issues/645">Community WG meeting</a>, 19:00 UTC (propose topics <a href="https://github.com/ansible-community/community-topics/issues">here</a>)</li>
+<li>2022-12-01: <a href="https://github.com/ansible/community/wiki/News#the-bullhorn">Bullhorn #83 content deadline</a>, 18:00 UTC</li>
+<li>2022-12-05: ETA for Ansible-Core 2.14.1 and 2.13.7 releases</li>
+<li>2022-12-06: <a href="https://docs.ansible.com/ansible/devel/roadmap/COLLECTIONS_7.html">ETA for Ansible 7.1.0 release</a></li>
+</ul>
+</blockquote>
+<h2>GENERAL NEWS UPDATES 🔈️</h2>
+<p><a href="https://matrix.to/#/@ssulliva:matrix.org">Sean Sullivan</a> contributed</p>
+<blockquote>
+<p>New Matrix room <a href="https://matrix.to/#/#aap_config_as_code:ansible.com">#aap_config_as_code:ansible.com</a>: AAP Configuration as Code Working Group for collections that configure Controller, AWX, Hub, Galaxy and much more.</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@samccann:ansible.im">samccann</a> said</p>
+<blockquote>
+<p>As part of our effort to improve Ansible search results,  the Ansible 2.4 documentation is now archived at https://docs.ansible.com/archive/ansible/2.4/. Please update any bookmarks as we will redirect traffic from the old URL soon to go to <code>/latest/</code>.</p>
+</blockquote>
+<h2>MAJOR NEW RELEASES 🏆️</h2>
+<h3>Ansible <a href="https://github.com/ansible-collections">↗</a> 📦️</h3>
+<p>The <code>Ansible</code> package includes <code>ansible-core</code> and is a batteries-included package that provides a curated set of Ansible collections. See the <a href="https://docs.ansible.com/ansible/devel/roadmap/ansible_roadmap_index.html">Ansible roadmaps</a> for future release plans.</p>
+<p><a href="https://matrix.to/#/@chadams:ansible.im">chadams</a> said</p>
+<blockquote>
+<p>Ansible 7.0.0 is out! ❤️
+🔗<a href="https://groups.google.com/g/ansible-announce/c/ATu1rGVAz_E">https://groups.google.com/g/ansible-announce/c/ATu1rGVAz_E</a></p>
+<p>💽You can install it by running the following command or download the release tarball directly from <a href="https://pypi.python.org/packages/source/a/ansible/ansible-7.0.0.tar.gz">pypi</a>:</p>
+<p><code>pip install ansible==7.0.0 --user</code></p>
+<p>➡️ Check <a href="https://github.com/ansible-community/ansible-build-data/blob/main/7/CHANGELOG-v7.rst">Release Notes📦️🗒️</a> and <a href="https://docs.ansible.com/ansible/devel/porting_guides/porting_guide_7.html">Ansible 7 Porting Guide</a> for more details!</p>
+</blockquote>
+<h3>AWX Project <a href="https://github.com/ansible/awx">↗</a></h3>
+<p>AWX provides a web-based user interface, REST API, and task engine built on top of Ansible.</p>
+<p><a href="https://matrix.to/#/@lyasin:matrix.org">Lila Yasin</a> contributed</p>
+<blockquote>
+<p>We're happy to announce that the next release of AWX, version 21.9.0 is now available!</p>
+<p>Some notable features include:
+* Refactor test_get_cleanup_task_kwargs_active_jobs and add new test
+* Enable feature branch api-schema test
+* Add node_type to instance info and capacity metrics
+* Update awx collection workflow module schema with new options</p>
+<p>In addition, AWX Operator version 1.1.0 has also been released!</p>
+<p>Some notable features include:
+* Backup and restore receptor tls secret with expected generated name</p>
+<p>Please see the releases pages for more details:</p>
+<p>AWX: <a href="https://github.com/ansible/awx/releases/tag/21.9.0">https://github.com/ansible/awx/releases/tag/21.9.0</a>
+Operator: <a href="https://github.com/ansible/awx-operator/releases/tag/1.1.0">https://github.com/ansible/awx-operator/releases/tag/1.1.0</a></p>
+</blockquote>
+<h2>COLLECTION UPDATES 🪄</h2>
+<p><a href="https://matrix.to/#/@felixfontein:libera.chat">felixfontein</a> shared</p>
+<blockquote>
+<p>community.routeros 2.4.0 (<a href="https://github.com/ansible-collections/community.routeros/blob/main/CHANGELOG.rst#v2-4-0">changelog</a>) with many improvements of the API modules.</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@sshnaidm:matrix.org">sshnaidm</a> contributed</p>
+<blockquote>
+<p>New version <a href="https://github.com/containers/ansible-podman-collections/blob/master/CHANGELOG.rst#v1-10-0">1.10.0</a> of Ansible Podman collection was released. We have a lot of bugfixes and improvements, a new become plugin - <a href="https://github.com/containers/ansible-podman-collections/blob/master/plugins/become/podman_unshare.py">podman_unshare</a> which allows user to execute commands in its container user namespace, and a new module - <a href="https://github.com/containers/ansible-podman-collections/blob/master/plugins/modules/podman_generate_systemd.py">podman_generate_systemd</a> for Systemd unit files generation for containers and pods.</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@ssulliva:matrix.org">Sean Sullivan</a> said</p>
+<blockquote>
+<p>The redhat_cop collections are changing namespaces to infra. The collection will continue to publish all collections to redhat_cop for another 6 months.</p>
+<p>All of the collections in this group have recently released changes. This includes:
+* infra.controller_configuration 2.1.9 released to be compatible with recently added AWX changes. Changelog <a href="https://github.com/redhat-cop/controller_configuration/blob/devel/changelogs/changelog.yaml">here</a>.
+* infra.ah_configuration 0.9.2 Automation hub and galaxy_ng configuration. Fixed various major errors, including a major publishing error. Changelog <a href="https://github.com/redhat-cop/ah_configuration/blob/devel/changelogs/changelog.yaml">here</a>.
+* infra.ee_utilities 2.0.1 Updated to add several use cases to Execution Environment Creation.
+* infra.aap_utilities 2.2.2 Update to OCP installer to allow individual components.</p>
+</blockquote>
+<h2>HELP WANTED 🙏</h2>
+<p><a href="https://matrix.to/#/@andersson007_:matrix.org">andersson007_</a> shared</p>
+<blockquote>
+<p>The following collection inclusion requests are waiting for your review:</p>
+<ul>
+<li><a href="https://github.com/ansible-collections/ansible-inclusion/discussions/32">dellemc.unity</a></li>
+</ul>
+<p>See the <a href="https://github.com/ansible-collections/ansible-inclusion#review-process">process description</a> to learn how to do it.</p>
+<p>If you have any questions, just ping <code>andersson007</code> on <a href="https://docs.ansible.com/ansible/devel/community/communication.html#ansible-community-on-matrix">Matrix</a> in the <a href="https://matrix.to/#/#community:ansible.com">#community:ansible.com</a> room or on <a href="https://docs.ansible.com/ansible/devel/community/communication.html#ansible-community-on-irc">Libera.Chat IRC</a> in the <code>#ansible-community</code> channel or directly.</p>
+<p>Please help the community extend the Ansible package!</p>
+</blockquote>
+<h2>COMMUNITY UPDATES 👂️</h2>
+<p><a href="https://matrix.to/#/@cybette:ansible.im">cybette</a> shared</p>
+<blockquote>
+<h3>Ansible Contributor Survey</h3>
+<p>Feedback is really important to us so we can keep on improving the Contributor Experience for our wonderful Ansible Community. Please take a few minutes to fill in the <a href="https://www.surveymonkey.co.uk/r/7PK28F8">Contributor Survey</a> that we have put together!</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@xlab_steampunk:matrix.org">steampunks</a> contributed</p>
+<blockquote>
+<p>We were going to present our tool for Ansible Playbook developers at the Ansible Contributor Summit last month, but unfortunately our flight was delayed, and we missed the session. Now, we have recorded a demo where you can see Steampunk Spotter in action: https://www.youtube.com/watch?v=YG0h_fYn-TY</p>
+</blockquote>
+<h2>COMMUNITY EVENTS AND MEETUPS 📅</h2>
+<p><a href="https://matrix.to/#/@cybette:ansible.im">cybette</a> said</p>
+<blockquote>
+<p><a href="https://www.meetup.com/ansible-zurich/"><strong>Ansible Zürich</strong></a> will be having their <a href="https://www.meetup.com/ansible-zurich/events/288952760/">11th Ansible Meetup</a> on November 29 (Tuesday). There are 3 topics planned: "Infrastructure deployment and infrastructure as code in Microsoft Azure", "Ansible LFOps - Managing RHEL-based datacenter influenced by DebOps", and "Simple Ansible hacks". Check out the <a href="https://www.meetup.com/ansible-zurich/events/288952760/">details and RSVP</a>.</p>
+<p><a href="https://www.meetup.com/ansible-london/events/289470467/"><strong>Ansible London</strong> meetup on 14th December</a> has been cancelled due to rail strike.</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@cybette:ansible.im">cybette</a> shared</p>
+<blockquote>
+<h3>Cfgmgmtcamp 2023 and Ansible Contributor Summit</h3>
+<p><a href="https://cfgmgmtcamp.eu/ghent2023/">CfgMgmtCamp</a> will return to Ghent in 2023! Mark your calendars for Feb 6-8. Check out the <a href="https://cfp.cfgmgmtcamp.org/2023/cfp">CFP</a> looking for presentations, workshops, and fringes (deadline: Sunday, Dec 4).</p>
+<p>Our next Ansible Contributor Summit will be in Europe as a fringe event of Cfgmgmtcamp! It will be held on Wednesday Feb 8, 2023. More details to come, stay tuned!</p>
+</blockquote>
+<h2>THE ANSIBLE TEAM IS HIRING 💰️</h2>
+<p><a href="https://matrix.to/#/@orandon:ansible.im">Don Naro</a> said</p>
+<blockquote>
+<p>We're hiring! The Ansible team at Red Hat is looking for an <strong>Automation Engineer</strong> who loves automating repetitive tasks, diving deep into source code and systems to perform root-cause analysis of issues. Apply to the <strong>Software Quality team</strong> at <a href="https://global-redhat.icims.com/jobs/96532/automation-engineer---ansible-software-quality/job?hub=7">this link</a> or share with someone you know.</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@orandon:ansible.im">Don Naro</a> contributed</p>
+<blockquote>
+<p>Another exciting opportunity to join the Ansible team at Red Hat. We're looking for someone who constantly looks for ways to break things and rebuild them better. Come and join the <strong>Quality Engineering team</strong> as a developer who designs and automates creative ways to break software and uncover problems. Apply to the role at <a href="https://us-redhat.icims.com/jobs/97074/senior-software-quality-engineer-ansible-quality-engineering/job?hub=7">this link</a> or share with someone you know.</p>
+</blockquote>
+<h2>THAT'S ALL FOR NOW!</h2>
+<p>Have any questions you’d like to ask, or issues you’d like to see covered? Please ask in <a href="https://matrix.to/#/#social:ansible.com">#social:ansible.com</a>! See you next time!</p>

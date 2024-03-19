@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html prefix="
+og: http://ogp.me/ns# article: http://ogp.me/ns/article#
+" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="This first blog in the series covers how Ansible automates change requests from ServiceNow, a popular cloud-based SaaS provider.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ansible and ServiceNow Part 1, Opening and Closing Tickets | Ansible Collaborative</title>
+<link href="../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/baguetteBox.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/rst.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/code.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/theme.css" rel="stylesheet" type="text/css">
+<!-- Red Hat fonts --><link rel="stylesheet" href="https://static.redhat.com/libs/redhat/redhat-font/2.0.0/webfonts/red-hat-font.css">
+<!-- Font Awesome --><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+<!-- Fork Awesome --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css" integrity="sha256-XoaMnoYC5TH6/+ihMEnospgm0J1PM/nioxbOUdnM8HY=" crossorigin="anonymous">
+<!-- Sass compiled css  --><link rel="stylesheet" href="../../assets/css/main.css">
+<link rel="stylesheet" href="../../assets/css/redhat-footer.css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://ansible.com/blog/ansible-servicenow-opening-and-closing-tickets/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Colin McCarthy">
+<link rel="prev" href="../using-infoblox-as-a-dynamic-inventory-in-red-hat-ansible-tower/" title="Using Infoblox as a dynamic inventory in Red Hat Ansible Tower" type="text/html">
+<link rel="next" href="../configure-network-cards-by-pci-address-with-ansible-facts/" title="Configure Network Cards by PCI Address with Ansible Facts" type="text/html">
+<meta property="og:site_name" content="Ansible Collaborative">
+<meta property="og:title" content="Ansible and ServiceNow Part 1, Opening and Closing Tickets">
+<meta property="og:url" content="https://ansible.com/blog/ansible-servicenow-opening-and-closing-tickets/">
+<meta property="og:description" content="This first blog in the series covers how Ansible automates change requests from ServiceNow, a popular cloud-based SaaS provider.">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-06-06T00:00:00Z">
+</head>
+<body id="top">
+
+<div class="global-container" id="content" role="main">
+<!-- Start menubar -->
+<nav class="navbar navbar-expand-lg static-top mb-4 navbar-padding full-width-bg   navbar-dark   bg-pool   "><div class="masthead">
+    <!-- This keeps the margins nice -->
+    <a class="navbar-brand" href="../../">
+        <img src="../../images/ansible_logo-small-15.png" alt="Ansible community logo" id="logo" class="d-inline-block align-top" width="50" height="50"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon nav-toggle-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="bs-navbar">
+      <ul class="navbar-nav mr-auto"></ul>
+<ul class="navbar-nav navbar-right">
+<li class="nav-item dropdown">
+	        <a href="#" class="nav-link nav-link-color dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <i class=""></i> Documentation
+                </a>
+		<div class="dropdown-menu dropdown-menu-border">
+	    
+                    <a href="https://docs.ansible.com/" class="dropdown-item">
+		        <i class=""></i> Project documentation
+                    </a>
+                    <a href="https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/" class="dropdown-item">
+		        <i class=""></i> Ansible Automation Platform documentation
+                    </a>
+            </div>
+                 </li>
+<li class="nav-item">
+		     <a href="https://galaxy.ansible.com/" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Galaxy
+		     </a>
+		 </li>
+                 <li class="nav-item">
+		     <a href="https://forum.ansible.com/" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Forum
+		     </a>
+		 </li>
+            <li class="nav-item dropdown">
+	        <a href="#" class="nav-link nav-link-color dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <i class=""></i> Resources
+                </a>
+		<div class="dropdown-menu dropdown-menu-border">
+	    
+                    <a href="../../how-ansible-works/" class="dropdown-item">
+		        <i class=""></i> How Ansible works
+                    </a>
+                    <a href="../../ecosystem/" class="dropdown-item">
+		        <i class=""></i> Ansible ecosystem
+                    </a>
+                    <a href="../archive.html" class="dropdown-item">
+		        <i class=""></i> Blog
+                    </a>
+                    <a href="../../faq/" class="dropdown-item">
+		        <i class=""></i> Frequently asked questions
+                    </a>
+                    <a href="../../ansible-community-training/" class="dropdown-item">
+		        <i class=""></i> Ansible community training
+                    </a>
+                    <a href="../../contact-us/" class="dropdown-item">
+		        <i class=""></i> Contact us
+                    </a>
+            </div>
+                 </li>
+<li class="nav-item">
+		     <a href="https://www.redhat.com/en/technologies/management/ansible?sc_cid=7015Y000003szaKQAQ" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Ansible Automation Platform
+		     </a>
+		 </li>
+
+        
+      </ul>
+</div>
+    <!-- /.navbar-collapse -->
+  </div>
+  <!-- /.container -->
+</nav><!-- End default Menubar --><div class="body-content center-band">
+        <!--Body content-->
+        
+  <article class="post-text h-entry hentry postpage ansible-content" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Ansible and ServiceNow Part 1, Opening and Closing Tickets</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard p-author h-card"><span class="byline-name fn p-name" itemprop="author">
+                    <a class="u-url" href="../../authors/colin-mccarthy/">Colin McCarthy</a>
+            </span></p>
+            <p class="dateline">
+            <a href="." rel="bookmark">
+            <time class="published dt-published" datetime="2019-06-06T00:00:00Z" itemprop="datePublished" title="2019-06-06 00:00">2019-06-06 00:00</time></a>
+            </p>
+                    <p class="sourceline"><a href="index.md" class="sourcelink">Source</a></p>
+
+        </div>
+        
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+<h2>Ansible and ServiceNow Part 1, Opening and Closing Tickets</h2>
+<p>As a Network Engineer, I hated filling out tickets. Anytime a router
+would reboot or a power outage took place at a remote site, the
+resulting ticket generation took up about 50% of my day. If there had
+been a way to automate ticket creation, I would have saved a lot of
+time. The only thing unique to provide would have been case-specific
+comment sections needing additional information about the issue.</p>
+<p>While ticket creation was a vital activity, automating this was not an
+option at the time. This is surprising because my management was always
+asking me to include more information in my tickets. Tickets were often
+reviewed months later and sometimes never got created or did not have
+much relevant information included.</p>
+<p>Fast forward to today, companies are now data mining from tickets with a
+standard <a href="https://docs.ansible.com/ansible/latest/user_guide/playbooks_variables.html#variables-discovered-from-systems-facts">set of facts</a>
+that are pulled directly from the device during ticket creation, such as
+network platform, software version, uptime, etc.  Network operations
+(NetOps) teams now use massive amounts of ticket data to make budget
+decisions.</p>
+<p>For example, if there were 400 network outages due to power issues,
+NetOps could then make a case to spend \$40,000 on battery backups,
+having proved that it would prevent around 400 outages a year. Having
+access to these metrics is extremely valuable for making informed
+business decisions.</p>
+<p>This first blog in the series covers how Ansible automates change
+requests from ServiceNow, a popular cloud-based SaaS provider. For
+convenience, ServiceNow provides developers a test instance to use
+Ansible Playbooks, which is utilized for this and future blog posts. You
+can sign up for your own free developers instance at the ServiceNow
+Developer portal.</p>
+<h3>Creating a ServiceNow ticket</h3>
+<p>The Ansible distribution includes the
+<a href="https://docs.ansible.com/ansible/latest/modules/snow_record_module.html">snow_record</a>
+module that makes it easy to open and close ServiceNow tickets. The
+<code>pysnow</code> Python library
+will first need to be installed to use this module.</p>
+<p>The next requirement is getting the
+<code>username</code>, <code>password</code> and <code>instance</code> for
+authentication to your recently created developer cloud based ServiceNow
+instance.</p>
+<p>NOTE: the instance should look something like this instance: dev99999 not the full URL</p>
+<p><code>instance:_http://dev99999.service-now.com</code> as shown below in <code>change_request_vars.yml</code>:</p>
+<div class="code"><pre class="code literal-block"><span class="o">---</span>
+<span class="c1">#snow_record variables</span>
+
+<span class="n">sn_username</span><span class="p">:</span><span class="w"> </span><span class="n">admin</span>
+<span class="n">sn_password</span><span class="p">:</span><span class="w"> </span><span class="n">my_password</span>
+<span class="n">sn_instance</span><span class="p">:</span><span class="w"> </span><span class="n">dev99999</span>
+
+<span class="c1">#data variables</span>
+
+<span class="n">sn_severity</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span>
+<span class="n">sn_priority</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span>
+</pre></div>
+
+<p>The following is the Ansible Playbook to create a ServiceNow ticket:</p>
+<div class="code"><pre class="code literal-block"><span class="nn">---</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Create ticket with notes</span>
+<span class="w">  </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">localhost</span>
+<span class="w">  </span><span class="nt">gather_facts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">no</span>
+<span class="w">  </span><span class="nt">connection</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">local</span>
+
+<span class="w">  </span><span class="nt">tasks</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">include vars</span>
+<span class="w">    </span><span class="nt">include_vars</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">change_request_vars.yml</span>
+
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Create a change request</span>
+<span class="w">    </span><span class="nt">snow_record</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">present</span>
+<span class="w">      </span><span class="nt">table</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">change_request</span>
+<span class="w">      </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">sn_username</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="w">      </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">sn_password</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="w">      </span><span class="nt">instance</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">sn_instance</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="w">      </span><span class="nt">data</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">severity</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">sn_severity</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="w">        </span><span class="nt">priority</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">sn_priority</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="w">        </span><span class="nt">short_description</span><span class="p">:</span><span class="w"> </span><span class="s">"This</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">test</span><span class="nv"> </span><span class="s">opened</span><span class="nv"> </span><span class="s">by</span><span class="nv"> </span><span class="s">Ansible"</span>
+<span class="w">    </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">new_incident</span>
+
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">debug</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">var</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">new_incident.record</span>
+</pre></div>
+
+<h3>Leveraging the ServiceNow API</h3>
+<p>The <code>table</code> parameter
+determines what type of ticket will be opened. A great way to determine
+the other parameters available is to view the JSON dictionary the
+ServiceNow API sends back after you have created your ticket. I am using
+<code>register</code> to give a
+variable name to that dictionary and then using <code>debug</code> to view it in the
+terminal. The following is just a portion of the full dictionary for the
+sake of brevity:</p>
+<p><img alt="blog_leverage-servicenow-api" src="../../images/posts/archive/blog_leverage-servicenow-api.png"></p>
+<p>This is very handy in spelling out the parameters you can add under the
+<code>data</code> section of your
+task. If you want to see just one parameter of the dictionary, for
+example the ticket number, you can simply modify your debug to look like
+the following:</p>
+<p><code>- debug: var=new_incident.record.number</code></p>
+<p>This variable (var) is defined as pulling from the stored register
+<code>new_change_request</code> to then show the dictionary named
+<code>record</code> and the parameter
+of that dictionary called <code>number</code>.</p>
+<p><img alt="blog_leverage-servicenow-api-2" src="../../images/posts/archive/blog_leverage-servicenow-api-2.png"></p>
+<p>You could do the same thing with any parameter of the record dictionary
+such as <code>close_code</code>, <code>state</code>, <code>comments</code>, and many
+others.</p>
+<h3>Validating changes in ServiceNow web portal</h3>
+<p>Next, log into your developers instance of ServiceNow and view the
+<strong>Change-&gt;all</strong> section in the left menu bar. You should see your change
+request in the list.</p>
+<p><img alt="blog_servicenow-screen" src="../../images/posts/archive/blog_servicenow-screen.png"></p>
+<p>Notice that the short description has been filled out by our Ansible
+Playbook task: This is a test opened by Ansible as well as the priority
+<code>2 - High</code>.</p>
+<p><img alt="blog_servicenow-screen-2" src="../../images/posts/archive/blog_servicenow-screen-2.png"></p>
+<h3>Closing a ServiceNow ticket</h3>
+<p>Now that we've demonstrated the opening of ServiceNow tickets, we should
+demonstrate closing or resolving the ticket as well. This is done by
+specifying the <code>state</code>
+parameter in another Ansible task. This is where it can get tricky
+because <code>state</code> is a
+parameter of the record dictionary as well as a parameter of the
+<code>snow_record</code> module.
+Please be mindful of this multi-purpose parameter used in Ansible.</p>
+<p>The following is a snippet from the
+<code>record</code> dictionary when
+we created our ticket:</p>
+<p><img alt="blog_closing-servicenow-ticket" src="../../images/posts/archive/blog_closing-servicenow-ticket.png"></p>
+<p>Notice the original <code>state</code> was <code>-5</code>. The Ansible task
+below will change it to <code>-3</code>, which results in a
+ticket state changing from New to Authorize.</p>
+<div class="code"><pre class="code literal-block"><span class="o">---</span>
+<span class="w">  </span><span class="o">-</span><span class="w"> </span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="n">Modify</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">change</span><span class="w"> </span><span class="n">request</span>
+<span class="w">    </span><span class="n">snow_record</span><span class="p">:</span>
+<span class="w">      </span><span class="n">state</span><span class="p">:</span><span class="w"> </span><span class="n">present</span>
+<span class="w">      </span><span class="n">table</span><span class="p">:</span><span class="w"> </span><span class="n">change_request</span>
+<span class="w">      </span><span class="n">username</span><span class="p">:</span><span class="w"> </span><span class="s2">"{{ sn_username }}"</span>
+<span class="w">      </span><span class="n">password</span><span class="p">:</span><span class="w"> </span><span class="s2">"{{ sn_password }}"</span>
+<span class="w">      </span><span class="n">instance</span><span class="p">:</span><span class="w"> </span><span class="s2">"{{ sn_instance }}"</span>
+<span class="w">      </span><span class="n">number</span><span class="p">:</span><span class="w"> </span><span class="n">CHG0030002</span>
+<span class="w">      </span><span class="n">data</span><span class="p">:</span>
+<span class="w">        </span><span class="n">state</span><span class="p">:</span><span class="w"> </span><span class="o">-</span><span class="mi">3</span>
+<span class="w">    </span><span class="n">register</span><span class="p">:</span><span class="w"> </span><span class="n">incident</span>
+
+<span class="w">  </span><span class="o">-</span><span class="w"> </span><span class="n">debug</span><span class="p">:</span><span class="w"> </span>
+<span class="w">      </span><span class="k">var</span><span class="p">:</span><span class="w"> </span><span class="n">incident</span><span class="o">.</span><span class="n">record</span><span class="o">.</span><span class="n">state</span>
+</pre></div>
+
+<p>In ServiceNow a <code>change_request</code> needs to
+be walked through a few different states before it can be closed. The
+numeric values for the different states can be found in the ServiceNow
+documentation. I recommend you have five separate Ansible tasks that
+each change the state in this order: <code>-3</code>, <code>-2</code>, <code>-1</code>, <code>0</code>, <code>3</code>. Please note that these
+values are for the ServiceNow Kingston release and that other releases
+may use different state numbers. Your organization may have other steps
+required along the way, but hopefully this article was enough to get you
+started. At this point you've learned how to open tickets, and close
+tickets with specific labels via Ansible Playbooks.</p>
+<p>Stay tuned for part 2 - I'll describe adding a set of parsed facts to
+your tickets.</p>
+</div>
+    <aside class="postpromonav"><nav><ul class="pager hidden-print">
+<li class="previous">
+                <a href="../using-infoblox-as-a-dynamic-inventory-in-red-hat-ansible-tower/" rel="prev" title="Using Infoblox as a dynamic inventory in Red Hat Ansible Tower">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../configure-network-cards-by-pci-address-with-ansible-facts/" rel="next" title="Configure Network Cards by PCI Address with Ansible Facts">Next post</a>
+            </li>
+        </ul></nav></aside></article><!--End of body content-->
+</div>
+        <div class="content-slim redhat-footer">
+      <div class="footer-left">
+        <ul class="footer-left-links">
+<li>
+            <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-SA 4.0</a>
+          </li>
+          <li>
+            <a href="https://www.redhat.com/en/about/privacy-policy" target="_blank">Privacy policy</a>
+          </li>
+          <li>
+            <a href="https://docs.ansible.com/ansible/latest/community/code_of_conduct.html" target="_blank">Code of conduct</a>
+          </li>
+        </ul>
+</div>
+      <div class="footer-right">
+        <span class="redhat">Powered by</span>
+        <span class="redhat-logo">
+          <a href="https://www.redhat.com/en/technologies/management/ansible" target="_blank">
+            <img src="../../assets/images/redhat_reversed.svg" alt="Red Hat logo." width="96" height="28"></a>
+        </span>
+      </div>
+    </div>
+
+</div>
+
+            <script src="../../assets/js/jquery.min.js"></script><script src="../../assets/js/popper.min.js"></script><script src="../../assets/js/bootstrap.min.js"></script><script src="../../assets/js/baguetteBox.min.js"></script><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+</script><script src="../../assets/js/clipboard.min.js" type="text/javascript"></script><script src="../../assets/js/clipboard.js" type="text/javascript"></script>
+</body>
+</html>

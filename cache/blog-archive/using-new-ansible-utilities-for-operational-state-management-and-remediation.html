@@ -1,0 +1,263 @@
+<h1>Using New Ansible Utilities for Operational State Management and Remediation</h1>
+<p>Comparing the current operational state of your IT infrastructure to
+your desired state is a common use case for IT automation.  This allows
+automation users to identify drift or problem scenarios to take
+corrective actions and even proactively identify and solve problems. 
+This blog post will walk through the automation workflow for validation
+of operational state and even automatic remediation of issues.</p>
+<p>We will demonstrate how the Red Hat supported and certified Ansible
+content can be used to:</p>
+<ul>
+<li>Collect the current operational state from the remote host and
+    convert it into normalised structure data.</li>
+<li>Define the desired state criteria in a standard based format that
+    can be used across enterprise infrastructure teams.</li>
+<li>Validate the current state data against the pre-defined criteria to
+    identify if there is any deviation.</li>
+<li>Take corrective remediation action as required.</li>
+<li>Validate input data as per the data model schema</li>
+</ul>
+<h2>Gathering state data from a remote host</h2>
+<p>The recently released
+<a href="https://galaxy.ansible.com/ansible/utils">ansible.utils</a>
+version 1.0.0 Collection has added support for
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.cli_parse_module.rst">ansible.utils.cli_parse</a>
+module, which converts text data into structured JSON format.  The
+module has the capability to either execute the command on the remote
+endpoint and fetch the text response, or read the text from a file on
+the control node to convert it into structured data.  This module can
+work with both traditional Linux servers as well as vendor appliances,
+such as network devices that don't have the ability to execute Python,
+and the module relies on well-known text parser libraries for this
+conversion. The current supported CLI parser sub plugin engines are as
+below:</p>
+<ol>
+<li><a href="https://github.com/ansible-collections/ansible.utils/blob/main/plugins/sub_plugins/cli_parser/textfsm_parser.py">ansible.utils.textfsm</a>
+    Uses<a href="https://pypi.org/project/textfsm/"> textfsm python library</a></li>
+<li><a href="https://github.com/ansible-collections/ansible.utils/blob/main/plugins/sub_plugins/cli_parser/ttp_parser.py">ansible.utils.ttp</a>
+    Uses<a href="https://pypi.org/project/ttp/"> ttp python library</a></li>
+<li><a href="https://github.com/ansible-collections/ansible.netcommon/blob/main/plugins/sub_plugins/cli_parser/native_parser.py">ansible.netcommon.native</a>
+    Uses netcommon inbuilt parser engine</li>
+<li><a href="https://github.com/ansible-collections/ansible.netcommon/blob/main/plugins/sub_plugins/cli_parser/ntc_templates_parser.py">ansible.netcommon.ntc_templates</a>
+    Uses <a href="https://pypi.org/project/ntc-templates/">ntc_templates python library</a></li>
+<li><a href="https://github.com/ansible-collections/ansible.netcommon/blob/main/plugins/sub_plugins/cli_parser/pyats_parser.py">ansible.netcommon.pyats</a>
+    Uses <a href="https://pypi.org/project/pyats/">pyats python library</a></li>
+<li><a href="https://github.com/ansible-collections/ansible.utils/blob/main/plugins/sub_plugins/cli_parser/xml_parser.py">ansible.utils.xml</a>Uses
+    <a href="https://pypi.org/project/xmltodict/">xmltodict python library</a> </li>
+<li><a href="https://github.com/ansible-collections/ansible.utils/blob/main/plugins/sub_plugins/cli_parser/json_parser.py">ansible.utils.json</a></li>
+</ol>
+<p><img alt="state assessment blog" src="/images/posts/archive/state-assessment-blog.png"></p>
+<p>The examples described in this blog uses Cisco network switch, NXOS
+version 7.3(0)D1(1), as the remote endpoint and Ansible version 2.9.15
+running on the control node and requires
+<a href="https://galaxy.ansible.com/ansible/utils">ansible.utils</a>,
+<a href="https://galaxy.ansible.com/ansible/netcommon">ansible.netcommon</a> and
+<a href="https://galaxy.ansible.com/cisco/nxos">cisco.nxos </a>Collections to be
+installed on the control node.</p>
+<p>The below <a href="https://gist.github.com/ganeshrn/f763e299cb4896b548c586b57041ee73">Ansible snippet</a>
+fetches the operational state of the interfaces and translates it to
+structured data using <strong>ansible.netcommon.pyats</strong> parser. This parse
+requires <a href="https://pypi.org/project/pyats/">pyats</a> library to be
+installed on the control node.</p>
+<div class="code"><pre class="code literal-block"><span class="nn">---</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nxos</span>
+<span class="w">  </span><span class="nt">connection</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ansible.netcommon.network_cli</span>
+<span class="w">  </span><span class="nt">gather_facts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">vars</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">ansible_network_os</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cisco.nxos.nxos</span>
+<span class="w">    </span><span class="nt">ansible_user</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;changeme&quot;</span>
+<span class="w">    </span><span class="nt">ansible_password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;changeme&quot;</span>
+
+<span class="w">  </span><span class="nt">tasks</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Fetch</span><span class="nv"> </span><span class="s">interface</span><span class="nv"> </span><span class="s">state</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">parse</span><span class="nv"> </span><span class="s">with</span><span class="nv"> </span><span class="s">pyats&quot;</span>
+<span class="w">    </span><span class="nt">ansible.utils.cli_parse</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">show interface</span>
+<span class="w">      </span><span class="nt">parser</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ansible.netcommon.pyats</span>
+<span class="w">    </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nxos_pyats_show_interface</span>
+
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">print structured interface state data</span>
+<span class="w">    </span><span class="nt">ansible.builtin.debug</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">msg</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">nxos_pyats_show_interface[&#39;parsed&#39;]</span><span class="nv"> </span><span class="s">}}&quot;</span>
+</pre></div>
+
+<p>The value of the <strong>command</strong> option in <strong>ansible.utils.cli_parse</strong> task
+is the command that should the executed on the remote host,
+alternatively, the task can accept a <strong>text</strong> option that accepts the
+value directly in string format and can be used in case the response of
+the command is already prefetched. The <strong>name</strong> option under the
+<strong>parser</strong> parent option can be any one of the above-discussed parser
+sub plugins.</p>
+<p>After running the playbook, the output of <strong>ansible.utils.cli_parse</strong>
+task for the given host is as shown for reference:</p>
+<div class="code"><pre class="code literal-block"><span class="err">ok</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="kc">n</span><span class="err">xos</span><span class="p">]</span><span class="w"> </span><span class="err">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="nt">&quot;changed&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">   </span><span class="nt">&quot;parsed&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">       </span><span class="nt">&quot;Ethernet2/1&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">           </span><span class="nt">&quot;admin_state&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;down&quot;</span><span class="p">,</span>
+<span class="w">           </span><span class="nt">&quot;auto_mdix&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;off&quot;</span><span class="p">,</span>
+<span class="w">           </span><span class="nt">&quot;auto_negotiate&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">           </span><span class="nt">&quot;bandwidth&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1000000</span><span class="p">,</span>
+<span class="w">           </span><span class="nt">&quot;beacon&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;off&quot;</span>
+<span class="w">           </span><span class="err">&lt;</span><span class="mi">--</span><span class="err">s</span><span class="kc">n</span><span class="err">ip</span><span class="mi">--</span><span class="err">&gt;</span>
+<span class="w">       </span><span class="p">},</span>
+<span class="w">       </span><span class="nt">&quot;Ethernet2/10&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">           </span><span class="nt">&quot;admin_state&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;down&quot;</span><span class="p">,</span>
+<span class="w">           </span><span class="nt">&quot;auto_mdix&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;off&quot;</span><span class="p">,</span>
+<span class="w">           </span><span class="nt">&quot;auto_negotiate&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">           </span><span class="nt">&quot;bandwidth&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1000000</span><span class="p">,</span>
+<span class="w">           </span><span class="nt">&quot;beacon&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;off&quot;</span><span class="p">,</span>
+<span class="w">           </span><span class="err">&lt;</span><span class="mi">--</span><span class="err">s</span><span class="kc">n</span><span class="err">ip</span><span class="mi">--</span><span class="err">&gt;</span>
+<span class="w">       </span><span class="p">}</span>
+<span class="w">   </span><span class="p">}</span>
+</pre></div>
+
+<p>Notice the value of <strong>admin_state</strong> key for some of the interfaces is
+<strong>down</strong>, for the complete output refer
+<a href="https://gist.github.com/ganeshrn/79a7a2670ce03fe381678f9796482089">here</a>.</p>
+<h2>Defining state criteria and validation</h2>
+<p>The <a href="https://galaxy.ansible.com/ansible/utils">ansible.utils</a> Collection
+has added support for the
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.validate_module.rst">ansible.utils.validate</a>
+module, which validates the input JSON data with the provided criteria
+based on the validation engine. The currently supported validation
+engine is <a href="https://pypi.org/project/jsonschema/">jsonschema</a>, and in
+future support for additional validation, engines will be added on a
+need basis. </p>
+<p>In the above section, we fetched the interface state and converted to
+structured JSON data. Suppose if we want the desired admin state for all
+the interfaces to always be in <strong>up</strong> state the <a href="https://gist.github.com/ganeshrn/0a479d580caa96326a7c8186c4b12d7d">criteria for
+jsonschema</a>
+will look like:</p>
+<div class="code"><pre class="code literal-block"><span class="err">$ca</span><span class="kc">t</span><span class="w"> </span><span class="err">cri</span><span class="kc">ter</span><span class="err">ias/</span><span class="kc">n</span><span class="err">xos_show_i</span><span class="kc">nterfa</span><span class="err">ce_admi</span><span class="kc">n</span><span class="err">_cri</span><span class="kc">ter</span><span class="err">ia.jso</span><span class="kc">n</span>
+<span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;type&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;patternProperties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;^.*&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                        </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span><span class="p">,</span>
+<span class="w">                        </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                                </span><span class="nt">&quot;admin_state&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                                        </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span>
+<span class="w">                                        </span><span class="nt">&quot;pattern&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;up&quot;</span>
+<span class="w">                                </span><span class="p">}</span>
+<span class="w">                        </span><span class="p">}</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+</pre></div>
+
+<p>After the criteria for the desired state of the resource is defined, it
+can be used with the <strong>ansible.utils.validate</strong> module to check if the
+current state of the resource matches with the desired state as shown in
+the below
+<a href="https://gist.github.com/ganeshrn/d9a3049673bd8bec1cbd4b717cf56c99">task</a>.</p>
+<div class="code"><pre class="code literal-block"><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">validate interface for admin state</span>
+<span class="w">  </span><span class="nt">ansible.utils.validate</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">data</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">nxos_pyats_show_interface[&#39;parsed&#39;]</span><span class="nv"> </span><span class="s">}}&quot;</span>
+<span class="w">    </span><span class="nt">criteria</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">lookup(&#39;file&#39;,</span><span class="nv">  </span><span class="s">&#39;./criterias/nxos_show_interface_admin_criteria.json&#39;)</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">from_json</span><span class="nv"> </span><span class="s">}}&quot;</span>
+<span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ansible.utils.jsonschema</span>
+<span class="w">  </span><span class="nt">ignore_errors</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">result</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">print the interface names that does not satisfy the desired state</span>
+<span class="w">  </span><span class="nt">ansible.builtin.debug</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">msg</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">item[&#39;data_path&#39;].split(&#39;.&#39;)[0]</span><span class="nv"> </span><span class="s">}}&quot;</span>
+<span class="w">  </span><span class="nt">loop</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">result[&#39;errors&#39;]</span><span class="nv"> </span><span class="s">}}&quot;</span>
+<span class="w">  </span><span class="nt">when</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&#39;errors&#39;</span><span class="nv"> </span><span class="s">in</span><span class="nv"> </span><span class="s">result&quot;</span>
+</pre></div>
+
+<p>The <strong>data</strong> option of <strong>ansible.utils.validate</strong> task accepts a JSON
+value and in this case, it is the output parsed from
+<strong>ansible.utils.cli_parse</strong> module as discussed above. The value of
+<strong>engine</strong> option is the sub plugin name of the validate module that is
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.jsonschema_validate.rst">ansible.utils.jsonschema</a>,
+and it identifies the underlying validation library to be used; in this
+case, we are using <strong>jsonschema</strong> library. The value of the <strong>criteria</strong>
+option can be a list and should be in a format that is defined by the
+validation engine used. For the above to run
+<a href="https://pypi.org/project/jsonschema/">jsonschema</a>, installing a library
+is required on the control node. The output of the above task run will
+be a list of errors indicating interfaces that do not have admin value
+in <strong>up</strong> state. The reference output can be seen
+<a href="https://gist.github.com/ganeshrn/912d88b7ff5b6a959e82c4935d9b4d0c">here</a>
+(note: the output will vary based on the state of the interfaces on the
+remote host).</p>
+<div class="code"><pre class="code literal-block">TASK<span class="w"> </span><span class="o">[</span>validate<span class="w"> </span>interface<span class="w"> </span><span class="k">for</span><span class="w"> </span>admin<span class="w"> </span>state<span class="o">]</span><span class="w"> </span>***********************************************************************************************************
+fatal:<span class="w"> </span><span class="o">[</span>nxos02<span class="o">]</span>:<span class="w"> </span>FAILED!<span class="w"> </span><span class="o">=</span>&gt;<span class="w"> </span><span class="o">{</span><span class="s2">&quot;changed&quot;</span>:<span class="w"> </span>false,<span class="w"> </span><span class="s2">&quot;errors&quot;</span>:<span class="w"> </span><span class="o">[{</span><span class="s2">&quot;data_path&quot;</span>:<span class="w"> </span><span class="s2">&quot;Ethernet2/1.admin_state&quot;</span>,<span class="w"> </span><span class="s2">&quot;expected&quot;</span>:<span class="w"> </span><span class="s2">&quot;up&quot;</span>,<span class="w"> </span><span class="s2">&quot;found&quot;</span>:<span class="w"> </span><span class="s2">&quot;down&quot;</span>,<span class="w"> </span><span class="s2">&quot;json_path&quot;</span>:<span class="w"> </span><span class="s2">&quot;</span>$<span class="s2">.Ethernet2/1.admin_state&quot;</span>,<span class="w"> </span><span class="s2">&quot;message&quot;</span>:<span class="w"> </span><span class="s2">&quot;&#39;down&#39; does not match &#39;up&#39;&quot;</span>,<span class="w"> </span><span class="s2">&quot;relative_schema&quot;</span>:<span class="w"> </span><span class="o">{</span><span class="s2">&quot;pattern&quot;</span>:<span class="w"> </span><span class="s2">&quot;up&quot;</span>,<span class="w"> </span><span class="s2">&quot;type&quot;</span>:<span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="o">}</span>,<span class="w"> </span><span class="s2">&quot;schema_path&quot;</span>:<span class="w"> </span><span class="s2">&quot;patternProperties.^.*.properties.admin_state.pattern&quot;</span>,<span class="w"> </span><span class="s2">&quot;validator&quot;</span>:<span class="w"> </span><span class="s2">&quot;pattern&quot;</span><span class="o">}</span>,<span class="w"> </span><span class="o">{</span><span class="s2">&quot;data_path&quot;</span>:<span class="w"> </span><span class="s2">&quot;Ethernet2/10.admin_state&quot;</span>,<span class="w"> </span><span class="s2">&quot;expected&quot;</span>:<span class="w"> </span><span class="s2">&quot;up&quot;</span>,<span class="w"> </span><span class="s2">&quot;found&quot;</span>:<span class="w"> </span><span class="s2">&quot;down&quot;</span>,<span class="w"> </span><span class="s2">&quot;json_path&quot;</span>:<span class="w"> </span><span class="s2">&quot;</span>$<span class="s2">.Ethernet2/10.admin_state&quot;</span>,<span class="w"> </span><span class="s2">&quot;message&quot;</span>:<span class="w"> </span><span class="s2">&quot;&#39;down&#39; does not match &#39;up&#39;&quot;</span>,<span class="w"> </span><span class="s2">&quot;relative_schema&quot;</span>:<span class="w"> </span><span class="o">{</span><span class="s2">&quot;pattern&quot;</span>:<span class="w"> </span><span class="s2">&quot;up&quot;</span>,<span class="w"> </span><span class="s2">&quot;type&quot;</span>:<span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="o">}</span>,<span class="w"> </span><span class="s2">&quot;schema_path&quot;</span>:<span class="w"> </span><span class="s2">&quot;patternProperties.^.*.properties.admin_state.pattern&quot;</span>,<span class="w"> </span><span class="s2">&quot;validator&quot;</span>:<span class="w"> </span><span class="s2">&quot;pattern&quot;</span><span class="o">}]</span>,<span class="w"> </span><span class="s2">&quot;msg&quot;</span>:<span class="w"> </span><span class="s2">&quot;Validation errors were found.\nAt &#39;patternProperties.^.*.properties.admin_state.pattern&#39; &#39;down&#39; does not match &#39;up&#39;. \nAt &#39;patternProperties.^.*.properties.admin_state.pattern&#39; &#39;down&#39; does not match &#39;up&#39;. \nAt &#39;patternProperties.^.*.properties.admin_state.pattern&#39; &#39;down&#39; does not match &#39;up&#39;. &quot;</span><span class="o">}</span>
+...ignoring
+</pre></div>
+
+<div class="code"><pre class="code literal-block">TASK<span class="w"> </span><span class="o">[</span>print<span class="w"> </span>the<span class="w"> </span>interface<span class="w"> </span>names<span class="w"> </span>that<span class="w"> </span>does<span class="w"> </span>not<span class="w"> </span>satisfy<span class="w"> </span>the<span class="w"> </span>desired<span class="w"> </span>state<span class="o">]</span><span class="w"> </span>****************************************************************************
+Monday<span class="w"> </span><span class="m">14</span><span class="w"> </span>December<span class="w"> </span><span class="m">2020</span><span class="w">  </span><span class="m">11</span>:05:38<span class="w"> </span>+0530<span class="w"> </span><span class="o">(</span><span class="m">0</span>:00:01.661<span class="o">)</span><span class="w">       </span><span class="m">0</span>:00:28.676<span class="w"> </span>*******
+ok:<span class="w"> </span><span class="o">[</span>nxos<span class="o">]</span><span class="w"> </span><span class="o">=</span>&gt;<span class="w"> </span><span class="o">{</span>
+<span class="w">   </span><span class="s2">&quot;msg&quot;</span>:<span class="w"> </span><span class="s2">&quot;Ethernet2/1&quot;</span>
+<span class="o">}</span>
+ok:<span class="w"> </span><span class="o">[</span>nxos<span class="o">]</span><span class="w"> </span><span class="o">=</span>&gt;<span class="w"> </span><span class="o">{</span>
+<span class="w">   </span><span class="s2">&quot;msg&quot;</span>:<span class="w"> </span><span class="s2">&quot;Ethernet2/10&quot;</span>
+<span class="o">}</span>
+
+PLAY<span class="w"> </span>RECAP<span class="w"> </span>******************************************************************************************************************************************
+nxos<span class="w">                       </span>:<span class="w"> </span><span class="nv">ok</span><span class="o">=</span><span class="m">4</span><span class="w">    </span><span class="nv">changed</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">unreachable</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">failed</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">skipped</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">rescued</span><span class="o">=</span><span class="m">0</span><span class="w">    </span><span class="nv">ignored</span><span class="o">=</span><span class="m">1</span>
+</pre></div>
+
+<p>As seen from the above output, the interface <strong>Ethernet2/1</strong> and
+<strong>Ethernet2/10</strong> are not in the desired state as per the defined
+criteria.</p>
+<h2>Remediation</h2>
+<p>Based on the output of the <strong>ansible.utils.validate</strong> task, a number of
+remediation actions can be taken using Ansible modules for configuration
+management and/or reporting. In our case, we will be using the
+<a href="https://github.com/ansible-collections/cisco.nxos/blob/main/docs/cisco.nxos.nxos_interfaces_module.rst">cisco.nxos.nxos_interfaces</a>
+resource module to configure the given interfaces in admin <strong>up</strong> state
+as shown in the below
+<a href="https://gist.github.com/ganeshrn/58f1346aa3dad4ce771fe4cb9420349f">snippet</a>.</p>
+<div class="code"><pre class="code literal-block"><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Configure interface with drift in admin up state</span>
+<span class="w">  </span><span class="nt">cisco.nxos.nxos_interfaces</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">config</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">item[&#39;data_path&#39;].split(&#39;.&#39;)[0]</span><span class="nv"> </span><span class="s">}}&quot;</span>
+<span class="w">      </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">loop</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">result[&#39;errors&#39;]</span><span class="nv"> </span><span class="s">}}&quot;</span>
+<span class="w">  </span><span class="nt">when</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&#39;errors&#39;</span><span class="nv"> </span><span class="s">in</span><span class="nv"> </span><span class="s">result&quot;</span>
+</pre></div>
+
+<p>This remediation task will be executed only when the validation from the
+earlier task fails and will run only for those interfaces whose admin
+state is not up.</p>
+<h2>Data validation</h2>
+<p>It is often required to validate the data before giving it as an input
+to the task to ensure the input data structure is  per the expected data
+model.  This allows us to validate data model adherence prior to pushing
+configuration to the network device. This use case is explained in the
+<a href="https://www.ipspace.net/kb/DataModels/70-Validation.html">data validation</a>
+blog from <a href="https://www.ipspace.net/Main_Page">Ivan Pepelnjak</a>.</p>
+<p><img alt="state assessment blog two" src="/images/posts/archive/state-assessment-blog-two.png"></p>
+<p>The blog uses command-line tools to validate the input data, however
+with the support of the <strong>ansible.utils.validate</strong> module, this
+functionality can now be added in the Ansible Playbook itself as shown
+in the below
+<a href="https://gist.github.com/ganeshrn/11ef6cf725ee8fbc4f7a1bbffe5eb92b">snippet</a>.</p>
+<div class="code"><pre class="code literal-block"><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">validate bgp data data with jsonschema bgp model criteria</span>
+<span class="w">  </span><span class="nt">ansible.utils.validate</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">data</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">hostvars</span><span class="nv"> </span><span class="s">}}&quot;</span>
+<span class="w">    </span><span class="nt">criteria</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">lookup(&#39;file&#39;,</span><span class="nv"> </span><span class="s">&#39;./bgp_data_model_criteria.json&#39;)</span><span class="nv"> </span><span class="s">|</span><span class="nv">  </span><span class="s">from_json</span><span class="nv"> </span><span class="s">}}&quot;</span>
+<span class="w">    </span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ansible.utils.jsonschema</span>
+<span class="w">  </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">result</span>
+</pre></div>
+
+<p>The criteria structure stored in <strong>bgp_data_model_criteria.json</strong> file
+locally can be referred
+<a href="https://gist.github.com/ganeshrn/aef7f74d132199b5ddb379d49fe314f7">here</a> 
+(modified example from the <a href="https://www.ipspace.net/kb/DataModels/70-Validation.html">original blog
+post</a>) and the
+sample <code>host_vars</code> file as below:</p>
+<div class="code"><pre class="code literal-block"><span class="nv">$cat</span><span class="w"> </span>host_vars/nxos.yaml
+---
+bgp_as:<span class="w"> </span><span class="m">0</span>
+description:<span class="w"> </span>Unexpected
+</pre></div>
+
+<p>The output of the above task run can be seen as below:</p>
+<div class="code"><pre class="code literal-block">TASK<span class="w"> </span><span class="o">[</span>validate<span class="w"> </span>bgp<span class="w"> </span>data<span class="w"> </span>data<span class="w"> </span>with<span class="w"> </span>jsonschema<span class="w"> </span>bgp<span class="w"> </span>model<span class="w"> </span>criteria<span class="o">]</span><span class="w"> </span>*******************************************************************************************
+fatal:<span class="w"> </span><span class="o">[</span>nxos<span class="o">]</span>:<span class="w"> </span>FAILED!<span class="w"> </span><span class="o">=</span>&gt;<span class="w"> </span><span class="o">{</span><span class="s2">&quot;changed&quot;</span>:<span class="w"> </span>false,<span class="w"> </span><span class="s2">&quot;errors&quot;</span>:<span class="w"> </span><span class="o">[{</span><span class="s2">&quot;data_path&quot;</span>:<span class="w"> </span><span class="s2">&quot;nxos.bgp_as&quot;</span>,<span class="w"> </span><span class="s2">&quot;expected&quot;</span>:<span class="w"> </span><span class="m">1</span>,<span class="w"> </span><span class="s2">&quot;found&quot;</span>:<span class="w"> </span><span class="m">0</span>,<span class="w"> </span><span class="s2">&quot;json_path&quot;</span>:<span class="w"> </span><span class="s2">&quot;</span>$<span class="s2">.nxos.bgp_as&quot;</span>,<span class="w"> </span><span class="s2">&quot;message&quot;</span>:<span class="w"> </span><span class="s2">&quot;0 is less than the minimum of 1&quot;</span>,<span class="w"> </span><span class="s2">&quot;relative_schema&quot;</span>:<span class="w"> </span><span class="o">{</span><span class="s2">&quot;maximum&quot;</span>:<span class="w"> </span><span class="m">65535</span>,<span class="w"> </span><span class="s2">&quot;minimum&quot;</span>:<span class="w"> </span><span class="m">1</span>,<span class="w"> </span><span class="s2">&quot;type&quot;</span>:<span class="w"> </span><span class="s2">&quot;number&quot;</span><span class="o">}</span>,<span class="w"> </span><span class="s2">&quot;schema_path&quot;</span>:<span class="w"> </span><span class="s2">&quot;patternProperties..*.properties.bgp_as.minimum&quot;</span>,<span class="w"> </span><span class="s2">&quot;validator&quot;</span>:<span class="w"> </span><span class="s2">&quot;minimum&quot;</span><span class="o">}]</span>,<span class="w"> </span><span class="s2">&quot;msg&quot;</span>:<span class="w"> </span><span class="s2">&quot;Validation errors were found.\nAt &#39;patternProperties..*.properties.bgp_as.minimum&#39; 0 is less than the minimum of 1. &quot;</span><span class="o">}</span>
+</pre></div>

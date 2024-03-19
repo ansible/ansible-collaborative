@@ -1,0 +1,182 @@
+<h1>Automating a RHEL 8 Installation Using the VMware REST Ansible Collection</h1>
+<p>Managing virtual machines in an IT infrastructure is often a common
+task, specifically VMware virtualization technology has been around for
+over 20 years. VMware administrators spend a lot of their time in
+automating the creation, management, and removal of virtual instances
+that contain various operating systems. One operating system that often
+resides on VMware infrastructure is Red Hat Enterprise Linux. </p>
+<p>With the introduction of VMware REST APIs, we recently announced the
+initial release of the <code>vmware.vmware_rest</code> Collection,
+for production use. As opposed to the community.vmware Collection, the
+<code>vmware.vmware_rest</code> Collection is based on next generation VMware REST
+APIs.  This new Collection no longer requires any third party Python
+bindings to communicate with VMware infrastructure. A large part of the
+new Collection that has been introduced is support for automating
+virtual machine operations.</p>
+<p>In this blog post I will show you how VMware users can automate the
+installation of Red Hat Enterprise Linux 8 (RHEL 8) using the
+<code>vmware.vmware_rest.vcenter_vm</code> module and a valid Kickstart file.</p>
+<h1>Scenario requirements</h1>
+<p>For this scenario, we will assume following requirements:</p>
+<ol>
+<li>vCenter 7.0.1 or latest with at least one ESXi </li>
+<li>RHEL 8 installation DVD</li>
+<li>Ansible</li>
+<li>vmware.vmware_rest collection installed with latest version</li>
+</ol>
+<h1>Preparing Installation ISO file</h1>
+<p>We will be automating RHEL 8 installation using the Kickstart file
+fetched via iso image file. We will not discuss Kickstart file creation
+and management as this has already been covered in
+<a href="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/performing_an_advanced_rhel_installation/creating-kickstart-files_installing-rhel-as-an-experienced-user">the documentation</a>.
+You might want to visit <a href="https://access.redhat.com/labsinfo/kickstartconfig">Kickstart Info Access Labs</a> to refresh your knowledge.</p>
+<h2>Gathering information about infrastructure</h2>
+<p>We will use environment variables to specify VMware credentials. This
+will make playbooks short and tidy. In order to do this, you need
+specify following environment variables:</p>
+<ul>
+<li>VMWARE_HOST</li>
+<li>VMWARE_USER</li>
+<li>VMWARE_PASSWORD</li>
+<li>VMWARE_VALIDATE_CERTS</li>
+</ul>
+<p>Let us now start with our playbook which will create the virtual machine
+in vCenter. All modules in vmware.vmware_rest Collection use VMware
+managed object ID (MoID) for identifying and  referencing VMware
+objects. The MoIDs are unique in the given vCenter so there is no need
+to specify names and folders. </p>
+<p>We need to provide information where the virtual machine is going to be
+placed. This information comprises MoIDs of cluster, datastore, folder
+and resource pool. We can use existing modules from vmware.vmware_rest
+Collection to collect this information.</p>
+<div class="code"><pre class="code literal-block"><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Get Cluster info</span>
+<span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">vmware.vmware_rest.vcenter_cluster_info</span><span class="p p-Indicator">:</span>
+<span class="w">         </span><span class="nt">filter_names</span><span class="p">:</span>
+<span class="w">         </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">cluster_name</span><span class="nv"> </span><span class="s">}}&quot;</span>
+<span class="w">  </span><span class="w w-Error"> </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cluster_info</span>
+
+<span class="w w-Error"> </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Get Resource info for {{ cluster_name }}</span>
+<span class="w">   </span><span class="nt">vmware.vmware_rest.vcenter_cluster_info</span><span class="p">:</span>
+<span class="w">         </span><span class="nt">cluster</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">cluster_info.value[0].cluster</span><span class="nv"> </span><span class="s">}}&quot;</span>
+<span class="w">   </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">resource_pool_info</span>
+
+<span class="w"> </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Get datastore info</span>
+<span class="w">   </span><span class="nt">vmware.vmware_rest.vcenter_datastore_info</span><span class="p">:</span>
+<span class="w">         </span><span class="nt">filter_names</span><span class="p">:</span>
+<span class="w">         </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">datastore_name</span><span class="nv"> </span><span class="s">}}&quot;</span>
+<span class="w">   </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">datastore_info</span>
+
+<span class="w"> </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Get folder info</span>
+<span class="w">   </span><span class="nt">vmware.vmware_rest.vcenter_folder_info</span><span class="p">:</span>
+<span class="w">         </span><span class="nt">filter_names</span><span class="p">:</span>
+<span class="w">         </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;{{</span><span class="nv"> </span><span class="s">folder_name</span><span class="nv"> </span><span class="s">}}&#39;</span>
+<span class="w">   </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">folder_info</span>
+</pre></div>
+
+<p>We will need information about the standard portgroup to which the
+virtual machine is going to be attached to. Gathering information about
+the MoID of a standard portgroup can be done using
+vmware.vmware_rest.vcenter_network_info module.</p>
+<div class="code"><pre class="code literal-block"><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Get a list of the networks with a filter</span>
+<span class="nt">vmware.vmware_rest.vcenter_network_info</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">filter_types</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">STANDARD_PORTGROUP</span>
+<span class="w">      </span><span class="nt">filter_names</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;VM</span><span class="nv"> </span><span class="s">Network&quot;</span>
+<span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">network_info</span>
+</pre></div>
+
+<h1>Creating a virtual machine</h1>
+<p>Once we have all the information required for create a virtual machine,
+let us move on to the module which creates the virtual machine that is
+<code>vcenter_vm</code>:</p>
+<div class="code"><pre class="code literal-block"><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Create a VM</span>
+<span class="w">  </span><span class="nt">vmware.vmware_rest.vcenter_vm</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">boot</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">delay</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
+<span class="w">      </span><span class="nt">enter_setup_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">      </span><span class="nt">retry</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">      </span><span class="nt">retry_delay</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10000</span>
+<span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;BIOS&quot;</span>
+<span class="w">      </span><span class="nt">boot_devices</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
+<span class="w">      </span><span class="nt">cdroms</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">allow_guest_control</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">        </span><span class="nt">backing</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ISO_FILE&quot;</span>
+<span class="w">          </span><span class="nt">iso_file</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;[ds_200]</span><span class="nv"> </span><span class="s">iso/rhel_8.3_ks.iso&quot;</span>
+<span class="w">        </span><span class="nt">ide</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">master</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">          </span><span class="nt">primary</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">        </span><span class="nt">label</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;CD/DVD</span><span class="nv"> </span><span class="s">drive</span><span class="nv"> </span><span class="s">1&quot;</span>
+<span class="w">        </span><span class="nt">start_connected</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;IDE&quot;</span>
+<span class="w">      </span><span class="nt">cpu</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">cores_per_socket</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">      </span><span class="nt">count</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">      </span><span class="nt">hot_add_enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">      </span><span class="nt">hot_remove_enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">      </span><span class="nt">disks</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">new_vmdk</span><span class="p">:</span>
+<span class="w">           </span><span class="nt">capacity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">536870912</span>
+<span class="w">        </span><span class="nt">label</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Hard</span><span class="nv"> </span><span class="s">disk</span><span class="nv"> </span><span class="s">1&quot;</span>
+<span class="w">        </span><span class="nt">scsi</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">bus</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
+<span class="w">          </span><span class="nt">unit</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
+<span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;SCSI&quot;</span>
+<span class="w">      </span><span class="nt">guest_OS</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;OTHER_LINUX_64&quot;</span>
+<span class="w">      </span><span class="nt">hardware_version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;VMX_13&quot;</span>
+<span class="w">      </span><span class="nt">memory</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">hot_add_enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">      </span><span class="nt">size_MiB</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4096</span>
+<span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">test_vm_3</span>
+<span class="w">      </span><span class="nt">nics</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">start_connected</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VMXNET3</span>
+<span class="w">          </span><span class="l l-Scalar l-Scalar-Plain">mac_type</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">GENERATED</span>
+<span class="w">          </span><span class="l l-Scalar l-Scalar-Plain">backing</span><span class="p p-Indicator">:</span>
+<span class="w">            </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">STANDARD_PORTGROUP</span>
+<span class="w">            </span><span class="nt">network</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">network_id</span><span class="nv"> </span><span class="s">}}&quot;</span>
+<span class="w">      </span><span class="nt">scsi_adapters</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">label</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;SCSI</span><span class="nv"> </span><span class="s">controller</span><span class="nv"> </span><span class="s">0&quot;</span>
+<span class="w">        </span><span class="nt">scsi</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">bus</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
+<span class="w">          </span><span class="nt">unit</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">7</span>
+<span class="w">        </span><span class="nt">sharing</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;NONE&quot;</span>
+<span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;PVSCSI&quot;</span>
+<span class="w">      </span><span class="nt">placement</span><span class="p">:</span>
+<span class="w">       </span><span class="nt">datastore</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;{{</span><span class="nv"> </span><span class="s">datastore_id</span><span class="nv"> </span><span class="s">}}&#39;</span>
+<span class="w">       </span><span class="nt">folder</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;{{</span><span class="nv"> </span><span class="s">folder_id</span><span class="nv"> </span><span class="s">}}&#39;</span>
+<span class="w">       </span><span class="nt">resource_pool</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;{{</span><span class="nv"> </span><span class="s">resource_pool_id</span><span class="nv"> </span><span class="s">}}&#39;</span>
+<span class="w">  </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vm_info</span>
+</pre></div>
+
+<p>Here, we specified to create a virtual machine with 4 GB memory with 1
+single NIC attached to "VM network". Additionally, we attached a CDROM
+to this virtual machine for installation DVD with kickstart file inside
+it. </p>
+<p>You can power on the virtual machine using following tasks:</p>
+<div class="code"><pre class="code literal-block"><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Turn the power-on the VM</span>
+<span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">vmware.vmware_rest.vcenter_vm_power</span><span class="p p-Indicator">:</span>
+<span class="w">         </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">start</span>
+<span class="w">         </span><span class="nt">vm</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;{{</span><span class="nv"> </span><span class="s">vm_info.id</span><span class="nv"> </span><span class="s">}}&#39;</span>
+</pre></div>
+
+<p>After powering on the virtual machine, installation will start as
+default option with the given kickstart file:</p>
+<p><img alt="rhel blog one" src="/images/posts/archive/rhel-blog-one.png"></p>
+<p><em>Boot menu with Kickstart file as default option</em></p>
+<p><img alt="rhel blog two" src="/images/posts/archive/rhel-blog-two.png"></p>
+<p><em>Linux Kernel boot parameters</em></p>
+<p>It will take some time to install the new operating system, depending
+upon the configurations. You can mark this newly installed virtual
+machine as a template and can use it for clone operation.</p>
+<h1>Conclusion &amp; Where to go next</h1>
+<p>Combining this Collection with <code>vmware.vmware_rest</code>, Ansible users can
+better manage virtual instances on VMware infrastructure with faster
+iterations and easier maintenance. </p>
+<p>Ansible lets you connect the different technologies with your VMware
+infrastructure that are ultimately needed to be successful in your
+efforts. </p>
+<p>The Collection <code>vmware.vmware_rest</code> is a solid foundation for VMware
+automation, which is coming in the near future. We're always looking to
+improve to help users like you get things done in more simplified,
+faster ways. </p>

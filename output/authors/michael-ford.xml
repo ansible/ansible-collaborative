@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Ansible Collaborative (Posts by Michael Ford)</title><link>https://ansible.com/</link><description></description><atom:link href="https://ansible.com/authors/michael-ford.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2024 &lt;a href="mailto:website@ansible.community"&gt;Ansible Collaborative, et al&lt;/a&gt; </copyright><lastBuildDate>Mon, 18 Mar 2024 19:47:35 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Ansible and ServiceNow Part 3, Making outbound RESTful API calls to Red Hat Ansible Tower</title><link>https://ansible.com/blog/ansible-servicenow-howto-part-3-making-outbound-restful-api-calls-to-ansible-tower/</link><dc:creator>Michael Ford</dc:creator><description>&lt;h2&gt;Ansible and ServiceNow Part 3, Making outbound RESTful API calls to Red Hat Ansible Tower&lt;/h2&gt;
+&lt;p&gt;Red Hat Ansible Tower offers value by allowing automation to scale in a
+checked manner - users can run playbooks for only the processes and
+targets they need access to, and no further. &lt;/p&gt;
+&lt;p&gt;Not only does Ansible Tower provide automation at scale, but it also
+integrates with several external platforms. In many cases, this means
+that users can use the interface they are accustomed to while launching
+Ansible Tower templates in the background. &lt;/p&gt;
+&lt;p&gt;One of the most ubiquitous self service platforms in use today is
+ServiceNow, and many of the enterprise conversations had with Ansible
+Tower customers focus on ServiceNow integration. With this in mind, this
+blog entry walks through the steps to set up your ServiceNow instance to
+make outbound RESTful API calls into Ansible Tower, using OAuth2
+authentication.&lt;/p&gt;
+&lt;p&gt;The following software versions are used:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Ansible Tower: 3.4, 3.5&lt;/li&gt;
+&lt;li&gt;ServiceNow: London, Madrid&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;If you sign up for a ServiceNow Developer account, ServiceNow offers a
+free instance that can be used for replicating and testing this
+functionality. Your ServiceNow instance needs to be able to reach your
+Ansible Tower instance. Additionally, you can visit
+&lt;a href="https://ansible.com/license"&gt;https://ansible.com/license&lt;/a&gt; to obtain a trial license for Ansible
+Tower. Instructions for installing Ansible Tower can be found
+&lt;a href="https://docs.ansible.com/ansible-tower/latest/html/quickinstall/prepare.html"&gt;here&lt;/a&gt;. &lt;/p&gt;
+&lt;h3&gt;Preparing Ansible Tower&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;In Ansible Tower, navigate to &lt;strong&gt;Applications&lt;/strong&gt; on the left side of
+the screen. Click the &lt;strong&gt;green plus button&lt;/strong&gt; on the right, which will
+present you with a Create Application dialog screen. Fill in the
+following fields:&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Name: Descriptive name of the application that will contact Ansible Tower&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;Organization: The organization you wish this application to be a part of&lt;/li&gt;
+&lt;li&gt;Authorization Grant Type: Authorization code&lt;/li&gt;
+&lt;li&gt;Redirect URIS: &lt;code&gt;https://&amp;lt;snow_instance_id&amp;gt;.service-now.com/oauth_redirect.do&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Client Type: Confidential&lt;/p&gt;
+&lt;p&gt;&lt;img alt="image3-4" src="https://ansible.com/images/posts/archive/image3-4.png"&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Click the green &lt;strong&gt;Save&lt;/strong&gt; button on the right, at which point a
+window will pop up, presenting you with the Client ID and Client Secret
+needed for ServiceNow to make API calls into Ansible Tower. This will
+only be presented &lt;strong&gt;ONCE&lt;/strong&gt;, so capture these values for later use.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="image18" src="https://ansible.com/images/posts/archive/image18.png"&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Next, navigate to &lt;strong&gt;Settings-&amp;gt;System&lt;/strong&gt; on the left side of the
+screen. You'll want to toggle the &lt;strong&gt;Allow External Users to Create
+Oauth2 Tokens&lt;/strong&gt; option to &lt;strong&gt;on&lt;/strong&gt;. Click the green &lt;strong&gt;Save&lt;/strong&gt; button to commit the change.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="image4-4" src="https://ansible.com/images/posts/archive/image4-4.png"&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3&gt;Preparing ServiceNow&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Moving over to ServiceNow, Navigate to &lt;strong&gt;System Definition-&amp;gt;Certificates&lt;/strong&gt;.
+This will take you to a screen of all the
+certificates Service Now uses. Click on the &lt;strong&gt;blue New button&lt;/strong&gt;, and
+fill in these details:&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Name: Descriptive name of the certificate&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;Format: PEM&lt;/li&gt;
+&lt;li&gt;Type: Trust Store Cert&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;PEM Certificate: The certificate to authenticate against Ansible
+    Tower with. You can use the built-in certificate on your Tower
+    server, located at &lt;code&gt;/etc/tower/tower.cert&lt;/code&gt;. Copy the contents of this
+    file into the field in ServiceNow.&lt;/p&gt;
+&lt;p&gt;Click the &lt;strong&gt;Submit&lt;/strong&gt; button at the bottom.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="image9-1" src="https://ansible.com/images/posts/archive/image9-1.png"&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;In ServiceNow, Navigate to &lt;strong&gt;System OAuth-&amp;gt;Application Registry&lt;/strong&gt;.
+This will take you to a screen of all the Applications ServiceNow
+communicates with. Click on the &lt;strong&gt;blue New button&lt;/strong&gt;, and you will be
+asked What kind of Oauth application you want to set up. Select
+&lt;strong&gt;Connect to a third party Oauth Provider&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="image20" src="https://ansible.com/images/posts/archive/image20.png"&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;On the new application screen, fill in these details:&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Name: Descriptive Application Name&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;Client ID: The Client ID you got from Ansible Tower&lt;/li&gt;
+&lt;li&gt;Client Secret: The Client Secret you got from Ansible Tower&lt;/li&gt;
+&lt;li&gt;Default Grant Type: Authorization Code&lt;/li&gt;
+&lt;li&gt;Authorization URL: &lt;code&gt;https://&amp;lt;tower_url&amp;gt;/api/o/authorize/&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Token URL: &lt;code&gt;https://&amp;lt;tower_url&amp;gt;/api/o/token/&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Redirect URL: &lt;code&gt;https://&amp;lt;snow_instance_id&amp;gt;.service-now.com/oauth_redirect.do&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Click the &lt;strong&gt;Submit&lt;/strong&gt; button at the bottom.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="image19" src="https://ansible.com/images/posts/archive/image19.png"&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;You should be taken out to the list of all Application Registries.
+Click back into the Application you just created. At the bottom, there
+should be two tabs: Click on the tab &lt;strong&gt;Oauth Entity Scopes&lt;/strong&gt;. Under
+here, there is a section called &lt;strong&gt;Insert a new row...&lt;/strong&gt;. Double click
+here, and fill in the field to say Writing Scope. Click on the &lt;strong&gt;green
+check mark&lt;/strong&gt; to confirm this change. Then, right-click inside the grey
+area at the top where it says Application Registries and click Save in
+the menu that pops up.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="image11-1" src="https://ansible.com/images/posts/archive/image11-1.png"&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;The writing scope should now be Clickable. Click on it, and in the
+dialog window that you are taken to, type &lt;strong&gt;write&lt;/strong&gt; in the Oauth scope
+box. Click the Update button at the bottom.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="image7-1" src="https://ansible.com/images/posts/archive/image7-1.png"&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Back in the Application Settings page, scroll back to the bottom and
+click the &lt;strong&gt;Oauth Entity Profiles&lt;/strong&gt; tab. There should be an entity
+profile populated - click into it.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="image21" src="https://ansible.com/images/posts/archive/image21.png"&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;You will be taken to the Oauth Entity Profile Window. At the
+bottom, Type &lt;strong&gt;Writing Scope&lt;/strong&gt; into the Oauth Entity Scope field. Click
+the green check mark and update.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="image23" src="https://ansible.com/images/posts/archive/image23.png"&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Navigate to &lt;strong&gt;System Web Services -&amp;gt; REST Messages&lt;/strong&gt;. Click the
+blue &lt;strong&gt;New&lt;/strong&gt; button. In the resulting dialog window, fill in the
+following fields:&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Name: Descriptive REST Message Name&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;Endpoint: The url endpoint of the Ansible Tower action you wish to
+    do. This can be taken from the browsable API at
+    &lt;code&gt;https://&amp;lt;tower_url&amp;gt;/api&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Authentication Type: Oauth 2.0&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Oauth Profile: Select the Oauth profile you created&lt;/p&gt;
+&lt;p&gt;Right-click inside the grey area at the top; click &lt;strong&gt;Save&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="image10-1" src="https://ansible.com/images/posts/archive/image10-1.png"&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Click the &lt;strong&gt;Get Oauth Token&lt;/strong&gt; button on the REST Message screen.
+This will generate a pop-up window asking to authorize ServiceNow
+against your Ansible Tower instance/cluster. Click Authorize. ServiceNow will now have an OAuth2 token to authenticate against your Ansible Tower server.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="image22" src="https://ansible.com/images/posts/archive/image22.png"&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Under the HTTP Methods section at the bottom, click the blue New button. At the new dialog window that appears, fill in the following fields:&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;HTTP Method: POST&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;Name: Descriptive HTTP Method Name&lt;/li&gt;
+&lt;li&gt;Endpoint: The url endpoint of the Ansible Tower action you wish to do. This can be taken from the browsable API at
+    &lt;code&gt;https://&amp;lt;tower_url&amp;gt;/api&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;HTTP Headers (under the HTTP Request tab)&lt;ul&gt;
+&lt;li&gt;The only HTTP Header that should be required is &lt;em&gt;Content-Type: application/json&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;You can kick off a RESTful call to Ansible Tower using these parameters
+with the &lt;strong&gt;Test&lt;/strong&gt; link.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="image6-3" src="https://ansible.com/images/posts/archive/image6-3.png"&gt;&lt;/p&gt;
+&lt;h3&gt;Testing connectivity between ServiceNow and Ansible Tower&lt;/h3&gt;
+&lt;p&gt;Clicking the &lt;strong&gt;Test&lt;/strong&gt; link will take you to a results screen, which
+should indicate that the Restful call was sent successfully to Ansible
+Tower. In this example, ServiceNow kicks off an Ansible Tower job
+Template, and the response includes the Job ID in Ansible Tower: 276.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="image eight" src="https://ansible.com/images/posts/archive/image-88.png"&gt;&lt;/p&gt;
+&lt;p&gt;You can confirm that this Job Template was in fact started by going back
+to Ansible Tower and clicking the &lt;strong&gt;Jobs&lt;/strong&gt; section on the left side of
+the screen; a Job with the same ID should be in the list (and, depending
+on the playbook size, may still be in process):&lt;/p&gt;
+&lt;p&gt;&lt;img alt="image15" src="https://ansible.com/images/posts/archive/image15.png"&gt;&lt;/p&gt;
+&lt;h3&gt;Creating a ServiceNow Catalog Item to Launch an Ansible Tower Job Template&lt;/h3&gt;
+&lt;p&gt;Now that you are able to make outbound RESTful calls from
+ServiceNow to Ansible Tower, it's time to create a catalog item for
+users to select in ServiceNow in a production self-service fashion.
+While in the HTTP Method options, click the &lt;strong&gt;Preview Script Usage&lt;/strong&gt;
+link:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="image nine" src="https://ansible.com/images/posts/archive/image-99.png"&gt;&lt;/p&gt;
+&lt;p&gt;Copy the resulting script the appears, and paste it into a text editor
+to reference later.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;In ServiceNow, navigate to &lt;strong&gt;Workflow -&amp;gt; Workflow Editor.&lt;/strong&gt; This
+will open a new tab with a list of all existing ServiceNow workflows.
+Click on the blue &lt;strong&gt;New Workflow&lt;/strong&gt; button:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="image16" src="https://ansible.com/images/posts/archive/image16.png"&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;In the &lt;strong&gt;New Workflow&lt;/strong&gt; dialog box that appears, fill in the
+following options:&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Name: A descriptive name of the workflow&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Table: Requested Item &lt;code&gt;sc_req_item&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Everything else can be left alone. Click the &lt;strong&gt;Submit&lt;/strong&gt; button.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="image1-10" src="https://ansible.com/images/posts/archive/image1-10.png"&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;The resulting Workflow Editor will have only a Begin and End box.
+Click on the line (it will turn blue to indicate it has been selected),
+then press delete to get rid of it.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="image14-1" src="https://ansible.com/images/posts/archive/image14-1.png"&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;On the right side of the Workflow Editor Screen, select the Core
+tab and, under Core Activities-&amp;gt;Utilities, drag the Run Script option
+into the Workflow Editor. In the new dialog box that appears, type in a
+descriptive name, and paste in the script you captured from before.
+Click Submit to save the Script.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="image12-1" src="https://ansible.com/images/posts/archive/image12-1.png"&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Draw a connection from &lt;strong&gt;Begin&lt;/strong&gt;, to the newly created Run Script
+Box, and another from the &lt;strong&gt;Run Script&lt;/strong&gt; box to &lt;strong&gt;End&lt;/strong&gt;. Afterward,
+click on the three horizontal lines to the left of the Workflow name,
+and select the &lt;strong&gt;Publish&lt;/strong&gt; option. You are now ready to associate this
+workflow with a catalog item.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="image8-1" src="https://ansible.com/images/posts/archive/image8-1.png"&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Navigate to &lt;strong&gt;Service Catalog -&amp;gt; Catalog Definitions -&amp;gt; Maintain Items&lt;/strong&gt;. Click the blue &lt;strong&gt;New&lt;/strong&gt; button on the resulting item list. In
+the resulting dialog box, fill in the following fields:&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Name: Descriptive name of the Catalog Item&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;Catalog: The catalog that this item should be a part of&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Category: Required if you wish users to be able to search for this
+    item&lt;/p&gt;
+&lt;p&gt;In the Process Engine tab, populate the &lt;strong&gt;Workflow&lt;/strong&gt; field with the Workflow you just created.
+Click the Submit Button.
+You've not created a new catalog item!&lt;/p&gt;
+&lt;p&gt;&lt;img alt="image5-4" src="https://ansible.com/images/posts/archive/image5-4.png"&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Lastly, to run this catalog item, navigate to
+&lt;strong&gt;Self-Service -&amp;gt; Homepage&lt;/strong&gt; and search for the catalog item you just
+created. Once found, click the &lt;strong&gt;order now&lt;/strong&gt; button. You can see the
+results page pop up in ServiceNow, and you can confirm that the Job is
+being run in Ansible Tower.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Congratulations! After completing these steps, you can now use a
+ServiceNow Catalog Item to launch Job and Workflow Templates in Ansible
+Tower. This is ideal for allowing end users to use a front end they are
+familiar with in order to perform automated tasks of varying
+complexities. This familiarity goes a long way toward reducing the time
+to value for the enterprise as a whole, rather than just the teams
+responsible for writing the playbooks being used.&lt;/p&gt;</description><guid>https://ansible.com/blog/ansible-servicenow-howto-part-3-making-outbound-restful-api-calls-to-ansible-tower/</guid><pubDate>Wed, 09 Oct 2019 00:00:00 GMT</pubDate></item></channel></rss>

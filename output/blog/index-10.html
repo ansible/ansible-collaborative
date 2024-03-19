@@ -1,0 +1,1331 @@
+<!DOCTYPE html>
+<html prefix="
+og: http://ogp.me/ns# article: http://ogp.me/ns/article#
+" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="Ansible Collaborative Website">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ansible Collaborative (old posts, page 10) | Ansible Collaborative</title>
+<link href="../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="../assets/css/baguetteBox.min.css" rel="stylesheet" type="text/css">
+<link href="../assets/css/rst.css" rel="stylesheet" type="text/css">
+<link href="../assets/css/code.css" rel="stylesheet" type="text/css">
+<link href="../assets/css/theme.css" rel="stylesheet" type="text/css">
+<!-- Red Hat fonts --><link rel="stylesheet" href="https://static.redhat.com/libs/redhat/redhat-font/2.0.0/webfonts/red-hat-font.css">
+<!-- Font Awesome --><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+<!-- Fork Awesome --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css" integrity="sha256-XoaMnoYC5TH6/+ihMEnospgm0J1PM/nioxbOUdnM8HY=" crossorigin="anonymous">
+<!-- Sass compiled css  --><link rel="stylesheet" href="../assets/css/main.css">
+<link rel="stylesheet" href="../assets/css/redhat-footer.css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../rss.xml">
+<link rel="canonical" href="https://ansible.com/blog/index-10.html">
+<link rel="prev" href="index-11.html" type="text/html">
+<link rel="next" href="index-9.html" type="text/html">
+<!--[if lt IE 9]><script src="../assets/js/html5.js"></script><![endif]-->
+</head>
+<body id="top">
+
+<div class="global-container" id="content" role="main">
+<!-- Start menubar -->
+<nav class="navbar navbar-expand-lg static-top mb-4 navbar-padding full-width-bg   navbar-dark   bg-pool   "><div class="masthead">
+    <!-- This keeps the margins nice -->
+    <a class="navbar-brand" href="../">
+        <img src="../images/ansible_logo-small-15.png" alt="Ansible community logo" id="logo" class="d-inline-block align-top" width="50" height="50"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon nav-toggle-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="bs-navbar">
+      <ul class="navbar-nav mr-auto"></ul>
+<ul class="navbar-nav navbar-right">
+<li class="nav-item dropdown">
+	        <a href="#" class="nav-link nav-link-color dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <i class=""></i> Documentation
+                </a>
+		<div class="dropdown-menu dropdown-menu-border">
+	    
+                    <a href="https://docs.ansible.com/" class="dropdown-item">
+		        <i class=""></i> Project documentation
+                    </a>
+                    <a href="https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/" class="dropdown-item">
+		        <i class=""></i> Ansible Automation Platform documentation
+                    </a>
+            </div>
+                 </li>
+<li class="nav-item">
+		     <a href="https://galaxy.ansible.com/" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Galaxy
+		     </a>
+		 </li>
+                 <li class="nav-item">
+		     <a href="https://forum.ansible.com/" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Forum
+		     </a>
+		 </li>
+            <li class="nav-item dropdown">
+	        <a href="#" class="nav-link nav-link-color dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <i class=""></i> Resources
+                </a>
+		<div class="dropdown-menu dropdown-menu-border">
+	    
+                    <a href="../how-ansible-works/" class="dropdown-item">
+		        <i class=""></i> How Ansible works
+                    </a>
+                    <a href="../ecosystem/" class="dropdown-item">
+		        <i class=""></i> Ansible ecosystem
+                    </a>
+                    <a href="archive.html" class="dropdown-item">
+		        <i class=""></i> Blog
+                    </a>
+                    <a href="../faq/" class="dropdown-item">
+		        <i class=""></i> Frequently asked questions
+                    </a>
+                    <a href="../ansible-community-training/" class="dropdown-item">
+		        <i class=""></i> Ansible community training
+                    </a>
+                    <a href="../contact-us/" class="dropdown-item">
+		        <i class=""></i> Contact us
+                    </a>
+            </div>
+                 </li>
+<li class="nav-item">
+		     <a href="https://www.redhat.com/en/technologies/management/ansible?sc_cid=7015Y000003szaKQAQ" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Ansible Automation Platform
+		     </a>
+		 </li>
+
+        
+      </ul>
+</div>
+    <!-- /.navbar-collapse -->
+  </div>
+  <!-- /.container -->
+</nav><!-- End default Menubar --><div class="body-content center-band">
+        <!--Body content-->
+        
+    
+  <div class="postindex ansible-content">
+      <article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title">
+            <a href="monitoring-as-code-with-sensu-ansible/" class="u-url">Monitoring as code with Sensu and Ansible</a>
+          </h1>
+          <div class="metadata">
+            <p class="byline author vcard">
+              <span class="byline-name fn" itemprop="author">
+                  <a href="../authors/jef-spaleta/">Jef Spaleta</a>
+              </span>
+            </p>
+            <p class="dateline">
+              <a href="monitoring-as-code-with-sensu-ansible/" rel="bookmark">
+                <time class="published dt-published" datetime="2021-05-05T00:00:00Z" itemprop="datePublished" title="2021-05-05 00:00">2021-05-05 00:00</time></a>
+            </p>
+          </div>
+        </header><div class="p-summary entry-summary">
+            <h2>Monitoring as code with Sensu and Ansible</h2>
+<p>A comprehensive infrastructure as code (IaC) initiative should include
+monitoring and observability. Incorporating the active monitoring of the
+infrastructure under management results in a symbiotic relationship in
+which failures are detected automatically, enabling event-driven code
+changes and new deployments.</p>
+<p>In this post, I'll recap a webinar I hosted with Tadej Borovšak,
+Ansible Evangelist at <a href="https://steampunk.si/">XLAB Steampunk</a> (who we
+collaborated with on our certified Ansible Content Collection for Sensu
+Go). You'll learn how monitoring as code can serve as a feedback loop
+for IaC workflows, improving the overall automation solution and how to
+automate your monitoring with the certified Ansible Content Collection
+for Sensu Go (with demos!).</p>
+<p>Before we dive in, here's a brief overview of Sensu.</p>
+<h3>About Sensu</h3>
+<p><a href="https://sensu.io/">Sensu</a> is the turn-key observability pipeline that
+delivers monitoring as code on any cloud --- from bare metal to cloud
+native. Sensu provides a flexible observability platform for DevOps and
+SRE teams, allowing them to reuse their existing monitoring and
+observability tools, and integrates with best-of-breed solutions ---
+like Red Hat Ansible Automation Platform. </p>
+<p>With Sensu, you can reuse existing tooling, like Nagios plugins, as well
+as monitor ephemeral, cloud-based infrastructure, like Red Hat
+OpenShift. Sensu helps you eliminate data silos by filling gaps in
+observability --- consolidating tools to bring metrics, logging, and
+tracing together through the same pipeline, and then distribute them as
+you like depending on your organizational needs. You can also automate
+diagnosis and self-healing, with built-in auto-remediation or
+integrations with products like Red Hat Ansible Automation Platform. </p>
+<h3>Why monitoring + automation?</h3>
+<p>Put simply, monitoring is what you need to be doing nearly continuously
+to provide actual information about failures and defects. Automation is
+when you take an action on something --- it's not necessarily a
+continuous operation. If a failure occurs and you can automate its
+remediation, then you're saving valuable human time. </p>
+<p>By incorporating the active monitoring of the infrastructure under
+management, you benefit from a symbiotic relationship in which new
+metrics and failures are collected and detected automatically in
+response to code changes and new deployments. We define this concept as
+<a href="https://sensu.io/blog/monitoring-as-code-what-it-is-and-why-you-need-it">monitoring as
+code</a>,
+and it's the key to this unified view of the world and management of the
+entire application lifecycle.</p>
+<p>With monitoring as code, you're able to declare monitoring workloads in
+the same way you declare infrastructure as code with Ansible automation.
+Infrastructure as code and monitoring as code are on a parallel track,
+serving different purposes. With the <a href="https://galaxy.ansible.com/sensu/sensu_go">Ansible Content Collection for
+Sensu Go</a>, you can easily
+deploy your monitoring, spinning up the backend cluster and putting your
+agents into the infrastructure as part of provisioning. From there, the
+monitoring as code aspect takes over: you can update your monitoring
+<em>without</em> having to reprovision your existing infrastructure every time
+you want to make a small monitoring change.</p>
+<h3>Sensu Automation with the Ansible Content Collection for Sensu Go</h3>
+<p>The Ansible Content Collection for Sensu Go
+makes it easier for you to create a fully functioning automated
+deployment of the Sensu Go monitoring agent and backend. The following
+demo shows a minimal Sensu setup: how to install a backend and two
+agents, as well as establish a more secure connection, as we'll be
+passing sensitive information from the backend to the agents. </p>
+<p>Ansible users are likely familiar with the term "inventory." In this
+case, our inventory file includes two defined groups: the backend group
+and the agent group. The information in our inventory file tells Ansible
+how to securely connect our hosts via SSH.</p>
+<div class="code"><pre class="code literal-block"><span class="nn">---</span>
+<span class="nt">all</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">vars</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">ansible_ssh_common_args</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;</span>
+<span class="w">      </span><span class="no">-o IdentitiesOnly=yes</span>
+<span class="w">      </span><span class="no">-o BatchMode=yes</span>
+<span class="w">      </span><span class="no">-o UserKnownHostsFile=/dev/null</span>
+<span class="w">      </span><span class="no">-o StrictHostKeyChecking=no</span>
+<span class="w">      </span><span class="no">-i demo</span>
+<span class="w">  </span><span class="nt">children</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">backends</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">hosts</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">backend</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">ansible_host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">192.168.50.20</span>
+<span class="w">          </span><span class="nt">ansible_user</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vagrant</span>
+<span class="w">    </span><span class="nt">agents</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">hosts</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">agent0</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">ansible_host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">192.168.50.30</span>
+<span class="w">          </span><span class="nt">ansible_user</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vagrant</span>
+<span class="w">        </span><span class="nt">agent1</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">ansible_host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">192.168.50.31</span>
+<span class="w">          </span><span class="nt">ansible_user</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vagrant</span>
+</pre></div>
+
+<p>https://gist.github.com/tadeboro/00cabf8fa79f4c9c90cda8cdf9645f32#file-inventory-yaml</p>
+<p>We also need a way to specify which state we want the resource to be in.
+Enter the Ansible Playbook, which we'll use to set up the backend. It's
+a YAML file, both human-readable and machine-executable.</p>
+<div class="code"><pre class="code literal-block"><span class="o">---</span>
+<span class="o">-</span><span class="w"> </span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="n">Install</span><span class="p">,</span><span class="w"> </span><span class="n">configure</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="n">Sensu</span><span class="w"> </span><span class="n">backend</span>
+<span class="w">  </span><span class="n">hosts</span><span class="p">:</span><span class="w"> </span><span class="n">backends</span>
+<span class="w">  </span><span class="n">become</span><span class="p">:</span><span class="w"> </span><span class="bp">true</span>
+
+<span class="w">  </span><span class="n">tasks</span><span class="p">:</span>
+<span class="w">    </span><span class="o">-</span><span class="w"> </span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="n">Setup</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="n">environment</span><span class="w"> </span><span class="n">variables</span>
+<span class="w">      </span><span class="n">ansible</span><span class="o">.</span><span class="n">builtin</span><span class="o">.</span><span class="n">template</span><span class="p">:</span>
+<span class="w">        </span><span class="n">src</span><span class="p">:</span><span class="w"> </span><span class="n">secrets</span><span class="o">.</span><span class="n">j2</span>
+<span class="w">        </span><span class="n">dest</span><span class="p">:</span><span class="w"> </span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">sysconfig</span><span class="o">/</span><span class="n">sensu</span><span class="o">-</span><span class="n">backend</span>
+<span class="w">      </span><span class="n">vars</span><span class="p">:</span>
+<span class="w">        </span><span class="n">secrets</span><span class="p">:</span>
+<span class="w">          </span><span class="n">MY_SECRET</span><span class="p">:</span><span class="w"> </span><span class="n">value</span><span class="o">-</span><span class="k">is</span><span class="o">-</span><span class="n">here</span>
+
+<span class="w">    </span><span class="o">-</span><span class="w"> </span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="n">Install</span><span class="w"> </span><span class="n">backend</span>
+<span class="w">      </span><span class="n">include_role</span><span class="p">:</span>
+<span class="w">        </span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="n">sensu</span><span class="o">.</span><span class="n">sensu_go</span><span class="o">.</span><span class="n">backend</span>
+<span class="w">      </span><span class="n">vars</span><span class="p">:</span>
+<span class="w">        </span><span class="n">version</span><span class="p">:</span><span class="w"> </span><span class="mf">6.1</span><span class="o">.</span><span class="mi">0</span>
+
+<span class="w">        </span><span class="n">cluster_admin_username</span><span class="p">:</span><span class="w"> </span><span class="o">&gt;-</span>
+<span class="w">          </span><span class="p">{{</span><span class="w"> </span><span class="n">lookup</span><span class="p">(</span><span class="s1">'ansible.builtin.env'</span><span class="p">,</span><span class="w"> </span><span class="s1">'SENSU_USER'</span><span class="p">)</span><span class="w"> </span><span class="p">}}</span>
+<span class="w">        </span><span class="n">cluster_admin_password</span><span class="p">:</span><span class="w"> </span><span class="o">&gt;-</span>
+<span class="w">          </span><span class="p">{{</span><span class="w"> </span><span class="n">lookup</span><span class="p">(</span><span class="s1">'ansible.builtin.env'</span><span class="p">,</span><span class="w"> </span><span class="s1">'SENSU_PASSWORD'</span><span class="p">)</span><span class="w"> </span><span class="p">}}</span>
+<span class="w">        </span><span class="c1"># mTLS stuff</span>
+<span class="w">        </span><span class="n">agent_auth_cert_file</span><span class="p">:</span><span class="w"> </span><span class="n">certs</span><span class="o">/</span><span class="n">backend</span><span class="o">.</span><span class="n">pem</span>
+<span class="w">        </span><span class="n">agent_auth_key_file</span><span class="p">:</span><span class="w"> </span><span class="n">certs</span><span class="o">/</span><span class="n">backend</span><span class="o">-</span><span class="n">key</span><span class="o">.</span><span class="n">pem</span>
+<span class="w">        </span><span class="n">agent_auth_trusted_ca_file</span><span class="p">:</span><span class="w"> </span><span class="n">certs</span><span class="o">/</span><span class="n">ca</span><span class="o">.</span><span class="n">pem</span>
+</pre></div>
+
+<p>https://gist.github.com/tadeboro/00cabf8fa79f4c9c90cda8cdf9645f32#file-backend-yaml</p>
+<p>We'll perform two main functions with this playbook:</p>
+<ol>
+<li>
+<strong>Setting environment variables on the backend</strong>, where we'll store
+    sensitive information. We'll use <a href="https://sensu.io/blog/3-ways-secrets-management-improves-monitoring-observability">Sensu's built-in secrets
+    management</a>
+    to store and share that information securely.</li>
+<li>
+<strong>Installing and configuring the Sensu backend</strong>. For installation,
+    we'll use the backend Ansible Role, and parameterize it using the
+    variables specified in our file. In this example, we specify what
+    URL to install, how to initialize the database, and how to set up
+    the secure connection that we need to secure communications between
+    the backend and agent.</li>
+</ol>
+<p>It's worth noting that this example shows how to keep sensitive
+information out of your playbooks, making them completely safe to share
+and commit into your version control system. </p>
+<p>We'll enter the following command to execute the playbook:</p>
+<div class="code"><pre class="code literal-block">ansible-playbook<span class="w"> </span>-i<span class="w"> </span>inventory.yaml<span class="w"> </span>backend.yaml
+</pre></div>
+
+<p>Although the playbook is relatively short, what Ansible is doing is
+actually quite complex: adding a repository to the distribution,
+installing components, copying over TLS certificates, as well as
+configuring and initializing the backend using the username and password
+specified. In just under half a minute, we have a Sensu Go backend
+running! </p>
+<p>We log into the <a href="https://docs.sensu.io/sensu-go/latest/web-ui/">Sensu web
+UI</a>, but won't see
+anything yet because we still have to set up our agents, which we'll
+prepare with our agent playbook. </p>
+<div class="code"><pre class="code literal-block"><span class="nn">---</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Install, configure and run Sensu agent</span>
+<span class="w">  </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">agents</span>
+<span class="w">  </span><span class="nt">become</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+
+<span class="w">  </span><span class="nt">tasks</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Install agent</span>
+<span class="w">      </span><span class="nt">include_role</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sensu.sensu_go.agent</span>
+<span class="w">      </span><span class="nt">vars</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">6.1.0</span>
+
+<span class="w">        </span><span class="c1"># mTLS stuff</span>
+<span class="w">        </span><span class="nt">cert_file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">certs/backend.pem</span>
+<span class="w">        </span><span class="nt">key_file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">certs/backend-key.pem</span>
+<span class="w">        </span><span class="nt">trusted_ca_file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">certs/ca.pem</span>
+
+<span class="w">        </span><span class="nt">agent_config</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">inventory_hostname</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="w">          </span><span class="nt">backend-url</span><span class="p">:</span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">wss://{{ hostvars['backend']['ansible_host'] }}:8081</span>
+</pre></div>
+
+<p>https://gist.github.com/tadeboro/00cabf8fa79f4c9c90cda8cdf9645f32#file-agent-yaml</p>
+<p>It's fairly similar to our backend playbook; the main differences are
+the host parameter and role name, as we're executing the playbook to
+install the Sensu agent on the host machine. With the backend playbook,
+we used the default configuration; with the agent, we need to specify a
+name so we know how to reference this agent. We also need to specify the
+backend location. Instead of hard-coding the address of the backend into
+our playbook, we tell Ansible to fetch this information from the
+inventory file, which allows us to reuse information we already have
+stored in our Ansible inventory file. </p>
+<p>To execute the agent playbook and install the agent, I run the same
+command (switching out the file name):</p>
+<div class="code"><pre class="code literal-block">ansible-playbook<span class="w"> </span>-i<span class="w"> </span>inventory.yaml<span class="w"> </span>agent.yaml
+</pre></div>
+
+<p>As before, Ansible takes care of everything needed to install the agent,
+and installation happens concurrently on both machines. </p>
+<p>Switching over to the Sensu web UI in the default namespace, under
+entities, you see our two entities are ready.</p>
+<p><img alt="Sensu Blog one" src="../images/posts/archive/sensu-blog-one.png"></p>
+<p>Now, we need to configure an event for us to observe. </p>
+<p>Note: <a href="https://sensu.io/blog/managing-sensu-go-6-using-ansible">as of Sensu Go 6</a>,
+subscriptions can be updated on the fly, without having to restart the agent.</p>
+<p>Here's our Sensu configuration file:</p>
+<div class="code"><pre class="code literal-block"><span class="nn">---</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Manage Sensu Go resources</span>
+<span class="w">  </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">localhost</span>
+<span class="w">  </span><span class="nt">gather_facts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+
+<span class="w">  </span><span class="nt">tasks</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Configure agent subscriptions</span>
+<span class="w">      </span><span class="nt">sensu.sensu_go.entity</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">agent0</span>
+<span class="w">        </span><span class="nt">entity_class</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">agent</span>
+<span class="w">        </span><span class="nt">subscriptions</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">demo</span>
+
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Enable env secrets provider</span>
+<span class="w">      </span><span class="nt">sensu.sensu_go.secrets_provider_env</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">present</span>
+
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Configures custom secret</span>
+<span class="w">      </span><span class="nt">sensu.sensu_go.secret</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-secret</span>
+<span class="w">        </span><span class="nt">provider</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">env</span>
+<span class="w">        </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MY_SECRET</span>
+
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Create a check that uses secret</span>
+<span class="w">      </span><span class="nt">sensu.sensu_go.check</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">secret-check</span>
+<span class="w">        </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">echo $SECRET</span>
+<span class="w">        </span><span class="nt">secrets</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SECRET</span>
+<span class="w">            </span><span class="nt">secret</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-secret</span>
+<span class="w">        </span><span class="nt">subscriptions</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">demo</span>
+<span class="w">        </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
+<span class="w">        </span><span class="nt">publish</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</pre></div>
+
+<p>https://gist.github.com/tadeboro/00cabf8fa79f4c9c90cda8cdf9645f32#file-config-yaml</p>
+<p>This is where we tell the agent to listen to the demo subscription and
+do whatever comes from that. To bring secrets into the check, we need to
+make sure our secrets provider is ready and register a secret that will
+fetch its value from the secret environment variable on the backend.
+Finally, we create a simple check that echoes our secret. </p>
+<p>We run our config playbook:</p>
+<div class="code"><pre class="code literal-block">ansible-playbook<span class="w"> </span>-i<span class="w"> </span>inventory.yaml<span class="w"> </span>config.yaml
+</pre></div>
+
+<p>Looking in the Sensu web UI, we can see our agent has gained the demo
+subscription. Going to events and listing all, you can see that agent-0
+executed secret check and our secret value "value-is-here" makes it
+securely from the backend to the agent. </p>
+<p><img alt="sensu blog two" src="../images/posts/archive/sensu-blog-two.png"></p>
+<p>As you can see, our Ansible Content Collection allows you to succinctly
+describe your infrastructure, letting Ansible deal with the intricacies
+of setting things up. </p>
+<p>Watch the full demo below:</p>
+<p>https://www.youtube.com/watch?v=ShN867iRFvQ</p>
+<h3>Sensu demo: building a monitoring workflow</h3>
+<p>Once the Sensu platform is deployed by Ansible, we use Sensu\'s built-in
+configuration utility - the sensuctl CLI. With sensuctl we can manage
+the following Sensu API resources: </p>
+<ul>
+<li>
+<strong>Entity</strong>: agents + proxies</li>
+<li>
+<strong>Checks</strong>: scheduled monitoring workloads run by agents</li>
+<li>
+<strong>Observability</strong> <strong>pipelines</strong>: filter + transform + process</li>
+<li>
+<strong>Events</strong>: the base data structure Sensu Go pipeline processes</li>
+<li>
+<strong>Subscriptions</strong>: loosely couples check to entities</li>
+<li>
+<strong>Assets</strong>: shareable binaries tos support monitoring workloads;
+    Sensu install at runtime without the need to pre-provision hosts</li>
+</ul>
+<p>In this first demo, I'm building a monitoring workflow to create an
+NGINX service and monitor it to make sure it's up and running. </p>
+<p>As with our earlier demo, I have a set of Ansible Playbooks that quickly
+create a backend and a single agent. Here, I also set up a check using
+<a href="https://docs.sensu.io/sensu-go/latest/sensuctl/">sensuctl</a>, the
+command-line tool for managing resources within Sensu. Both the Sensu
+web UI and sensuctl interact with the same REST API --- sensuctl is just
+another way to manage Sensu.</p>
+<p>We provision the agent so it will communicate to the backend, and I use
+the Ansible Content Collection to define a new namespace just for this
+demo --- interacting with the Sensu API to set up a new namespace. I
+also set up <a href="https://sensu.io/blog/intro-to-rbac-in-sensu-go">role-based access control (RBAC)</a>, which allows
+me to give access to a user just for auditing (i.e., they don't need to
+have write access to a namespace). Then, I set up an NGINX host on the
+same host that the agent is running on.</p>
+<p>With our NGINX service up and running, I set up our CLI client with
+sensuctl configure <code>--insecure-skip-tls-verify</code> (for the purposes of this
+demo; you wouldn't use this flag in production!). With sensuctl entity
+list, I can see all our entities and subscriptions available (in our
+demo, the webinar-agent0). We don't have any checks defined yet, so
+sensuctl check list doesn't show anything. I use our declarative YAML
+file to define a check command here called check-http, which is
+essentially a check to make sure our NGINX service is up and running,
+using <a href="https://docs.sensu.io/sensu-go/latest/plugins/assets/">Sensu's dynamic runtime
+assets</a> to
+provide that command. The <a href="https://bonsai.sensu.io/assets/sensu/sensu-ansible-handler">Ansible
+handler</a> I
+use in this example has Red Hat Ansible Tower attempt remediation if
+that service is down. </p>
+<p>Now when I run sensuctl check list I see our check-http. It's in a
+publish state of false so we have a chance to define and test our check
+before running it. To run the check once, I run sensuctl execute
+check-http. (I have an error at first, because I need to add the asset.)
+You can handle all of these resources via the Ansible Collection for
+Sensu Go (as opposed to using sensuctl). </p>
+<p>I set up an NTP check, making sure it's using the monitoring plugins
+runtime asset (which are just builds of monitoring plugins spun off from
+Nagios plugins). We also have our NGINX check, which is through a Ruby
+runtime environment that we don't have to pre-provision; the Ruby
+environment matches that plugin. Again, everything can be handled as
+part of the Ansible Collection if you want to keep everything inside of
+Ansible Playbooks.</p>
+<p>The NTP and NGINX checks are in a published state running on an interval
+--- they don't need to be executed individually. Now, when you look at
+the event list, you see both checks are running. Because the runtime
+assets are there, these commands (like sensuctl check list) exist in the
+agent as part of the provisioning that was originally done, without me
+having to install any additional RPM packages or binaries.</p>
+<p>And there you have it: a monitoring workflow that actually works with a
+service!</p>
+<p>Watch the full demo below:</p>
+<p>https://www.youtube.com/watch?v=ShN867iRFvQ</p>
+<h3>Go forth and automate!</h3>
+<p>Let\'s recap what we\'ve covered so far: we\'ve automated the Sensu
+backend and agent deployment using the Ansible Content Collection, and
+we\'ve created some monitoring code (e.g. check-http.yaml) to monitor a
+service and automate remediation with Ansible Automation Platform. Now
+let\'s automate management of this monitoring code by connecting it to
+our CI/CD pipeline via our new best practice workflow called SensuFlow.
+SensuFlow works with a code repository containing subdirectories of
+monitoring code that map to Sensu namespaces. SensuFlow provides the
+following automations:      </p>
+<ol>
+<li>Test available of sensu-backend </li>
+<li>Tests provided authentication</li>
+<li>Optionally creates namespaces under management (if RBAC policy
+    allows)</li>
+<li>Linting of resource definitions to ensure required metadata</li>
+<li>Prune deleted/renamed Sensu resources based on label selection
+    criteria</li>
+<li>Create and/or modify Sensu resources </li>
+</ol>
+<p>Getting started with SensuFlow is easy, it requires an RBAC profile
+(User with username and password, ClusterRole and ClusterRoleBinding),
+and Sensu backend API URL for configuring the Sensu CLI that will run in
+the CI/CD pipeline. SensuFlow also has a set of optional environment
+variables that let you customize several operational behaviors, such as
+the label selection criteria that sensuctl prune uses to delete Sensu
+resources no longer represented by files in the repository (e.g. if a
+monitoring code template is deleted or renamed).</p>
+<p>To learn more about sensuctl prune, please check out our blog post on
+<a href="https://sensu.io/blog/keep-your-configs-in-good-order-with-sensuctl-prune">https://sensu.io/blog/keep-your-configs-in-good-order-with-sensuctl-prune</a></p>
+<p>SensuFlow is designed to be CI/CD platform agnostic, and can be used
+locally in your development environment (so long as it has sensuctl, yq
+and jq installed). But we\'re also actively developing a reference
+implementation for the GitHub Action CI/CD platform that can be used
+with any GitHub repository. The SensuFlow GitHub Action effectively
+provides a direct integration between GitHub and Sensu Go!</p>
+<p>Take a look at this <a href="https://github.com/jspaleta/sensu-monitoring-as-code-examples">monitoring as code example
+repository</a>,
+configured to run SensuFlow GitHub action on commit into the main
+branch. This repository includes several Sensu resources, including the
+the check and handlers from the Red Hat Ansible Tower remediation
+example above, but now uses SensuFlow to automate changes in Sensu. </p>
+<p>To learn more about Monitoring as Code and SensuFlow, please check out
+our recent blog posts and webinar on the topic:</p>
+<ul>
+<li><a href="https://thenewstack.io/monitoring-as-code-what-it-is-and-why-you-need-it/">Monitoring as code: What it is and why you need it (blog post on
+    The New
+    Stack)</a></li>
+<li>
+<a href="https://sensu.io/resources/whitepaper/monitoring-as-code-with-sensu">Monitoring as Code with the Sensu Observability
+    (Whitepaper</a>)</li>
+<li><a href="https://sensu.io/resources/webinar/practical-monitoring-as-code">Practical Monitoring as Code with Sensu Go and Sensu Flow
+    (Webinar)\
+    </a></li>
+</ul>
+<p>Hopefully this post gave you an idea of what you can do with the
+monitoring as code concept as well as the Ansible Collection for Sensu
+Go. For further learning, check out our <a href="https://sensu.io/resources/webinar/self-healing-workflows-with-the-sensu-ansible-tower-integration">webinar on self-healing
+workflows with the Sensu Ansible Tower
+integration</a>. </p>
+          </div>
+      </article><br><hr>
+<br><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title">
+            <a href="bullhorn-25/" class="u-url">Bullhorn #25</a>
+          </h1>
+          <div class="metadata">
+            <p class="byline author vcard">
+              <span class="byline-name fn" itemprop="author">
+                  <a href="../authors/ansible-collaborative-et-al/">Ansible Collaborative, et al</a>
+              </span>
+            </p>
+            <p class="dateline">
+              <a href="bullhorn-25/" rel="bookmark">
+                <time class="published dt-published" datetime="2021-04-30T17:00:00Z" itemprop="datePublished" title="2021-04-30 17:00">2021-04-30 17:00</time></a>
+            </p>
+          </div>
+        </header><div class="p-summary entry-summary">
+            <div>
+<p><img alt="Ansible Bullhorn banner" src="../images/bullhorn-banner-mango.png"></p>
+<h3>The Bullhorn</h3>
+<p><em>A Newsletter for the Ansible Developer Community</em>
+<em>Issue #25, 2021-04-30 (<a href="https://us19.campaign-archive.com/home/?u=56d874e027110e35dea0e03c1&amp;id=d6635f5420">Past Issues</a>)</em></p>
+<p>Welcome to the Bullhorn, our newsletter for the Ansible developer community. If you have any questions or content you’d like to share, please reach out to us at the-bullhorn@redhat.com, or comment on this <a href="https://github.com/ansible/community/issues/546">GitHub issue</a>.</p>
+</div>
+          </div>
+      </article><br><hr>
+<br><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title">
+            <a href="deep-dive-into-trend-micro-deep-security-integration-modules/" class="u-url">Deep dive into Trend Micro Deep Security integration modules</a>
+          </h1>
+          <div class="metadata">
+            <p class="byline author vcard">
+              <span class="byline-name fn" itemprop="author">
+                  <a href="../authors/sumit-jaiswal/">Sumit Jaiswal</a>
+              </span>
+            </p>
+            <p class="dateline">
+              <a href="deep-dive-into-trend-micro-deep-security-integration-modules/" rel="bookmark">
+                <time class="published dt-published" datetime="2021-04-21T00:00:00Z" itemprop="datePublished" title="2021-04-21 00:00">2021-04-21 00:00</time></a>
+            </p>
+          </div>
+        </header><div class="p-summary entry-summary">
+            <h2>Deep dive into Trend Micro Deep Security integration modules</h2>
+<p>At AnsibleFest 2020, we announced
+the extension of our security automation initiative to support endpoint
+protection use cases. If you have missed it, check out the recording of
+the talk "Automate your endpoint protection using Ansible" on the
+AnsibleFest page.</p>
+<p>Today, following this announcement we release the supported Ansible
+Content Collection for Trend Micro Deep Security. We will walk through
+several examples and describe the use cases and how we envision the
+Collection being used in real world scenarios.</p>
+<h3>About Trend Micro Deep Security</h3>
+<p>Trend Micro Deep Security is one of the latest additions to the Ansible
+security automation initiative. As an endpoint protection solution it
+secures services and applications in virtual, cloud and container
+environments. It provides automated security policies and consolidates
+the security aspects across different environments in a single platform.</p>
+<h3>How to install the Certified Ansible Content Collection for Trend Micro Deep Security</h3>
+<p>The Trend Micro Deep Security Collection is available to Red Hat Ansible
+Automation Platform customers at <a href="https://cloud.redhat.com/ansible/automation-hub">Automation
+Hub</a>, our
+software-as-a-service offering on
+<a href="https://cloud.redhat.com/">cloud.redhat.com</a> and a place for Red Hat
+subscribers to quickly find and use content that is supported by Red Hat
+and our technology partners.</p>
+<p>The blog post "Getting Started with Automation Hub"
+gives an introduction to Automation Hub and how to configure your
+Ansible command line tools to access Automation Hub for Collection
+downloads.</p>
+<p>Once that is done, the Collection is easily installed:</p>
+<div class="code"><pre class="code literal-block">ansible-galaxy<span class="w"> </span>collection<span class="w"> </span>install<span class="w"> </span>trendmicro.deepsec
+</pre></div>
+
+<h3>What's in the Ansible Content Collection for Trend Micro Deep Security?</h3>
+<p>The focus of the Collection is on modules and plugins supporting them:
+there are modules for interacting with Trend Micro Deep Security agents,
+like <code>deepsec_firewallrules</code>, <code>deepsec_anti_malware</code>, <code>deepsec_log_inspectionrules</code> and
+others. Basically the integration modules cover the REST APIs exposed by
+TM Deep security firewall.  If you are familiar with firewall
+Collections and modules of Ansible, you will recognize this pattern: all
+these modules provide the most simple way of interacting with endpoint
+security and firewall solutions. Using those, general data can be
+received, arbitrary commands can be sent and configuration sections can
+be managed.</p>
+<p>While these modules provide a great value for environments where the
+devices are not automated at all, the focus of this blog article is on
+the endpoint security use-cases where  modules in the respective
+Collection can help automate. Being modules they have a precise scope,
+but enable users of the Collection to focus on that particular
+resource/REST API scenario without being disturbed by other content or
+configuration items. They also enable a simpler cross-product automation
+since other security Collections follow the same pattern.</p>
+<h3>Connect to Trend Micro Deep Security, the Collection way</h3>
+<p>The Collection supports <strong>httpapi</strong> as a connection type.</p>
+<p>Trend Micro Deep security currently supports two ways for how their REST
+API can be interacted with, and for each of the respective cases, the
+Ansible inventory will be changed slightly as mentioned below:</p>
+<p>In case of the <a href="https://automation.deepsecurity.trendmicro.com/article/fr/api-reference/">newer REST APIs</a>
+the Ansible inventory will work with the network OS <code>trendmicro.deepsec.deepsec</code>, a Trend Micro API secret key and ab api-version key:</p>
+<div class="code"><pre class="code literal-block"><span class="k">[deepsec]</span>
+<span class="na">host_deepsec.example.com</span>
+
+<span class="k">[deepsec:vars]</span>
+<span class="na">ansible_network_os</span><span class="o">=</span><span class="s">trendmicro.deepsec.deepsec</span>
+<span class="na">ansible_httpapi_use_ssl</span><span class="o">=</span><span class="s">true</span>
+<span class="na">ansible_httpapi_validate_certs</span><span class="o">=</span><span class="s">false</span>
+<span class="na">ansible_connection</span><span class="o">=</span><span class="s">httpapi</span>
+<span class="na">ansible_python_interpreter</span><span class="o">=</span><span class="s">/usr/bin/python</span>
+<span class="na">ansible_httpapi_session_key</span><span class="o">=</span><span class="s">{'api-secret-key': 'secret-key', 'api-version': 'v1'}</span>
+</pre></div>
+
+<p>In case of APIs using the <a href="https://automation.deepsecurity.trendmicro.com/legacy-rest/12_5/index.html?env=onprem#overview">legacy REST APIs</a>, the Ansible inventory will also require the network OS <code>trendmicro.deepsec.deepsec</code>, but uses a username and a password.</p>
+<div class="code"><pre class="code literal-block"><span class="k">[deepsec]</span>
+<span class="na">host_deepsec.example.com</span>
+
+<span class="k">[deepsec:vars]</span>
+<span class="na">ansible_network_os</span><span class="o">=</span><span class="s">trendmicro.deepsec.deepsec</span>
+<span class="na">ansible_user</span><span class="o">=</span><span class="s">admin</span>
+<span class="na">ansible_httpapi_pass</span><span class="o">=</span><span class="s">password</span>
+<span class="na">ansible_httpapi_use_ssl</span><span class="o">=</span><span class="s">true</span>
+<span class="na">ansible_httpapi_validate_certs</span><span class="o">=</span><span class="s">false</span>
+<span class="na">ansible_connection</span><span class="o">=</span><span class="s">ansible.netcommon.httpapi</span>
+<span class="na">ansible_python_interpreter</span><span class="o">=</span><span class="s">python</span>
+</pre></div>
+
+<p>Note that in a productive environment those variables should be
+supported in a secure way, for example, with the help of
+<a href="https://docs.ansible.com/ansible-tower/latest/html/userguide/credentials.html#network">Red Hat Ansible Tower credentials</a></p>
+<h3>Use Case: Firewall Rule Configuration</h3>
+<p>A firewall is highly flexible and users can configure it to be
+restrictive or permissive. Like the intrusion prevention and web
+reputation modules, firewall policies are based on two principles:
+either they can permit any service unless it is explicitly denied or
+they deny all services unless explicitly allowed.</p>
+<p>For example, using Ansible and Trend Micro Deep Security integration,
+modules users can take a restrictive firewall approach. This is often
+the recommended practice from a security perspective: All traffic is
+stopped by default and only traffic that's explicitly allowed is
+permitted.</p>
+<p>A playbook to implement the "deny all traffic" approach is shown in the
+following listing:</p>
+<div class="code"><pre class="code literal-block"><span class="nn">---</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Deny all traffic</span>
+<span class="w">  </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">deepsec</span>
+<span class="w">  </span><span class="nt">collections</span><span class="p">:</span>
+<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">trendmicro.deepsec</span>
+<span class="w">  </span><span class="nt">gather_facts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">tasks</span><span class="p">:</span>
+<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Create Restrictive firewall rule</span>
+<span class="w">     </span><span class="nt">trendmicro.deepsec.deepsec_firewallrules</span><span class="p">:</span>
+<span class="w">       </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">present</span>
+<span class="w">       </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">deny_all_firewallrule</span>
+<span class="w">       </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Deny all traffic by default over tcp</span>
+<span class="w">       </span><span class="nt">action</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">deny</span>
+<span class="w">       </span><span class="nt">priority</span><span class="p">:</span><span class="w"> </span><span class="s">"0"</span>
+<span class="w">       </span><span class="nt">source_iptype</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">any</span>
+<span class="w">       </span><span class="nt">destination_iptype</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">any</span>
+<span class="w">       </span><span class="nt">direction</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">incoming</span>
+<span class="w">       </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tcp</span>
+<span class="w">       </span><span class="nt">tcpflags</span><span class="p">:</span>
+<span class="w">         </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">syn</span>
+</pre></div>
+
+<p>Running this play will create a firewall rule that'll explicitly
+<strong>deny</strong> all TCP <strong>syn</strong> bound traffic. Keep in mind that the
+<code>state</code> keyword is used and set to <code>present</code>. It means
+that the specified rule is created and that the module will go ahead and
+create the config rule. On the contrary, if the user wants to
+delete/drop any specific firewall rule, then the <code>state</code> should be
+set to <code>absent</code>: in that case, during the play run, the module will
+check if the specified firewall rule pre-exists and if so the module
+will go ahead and delete/drop the respective firewall rule config.</p>
+<h3>Use Case: Antimalware Rule Configuration</h3>
+<p>Antimalware config helps agents on computers by providing real-time and
+on-demand protection against a variety of file based threats including
+malware, viruses, trojans and spyware. Using Ansible deepsec antimalware
+config module, users can fire all types of available scans:</p>
+<ul>
+<li>Real-time scan</li>
+<li>Manual scan</li>
+<li>Scheduled scan</li>
+<li>Quick scan</li>
+</ul>
+<p>The playbook example we'll be discussing here will be with respect to
+real time scans as based on incident responses. Users can check for the
+threats and quarantine the observed threats.</p>
+<div class="code"><pre class="code literal-block"><span class="nn">---</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Scan and Quarantine in TrendMicro agents</span>
+<span class="w">  </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">deepsec</span>
+<span class="w">  </span><span class="nt">collections</span><span class="p">:</span>
+<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">trendmicro.deepsec</span>
+<span class="w">  </span><span class="nt">gather_facts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">tasks</span><span class="p">:</span>
+<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Create AntiMalware config</span>
+<span class="w">     </span><span class="nt">trendmicro.deepsec.deepsec_anti_malware</span><span class="p">:</span>
+<span class="w">       </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">scan_real_time</span>
+<span class="w">   </span><span class="w w-Error"> </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">scan and quarantine via anti-malware config</span>
+<span class="w">    </span><span class="nt">scan_action_for_virus</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pass</span>
+<span class="w">    </span><span class="nt">alert_enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">scan_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">real-time</span>
+<span class="w">    </span><span class="nt">real_time_scan</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">read-write</span>
+<span class="w">    </span><span class="nt">cpu_usage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">medium</span>
+<span class="w">       </span><span class="l l-Scalar l-Scalar-Plain">scan_action_for_virus</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quarantine</span>
+<span class="w">       </span><span class="l l-Scalar l-Scalar-Plain">scan_action_for_trojans</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quarantine</span>
+<span class="w">       </span><span class="l l-Scalar l-Scalar-Plain">scan_action_for_cve</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quarantine</span>
+<span class="w">       </span><span class="l l-Scalar l-Scalar-Plain">scan_action_for_other_threats</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quarantine</span>
+<span class="w">    </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">present</span>
+</pre></div>
+
+<p>The playbook listed above will create an antimalware config rule, which
+will initiate a real-time scan over Trend Micro agents every time
+there's a file received, copied, downloaded or modified. </p>
+<p>All files will be scanned for any security threats. If during the scan
+the agents detect any threat based on virus, trojans, cve's and others,
+the agents will display the information with respect to the infected
+file and the respective files will be quarantined as specified in the
+playbook.</p>
+<h3>Use Case: Log Inspection Rule Configuration</h3>
+<p>The log inspection integration module helps users to identify events
+that are generally logged at system/OS level. It also includes
+application logs. Using the log rule configuration, users can forward
+the logged events to the SIEM system or to some centralized logging
+server for analytics, reporting and archiving.</p>
+<p>Log inspection helps in real-time monitoring of third parties log files
+as well. The playbook listed below creates a rule for log inspection.</p>
+<div class="code"><pre class="code literal-block"><span class="nn">---</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Set up log inspection</span>
+<span class="w">  </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">deepsec</span>
+<span class="w">  </span><span class="nt">collections</span><span class="p">:</span>
+<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">trendmicro.deepsec</span>
+<span class="w">  </span><span class="nt">gather_facts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">tasks</span><span class="p">:</span>
+<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Create a Log inspection rule</span>
+<span class="w">     </span><span class="nt">trendmicro.deepsec.deepsec_anti_malware</span><span class="p">:</span>
+<span class="w">       </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">present</span>
+<span class="w">       </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">custom log_rule for mysqld event</span>
+<span class="w">       </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">some description</span>
+<span class="w">       </span><span class="nt">minimum_agent_version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">6.0.0.0</span>
+<span class="w">       </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">defined</span>
+<span class="w">       </span><span class="nt">template</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">basic-rule</span>
+<span class="w">       </span><span class="nt">pattern</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">name</span>
+<span class="w">       </span><span class="nt">pattern_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
+<span class="w">       </span><span class="nt">rule_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100001</span>
+<span class="w">       </span><span class="nt">rule_description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">test rule description</span>
+<span class="w">       </span><span class="nt">groups</span><span class="p">:</span>
+<span class="w">         </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">test</span>
+<span class="w">       </span><span class="nt">alert_minimum_severity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span>
+<span class="w">       </span><span class="nt">alert_enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">       </span><span class="nt">log_files</span><span class="p">:</span>
+<span class="w">         </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">location</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/var/log/mysqld.log</span>
+<span class="w">           </span><span class="nt">format</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mysql-log</span>
+<span class="w">     </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">log</span>
+</pre></div>
+          </div>
+      </article><br><hr>
+<br><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title">
+            <a href="bullhorn-24/" class="u-url">Bullhorn #24</a>
+          </h1>
+          <div class="metadata">
+            <p class="byline author vcard">
+              <span class="byline-name fn" itemprop="author">
+                  <a href="../authors/ansible-collaborative-et-al/">Ansible Collaborative, et al</a>
+              </span>
+            </p>
+            <p class="dateline">
+              <a href="bullhorn-24/" rel="bookmark">
+                <time class="published dt-published" datetime="2021-04-15T23:00:00Z" itemprop="datePublished" title="2021-04-15 23:00">2021-04-15 23:00</time></a>
+            </p>
+          </div>
+        </header><div class="p-summary entry-summary">
+            <div>
+<p><img alt="Ansible Bullhorn banner" src="../images/bullhorn-banner-mango.png"></p>
+<h3>The Bullhorn</h3>
+<p><em>A Newsletter for the Ansible Developer Community</em>
+<em>Issue #24, 2021-04-15 (<a href="https://us19.campaign-archive.com/home/?u=56d874e027110e35dea0e03c1&amp;id=d6635f5420">Past Issues</a>)</em></p>
+<p>Welcome to the Bullhorn, our newsletter for the Ansible developer community. If you have any questions or content you’d like to share, please reach out to us at the-bullhorn@redhat.com, or comment on this <a href="https://github.com/ansible/community/issues/546">GitHub issue</a>.</p>
+</div>
+          </div>
+      </article><br><hr>
+<br><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title">
+            <a href="automating-a-rhel-8-installation-using-the-vmware-rest-ansible-collection/" class="u-url">Automating a RHEL 8 Installation Using the VMware REST Ansible Collection</a>
+          </h1>
+          <div class="metadata">
+            <p class="byline author vcard">
+              <span class="byline-name fn" itemprop="author">
+                  <a href="../authors/abhijeet-kasurde/">Abhijeet Kasurde</a>
+              </span>
+            </p>
+            <p class="dateline">
+              <a href="automating-a-rhel-8-installation-using-the-vmware-rest-ansible-collection/" rel="bookmark">
+                <time class="published dt-published" datetime="2021-04-12T00:00:00Z" itemprop="datePublished" title="2021-04-12 00:00">2021-04-12 00:00</time></a>
+            </p>
+          </div>
+        </header><div class="p-summary entry-summary">
+            <h2>Automating a RHEL 8 Installation Using the VMware REST Ansible Collection</h2>
+<p>Managing virtual machines in an IT infrastructure is often a common
+task, specifically VMware virtualization technology has been around for
+over 20 years. VMware administrators spend a lot of their time in
+automating the creation, management, and removal of virtual instances
+that contain various operating systems. One operating system that often
+resides on VMware infrastructure is Red Hat Enterprise Linux. </p>
+<p>With the introduction of VMware REST APIs, we recently announced the
+initial release of the <code>vmware.vmware_rest</code> Collection,
+for production use. As opposed to the community.vmware Collection, the
+<code>vmware.vmware_rest</code> Collection is based on next generation VMware REST
+APIs.  This new Collection no longer requires any third party Python
+bindings to communicate with VMware infrastructure. A large part of the
+new Collection that has been introduced is support for automating
+virtual machine operations.</p>
+<p>In this blog post I will show you how VMware users can automate the
+installation of Red Hat Enterprise Linux 8 (RHEL 8) using the
+<code>vmware.vmware_rest.vcenter_vm</code> module and a valid Kickstart file.</p>
+<h2>Scenario requirements</h2>
+<p>For this scenario, we will assume following requirements:</p>
+<ol>
+<li>vCenter 7.0.1 or latest with at least one ESXi </li>
+<li>RHEL 8 installation DVD</li>
+<li>Ansible</li>
+<li>vmware.vmware_rest collection installed with latest version</li>
+</ol>
+<h2>Preparing Installation ISO file</h2>
+<p>We will be automating RHEL 8 installation using the Kickstart file
+fetched via iso image file. We will not discuss Kickstart file creation
+and management as this has already been covered in
+<a href="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/performing_an_advanced_rhel_installation/creating-kickstart-files_installing-rhel-as-an-experienced-user">the documentation</a>.
+You might want to visit <a href="https://access.redhat.com/labsinfo/kickstartconfig">Kickstart Info Access Labs</a> to refresh your knowledge.</p>
+<h3>Gathering information about infrastructure</h3>
+<p>We will use environment variables to specify VMware credentials. This
+will make playbooks short and tidy. In order to do this, you need
+specify following environment variables:</p>
+<ul>
+<li>VMWARE_HOST</li>
+<li>VMWARE_USER</li>
+<li>VMWARE_PASSWORD</li>
+<li>VMWARE_VALIDATE_CERTS</li>
+</ul>
+<p>Let us now start with our playbook which will create the virtual machine
+in vCenter. All modules in vmware.vmware_rest Collection use VMware
+managed object ID (MoID) for identifying and  referencing VMware
+objects. The MoIDs are unique in the given vCenter so there is no need
+to specify names and folders. </p>
+<p>We need to provide information where the virtual machine is going to be
+placed. This information comprises MoIDs of cluster, datastore, folder
+and resource pool. We can use existing modules from vmware.vmware_rest
+Collection to collect this information.</p>
+<div class="code"><pre class="code literal-block"><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Get Cluster info</span>
+<span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">vmware.vmware_rest.vcenter_cluster_info</span><span class="p p-Indicator">:</span>
+<span class="w">         </span><span class="nt">filter_names</span><span class="p">:</span>
+<span class="w">         </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">cluster_name</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="w">  </span><span class="w w-Error"> </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cluster_info</span>
+
+<span class="w w-Error"> </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Get Resource info for {{ cluster_name }}</span>
+<span class="w">   </span><span class="nt">vmware.vmware_rest.vcenter_cluster_info</span><span class="p">:</span>
+<span class="w">         </span><span class="nt">cluster</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">cluster_info.value[0].cluster</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="w">   </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">resource_pool_info</span>
+
+<span class="w"> </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Get datastore info</span>
+<span class="w">   </span><span class="nt">vmware.vmware_rest.vcenter_datastore_info</span><span class="p">:</span>
+<span class="w">         </span><span class="nt">filter_names</span><span class="p">:</span>
+<span class="w">         </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">datastore_name</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="w">   </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">datastore_info</span>
+
+<span class="w"> </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Get folder info</span>
+<span class="w">   </span><span class="nt">vmware.vmware_rest.vcenter_folder_info</span><span class="p">:</span>
+<span class="w">         </span><span class="nt">filter_names</span><span class="p">:</span>
+<span class="w">         </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">'{{</span><span class="nv"> </span><span class="s">folder_name</span><span class="nv"> </span><span class="s">}}'</span>
+<span class="w">   </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">folder_info</span>
+</pre></div>
+
+<p>We will need information about the standard portgroup to which the
+virtual machine is going to be attached to. Gathering information about
+the MoID of a standard portgroup can be done using
+vmware.vmware_rest.vcenter_network_info module.</p>
+<div class="code"><pre class="code literal-block"><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Get a list of the networks with a filter</span>
+<span class="nt">vmware.vmware_rest.vcenter_network_info</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">filter_types</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">STANDARD_PORTGROUP</span>
+<span class="w">      </span><span class="nt">filter_names</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"VM</span><span class="nv"> </span><span class="s">Network"</span>
+<span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">network_info</span>
+</pre></div>
+
+<h2>Creating a virtual machine</h2>
+<p>Once we have all the information required for create a virtual machine,
+let us move on to the module which creates the virtual machine that is
+<code>vcenter_vm</code>:</p>
+<div class="code"><pre class="code literal-block"><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Create a VM</span>
+<span class="w">  </span><span class="nt">vmware.vmware_rest.vcenter_vm</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">boot</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">delay</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
+<span class="w">      </span><span class="nt">enter_setup_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">      </span><span class="nt">retry</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">      </span><span class="nt">retry_delay</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10000</span>
+<span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">"BIOS"</span>
+<span class="w">      </span><span class="nt">boot_devices</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
+<span class="w">      </span><span class="nt">cdroms</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">allow_guest_control</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">        </span><span class="nt">backing</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">"ISO_FILE"</span>
+<span class="w">          </span><span class="nt">iso_file</span><span class="p">:</span><span class="w"> </span><span class="s">"[ds_200]</span><span class="nv"> </span><span class="s">iso/rhel_8.3_ks.iso"</span>
+<span class="w">        </span><span class="nt">ide</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">master</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">          </span><span class="nt">primary</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">        </span><span class="nt">label</span><span class="p">:</span><span class="w"> </span><span class="s">"CD/DVD</span><span class="nv"> </span><span class="s">drive</span><span class="nv"> </span><span class="s">1"</span>
+<span class="w">        </span><span class="nt">start_connected</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">"IDE"</span>
+<span class="w">      </span><span class="nt">cpu</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">cores_per_socket</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">      </span><span class="nt">count</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">      </span><span class="nt">hot_add_enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">      </span><span class="nt">hot_remove_enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">      </span><span class="nt">disks</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">new_vmdk</span><span class="p">:</span>
+<span class="w">           </span><span class="nt">capacity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">536870912</span>
+<span class="w">        </span><span class="nt">label</span><span class="p">:</span><span class="w"> </span><span class="s">"Hard</span><span class="nv"> </span><span class="s">disk</span><span class="nv"> </span><span class="s">1"</span>
+<span class="w">        </span><span class="nt">scsi</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">bus</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
+<span class="w">          </span><span class="nt">unit</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
+<span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">"SCSI"</span>
+<span class="w">      </span><span class="nt">guest_OS</span><span class="p">:</span><span class="w"> </span><span class="s">"OTHER_LINUX_64"</span>
+<span class="w">      </span><span class="nt">hardware_version</span><span class="p">:</span><span class="w"> </span><span class="s">"VMX_13"</span>
+<span class="w">      </span><span class="nt">memory</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">hot_add_enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">      </span><span class="nt">size_MiB</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4096</span>
+<span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">test_vm_3</span>
+<span class="w">      </span><span class="nt">nics</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">start_connected</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VMXNET3</span>
+<span class="w">          </span><span class="l l-Scalar l-Scalar-Plain">mac_type</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">GENERATED</span>
+<span class="w">          </span><span class="l l-Scalar l-Scalar-Plain">backing</span><span class="p p-Indicator">:</span>
+<span class="w">            </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">STANDARD_PORTGROUP</span>
+<span class="w">            </span><span class="nt">network</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">network_id</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="w">      </span><span class="nt">scsi_adapters</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">label</span><span class="p">:</span><span class="w"> </span><span class="s">"SCSI</span><span class="nv"> </span><span class="s">controller</span><span class="nv"> </span><span class="s">0"</span>
+<span class="w">        </span><span class="nt">scsi</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">bus</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
+<span class="w">          </span><span class="nt">unit</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">7</span>
+<span class="w">        </span><span class="nt">sharing</span><span class="p">:</span><span class="w"> </span><span class="s">"NONE"</span>
+<span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">"PVSCSI"</span>
+<span class="w">      </span><span class="nt">placement</span><span class="p">:</span>
+<span class="w">       </span><span class="nt">datastore</span><span class="p">:</span><span class="w"> </span><span class="s">'{{</span><span class="nv"> </span><span class="s">datastore_id</span><span class="nv"> </span><span class="s">}}'</span>
+<span class="w">       </span><span class="nt">folder</span><span class="p">:</span><span class="w"> </span><span class="s">'{{</span><span class="nv"> </span><span class="s">folder_id</span><span class="nv"> </span><span class="s">}}'</span>
+<span class="w">       </span><span class="nt">resource_pool</span><span class="p">:</span><span class="w"> </span><span class="s">'{{</span><span class="nv"> </span><span class="s">resource_pool_id</span><span class="nv"> </span><span class="s">}}'</span>
+<span class="w">  </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vm_info</span>
+</pre></div>
+
+<p>Here, we specified to create a virtual machine with 4 GB memory with 1
+single NIC attached to "VM network". Additionally, we attached a CDROM
+to this virtual machine for installation DVD with kickstart file inside
+it. </p>
+<p>You can power on the virtual machine using following tasks:</p>
+<div class="code"><pre class="code literal-block"><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Turn the power-on the VM</span>
+<span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">vmware.vmware_rest.vcenter_vm_power</span><span class="p p-Indicator">:</span>
+<span class="w">         </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">start</span>
+<span class="w">         </span><span class="nt">vm</span><span class="p">:</span><span class="w"> </span><span class="s">'{{</span><span class="nv"> </span><span class="s">vm_info.id</span><span class="nv"> </span><span class="s">}}'</span>
+</pre></div>
+
+<p>After powering on the virtual machine, installation will start as
+default option with the given kickstart file:</p>
+<p><img alt="rhel blog one" src="../images/posts/archive/rhel-blog-one.png"></p>
+<p><em>Boot menu with Kickstart file as default option</em></p>
+<p><img alt="rhel blog two" src="../images/posts/archive/rhel-blog-two.png"></p>
+<p><em>Linux Kernel boot parameters</em></p>
+<p>It will take some time to install the new operating system, depending
+upon the configurations. You can mark this newly installed virtual
+machine as a template and can use it for clone operation.</p>
+<h2>Conclusion &amp; Where to go next</h2>
+<p>Combining this Collection with <code>vmware.vmware_rest</code>, Ansible users can
+better manage virtual instances on VMware infrastructure with faster
+iterations and easier maintenance. </p>
+<p>Ansible lets you connect the different technologies with your VMware
+infrastructure that are ultimately needed to be successful in your
+efforts. </p>
+<p>The Collection <code>vmware.vmware_rest</code> is a solid foundation for VMware
+automation, which is coming in the near future. We're always looking to
+improve to help users like you get things done in more simplified,
+faster ways. </p>
+          </div>
+      </article><br><hr>
+<br><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title">
+            <a href="bullhorn-23/" class="u-url">Bullhorn #23</a>
+          </h1>
+          <div class="metadata">
+            <p class="byline author vcard">
+              <span class="byline-name fn" itemprop="author">
+                  <a href="../authors/ansible-collaborative-et-al/">Ansible Collaborative, et al</a>
+              </span>
+            </p>
+            <p class="dateline">
+              <a href="bullhorn-23/" rel="bookmark">
+                <time class="published dt-published" datetime="2021-04-01T20:30:00Z" itemprop="datePublished" title="2021-04-01 20:30">2021-04-01 20:30</time></a>
+            </p>
+          </div>
+        </header><div class="p-summary entry-summary">
+            <div>
+<p><img alt="Ansible Bullhorn banner" src="../images/bullhorn-banner-mango.png"></p>
+<h3>The Bullhorn</h3>
+<p><em>A Newsletter for the Ansible Developer Community</em>
+<em>Issue #23, 2021-04-01 (<a href="https://us19.campaign-archive.com/home/?u=56d874e027110e35dea0e03c1&amp;id=d6635f5420">Past Issues</a>)</em></p>
+<p>Welcome to the Bullhorn, our newsletter for the Ansible developer community. If you have any questions or content you’d like to share, please reach out to us at the-bullhorn@redhat.com, or comment on this <a href="https://github.com/ansible/community/issues/546">GitHub issue</a>.</p>
+</div>
+          </div>
+      </article><br><hr>
+<br><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title">
+            <a href="bullhorn-22/" class="u-url">Bullhorn #22</a>
+          </h1>
+          <div class="metadata">
+            <p class="byline author vcard">
+              <span class="byline-name fn" itemprop="author">
+                  <a href="../authors/ansible-collaborative-et-al/">Ansible Collaborative, et al</a>
+              </span>
+            </p>
+            <p class="dateline">
+              <a href="bullhorn-22/" rel="bookmark">
+                <time class="published dt-published" datetime="2021-03-18T21:00:00Z" itemprop="datePublished" title="2021-03-18 21:00">2021-03-18 21:00</time></a>
+            </p>
+          </div>
+        </header><div class="p-summary entry-summary">
+            <div>
+<p><img alt="Ansible Bullhorn banner" src="../images/bullhorn-banner-mango.png"></p>
+<h3>The Bullhorn</h3>
+<p><em>A Newsletter for the Ansible Developer Community</em>
+<em>Issue #22, 2021-03-18 (<a href="https://us19.campaign-archive.com/home/?u=56d874e027110e35dea0e03c1&amp;id=d6635f5420">Past Issues</a>)</em></p>
+<p>Welcome to the Bullhorn, our newsletter for the Ansible developer community. If you have any questions or content you’d like to share, please reach out to us at the-bullhorn@redhat.com, or comment on this <a href="https://github.com/ansible/community/issues/546">GitHub issue</a>.</p>
+</div>
+          </div>
+      </article><br><hr>
+<br><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title">
+            <a href="bullhorn-21/" class="u-url">Bullhorn #21</a>
+          </h1>
+          <div class="metadata">
+            <p class="byline author vcard">
+              <span class="byline-name fn" itemprop="author">
+                  <a href="../authors/ansible-collaborative-et-al/">Ansible Collaborative, et al</a>
+              </span>
+            </p>
+            <p class="dateline">
+              <a href="bullhorn-21/" rel="bookmark">
+                <time class="published dt-published" datetime="2021-03-05T17:15:00Z" itemprop="datePublished" title="2021-03-05 17:15">2021-03-05 17:15</time></a>
+            </p>
+          </div>
+        </header><div class="p-summary entry-summary">
+            <div>
+<p><img alt="Ansible Bullhorn banner" src="../images/bullhorn-banner-mango.png"></p>
+<h3>The Bullhorn</h3>
+<p><em>A Newsletter for the Ansible Developer Community</em>
+<em>Issue #21, 2021-03-05 (<a href="https://us19.campaign-archive.com/home/?u=56d874e027110e35dea0e03c1&amp;id=d6635f5420">Past Issues</a>)</em></p>
+<p>Welcome to the Bullhorn, our newsletter for the Ansible developer community. If you have any questions or content you’d like to share, please reach out to us at the-bullhorn@redhat.com, or comment on this <a href="https://github.com/ansible/community/issues/546">GitHub issue</a>.</p>
+</div>
+          </div>
+      </article><br><hr>
+<br><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title">
+            <a href="introduction-to-ansible-test/" class="u-url">Introduction to ansible-test</a>
+          </h1>
+          <div class="metadata">
+            <p class="byline author vcard">
+              <span class="byline-name fn" itemprop="author">
+                  <a href="../authors/anshul-behl/">Anshul Behl</a>
+              </span>
+            </p>
+            <p class="dateline">
+              <a href="introduction-to-ansible-test/" rel="bookmark">
+                <time class="published dt-published" datetime="2021-02-22T00:00:00Z" itemprop="datePublished" title="2021-02-22 00:00">2021-02-22 00:00</time></a>
+            </p>
+          </div>
+        </header><div class="p-summary entry-summary">
+            <h2>Introduction to ansible-test</h2>
+<p>As automation becomes crucial for more and more business cases, there is
+an increased need to test the automation code itself. This is where
+ansible-test comes in: developers who want to test their Ansible Content
+Collections for sanity, unit and integration tests can use 
+ansible-test  to achieve testing workflows that integrate with source
+code repositories.</p>
+<p>Both ansible-core and ansible-base come
+<a href="https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html">packaged</a>
+with a cli tool called ansible-test, which can be used by collection
+developers to test their Collection and its content. The ansible-test
+knows how to perform a wide variety of testing-related tasks, from
+linting module documentation and code to running unit and integration
+tests.</p>
+<p>We will cover different features of ansible-test in brief below.</p>
+<h2>How to run ansible-test?</h2>
+<p>With the general availability of Ansible Content Collections with Ansible-2.9,
+a user can run ansible-test inside a collection to test the collection
+itself. ansible-test needs to be run from the collection root or below
+in order for ansible-test to run tests on the Collection.</p>
+<p>If you try to run ansible-test from outside the above directory norms,
+it will throw an error like below:</p>
+<div class="code"><pre class="code literal-block">root@root<span class="w"> </span>~/.ansible/collections<span class="w"> </span>ansible-test<span class="w"> </span>sanity
+ERROR:<span class="w"> </span>The<span class="w"> </span>current<span class="w"> </span>working<span class="w"> </span>directory<span class="w"> </span>must<span class="w"> </span>be<span class="w"> </span>at<span class="w"> </span>or<span class="w"> </span>below:
+
+-<span class="w"> </span>an<span class="w"> </span>Ansible<span class="w"> </span>collection:<span class="w"> </span><span class="o">{</span>...<span class="o">}</span>/ansible_collections/<span class="o">{</span>namespace<span class="o">}</span>/<span class="o">{</span>collection<span class="o">}</span>/
+
+Current<span class="w"> </span>working<span class="w"> </span>directory:<span class="w"> </span>/root/.ansible/collections
+</pre></div>
+
+<p>from the above output you can see how a collection root appears to
+ansible-test, it has to be in the form of:</p>
+<div class="code"><pre class="code literal-block"><span class="o">{</span>...<span class="o">}</span>/ansible_collections/<span class="o">{</span>namespace<span class="o">}</span>/<span class="o">{</span>collection<span class="o">}</span>/
+</pre></div>
+
+<p>When you install a collection from Ansible Galaxy or Automation Hub, the default installation location is:
+<code>{...}/ansible_collections/{namespace}/{collection}/</code>, which already satisfies the above directory convention.</p>
+<p>Even if you specify the installation path to the ansible-galaxy cli
+(using the -p option), it will also install a collection inside the
+ansible_collections directory by creating one in the given path, like
+below:</p>
+<div class="code"><pre class="code literal-block">root@root<span class="w"> </span>~/temp<span class="w"> </span>ll
+total<span class="w"> </span><span class="m">0</span>
+
+root@root<span class="w"> </span>~/temp<span class="w"> </span>ansible-galaxy<span class="w"> </span>collection<span class="w"> </span>install<span class="w"> </span>arista.eos<span class="w"> </span>-p<span class="w"> </span>.
+Process<span class="w"> </span>install<span class="w"> </span>dependency<span class="w"> </span>map
+Starting<span class="w"> </span>collection<span class="w"> </span>install<span class="w"> </span>process
+Installing<span class="w"> </span><span class="s1">'arista.eos:1.2.0'</span><span class="w"> </span>to<span class="w"> </span><span class="s1">'/root/temp/ansible_collections/arista/eos'</span>
+Installing<span class="w"> </span><span class="s1">'ansible.netcommon:1.4.1'</span><span class="w"> </span>to<span class="w"> </span><span class="s1">'/root/temp/ansible_collections/ansible/netcommon'</span>
+
+root@root<span class="w"> </span>~/temp<span class="w"> </span>ll
+total<span class="w"> </span><span class="m">4</span>.0K
+drwxrwxr-x.<span class="w"> </span><span class="m">4</span><span class="w"> </span>root<span class="w"> </span>root<span class="w"> </span><span class="m">4</span>.0K<span class="w"> </span>Jan<span class="w"> </span><span class="m">18</span><span class="w"> </span><span class="m">19</span>:21<span class="w"> </span>ansible_collections
+</pre></div>
+
+<p>Make sure you keep the above directory norm when you develop your
+collections and test them with ansible-test too, in your local
+development environment.</p>
+<h3>How to test your collection using ansible-test?</h3>
+<p>ansible-test provides ways to run different types of tests on your
+Collections, broadly these tests are of types listed below:</p>
+<ul>
+<li>Sanity Tests</li>
+<li>Unit Tests</li>
+<li>Integration Tests</li>
+</ul>
+<p>We will go through each of these tests in detail.</p>
+<h3>Sanity Tests</h3>
+<p>Sanity tests are made up of scripts and tools used to perform static
+code analysis. The primary purpose of these tests is to enforce Ansible
+coding standards and requirements. ansible-test includes a variety of
+sanity tests to perform the code analysis, which can be found
+<a href="https://docs.ansible.com/ansible/latest/dev_guide/testing/sanity/index.html#all-sanity-tests">in the documentation</a>.</p>
+<h3>How to run?</h3>
+<p>You can run the sanity test suite from the root directory of your
+collection; below are different scenarios on how you can run the sanity
+tests.</p>
+<div class="code"><pre class="code literal-block"><span class="c1"># Run all sanity tests</span>
+ansible-test<span class="w"> </span>sanity
+
+<span class="c1"># Run all sanity tests against against certain files</span>
+ansible-test<span class="w"> </span>sanity<span class="w"> </span>plugins/modules/files/eos_acls.py
+
+<span class="c1"># Run all tests with a specific version of python (3.7 in this case)</span>
+ansible-test<span class="w"> </span>sanity<span class="w"> </span>--python<span class="w"> </span><span class="m">3</span>.7
+
+<span class="c1"># Run all tests inside docker (good if you don't have dependencies installed)</span>
+ansible-test<span class="w"> </span>sanity<span class="w"> </span>--docker<span class="w"> </span>default
+
+<span class="c1"># Run validate-modules against a specific file</span>
+ansible-test<span class="w"> </span>sanity<span class="w"> </span>--test<span class="w"> </span>validate-modules<span class="w"> </span>lib/ansible/modules/files/template.py
+</pre></div>
+
+<p>To list all the sanity tests available:</p>
+<div class="code"><pre class="code literal-block">ansible-test<span class="w"> </span>sanity<span class="w"> </span>--list-tests
+</pre></div>
+
+<h4>How to ignore sanity tests?</h4>
+<p>Since sanity tests change between Ansible releases, a separate ignore
+file is needed for each Ansible major release.</p>
+<p>The filename is <code>tests/sanity/ignore-X.Y.txt</code>
+where <code>X.Y</code> is the <code>ansible-core/ansible-base</code> release being used to test the collection.</p>
+<p>Maintaining a separate file for each Ansible release allows a collection to pass tests for multiple versions of Ansible.</p>
+<p>For information on the format of the ignore files, please refer to the
+<a href="https://docs.ansible.com/ansible/latest/dev_guide/testing/sanity/ignores.html#ignore-file-format">dev guide</a></p>
+<p>There are only a limited number of cases where ignores would be needed, so please refer to the
+<a href="https://github.com/ansible-collections/overview/blob/main/collection_requirements.rst#ci-testing">collections documentation</a></p>
+<h3>Unit Tests</h3>
+<p>Unit tests are small isolated tests that target a specific library or
+module. As a collection developer/maintainer, you want to make sure that
+your code is unit tested, and ansible-test provides a way to run and do
+reporting of unit tests inside your collection.</p>
+<ol>
+<li>The tests/units is where all things related to unit testing live</li>
+<li>ansible-test uses PyTest underneath the surface to do unit testing, hence it expects the tests to be located in files starting with <code>test_</code> or ending with <code>_test.py</code>
+</li>
+</ol>
+<p>For more information on how to write unit tests, please refer to the
+<a href="https://docs.ansible.com/ansible/latest/dev_guide/testing_units_modules.html">guide</a>.</p>
+<p>To run all the unit tests inside a collection, run the below command
+from collection root:</p>
+<div class="code"><pre class="code literal-block"><span class="c1"># Run all tests inside docker (good if you don't have dependencies installed)</span>
+ansible-test<span class="w"> </span>units<span class="w"> </span>--docker<span class="w"> </span>-v
+</pre></div>
+
+<p>Against a single module file by doing:</p>
+<div class="code"><pre class="code literal-block"><span class="c1"># Only runs if the module directory path and unit test file path are similar</span>
+ansible-test<span class="w"> </span>units<span class="w"> </span>--docker<span class="w"> </span>-v<span class="w"> </span>apt
+</pre></div>
+
+<p>Or against a specific python version by doing:</p>
+<div class="code"><pre class="code literal-block">ansible-test<span class="w"> </span>units<span class="w"> </span>--docker<span class="w"> </span>-v<span class="w"> </span>--python<span class="w"> </span><span class="m">2</span>.7<span class="w"> </span>apt
+</pre></div>
+
+<p>If you are running unit tests against things other than modules, such as
+module utilities, specify the whole file path:</p>
+<div class="code"><pre class="code literal-block">ansible-test<span class="w"> </span>units<span class="w"> </span>--docker<span class="w"> </span>-v<span class="w"> </span>test/units/module_utils/basic/test_imports.py
+</pre></div>
+
+<p>For advanced usage, see the help:</p>
+<div class="code"><pre class="code literal-block">ansible-test<span class="w"> </span>units<span class="w"> </span>--help
+</pre></div>
+
+<h3>Code Coverage</h3>
+<p>Code coverage reports make it easy to identify untested code for which
+more tests should be written.</p>
+<p>Add the <code>--coverage</code>= option to any test
+command to collect code coverage data. If you aren't using the
+<code>--venv</code> or <code>--docker</code> options that create an isolated
+python environment, then you may have to use the <code>--requirements</code>
+option to ensure that the correct version of
+the coverage module is installed:</p>
+<div class="code"><pre class="code literal-block">ansible-test<span class="w"> </span>coverage<span class="w"> </span>erase
+ansible-test<span class="w"> </span>units<span class="w"> </span>--coverage<span class="w"> </span>apt
+ansible-test<span class="w"> </span>coverage<span class="w"> </span>html
+</pre></div>
+
+<p>Reports can be generated in several different formats:</p>
+<ul>
+<li>
+<code>ansible-test coverage report</code> - Console report.</li>
+<li>[<code>ansible-test coverage html</code> - HTML report.</li>
+<li>[<code>ansible-test coverage xml</code> - XML report.</li>
+</ul>
+<p>To clear data between test runs, use the ansible-test coverage erase
+command. For a full list of features, see the online help:</p>
+<div class="code"><pre class="code literal-block">ansible-test<span class="w"> </span>coverage<span class="w"> </span>--help
+</pre></div>
+
+<h3>Integration Tests</h3>
+<p>These are end to end tests to check code path functions as expected and
+to catch breaking changes in the product that you are trying to
+automate. In the context of ansible-test essentially:</p>
+<ol>
+<li>The <code>tests/integration</code> is where all things related to integration tests live.</li>
+<li>The <code>tests/integration/targets</code> directory contains all our test cases.
+    Each test case is a barebones Ansible Role.</li>
+</ol>
+<h2>Conclusion &amp; Next Steps</h2>
+<p>As shown above, ansible-test can provide a lot of value testing Ansible
+Content Collections thoroughly.</p>
+<p>For further reading and information, visit the
+<a href="https://docs.ansible.com/ansible/latest/dev_guide/testing.html">Ansible Testing Strategies documentation</a>.
+If you are unfamiliar with Ansible Collections, check out our
+<a href="https://youtube.com/playlist?list=PLdu06OJoEf2Z85Lrc7_Sdw6mTt4aSKfwt">YouTube playlist for everything about Ansible Collections</a>.
+The videos will get you up to speed quickly.</p>
+<p>Also, don't forget to check out our <a href="https://www.redhat.com/en/engage/infra-automation-ebook-s-202009020400">Automate infrastructure workflows e-book</a>
+if you want to learn more about building a unified, automated pipeline for infrastructure operations.</p>
+          </div>
+      </article><br><hr>
+<br><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title">
+            <a href="bullhorn-20/" class="u-url">Bullhorn #20</a>
+          </h1>
+          <div class="metadata">
+            <p class="byline author vcard">
+              <span class="byline-name fn" itemprop="author">
+                  <a href="../authors/ansible-collaborative-et-al/">Ansible Collaborative, et al</a>
+              </span>
+            </p>
+            <p class="dateline">
+              <a href="bullhorn-20/" rel="bookmark">
+                <time class="published dt-published" datetime="2021-02-18T21:00:00Z" itemprop="datePublished" title="2021-02-18 21:00">2021-02-18 21:00</time></a>
+            </p>
+          </div>
+        </header><div class="p-summary entry-summary">
+            <div>
+<p><img alt="Ansible Bullhorn banner" src="../images/bullhorn-banner-mango.png"></p>
+<h3>The Bullhorn</h3>
+<p><em>A Newsletter for the Ansible Developer Community</em>
+<em>Issue #20, 2021-02-18 (<a href="https://us19.campaign-archive.com/home/?u=56d874e027110e35dea0e03c1&amp;id=d6635f5420">Past Issues</a>)</em></p>
+<p>Welcome to the Bullhorn, our newsletter for the Ansible developer community. If you have any questions or content you’d like to share, please reach out to us at the-bullhorn@redhat.com, or comment on this <a href="https://github.com/ansible/community/issues/546">GitHub issue</a>.</p>
+</div>
+          </div>
+      </article><br><hr>
+<br>
+</div>
+          <ul class="pager postindexpager clearfix">
+<li class="previous"><a href="index-11.html" rel="prev">Newer posts</a></li>
+            <li class="next"><a href="index-9.html" rel="next">Older posts</a></li>
+        </ul>
+<!--End of body content-->
+</div>
+        <div class="content-slim redhat-footer">
+      <div class="footer-left">
+        <ul class="footer-left-links">
+<li>
+            <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-SA 4.0</a>
+          </li>
+          <li>
+            <a href="https://www.redhat.com/en/about/privacy-policy" target="_blank">Privacy policy</a>
+          </li>
+          <li>
+            <a href="https://docs.ansible.com/ansible/latest/community/code_of_conduct.html" target="_blank">Code of conduct</a>
+          </li>
+        </ul>
+</div>
+      <div class="footer-right">
+        <span class="redhat">Powered by</span>
+        <span class="redhat-logo">
+          <a href="https://www.redhat.com/en/technologies/management/ansible" target="_blank">
+            <img src="../assets/images/redhat_reversed.svg" alt="Red Hat logo." width="96" height="28"></a>
+        </span>
+      </div>
+    </div>
+
+</div>
+
+            <script src="../assets/js/jquery.min.js"></script><script src="../assets/js/popper.min.js"></script><script src="../assets/js/bootstrap.min.js"></script><script src="../assets/js/baguetteBox.min.js"></script><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+</script><script src="../assets/js/clipboard.min.js" type="text/javascript"></script><script src="../assets/js/clipboard.js" type="text/javascript"></script>
+</body>
+</html>

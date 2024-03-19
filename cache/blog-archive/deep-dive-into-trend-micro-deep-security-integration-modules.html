@@ -1,0 +1,212 @@
+<h1>Deep dive into Trend Micro Deep Security integration modules</h1>
+<p>At AnsibleFest 2020, we announced
+the extension of our security automation initiative to support endpoint
+protection use cases. If you have missed it, check out the recording of
+the talk "Automate your endpoint protection using Ansible" on the
+AnsibleFest page.</p>
+<p>Today, following this announcement we release the supported Ansible
+Content Collection for Trend Micro Deep Security. We will walk through
+several examples and describe the use cases and how we envision the
+Collection being used in real world scenarios.</p>
+<h2>About Trend Micro Deep Security</h2>
+<p>Trend Micro Deep Security is one of the latest additions to the Ansible
+security automation initiative. As an endpoint protection solution it
+secures services and applications in virtual, cloud and container
+environments. It provides automated security policies and consolidates
+the security aspects across different environments in a single platform.</p>
+<h2>How to install the Certified Ansible Content Collection for Trend Micro Deep Security</h2>
+<p>The Trend Micro Deep Security Collection is available to Red Hat Ansible
+Automation Platform customers at <a href="https://cloud.redhat.com/ansible/automation-hub">Automation
+Hub</a>, our
+software-as-a-service offering on
+<a href="https://cloud.redhat.com/">cloud.redhat.com</a> and a place for Red Hat
+subscribers to quickly find and use content that is supported by Red Hat
+and our technology partners.</p>
+<p>The blog post "Getting Started with Automation Hub"
+gives an introduction to Automation Hub and how to configure your
+Ansible command line tools to access Automation Hub for Collection
+downloads.</p>
+<p>Once that is done, the Collection is easily installed:</p>
+<div class="code"><pre class="code literal-block">ansible-galaxy<span class="w"> </span>collection<span class="w"> </span>install<span class="w"> </span>trendmicro.deepsec
+</pre></div>
+
+<h2>What's in the Ansible Content Collection for Trend Micro Deep Security?</h2>
+<p>The focus of the Collection is on modules and plugins supporting them:
+there are modules for interacting with Trend Micro Deep Security agents,
+like <code>deepsec_firewallrules</code>, <code>deepsec_anti_malware</code>, <code>deepsec_log_inspectionrules</code> and
+others. Basically the integration modules cover the REST APIs exposed by
+TM Deep security firewall.  If you are familiar with firewall
+Collections and modules of Ansible, you will recognize this pattern: all
+these modules provide the most simple way of interacting with endpoint
+security and firewall solutions. Using those, general data can be
+received, arbitrary commands can be sent and configuration sections can
+be managed.</p>
+<p>While these modules provide a great value for environments where the
+devices are not automated at all, the focus of this blog article is on
+the endpoint security use-cases where  modules in the respective
+Collection can help automate. Being modules they have a precise scope,
+but enable users of the Collection to focus on that particular
+resource/REST API scenario without being disturbed by other content or
+configuration items. They also enable a simpler cross-product automation
+since other security Collections follow the same pattern.</p>
+<h2>Connect to Trend Micro Deep Security, the Collection way</h2>
+<p>The Collection supports <strong>httpapi</strong> as a connection type.</p>
+<p>Trend Micro Deep security currently supports two ways for how their REST
+API can be interacted with, and for each of the respective cases, the
+Ansible inventory will be changed slightly as mentioned below:</p>
+<p>In case of the <a href="https://automation.deepsecurity.trendmicro.com/article/fr/api-reference/">newer REST APIs</a>
+the Ansible inventory will work with the network OS <code>trendmicro.deepsec.deepsec</code>, a Trend Micro API secret key and ab api-version key:</p>
+<div class="code"><pre class="code literal-block"><span class="k">[deepsec]</span>
+<span class="na">host_deepsec.example.com</span>
+
+<span class="k">[deepsec:vars]</span>
+<span class="na">ansible_network_os</span><span class="o">=</span><span class="s">trendmicro.deepsec.deepsec</span>
+<span class="na">ansible_httpapi_use_ssl</span><span class="o">=</span><span class="s">true</span>
+<span class="na">ansible_httpapi_validate_certs</span><span class="o">=</span><span class="s">false</span>
+<span class="na">ansible_connection</span><span class="o">=</span><span class="s">httpapi</span>
+<span class="na">ansible_python_interpreter</span><span class="o">=</span><span class="s">/usr/bin/python</span>
+<span class="na">ansible_httpapi_session_key</span><span class="o">=</span><span class="s">{&#39;api-secret-key&#39;: &#39;secret-key&#39;, &#39;api-version&#39;: &#39;v1&#39;}</span>
+</pre></div>
+
+<p>In case of APIs using the <a href="https://automation.deepsecurity.trendmicro.com/legacy-rest/12_5/index.html?env=onprem#overview">legacy REST APIs</a>, the Ansible inventory will also require the network OS <code>trendmicro.deepsec.deepsec</code>, but uses a username and a password.</p>
+<div class="code"><pre class="code literal-block"><span class="k">[deepsec]</span>
+<span class="na">host_deepsec.example.com</span>
+
+<span class="k">[deepsec:vars]</span>
+<span class="na">ansible_network_os</span><span class="o">=</span><span class="s">trendmicro.deepsec.deepsec</span>
+<span class="na">ansible_user</span><span class="o">=</span><span class="s">admin</span>
+<span class="na">ansible_httpapi_pass</span><span class="o">=</span><span class="s">password</span>
+<span class="na">ansible_httpapi_use_ssl</span><span class="o">=</span><span class="s">true</span>
+<span class="na">ansible_httpapi_validate_certs</span><span class="o">=</span><span class="s">false</span>
+<span class="na">ansible_connection</span><span class="o">=</span><span class="s">ansible.netcommon.httpapi</span>
+<span class="na">ansible_python_interpreter</span><span class="o">=</span><span class="s">python</span>
+</pre></div>
+
+<p>Note that in a productive environment those variables should be
+supported in a secure way, for example, with the help of
+<a href="https://docs.ansible.com/ansible-tower/latest/html/userguide/credentials.html#network">Red Hat Ansible Tower credentials</a></p>
+<h2>Use Case: Firewall Rule Configuration</h2>
+<p>A firewall is highly flexible and users can configure it to be
+restrictive or permissive. Like the intrusion prevention and web
+reputation modules, firewall policies are based on two principles:
+either they can permit any service unless it is explicitly denied or
+they deny all services unless explicitly allowed.</p>
+<p>For example, using Ansible and Trend Micro Deep Security integration,
+modules users can take a restrictive firewall approach. This is often
+the recommended practice from a security perspective: All traffic is
+stopped by default and only traffic that's explicitly allowed is
+permitted.</p>
+<p>A playbook to implement the "deny all traffic" approach is shown in the
+following listing:</p>
+<div class="code"><pre class="code literal-block"><span class="nn">---</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Deny all traffic</span>
+<span class="w">  </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">deepsec</span>
+<span class="w">  </span><span class="nt">collections</span><span class="p">:</span>
+<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">trendmicro.deepsec</span>
+<span class="w">  </span><span class="nt">gather_facts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">tasks</span><span class="p">:</span>
+<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Create Restrictive firewall rule</span>
+<span class="w">     </span><span class="nt">trendmicro.deepsec.deepsec_firewallrules</span><span class="p">:</span>
+<span class="w">       </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">present</span>
+<span class="w">       </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">deny_all_firewallrule</span>
+<span class="w">       </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Deny all traffic by default over tcp</span>
+<span class="w">       </span><span class="nt">action</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">deny</span>
+<span class="w">       </span><span class="nt">priority</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;0&quot;</span>
+<span class="w">       </span><span class="nt">source_iptype</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">any</span>
+<span class="w">       </span><span class="nt">destination_iptype</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">any</span>
+<span class="w">       </span><span class="nt">direction</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">incoming</span>
+<span class="w">       </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tcp</span>
+<span class="w">       </span><span class="nt">tcpflags</span><span class="p">:</span>
+<span class="w">         </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">syn</span>
+</pre></div>
+
+<p>Running this play will create a firewall rule that'll explicitly
+<strong>deny</strong> all TCP <strong>syn</strong> bound traffic. Keep in mind that the
+<code>state</code> keyword is used and set to <code>present</code>. It means
+that the specified rule is created and that the module will go ahead and
+create the config rule. On the contrary, if the user wants to
+delete/drop any specific firewall rule, then the <code>state</code> should be
+set to <code>absent</code>: in that case, during the play run, the module will
+check if the specified firewall rule pre-exists and if so the module
+will go ahead and delete/drop the respective firewall rule config.</p>
+<h2>Use Case: Antimalware Rule Configuration</h2>
+<p>Antimalware config helps agents on computers by providing real-time and
+on-demand protection against a variety of file based threats including
+malware, viruses, trojans and spyware. Using Ansible deepsec antimalware
+config module, users can fire all types of available scans:</p>
+<ul>
+<li>Real-time scan</li>
+<li>Manual scan</li>
+<li>Scheduled scan</li>
+<li>Quick scan</li>
+</ul>
+<p>The playbook example we'll be discussing here will be with respect to
+real time scans as based on incident responses. Users can check for the
+threats and quarantine the observed threats.</p>
+<div class="code"><pre class="code literal-block"><span class="nn">---</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Scan and Quarantine in TrendMicro agents</span>
+<span class="w">  </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">deepsec</span>
+<span class="w">  </span><span class="nt">collections</span><span class="p">:</span>
+<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">trendmicro.deepsec</span>
+<span class="w">  </span><span class="nt">gather_facts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">tasks</span><span class="p">:</span>
+<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Create AntiMalware config</span>
+<span class="w">     </span><span class="nt">trendmicro.deepsec.deepsec_anti_malware</span><span class="p">:</span>
+<span class="w">       </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">scan_real_time</span>
+<span class="w">   </span><span class="w w-Error"> </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">scan and quarantine via anti-malware config</span>
+<span class="w">    </span><span class="nt">scan_action_for_virus</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pass</span>
+<span class="w">    </span><span class="nt">alert_enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">scan_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">real-time</span>
+<span class="w">    </span><span class="nt">real_time_scan</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">read-write</span>
+<span class="w">    </span><span class="nt">cpu_usage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">medium</span>
+<span class="w">       </span><span class="l l-Scalar l-Scalar-Plain">scan_action_for_virus</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quarantine</span>
+<span class="w">       </span><span class="l l-Scalar l-Scalar-Plain">scan_action_for_trojans</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quarantine</span>
+<span class="w">       </span><span class="l l-Scalar l-Scalar-Plain">scan_action_for_cve</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quarantine</span>
+<span class="w">       </span><span class="l l-Scalar l-Scalar-Plain">scan_action_for_other_threats</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quarantine</span>
+<span class="w">    </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">present</span>
+</pre></div>
+
+<p>The playbook listed above will create an antimalware config rule, which
+will initiate a real-time scan over Trend Micro agents every time
+there's a file received, copied, downloaded or modified. </p>
+<p>All files will be scanned for any security threats. If during the scan
+the agents detect any threat based on virus, trojans, cve's and others,
+the agents will display the information with respect to the infected
+file and the respective files will be quarantined as specified in the
+playbook.</p>
+<h2>Use Case: Log Inspection Rule Configuration</h2>
+<p>The log inspection integration module helps users to identify events
+that are generally logged at system/OS level. It also includes
+application logs. Using the log rule configuration, users can forward
+the logged events to the SIEM system or to some centralized logging
+server for analytics, reporting and archiving.</p>
+<p>Log inspection helps in real-time monitoring of third parties log files
+as well. The playbook listed below creates a rule for log inspection.</p>
+<div class="code"><pre class="code literal-block"><span class="nn">---</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Set up log inspection</span>
+<span class="w">  </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">deepsec</span>
+<span class="w">  </span><span class="nt">collections</span><span class="p">:</span>
+<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">trendmicro.deepsec</span>
+<span class="w">  </span><span class="nt">gather_facts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">tasks</span><span class="p">:</span>
+<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Create a Log inspection rule</span>
+<span class="w">     </span><span class="nt">trendmicro.deepsec.deepsec_anti_malware</span><span class="p">:</span>
+<span class="w">       </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">present</span>
+<span class="w">       </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">custom log_rule for mysqld event</span>
+<span class="w">       </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">some description</span>
+<span class="w">       </span><span class="nt">minimum_agent_version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">6.0.0.0</span>
+<span class="w">       </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">defined</span>
+<span class="w">       </span><span class="nt">template</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">basic-rule</span>
+<span class="w">       </span><span class="nt">pattern</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">name</span>
+<span class="w">       </span><span class="nt">pattern_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
+<span class="w">       </span><span class="nt">rule_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100001</span>
+<span class="w">       </span><span class="nt">rule_description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">test rule description</span>
+<span class="w">       </span><span class="nt">groups</span><span class="p">:</span>
+<span class="w">         </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">test</span>
+<span class="w">       </span><span class="nt">alert_minimum_severity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span>
+<span class="w">       </span><span class="nt">alert_enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">       </span><span class="nt">log_files</span><span class="p">:</span>
+<span class="w">         </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">location</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/var/log/mysqld.log</span>
+<span class="w">           </span><span class="nt">format</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mysql-log</span>
+<span class="w">     </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">log</span>
+</pre></div>

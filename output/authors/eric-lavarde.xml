@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Ansible Collaborative (Posts by Eric Lavarde)</title><link>https://ansible.com/</link><description></description><atom:link href="https://ansible.com/authors/eric-lavarde.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2024 &lt;a href="mailto:website@ansible.community"&gt;Ansible Collaborative, et al&lt;/a&gt; </copyright><lastBuildDate>Mon, 18 Mar 2024 19:47:35 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Pump up your ITIL with Automation</title><link>https://ansible.com/blog/pump-up-your-itil-with-automation/</link><dc:creator>Eric Lavarde</dc:creator><description>&lt;h2&gt;Pump up your ITIL with Automation&lt;/h2&gt;
+&lt;p&gt;In the world of automation and agility, it seems that Information
+Technology Infrastructure Library (ITIL) doesn't have a role to play
+anymore, being marked as an "old school" framework. Can it be the end of
+the methodology after it served numerous IT organizations for so long as
+a guideline and blueprint for their processes?&lt;/p&gt;
+&lt;p&gt;This series of articles shows how automation, and more specifically Red
+Hat Ansible Automation Platform and the principles of Infrastructure as
+Code (IaC), can help bring some of the ITIL topics into the agile and
+automated bliss:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://www.redhat.com/en/technologies/management/ansible/configuration-management"&gt;Configuration management&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Change and release management&lt;/li&gt;
+&lt;li&gt;Incident and problem management&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;So let's step into the topic of configuration management and what
+everybody still knows as
+&lt;a href="https://www.redhat.com/en/technologies/management/ansible/configuration-management"&gt;CMDB&lt;/a&gt;
+(Configuration Management Database) even if ITIL has since long titled
+it as CMS (Configuration Management System). This name change was meant
+to highlight the fact that the function can be fulfilled by a
+combination of multiple databases and tools, but it won't matter here,
+so we'll stick to the infamous CMDB term.&lt;/p&gt;
+&lt;p&gt;Do you love your CMDB? Probably not, according to my experience with
+numerous customers. The data is generally outdated and wrong, considered
+useless, which means that its maintenance is considered a chore. This
+means that it's maintained with as little effort as possible, in a
+careless manner, making it even less up-to-date, and in a downward
+spiral you go.&lt;/p&gt;
+&lt;p&gt;To avoid the crash, we need first to understand that a CMDB and the
+related Configuration management have two main purposes:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Document the desired state of your environment - this is too often
+    done manually, with the admins required to maintain the
+    configuration once in the "real world" and once in the CMDB. To do
+    this, companies often populate the CMDB from the discovery of the
+    environment, which leads to a database that documents the current
+    state. Note that there is no clarity if it corresponds to the
+    desired state or not.&lt;/li&gt;
+&lt;li&gt;Support the change management process by allowing an analysis of the
+    environment, e.g. to validate that there is enough disk space free
+    on each server before installing the new bloated software. Based on
+    the noted lack of trust in the data quality, it is generally ignored
+    as part of the process.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Looking at the above shortcoming, we need first to more clearly
+structure our database, as it contains multiple kinds of data:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Desired state data - this is information that comes from a service
+    or change request and represents what one needs to have in one's
+    environment.&lt;/li&gt;
+&lt;li&gt;Actual state data - this is information discovered from the
+    environment and representing its current state.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;As data can be only desired, only actual or both, we have three
+categories, which we'll reference with A to C for sake of simplicity:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="database category diagram" src="https://ansible.com/images/posts/archive/database-category-diagram.png"&gt;&lt;/p&gt;
+&lt;p&gt;Because admins don't want to maintain the desired state twice, you use
+the desired state in your CMDB (type A and B) as inventory source for
+Ansible Automation Platform to configure your environment from it.
+Admins know that the better the data in the CMDB, the better the result
+in the real world, which leads to less work. That should be enough
+motivation to quickly improve the data quality of your CMDB.&lt;/p&gt;
+&lt;p&gt;Because the CMDB doesn't mix-up desired state and actual state for the
+data of category A, you can detect discrepancies, make a decision on how
+to fix it, and use Ansible again for automated remediation. This should
+help you quickly align reality with desired state, and have the right
+data to make decisions.&lt;/p&gt;
+&lt;p&gt;The data of type C isn't of much use for automation, and is meant for
+decision making in your change management process, though you could
+decide to skip a patch cycle if the disks are too full. That said, you
+shouldn't confuse this aspect with monitoring; monitoring a disk full
+situation and correcting it quickly belongs to incident management, not
+to configuration management.&lt;/p&gt;
+&lt;p&gt;Once you've reached this first stage, you can go to the next level and
+use Ansible Automation Platform to automatically populate the desired
+state in your CMDB.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="database population" src="https://ansible.com/images/posts/archive/database-population-diagram.png"&gt;&lt;/p&gt;
+&lt;p&gt;Let's assume you have a service portal where customers can order new
+services or modify and decommission them, using a service catalogue and
+a dialog driving them through the choices they need to make. Using the
+input variables grabbed through the dialog, the service portal can,
+using the automation controller's API, trigger a workflow to fulfil the
+service. One of the first steps of the workflow is then to enter those
+input variables as desired state (type A and B) into the CMDB. It has
+the advantage that, should the workflow job fail, you still have the
+desired state documented and could trigger the action again once the
+root cause for the failure has been fixed.&lt;/p&gt;
+&lt;p&gt;It would now be nice to have commit, branch and tag functions like in
+Git to roll-back such changes easily. But perhaps someone will invent a
+CMDB with such functionality based on this article. In the meantime,
+connect Ansible Automation Platform to your CMDB and add value and
+quality to your CMDB with automation.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://www.redhat.com/en/technologies/management/ansible/configuration-management"&gt;Learn more about using Ansible Automation Platform for configuration
+management&lt;/a&gt;&lt;/p&gt;
+&lt;h3&gt;Take a video tour&lt;/h3&gt;
+&lt;p&gt;&lt;a href="https://youtu.be/7GJjhZoYEus"&gt;This eight-minute overview video&lt;/a&gt; highlights the components and
+features found in the latest version of Ansible Automation
+Platform---and how they come together to deliver a comprehensive
+enterprise automation experience.&lt;/p&gt;</description><guid>https://ansible.com/blog/pump-up-your-itil-with-automation/</guid><pubDate>Thu, 09 Jun 2022 00:00:00 GMT</pubDate></item></channel></rss>

@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html prefix="
+og: http://ogp.me/ns# article: http://ogp.me/ns/article#
+" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bullhorn #93 | Ansible Collaborative</title>
+<link href="../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/baguetteBox.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/rst.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/code.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/theme.css" rel="stylesheet" type="text/css">
+<!-- Red Hat fonts --><link rel="stylesheet" href="https://static.redhat.com/libs/redhat/redhat-font/2.0.0/webfonts/red-hat-font.css">
+<!-- Font Awesome --><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+<!-- Fork Awesome --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css" integrity="sha256-XoaMnoYC5TH6/+ihMEnospgm0J1PM/nioxbOUdnM8HY=" crossorigin="anonymous">
+<!-- Sass compiled css  --><link rel="stylesheet" href="../../assets/css/main.css">
+<link rel="stylesheet" href="../../assets/css/redhat-footer.css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://ansible.com/blog/bullhorn-93/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Ansible Collaborative, et al">
+<link rel="prev" href="../bullhorn-92/" title="Bullhorn #92" type="text/html">
+<link rel="next" href="../bullhorn-94/" title="Bullhorn #94" type="text/html">
+<meta property="og:site_name" content="Ansible Collaborative">
+<meta property="og:title" content="Bullhorn #93">
+<meta property="og:url" content="https://ansible.com/blog/bullhorn-93/">
+<meta property="og:description" content="A Newsletter for the Ansible Developer Community
+Issue #93, 2023-03-03 (Past Issues)
+Welcome to The Bullhorn, our newsletter for the Ansible developer community. If you have any questions or content y">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2023-03-03T17:30:00Z">
+<meta property="article:tag" content="news">
+</head>
+<body id="top">
+
+<div class="global-container" id="content" role="main">
+<!-- Start menubar -->
+<nav class="navbar navbar-expand-lg static-top mb-4 navbar-padding full-width-bg   navbar-dark   bg-pool   "><div class="masthead">
+    <!-- This keeps the margins nice -->
+    <a class="navbar-brand" href="../../">
+        <img src="../../images/ansible_logo-small-15.png" alt="Ansible community logo" id="logo" class="d-inline-block align-top" width="50" height="50"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon nav-toggle-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="bs-navbar">
+      <ul class="navbar-nav mr-auto"></ul>
+<ul class="navbar-nav navbar-right">
+<li class="nav-item dropdown">
+	        <a href="#" class="nav-link nav-link-color dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <i class=""></i> Documentation
+                </a>
+		<div class="dropdown-menu dropdown-menu-border">
+	    
+                    <a href="https://docs.ansible.com/" class="dropdown-item">
+		        <i class=""></i> Project documentation
+                    </a>
+                    <a href="https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/" class="dropdown-item">
+		        <i class=""></i> Ansible Automation Platform documentation
+                    </a>
+            </div>
+                 </li>
+<li class="nav-item">
+		     <a href="https://galaxy.ansible.com/" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Galaxy
+		     </a>
+		 </li>
+                 <li class="nav-item">
+		     <a href="https://forum.ansible.com/" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Forum
+		     </a>
+		 </li>
+            <li class="nav-item dropdown">
+	        <a href="#" class="nav-link nav-link-color dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <i class=""></i> Resources
+                </a>
+		<div class="dropdown-menu dropdown-menu-border">
+	    
+                    <a href="../../how-ansible-works/" class="dropdown-item">
+		        <i class=""></i> How Ansible works
+                    </a>
+                    <a href="../../ecosystem/" class="dropdown-item">
+		        <i class=""></i> Ansible ecosystem
+                    </a>
+                    <a href="../archive.html" class="dropdown-item">
+		        <i class=""></i> Blog
+                    </a>
+                    <a href="../../faq/" class="dropdown-item">
+		        <i class=""></i> Frequently asked questions
+                    </a>
+                    <a href="../../ansible-community-training/" class="dropdown-item">
+		        <i class=""></i> Ansible community training
+                    </a>
+                    <a href="../../contact-us/" class="dropdown-item">
+		        <i class=""></i> Contact us
+                    </a>
+            </div>
+                 </li>
+<li class="nav-item">
+		     <a href="https://www.redhat.com/en/technologies/management/ansible?sc_cid=7015Y000003szaKQAQ" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Ansible Automation Platform
+		     </a>
+		 </li>
+
+        
+      </ul>
+</div>
+    <!-- /.navbar-collapse -->
+  </div>
+  <!-- /.container -->
+</nav><!-- End default Menubar --><div class="body-content center-band">
+        <!--Body content-->
+        
+  <article class="post-text h-entry hentry postpage ansible-content" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Bullhorn #93</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard p-author h-card"><span class="byline-name fn p-name" itemprop="author">
+                    <a class="u-url" href="../../authors/ansible-collaborative-et-al/">Ansible Collaborative, et al</a>
+            </span></p>
+            <p class="dateline">
+            <a href="." rel="bookmark">
+            <time class="published dt-published" datetime="2023-03-03T17:30:00Z" itemprop="datePublished" title="2023-03-03 17:30">2023-03-03 17:30</time></a>
+            </p>
+                    <p class="sourceline"><a href="index.md" class="sourcelink">Source</a></p>
+
+        </div>
+        
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+<p><img alt="Ansible Bullhorn banner" src="../../images/bullhorn-banner-mango.png"></p>
+<p><em>A Newsletter for the Ansible Developer Community</em>
+<em>Issue #93, 2023-03-03 (<a href="https://us19.campaign-archive.com/home/?u=56d874e027110e35dea0e03c1&amp;id=d6635f5420">Past Issues</a>)</em></p>
+<p>Welcome to <a href="https://github.com/ansible/community/wiki/News#the-bullhorn">The Bullhorn</a>, our newsletter for the Ansible developer community. If you have any questions or content you’d like to share, you're welcome to chat with us in the <a href="https://matrix.to/#/#social:ansible.com">Ansible Social room on Matrix</a>, and mention <a href="https://matrix.to/#/@newsbot:ansible.im"><code>newsbot</code></a> to have your news item tagged for review for the next weekly issue!</p>
+<!-- TEASER_END -->
+
+<h3>KEY DATES ⏱️</h3>
+<p><a href="https://matrix.to/#/@cybette:ansible.im">cybette</a> contributed</p>
+<blockquote>
+<ul>
+<li>2023-03-07: <a href="https://github.com/ansible/community/issues/678">DaWGs meeting</a>, 16:00 UTC</li>
+<li>2023-03-08: <a href="https://github.com/ansible/community/issues/679">Community WG meeting</a>, 19:00 UTC (propose topics <a href="https://github.com/ansible-community/community-topics/issues">here</a>)</li>
+<li>2023-03-09: <a href="https://github.com/ansible/community/wiki/News#the-bullhorn">Bullhorn #94 content deadline</a>, 18:00 UTC</li>
+<li>2023-03-27: ETA for Ansible-Core 2.14.4 and 2.13.9</li>
+<li>2023-03-28: <a href="https://docs.ansible.com/ansible/devel/roadmap/COLLECTIONS_7.html">ETA for Ansible 7.4.0 release</a>
+</li>
+</ul>
+</blockquote>
+<h3>GENERAL NEWS UPDATES 🔈️</h3>
+<p><a href="https://matrix.to/#/@cybette:ansible.im">cybette</a> shared</p>
+<blockquote>
+<h4>Recordings from CfgMgmtCamp and Contributor Summit</h4>
+<p>For those who missed the events, or if you were there but missed some of the talks, or if you want to rewatch some of them (because they're great!) - here are the playlists:
+* <a href="https://www.youtube.com/playlist?list=PL0FmYCf7ocrY-uMXYlnbCI2jZz8rDM8zP">Ansible Contributor Summit 2023.02 (Feb 8, 2023)</a>
+* <a href="https://www.youtube.com/playlist?list=PL0FmYCf7ocrZkU2-l-dxveX9woxZUe1ic">Ansible track @ Cfgmgmtcamp 2023</a></p>
+<p>Thanks to <a href="https://matrix.to/#/@sig-io:matrix.org">Mark</a> for recording the talks!</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@gwmngilfen:ansible.im">Gwmngilfen</a> said</p>
+<blockquote>
+<h4>Contributor Summit &amp; Community Survey</h4>
+<p>As usual after a Contributor Summit event, I've put together a survey to help us learn for next time. It also covers more general questions about how the community feels to you at the moment, so even if you couldn't make it to the Contributor event, or CfgMgmtCamp, it's still worth a look. <a href="https://www.surveymonkey.co.uk/r/W9SWQ9Q">It should take just a few minutes</a>!</p>
+<p>(And on the topic, if you didn't see last week's post about feedback on the Community Strategy for 2023, <a href="https://ansible.github.io/community/posts/state_of_the_community_2023.html">check that out too</a>!)</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@ridetotheroots:matrix.org">Ranabir Chakraborty</a> said</p>
+<blockquote>
+<p>We are a new initiative called "<a href="https://github.com/ansible-middleware">Ansible Middleware</a>", which utilizes the power of Ansible automation to orchestrate the installation, configuration, and management of Enterprise Middleware using several <a href="https://galaxy.ansible.com/middleware_automation">collections</a>. It provides you with several benefits such as a smoother release process, the same level of comfort as cloud infrastructure, making your application a first-class citizen of the Ansible ecosystem, and also making your middleware products easy to use and easy to automate. Currently, we have collections of <a href="https://galaxy.ansible.com/middleware_automation/wildfly">WildFly</a>, <a href="https://galaxy.ansible.com/middleware_automation/keycloak">Keycloak</a>, <a href="https://galaxy.ansible.com/middleware_automation/infinispan">Infinispan</a>, <a href="https://galaxy.ansible.com/middleware_automation/jws">JWS</a>, <a href="https://github.com/ansible-middleware/amq">Active MQ</a>, <a href="https://galaxy.ansible.com/middleware_automation/jcliff">Jcliff</a> and we are rapidly growing.</p>
+</blockquote>
+<h3>MAJOR NEW RELEASES 🏆️</h3>
+<h4>Ansible <a href="https://github.com/ansible-collections">↗</a> 📦️</h4>
+<p>The <code>Ansible</code> package includes <code>ansible-core</code> and is a batteries-included package that provides a curated set of Ansible collections. See the <a href="https://docs.ansible.com/ansible/devel/roadmap/ansible_roadmap_index.html">Ansible roadmaps</a> for future release plans.</p>
+<p><a href="https://matrix.to/#/@anwesha:ansible.im">anwesha</a> contributed</p>
+<blockquote>
+<p><a href="https://groups.google.com/g/ansible-devel/c/t9ohIIqRkLU">Ansible 7.3.0 is out!</a> ❤️</p>
+<p>💽 You can install it by running the following command or download the release tarball directly from <a href="https://pypi.python.org/packages/source/a/ansible/ansible-7.3.0.tar.gz">pypi</a>:</p>
+<p><code>python3 -m pip install ansible==7.3.0 --user</code></p>
+<p>➡️ Check <a href="https://github.com/ansible-community/ansible-build-data/blob/main/7/CHANGELOG-v7.rst">Release Notes📦️🗒️</a> and <a href="https://docs.ansible.com/ansible/devel/porting_guides/porting_guide_7.html">Ansible 7 Porting Guide</a> for more details!</p>
+</blockquote>
+<h4>Antsibull <a href="https://github.com/ansible-community/antsibull">↗</a> 🐂</h4>
+<p>Tooling for building the <code>Ansible</code> package and collection documentation.</p>
+<p><a href="https://matrix.to/#/@felixfontein:libera.chat">felixfontein</a> shared</p>
+<blockquote>
+<p>antsibull 0.54.0 (<a href="https://github.com/ansible-community/antsibull/blob/main/CHANGELOG.rst#v0-54-0">changelog</a>) has been released. It drops support for Python 3.8, removes the deprecated antsibull-lint CLI tool, and fixes some bugs.</p>
+</blockquote>
+<h4>DevTools <a href="https://github.com/ansible/vscode-ansible">↗</a> ⛏️</h4>
+<p>Projects to make it easier to write and test Ansible Content. Includes <a href="https://github.com/ansible/vscode-ansible">VScode extension</a>, <a href="https://github.com/ansible/ansible-language-server">language server</a>, <a href="https://github.com/ansible-community/ansible-lint">ansible-lint</a>, <a href="https://github.com/ansible-community/molecule">molecule</a>, <a href="https://github.com/ansible/ansible-navigator">ansible-navigator</a> and potentially other development goodies. To see what's planned, and how you can help checkout the <a href="https://github.com/orgs/ansible/projects/86/views/4">foundation-devtools project board</a></p>
+<p><a href="https://matrix.to/#/@ssbarnea:matrix.org">ssbarnea</a> shared</p>
+<blockquote>
+<p><a href="https://github.com/ansible/ansible-lint/releases/tag/v6.14.0">ansible-lint 6.14</a> was released, dropping support for py38 and including over 25 changes and bugfixes.</p>
+</blockquote>
+<h3>PROJECT UPDATES 🛠️</h3>
+<p><a href="https://matrix.to/#/@priyams:matrix.org">Priyam Sahoo</a> contributed</p>
+<blockquote>
+<p>Devtools Update:</p>
+<ul>
+<li>As the ansible-lint project continues to gain momentum, with this growth comes an influx of new issues, both big and small. The devtools team has curated a list of <code>good first issues</code>, which can be found <a href="https://github.com/ansible/ansible-lint/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22">here</a>. These issues are an excellent opportunity for contributors to get involved and make a meaningful impact on the project's development. As you explore the issues in the repository, please take a moment to go through our <a href="https://ansible-lint.readthedocs.io/contributing/">contribution guidelines</a>.</li>
+</ul>
+</blockquote>
+<p><a href="https://matrix.to/#/@ruchip:ansible.im">ruchip</a> contributed</p>
+<blockquote>
+<p>Devtools Update:</p>
+<ul>
+<li>
+<p>We are planning to combine several pytest plugins like pytest-ansible, pytest-molecule &amp; pytest-ansible-units into one, the idea is to pick the necessary features we need from each plugin, add the features which are missing/the ones we need and make the pytest-ansible plugin a common package for all the unit-testing work.</p>
+</li>
+<li>
+<p>We have opened a discussion for the same, you can follow it <a href="https://github.com/ansible-community/community-topics/issues/203">here</a> and we look forward to any suggestions, feedback related to it. 😄</p>
+</li>
+</ul>
+</blockquote>
+<h3>COLLECTION UPDATES 🪄</h3>
+<p><a href="https://matrix.to/#/@felixfontein:libera.chat">felixfontein</a> shared</p>
+<blockquote>
+<p>community.general 6.4.0 (<a href="https://github.com/ansible-collections/community.general/blob/stable-6/CHANGELOG.rst#v6-4-0">changelog</a>) has been released with new features and bugfixes.</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@sagpaul:matrix.org">Sagar Paul</a> said</p>
+<blockquote>
+<p>The Ansible networking team released the following collections</p>
+<ul>
+<li><a href="https://github.com/ansible-collections/cisco.ios">cisco.ios 4.4.0</a></li>
+<li><a href="https://github.com/ansible-collections/junipernetworks.junos">junipernetworks.junos 5.0.0</a></li>
+<li><a href="https://github.com/ansible-collections/ansible.netcommon">ansible.netcommon 5.0.0</a></li>
+<li><a href="https://github.com/ansible-collections/vyos.vyos">vyos.vyos 4.0.1</a></li>
+</ul>
+</blockquote>
+<h3>HELP WANTED 🙏</h3>
+<p><a href="https://matrix.to/#/@orandon:ansible.im">Don Naro</a> said</p>
+<blockquote>
+<p>The community engineering team has put together a first set of user journeys for Ansible docsite personas and would like your feedback. You can find the user journeys <a href="https://github.com/ansible/docsite/blob/personas/user-journeys/ansible-user-journey-maps.md">in GitHub</a>.</p>
+<p>The next step is to apply these journeys to an updated layout and navigation for <code>docs.ansible.com</code>. We're working to improve navigation and user experience for Ansible community documentation. Come <a href="https://github.com/ansible/jinja-docsite">join us and help build a new docsite</a>!</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@andersson007_:matrix.org">andersson007_</a> shared</p>
+<blockquote>
+<p>The <a href="https://github.com/ansible-collections/ansible-inclusion/discussions/categories/second-review-needed">new collection inclusion requests</a> are waiting for your <a href="https://github.com/ansible-collections/ansible-inclusion#review-process">reviews</a>. Please help the community extend the package!</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@samccann:ansible.im">samccann</a> said</p>
+<blockquote>
+<p>Looking to help out in Ansible but not sure where to start? Take a look at some easyfix or good first issues:
+* across multiple <a href="https://github.com/search?q=user%3Aansible-collections+label%3Aeasyfix%2C%22good+first+issue%22+state%3Aopen&amp;type=Issues">collections</a>
+* for all <a href="https://github.com/search?q=user%3Aansible+user%3Aansible-community+label%3Aeasyfix%2C%22good+first+issue%22+state%3Aopen&amp;type=Issues">other</a> Ansible projects</p>
+</blockquote>
+<h3>PROPOSALS - DISCUSS AND VOTE! 🗳️</h3>
+<p><a href="https://matrix.to/#/@felixfontein:libera.chat">felixfontein</a> shared</p>
+<blockquote>
+<p>There is a community vote on whether to try to get semantic markup into ansible-core 2.15, or at least into antsibull-docs. Please look at <a href="https://github.com/ansible-community/community-topics/issues/53">the discussion (in particular at the bottom)</a> and/or <a href="https://github.com/ansible-community/community-topics/discussions/205">participate in the vote</a>!</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@felixfontein:libera.chat">felixfontein</a> shared</p>
+<blockquote>
+<p>There is a community vote on how a concrete proposal for hiding private plugins/modules in collections could look like. Please look at <a href="https://github.com/ansible-community/community-topics/issues/154">the discussion (in particular at the bottom)</a> and/or <a href="https://github.com/ansible-community/community-topics/discussions/204">participate in the vote</a>!</p>
+</blockquote>
+<h3>COMMUNITY UPDATES 👂️</h3>
+<p><a href="https://matrix.to/#/@dmsimard:matrix.org">dmsimard</a> shared</p>
+<blockquote>
+<p>In this new blog post, we run benchmarks to find out the difference between running ansible-core 2.11 and 2.14 with python 3.9 and 3.11. Then, using the same methodology, we benchmark ara's different database backends. <a href="https://ara.recordsansible.org/blog/2023/02/26/benchmarking-ara-with-different-databases-and-python3.11-for-fun-and-science/">Check it out.</a></p>
+<p>TL;DR:
+* ansible-core 2.14 is faster than 2.11
+* python 3.11 is faster than 3.9
+* django's mysql and postgresql performance is similar
+* sqlite is slower but mostly attributable to lack of multi-threading</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@cybette:ansible.im">cybette</a> shared</p>
+<blockquote>
+<p>Earlier this week there were 2 Ansible community meetups on the same day, one in Münich and the other in Zürich. If you were unable to attend one (because you were at the other one? :)) or both, their recorded streams are available - <a href="https://www.youtube.com/watch?v=A7-naalGSeU">Zürich</a>, <a href="https://www.youtube.com/watch?v=NhjDiDdkhQI">München</a>.</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@priyams:matrix.org">Priyam Sahoo</a> contributed</p>
+<blockquote>
+<p>Ansible Community Day India which happened in Pune (Red Hat Pune office on Saturday 25th February) was a day-long community-focused event to talk about Ansible project, community and wider ecosystem. It was an effort where the Ansible community both upstream and downstream meet in person to discuss about ansible and related things and kick start our events for pan India. This gave the opportunity to revive the old connections and get to make new ones.</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@sagpaul:matrix.org">Sagar Paul</a> said</p>
+<blockquote>
+<p>We had an in-person Ansible community day event in Pune, India. We were joined by ~82 attendees from all over the county. We had 6 talks and 2 workshops. These talks touched on different aspects of Ansible, including ansible-navigator, AWX, Network automation, and Middleware products automation. Overall, it was a great event full of productive discussion and enthusiasm from all the attendees to join the Ansible community and contribute. 🎉</p>
+</blockquote>
+<h3>COMMUNITY EVENTS AND MEETUPS 📅</h3>
+<p><a href="https://matrix.to/#/@cybette:ansible.im">cybette</a> contributed</p>
+<blockquote>
+<p><a href="https://chemnitzer.linux-tage.de/2023/en/">Chemnitz Linux Days 2023</a> will take place March 11-12 in Chemnitz, Germany. There will be an <a href="https://www.meetup.com/ansible-meetup-dresden/events/291248823/">Ansible booth organized by community member Daniel Schier</a>! Meet with the Ansible community face-to-face at the booth, with demos, experienced users, development insights, stickers and much more.</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@cybette:ansible.im">cybette</a> shared</p>
+<blockquote>
+<p>There are several community meetups coming up! </p>
+<ul>
+<li>
+<a href="https://www.meetup.com/ansible-aurangabad/events/291861534/">Ansible Aurangabad</a> on March 11 @ 11:00 AM IST</li>
+<li>
+<a href="https://www.meetup.com/ansible-new-zealand/events/291902379/">Ansible New Zealand</a> on March 15 @ 12:00 PM NZDT</li>
+<li>
+<a href="https://www.meetup.com/ansible-minneapolis/events/291857213/">Ansible Minneapolis</a> on March 16 @ 6:30PM CDT</li>
+</ul>
+<p>Check out the respective event pages for details and RSVP!</p>
+</blockquote>
+<h3>THAT'S ALL FOR NOW!</h3>
+<p>Have any questions you’d like to ask, or issues you’d like to see covered? Please ask in <a href="https://matrix.to/#/#social:ansible.com">#social:ansible.com</a>! See you next time!</p>
+</div>
+    <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">
+<li><a class="tag p-category" href="../../categories/news/" rel="tag">news</a></li>
+        </ul>
+<ul class="pager hidden-print">
+<li class="previous">
+                <a href="../bullhorn-92/" rel="prev" title="Bullhorn #92">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../bullhorn-94/" rel="next" title="Bullhorn #94">Next post</a>
+            </li>
+        </ul></nav></aside></article><!--End of body content-->
+</div>
+        <div class="content-slim redhat-footer">
+      <div class="footer-left">
+        <ul class="footer-left-links">
+<li>
+            <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-SA 4.0</a>
+          </li>
+          <li>
+            <a href="https://www.redhat.com/en/about/privacy-policy" target="_blank">Privacy policy</a>
+          </li>
+          <li>
+            <a href="https://docs.ansible.com/ansible/latest/community/code_of_conduct.html" target="_blank">Code of conduct</a>
+          </li>
+        </ul>
+</div>
+      <div class="footer-right">
+        <span class="redhat">Powered by</span>
+        <span class="redhat-logo">
+          <a href="https://www.redhat.com/en/technologies/management/ansible" target="_blank">
+            <img src="../../assets/images/redhat_reversed.svg" alt="Red Hat logo." width="96" height="28"></a>
+        </span>
+      </div>
+    </div>
+
+</div>
+
+            <script src="../../assets/js/jquery.min.js"></script><script src="../../assets/js/popper.min.js"></script><script src="../../assets/js/bootstrap.min.js"></script><script src="../../assets/js/baguetteBox.min.js"></script><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+</script><script src="../../assets/js/clipboard.min.js" type="text/javascript"></script><script src="../../assets/js/clipboard.js" type="text/javascript"></script>
+</body>
+</html>

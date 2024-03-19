@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Ansible Collaborative (Posts by Craig Brandt)</title><link>https://ansible.com/</link><description></description><atom:link href="https://ansible.com/authors/craig-brandt.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2024 &lt;a href="mailto:website@ansible.community"&gt;Ansible Collaborative, et al&lt;/a&gt; </copyright><lastBuildDate>Mon, 18 Mar 2024 19:47:36 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Welcome to the Ansible Lightspeed with IBM Watson Code Assistant Technical Preview</title><link>https://ansible.com/blog/welcome-to-the-ansible-lightspeed-technical-preview/</link><dc:creator>Craig Brandt</dc:creator><description>&lt;h2&gt;Welcome to the Ansible Lightspeed with IBM Watson Code Assistant Technical Preview&lt;/h2&gt;
+&lt;p&gt;At Red Hat Summit and AnsibleFest 2023, we &lt;a href="https://www.redhat.com/en/about/press-releases/red-hat-introduces-ansible-lightspeed-ai-driven-it-automation"&gt;announced Ansible Lightspeed with IBM Watson Code Assistant&lt;/a&gt;, a new generative AI service for Ansible automation.
+Today, we are thrilled to announce the Ansible Lightspeed technical preview launch.&lt;/p&gt;
+&lt;p&gt;In this blog, we'll walk through the steps to access the Ansible
+Lightspeed with IBM Watson Code Assistant technical preview service and
+get it up and running in your Visual Studio Code environment. Then we'll
+share more about what you can expect from the experience and how to
+generate your first Ansible tasks with generative AI.&lt;/p&gt;
+&lt;p&gt;This is exciting stuff, so let's dive right in.&lt;/p&gt;
+&lt;h3&gt;Technical Preview: Empowering Ansible Users with AI&lt;/h3&gt;
+&lt;p&gt;Ansible Lightspeed with IBM Watson Code Assistant is a purpose-built
+generative AI tool that aims to streamline the creation of Ansible
+content. This capability is natively integrated into your VS Code editor
+via the &lt;a href="https://marketplace.visualstudio.com/items?itemName=redhat.ansible"&gt;Ansible VS Code extension&lt;/a&gt;.
+The AI capabilities are powered by Watson Code Assistant, a foundation
+model trained on Ansible Galaxy, GitHub, and other open sources of
+data.&lt;/p&gt;
+&lt;p&gt;The technical preview is open and available, free of charge, to all
+Ansible users. As more users engage with Ansible Lightspeed, the model
+recommendations will continuously improve, thanks to the valuable input
+and engagement from the community.&lt;/p&gt;
+&lt;h3&gt;Getting Connected: Installation and Configuration&lt;/h3&gt;
+&lt;p&gt;You'll need &lt;a href="https://code.visualstudio.com/download"&gt;Visual Studio Code&lt;/a&gt; and Ansible installed on
+your workstation and a GitHub account to access the Ansible Lightspeed
+service. Let's get started!&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Install the &lt;a href="https://marketplace.visualstudio.com/items?itemName=redhat.ansible"&gt;Ansible VS Code extension&lt;/a&gt; from the Visual Studio Code Marketplace by
+    searching for "&lt;em&gt;ansible&lt;/em&gt;" and selecting the extension published by Red Hat.&lt;/li&gt;
+&lt;li&gt;Enable the Ansible Lightspeed service within the extension by accessing the "&lt;em&gt;Extension Settings&lt;/em&gt;" via the gear icon.&lt;/li&gt;
+&lt;li&gt;In the settings, enable both "&lt;em&gt;Ansible Lightspeed enabled&lt;/em&gt;" and "&lt;em&gt;Enable Ansible Lightspeed with Watson Code Assistant inline suggestions&lt;/em&gt;" checkboxes.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Note: You can enable Ansible Lightspeed in the "[User]" or "[Workspace]"
+settings, based on your preference. More information on VS Code User and
+Workspace settings can be found in their
+&lt;a href="https://code.visualstudio.com/docs/getstarted/settings#"&gt;documentation&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Installing the Ansible Visual Studio Code extension.&lt;/em&gt;
+&lt;img alt="Installing the Ansible Visual Studio Code extension" src="https://ansible.com/images/posts/archive/lightspeed-blog-launching.gif"&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Click on the Ansible "A" in the VS Code activity bar on the
+    left-hand side of your editor to open the extension.&lt;/li&gt;
+&lt;li&gt;Click "&lt;em&gt;Connect&lt;/em&gt;" and follow the prompts to log into GitHub using
+    your credentials.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;em&gt;Log in using your GitHub credentials.&lt;/em&gt;
+&lt;img alt="Log in using your GitHub credentials" src="https://ansible.com/images/posts/archive/lightspeed-blog-login.gif"&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Read the Ansible Lightspeed technical preview terms and conditions and click "&lt;em&gt;Agree&lt;/em&gt;".&lt;/li&gt;
+&lt;li&gt;Next, authorize Ansible Lightspeed for VS Code by clicking "&lt;em&gt;Authorize&lt;/em&gt;".&lt;/li&gt;
+&lt;li&gt;Follow the browser prompts to redirect you back to VS Code, and, finally, click "&lt;em&gt;Open&lt;/em&gt;" in the VS Code confirmation dialog box.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;em&gt;Authorize Ansible Lightspeed.&lt;/em&gt;
+&lt;img alt="Authorize Ansible Lightspeed" src="https://ansible.com/images/posts/archive/lightspeed-blog-agree.gif"&gt;&lt;/p&gt;
+&lt;p&gt;Congratulations! You've successfully configured Ansible Lightspeed in VS
+Code.&lt;/p&gt;
+&lt;p&gt;You can confirm that Ansible Lightspeed is enabled by checking the VS
+Code status bar at the bottom of the editor window.&lt;/p&gt;
+&lt;p&gt;Please ensure a Python environment is selected and your Ansible YAML
+files are associated with the Ansible language. More information on VS
+Code languages can be found in their
+&lt;a href="https://code.visualstudio.com/docs/languages/overview#_change-the-language-for-the-selected-file"&gt;documentation&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Ansible Lightspeed status.&lt;/em&gt;
+&lt;img alt="Ansible Lightspeed status" src="https://ansible.com/images/posts/archive/lightspeed-blog-status.png"&gt;&lt;/p&gt;
+&lt;h3&gt;A Quick Tour of Ansible Lightspeed: Generating Your First Task&lt;/h3&gt;
+&lt;p&gt;Now that you are connected to Ansible Lightspeed, it's time to
+experience its AI-enhanced content creation experience.&lt;/p&gt;
+&lt;p&gt;Let's use an
+&lt;a href="https://github.com/craig-br/demos/blob/main/blogs/lightspeed_tech_preview_jun2023/deploy_monitoring.yml"&gt;example&lt;/a&gt;
+&lt;a href="https://github.com/craig-br/demos/blob/main/blogs/lightspeed_tech_preview_jun2023/deploy_monitoring.yml"&gt;Playbook&lt;/a&gt;
+to walk through asking Ansible Lightspeed for AI-generated task suggestions and also highlight some of what you can
+expect in the technical preview release. The example Playbook installs
+&lt;a href="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/managing_systems_using_the_rhel_9_web_console/index"&gt;Cockpit&lt;/a&gt;
+on a Red Hat Enterprise Linux system.&lt;/p&gt;
+&lt;p&gt;Note: As more users engage with Ansible Lightspeed, the breadth, depth, and quality of the recommendations generated by the model will improve. Therefore, the Ansible task suggestions in the examples below may differ from your results.&lt;/p&gt;
+&lt;h3&gt;How do I generate an Ansible Lightspeed suggestion?&lt;/h3&gt;
+&lt;p&gt;Let's use our first Playbook task in the
+&lt;a href="https://github.com/craig-br/demos/blob/main/blogs/lightspeed_tech_preview_jun2023/deploy_monitoring.yml"&gt;deploy_monitoring.yml&lt;/a&gt;
+example Playbook to demonstrate asking Ansible Lightspeed for an AI suggestion.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Move your cursor to the end of the  "&lt;em&gt;- name: Include redhat.rhel_system_roles.cockpit" task description.&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;Press "ENTER" to generate a suggestion.&lt;/li&gt;
+&lt;li&gt;Press "TAB" to accept the suggestion.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;em&gt;Generating an Ansible task.&lt;/em&gt;
+&lt;img alt="Generating an Ansible task" src="https://ansible.com/images/posts/archive/lightspeed-blog-generate.gif"&gt;&lt;/p&gt;
+&lt;p&gt;In this suggestion, we asked Ansible Lightspeed to include the
+"&lt;em&gt;cockpit&lt;/em&gt;" Role, part of the  &lt;a href="https://access.redhat.com/articles/3050101"&gt;Red Hat Enterprise Linux System Roles&lt;/a&gt; Certified Content Collection. The suggestion used the &lt;a href="https://docs.ansible.com/ansible/latest/collections_guide/collections_using_playbooks.html"&gt;Fully Qualified Collection Name&lt;/a&gt; (FQCN):
+&lt;a href="https://docs.ansible.com/ansible/latest/collections/ansible/builtin/include_role_module.html"&gt;&lt;code&gt;ansible.builtin.include_role&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Using FQCNs is a &lt;a href="https://docs.ansible.com/ansible/latest/porting_guides/porting_guide_2.10.html"&gt;recommended best practice&lt;/a&gt; and an example of the many unique post-processing capabilities we've baked into the Ansible Lightspeed service.&lt;/p&gt;
+&lt;p&gt;Let's move on to the next task.&lt;/p&gt;
+&lt;h3&gt;Ansible best practices. We've got you covered.&lt;/h3&gt;
+&lt;p&gt;&lt;em&gt;Ansible Lightspeed best practices example.&lt;/em&gt;
+&lt;img alt="Ansible Lightspeed best practices example" src="https://ansible.com/images/posts/archive/lightspeed-blog-best-practice.gif"&gt;&lt;/p&gt;
+&lt;p&gt;This Playbook task copies
+&lt;a href="https://github.com/craig-br/demos/blob/main/blogs/lightspeed_tech_preview_jun2023/files/cockpit.conf"&gt;cockpit.conf&lt;/a&gt; to the target host. Note that the recommendation included the "&lt;em&gt;mode:&lt;/em&gt;" module argument and set the Linux file permissions to &lt;code&gt;0*644*&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Ansible Lightspeed provided a robust example of setting file permissions
+for the &lt;a href="https://docs.ansible.com/ansible/latest/collections/ansible/builtin/copy_module.html"&gt;ansible.builtin.copy&lt;/a&gt; module, another recommended best practice.&lt;/p&gt;
+&lt;p&gt;We'll continue to expand on these natively integrated best practices as the service matures.&lt;/p&gt;
+&lt;h3&gt;Finalizing the Playbook&lt;/h3&gt;
+&lt;p&gt;Let's ask Ansible Lightspeed to generate suggestions for the remaining
+two Playbook tasks. The first task restarts the Cockpit service to apply our custom
+&lt;a href="https://github.com/craig-br/demos/blob/main/blogs/lightspeed_tech_preview_jun2023/files/cockpit.conf"&gt;cockpit.conf&lt;/a&gt;
+configuration file and the second task permits Cockpit service traffic through the firewall.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Generate remaining Ansible tasks.&lt;/em&gt;
+&lt;img alt="Generate remaining Ansible tasks" src="https://ansible.com/images/posts/archive/lightspeed-blog-generate-tasks.gif"&gt;&lt;/p&gt;
+&lt;h3&gt;Ansible Lightspeed with Watson Code Assistant and context&lt;/h3&gt;
+&lt;p&gt;Generating contextually aware, accurate Ansible content suggestions
+saves you time and helps you create efficiently. One of Ansible
+Lightspeed's superpowers is context.&lt;/p&gt;
+&lt;p&gt;Ansible Lightspeed uses the Ansible task description and YAML file
+content to generate suggestions suited to what you're automating. Let's
+use an example to illustrate this.&lt;/p&gt;
+&lt;p&gt;Imagine we want to set module defaults for the
+&lt;a href="https://docs.ansible.com/ansible/latest/collections/ansible/posix/firewalld_module.html"&gt;ansible.posix.firewalld&lt;/a&gt;
+module in the last Ansible task. Specifically, always
+making the firewall rule changes permanent. We can accomplish this by using the
+&lt;a href="https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_module_defaults.html"&gt;module_defaults&lt;/a&gt; Playbook keyword, illustrated below.&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="nt"&gt;module_defaults&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;ansible.posix.firewalld&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;permanent&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;true&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h4&gt;Ansible Playbook module_defaults section&lt;/h4&gt;
+&lt;p&gt;The module defaults section tells Ansible to always add "&lt;em&gt;permanent: true&lt;/em&gt;"
+to every "&lt;em&gt;ansible.posix.firewall&lt;/em&gt;" task in the Playbook. Let's
+ask Ansible Lightspeed for an updated suggestion with the module
+defaults.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Ansible Lightspeed context.&lt;/em&gt;
+&lt;img alt="Ansible Lightspeed context" src="https://ansible.com/images/posts/archive/lightspeed-blog-context.gif"&gt;&lt;/p&gt;
+&lt;p&gt;Note that it used the full Playbook context and provided a revised
+recommendation that excludes "&lt;em&gt;permanent: true&lt;/em&gt;". You can also apply
+this to other Playbook keywords, such as "&lt;em&gt;vars&lt;/em&gt;".&lt;/p&gt;
+&lt;h3&gt;Transparency and openness. Ansible Lightspeed Content Source Matching&lt;/h3&gt;
+&lt;p&gt;Last, and certainly not least, is Ansible Lightspeed Content Source
+Matching.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Ansible Lightspeed Content Source Matching.&lt;/em&gt;
+&lt;img alt="Ansible Lightspeed Content Source Matching" src="https://ansible.com/images/posts/archive/lightspeed-blog-source-matching.gif"&gt;&lt;/p&gt;
+&lt;p&gt;We transparently share the potential source, Author, and content license
+of the training data used for the recommendation. Building trust in the
+community and supporting the relationships between authors and
+contributors is part of Red Hat's DNA.  These suggestions came from the
+Ansible community; we don't want to hide that.&lt;/p&gt;
+&lt;h3&gt;Wrap-up&lt;/h3&gt;
+&lt;p&gt;Congratulations! You have successfully configured Ansible Lightspeed in
+VS Code and experienced its generative AI capabilities with just a few
+simple steps.&lt;/p&gt;
+&lt;p&gt;We encourage you to share your feedback on the technical preview
+experience and stay updated on the project by joining the
+&lt;a href="https://matrix.to/#/#lightspeed:ansible.com"&gt;Ansible Lightspeed Matrix room&lt;/a&gt;
+to ask questions and get the latest news. Please also
+visit the &lt;a href="http://www.redhat.com/ansible-lightspeed"&gt;Ansible Lightspeed landing page.&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;We'll update you with new resources to help you get the most out of your
+Ansible Lightspeed with Watson Code Assistant experience.&lt;/p&gt;
+&lt;p&gt;Happy automating...with AI!&lt;/p&gt;</description><guid>https://ansible.com/blog/welcome-to-the-ansible-lightspeed-technical-preview/</guid><pubDate>Mon, 26 Jun 2023 00:00:00 GMT</pubDate></item></channel></rss>

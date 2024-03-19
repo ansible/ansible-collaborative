@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Ansible Collaborative (Posts by John Westcott)</title><link>https://ansible.com/</link><description></description><atom:link href="https://ansible.com/authors/john-westcott.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2024 &lt;a href="mailto:website@ansible.community"&gt;Ansible Collaborative, et al&lt;/a&gt; </copyright><lastBuildDate>Mon, 18 Mar 2024 19:47:35 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Securing Tower Installer Passwords</title><link>https://ansible.com/blog/securing-tower-installer-passwords/</link><dc:creator>John Westcott</dc:creator><description>&lt;h2&gt;Securing Tower Installer Passwords&lt;/h2&gt;
+&lt;p&gt;One of the crucial pieces of the Red Hat Ansible Automation Platform is
+Ansible Tower. Ansible Tower helps scaling IT automation, managing
+complex deployments and speeding up productivity. A strength of Ansible
+Tower is its simplicity that also extends to the installation routine:
+when installed as a non-container version, a simple script is used to
+read in variables from an initial configuration to deploy Ansible Tower.
+The same script and initial configuration can even be re-used to extend
+the setup and add, for example, more cluster nodes.&lt;/p&gt;
+&lt;p&gt;However, part of this initial configuration are passwords for the
+database, Ansible Tower itself and so on. In many online examples, these
+passwords are often stored in plain text. One question I frequently get
+as a Red Hat Consultant is how to protect this information. A common
+solution is to simply remove the file after you complete the
+installation of Ansible Tower. But, there are reasons you may want to
+keep the file around. In this article, I will present another way to
+protect the passwords in your installation files.&lt;/p&gt;
+&lt;h2&gt;Ansible Tower's setup.sh&lt;/h2&gt;
+&lt;p&gt;For some quick background, &lt;code&gt;setup.sh&lt;/code&gt; is the script used to install
+Ansible Tower and is provided in both the regular and bundled installer.
+The &lt;code&gt;setup.sh&lt;/code&gt; script only performs a couple of tasks, such as validating
+that Ansible is installed on the local system and setting up the
+installer logs; but most importantly, it launches Ansible to handle the
+installation of Ansible Tower. An inventory file can be specified to the
+installer using the &lt;code&gt;-i&lt;/code&gt; parameter or, if unspecified, the default
+provided inventory file (which sits alongside &lt;code&gt;setup.sh&lt;/code&gt;) is used. In the
+first section of the inventory file, we have groups to specify the
+servers that Ansible Tower and the database will be installed on:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="k"&gt;[tower]&lt;/span&gt;
+&lt;span class="na"&gt;localhost ansible_connection&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;local&lt;/span&gt;
+
+&lt;span class="k"&gt;[database]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;And, after those group specifications, there are variables that can be
+used to set the connections and passwords, and is where you would
+normally enter your plain text passwords, such as:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="k"&gt;[all:vars]&lt;/span&gt;
+&lt;span class="na"&gt;admin_password&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;'T0w3r123!'&lt;/span&gt;
+
+&lt;span class="na"&gt;pg_host&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;''&lt;/span&gt;
+&lt;span class="na"&gt;pg_port&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;''&lt;/span&gt;
+
+&lt;span class="na"&gt;pg_database&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;'awx'&lt;/span&gt;
+&lt;span class="na"&gt;pg_username&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;'awx'&lt;/span&gt;
+&lt;span class="na"&gt;pg_password&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;'DB_Pa55w0rd!'&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;In the example above, these passwords are displayed as plain text. Many
+clients I have worked with are not comfortable with leaving their
+passwords in plain text within the inventory file for security reasons.
+Once Ansible Tower is installed, this file can be safely removed, but if
+you ever need to modify your installation to add a node to a cluster or
+add/remove inventory groups, this file will need to be regenerated.
+Likewise, if you want to use the backup and restore functions of
+&lt;code&gt;setup.sh&lt;/code&gt;, you will also need the inventory file with all of the
+passwords as it was originally installed.&lt;/p&gt;
+&lt;h2&gt;Vault to the Rescue&lt;/h2&gt;
+&lt;p&gt;Since the installer is using Ansible to install Ansible Tower, we can
+leverage some Ansible concepts to secure our passwords. Specifically, we
+will use &lt;a href="https://docs.ansible.com/ansible/latest/user_guide/vault.html"&gt;Ansible vault&lt;/a&gt; to
+have an encrypted password instead of a plain text password. If you are
+not familiar with Ansible vault, it is a program shipped with Red Hat
+Ansible Automation Platform itself and is a mechanism to encrypt and
+decrypt data. It can be used against individual strings or it can
+encrypt an entire file. In our example, we will encrypt individual
+strings as passwords. This will be beneficial if you end up committing
+your inventory file into a source control management tool. The SCM will
+be able to show you individual passwords that were changed in a commit
+versus just being able to say an encrypted file changed (but not being
+able to show which password within the encrypted file changed).&lt;/p&gt;
+&lt;p&gt;To start, we are going to encrypt our admin password with the following
+command (fields in &lt;code&gt;&amp;lt;&amp;gt;&lt;/code&gt; indicate input to ansible-vault):&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;$&lt;span class="w"&gt; &lt;/span&gt;ansible-vault&lt;span class="w"&gt; &lt;/span&gt;encrypt_string&lt;span class="w"&gt; &lt;/span&gt;--stdin-name&lt;span class="w"&gt; &lt;/span&gt;admin_password
+New&lt;span class="w"&gt; &lt;/span&gt;Vault&lt;span class="w"&gt; &lt;/span&gt;password:
+Confirm&lt;span class="w"&gt; &lt;/span&gt;New&lt;span class="w"&gt; &lt;/span&gt;Vault&lt;span class="w"&gt; &lt;/span&gt;password:
+Reading&lt;span class="w"&gt; &lt;/span&gt;plaintext&lt;span class="w"&gt; &lt;/span&gt;input&lt;span class="w"&gt; &lt;/span&gt;from&lt;span class="w"&gt; &lt;/span&gt;stdin.&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;ctrl-d&lt;span class="w"&gt; &lt;/span&gt;to&lt;span class="w"&gt; &lt;/span&gt;end&lt;span class="w"&gt; &lt;/span&gt;input&lt;span class="o"&gt;)&lt;/span&gt;
+&amp;lt;t0w3r123!&amp;gt;admin_password:&lt;span class="w"&gt; &lt;/span&gt;!vault&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;
+&lt;span class="w"&gt;          &lt;/span&gt;&lt;span class="nv"&gt;$ANSIBLE_VAULT&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;.1&lt;span class="p"&gt;;&lt;/span&gt;AES256
+&lt;span class="w"&gt;          &lt;/span&gt;&lt;span class="m"&gt;66663534356430343166356461373464336332343439393731363365303063353032373564623537&lt;/span&gt;
+&lt;span class="w"&gt;          &lt;/span&gt;3466663861633936366463346135656130306538376637320a303738653264333737343463613366
+&lt;span class="w"&gt;          &lt;/span&gt;&lt;span class="m"&gt;31396336633730323639303436653330386536363838646161653562373631323766346431663461&lt;/span&gt;
+&lt;span class="w"&gt;          &lt;/span&gt;6536646264633563660a343163303334336164376339363161373662613137633436393263376631
+&lt;span class="w"&gt;          &lt;/span&gt;&lt;span class="m"&gt;3539&lt;/span&gt;
+Encryption&lt;span class="w"&gt; &lt;/span&gt;successful
+&amp;lt;/t0w3r123!&amp;gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;In this example, we are running ansible-vault and asking it to encrypt a
+string. We've told ansible-vault that this variable will be called
+&lt;code&gt;admin_password&lt;/code&gt; and it will have a value of &lt;strong&gt;T0w3r123!&lt;/strong&gt; (what we would
+have entered into our inventory file). In the example, we used a
+password of '&lt;strong&gt;password&lt;/strong&gt;' to encrypt these values. In a production
+environment, a much stronger password should be used to perform your
+vault encryption. In the output of the command, after the two ctrl-d
+inputs, our encrypted variable is displayed on the screen. We will take
+this output and put it into a file called &lt;code&gt;passwords.yml&lt;/code&gt; next to our
+inventory file. After encrypting the second &lt;code&gt;pg_password&lt;/code&gt; our &lt;code&gt;password.yml&lt;/code&gt;
+file looks like this:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;---
+admin_password:&lt;span class="w"&gt; &lt;/span&gt;!vault&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;
+&lt;span class="w"&gt;          &lt;/span&gt;&lt;span class="nv"&gt;$ANSIBLE_VAULT&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;.1&lt;span class="p"&gt;;&lt;/span&gt;AES256
+&lt;span class="w"&gt;          &lt;/span&gt;&lt;span class="m"&gt;66663534356430343166356461373464336332343439393731363365303063353032373564623537&lt;/span&gt;
+&lt;span class="w"&gt;          &lt;/span&gt;3466663861633936366463346135656130306538376637320a303738653264333737343463613366
+&lt;span class="w"&gt;          &lt;/span&gt;&lt;span class="m"&gt;31396336633730323639303436653330386536363838646161653562373631323766346431663461&lt;/span&gt;
+&lt;span class="w"&gt;          &lt;/span&gt;6536646264633563660a343163303334336164376339363161373662613137633436393263376631
+&lt;span class="w"&gt;          &lt;/span&gt;&lt;span class="m"&gt;3539&lt;/span&gt;
+pg_password:&lt;span class="w"&gt; &lt;/span&gt;!vault&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;
+&lt;span class="w"&gt;          &lt;/span&gt;&lt;span class="nv"&gt;$ANSIBLE_VAULT&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;.1&lt;span class="p"&gt;;&lt;/span&gt;AES256
+&lt;span class="w"&gt;          &lt;/span&gt;&lt;span class="m"&gt;65633239383761336539313437643733323235366337653164383934303563643464626562633865&lt;/span&gt;
+&lt;span class="w"&gt;          &lt;/span&gt;3130313231666531613131633736386134343664373039620a336237393631333532373066343135
+&lt;span class="w"&gt;          &lt;/span&gt;&lt;span class="m"&gt;65316431626630633965623134623133353635376236306538653230363038333661623236376330&lt;/span&gt;
+&lt;span class="w"&gt;          &lt;/span&gt;3664346237396139610a376536373132313237653239353832623433663230393464343331356561
+&lt;span class="w"&gt;          &lt;/span&gt;&lt;span class="m"&gt;3435&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Now that we have our completed &lt;code&gt;passwords.yml&lt;/code&gt; file, we have to tell the
+installer to load the passwords from this file and also to prompt us for
+the vault password to decrypt the value. To do this we will add three
+parameters to our &lt;code&gt;setup.sh&lt;/code&gt; command. The first option is
+&lt;code&gt;-e@passwords.yml&lt;/code&gt;, which is a
+standard syntax to tell Ansible to load variables from a specified file
+name (in this case &lt;code&gt;passwords.yml&lt;/code&gt;). The second option will be &lt;code&gt;--&lt;/code&gt;, which will tell the
+&lt;code&gt;setup.sh&lt;/code&gt; script that any following options should be passed on to
+Ansible instead of being processed by &lt;code&gt;setup.sh&lt;/code&gt;.
+The final option will be &lt;code&gt;--ask-vault-pass&lt;/code&gt;, which tells Ansible to prompt us for the
+password to be able to decrypt the vault secrets.
+All together our setup command will become:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;$&lt;span class="w"&gt; &lt;/span&gt;./setup.sh&lt;span class="w"&gt; &lt;/span&gt;-e@passwords.yml&lt;span class="w"&gt; &lt;/span&gt;--&lt;span class="w"&gt; &lt;/span&gt;--ask-vault-pass
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;If you normally add arguments to &lt;code&gt;setup.sh&lt;/code&gt;, they will need to be merged
+into this command structure. Arguments to &lt;code&gt;setup.sh&lt;/code&gt; will need to go
+before the &lt;code&gt;--&lt;/code&gt; and any arguments you passed to Ansible would go after the &lt;code&gt;--&lt;/code&gt;. &lt;/p&gt;
+&lt;p&gt;When running &lt;code&gt;setup.sh&lt;/code&gt; with these options you will now be prompted to
+enter the vault password before the Ansible installer begins:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;$&lt;span class="w"&gt; &lt;/span&gt;./setup.sh&lt;span class="w"&gt; &lt;/span&gt;-e@passwords.yml&lt;span class="w"&gt; &lt;/span&gt;--&lt;span class="w"&gt; &lt;/span&gt;--ask-vault-pass
+Using&lt;span class="w"&gt; &lt;/span&gt;/etc/ansible/ansible.cfg&lt;span class="w"&gt; &lt;/span&gt;as&lt;span class="w"&gt; &lt;/span&gt;config&lt;span class="w"&gt; &lt;/span&gt;file
+Vault&lt;span class="w"&gt; &lt;/span&gt;&amp;lt;password&amp;gt;:
+
+PLAY&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;tower:database:instance_group_*:isolated_group_*&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;******************************************************************************************
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Here I have to enter my weak vault password of 'password' for the
+decryption process to work. &lt;/p&gt;
+&lt;p&gt;This technique will work even if you leave the blank password variables
+in the inventory file because of the
+&lt;a href="https://docs.ansible.com/ansible/latest/user_guide/playbooks_variables.html#variable-precedence-where-should-i-put-a-variable"&gt;variable precedence from Ansible&lt;/a&gt;.
+The highest precedence any variable can take comes from extra_vars
+(which is the &lt;code&gt;-e&lt;/code&gt; option we added to the installer), so values in
+our vault file will override any values specified in the inventory file.&lt;/p&gt;
+&lt;p&gt;Using this method allows you to keep the inventory file and password
+files on disk or in an SCM and not have plain text passwords contained
+within them.&lt;/p&gt;
+&lt;h2&gt;Another Solution&lt;/h2&gt;
+&lt;p&gt;Another option you could take if you only wanted a single inventory file
+would be to convert the existing ini inventory file into a yaml based
+inventory. This would allow you to embed the variables as vault
+encrypted values directly. While the scope of doing that is beyond this
+article, an example &lt;code&gt;inventory.yml&lt;/code&gt; file might look similar to this:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="nt"&gt;all&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;children&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;database&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p p-Indicator"&gt;{}&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;tower&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;hosts&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;localhost&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;vars&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;admin_password&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;!vault&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p p-Indicator"&gt;|&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="no"&gt;$ANSIBLE_VAULT;1.1;AES256&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="no"&gt;66663534356430343166356461373464336332343439393731363365303063353032373564623537&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="no"&gt;3466663861633936366463346135656130306538376637320a303738653264333737343463613366&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="no"&gt;31396336633730323639303436653330386536363838646161653562373631323766346431663461&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="no"&gt;6536646264633563660a343163303334336164376339363161373662613137633436393263376631&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="no"&gt;3539&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;ansible_connection&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;local&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;pg_database&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;awx&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;pg_host&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;''&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;pg_password&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;!vault&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p p-Indicator"&gt;|&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="no"&gt;$ANSIBLE_VAULT;1.1;AES256&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="no"&gt;65633239383761336539313437643733323235366337653164383934303563643464626562633865&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="no"&gt;3130313231666531613131633736386134343664373039620a336237393631333532373066343135&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="no"&gt;65316431626630633965623134623133353635376236306538653230363038333661623236376330&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="no"&gt;3664346237396139610a376536373132313237653239353832623433663230393464343331356561&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="no"&gt;3435&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;pg_port&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;''&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;pg_sslmode&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;prefer&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;pg_username&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;awx&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;rabbitmq_cookie&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;cookiemonster&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;rabbitmq_password&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;''&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;rabbitmq_username&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;tower&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;tower_package_name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;ansible-tower&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;tower_package_release&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;'1'&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;tower_package_version&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;3.6.3&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Using a file like this, &lt;code&gt;setup.sh&lt;/code&gt; could then be called as:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;$&lt;span class="w"&gt; &lt;/span&gt;./setup.sh&lt;span class="w"&gt; &lt;/span&gt;-i&lt;span class="w"&gt; &lt;/span&gt;inventory.yml&lt;span class="w"&gt; &lt;/span&gt;--&lt;span class="w"&gt; &lt;/span&gt;--ask-vault-pass
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Using this method will require more work when upgrading Ansible Tower,
+as any field changes in the provided inventory file will need to be
+reflected in your yaml inventory, whereas the previous method only
+requires new password fields added to the inventory file to be added
+into the password.yml file.&lt;/p&gt;</description><guid>https://ansible.com/blog/securing-tower-installer-passwords/</guid><pubDate>Thu, 23 Jul 2020 00:00:00 GMT</pubDate></item><item><title>Connect Ansible Tower and Jenkins in under 5 minutes</title><link>https://ansible.com/blog/ansible-tower-jenkins-in-under-5-minutes/</link><dc:creator>John Westcott</dc:creator><description>&lt;h2&gt;Connect Ansible Tower and Jenkins in under 5 minutes&lt;/h2&gt;
+&lt;p&gt;We often hear from customers that they are using Jenkins in some
+capacity or another. And since I'm a consultant, I'm lucky to hear
+first hand what our customers are using and how they need to integrate
+Ansible Tower. There has always been a way to integrate the Ansible
+Tower and Jenkins using &lt;a href="https://github.com/ansible/tower-cli"&gt;tower-cli&lt;/a&gt;, but
+I thought there could be a neater, closer to native, way of doing it.&lt;/p&gt;
+&lt;p&gt;So here we go. I've recorded this short screencast to show you just how easy it is:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The screencast is not currently available.
+You can find helpful material in the links below or on the Ansible community forum: https://forum.ansible.com/tag/awx&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;!--
+This HTML fragment contains the embedded media from the original blog post.
+The video source is unavailable so commenting the HTML.
+&lt;p&gt;&lt;script src="https://fast.wistia.com/embed/medias/losl1x4e3a.jsonp" async&gt;&lt;/script&gt;
+&lt;script charset="ISO-8859-1" src="//fast.wistia.com/assets/external/E-v1.js" async&gt;&lt;/script&gt;
+&lt;/p&gt;
+&lt;div class="wistia_responsive_padding" style="padding:56.25% 0 0 0;position:relative;"&gt;
+  &lt;div class="wistia_responsive_wrapper" style="height:100%;left:0;position:absolute;top:0;width:100%;"&gt;
+    &lt;div class="wistia_embed wistia_async_losl1x4e3a videoFoam=true" style="height:100%;width:100%"&gt;
+      &amp;nbsp;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+--&gt;
+
+&lt;p&gt;Below you will find a few links from the video and a link to how to try Ansible Tower.&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://plugins.jenkins.io/ansible-tower"&gt;plugins.jenkins.io/ansible-tower&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://wiki.jenkins.io/display/jenkins/ansible+tower+plugin"&gt;wiki.jenkins.io/display/JENKINS/Ansible+Tower+Plugin&lt;/a&gt;&lt;/p&gt;</description><guid>https://ansible.com/blog/ansible-tower-jenkins-in-under-5-minutes/</guid><pubDate>Thu, 31 May 2018 00:00:00 GMT</pubDate></item></channel></rss>

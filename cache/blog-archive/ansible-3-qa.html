@@ -1,0 +1,160 @@
+<h1>Ansible 3.0.0 Q&amp;A</h1>
+<p>The Ansible community team has
+<a href="https://www.ansible.com/blog/announcing-the-community-ansible-3.0.0-package">announced the release of Ansible 3.0.0</a>
+and here are the questions about the release that we've heard from
+community members so far. If you have a question that is not answered
+below, let us know on the <a href="https://www.ansible.com/community">mailing lists or IRC</a>.</p>
+<p><strong>How can I stay up to date with changes in the Ansible community?</strong></p>
+<p>Subscribe to the <a href="https://groups.google.com/forum/#!forum/ansible-announce">ansible-announce mailing list</a>
+for release announcements and to the <a href="https://us19.campaign-archive.com/home/?u=56d874e027110e35dea0e03c1&amp;id=d6635f5420">Bullhorn newsletter</a>
+for community news. The Bullhorn is distributed every two weeks with key dates and updates. You may also consider
+<a href="https://www.eventbrite.com/e/ansible-contributor-summit-202103-registration-141735886853">registering for the Ansible contributor summit</a>
+on March 9, 2021.</p>
+<h2>About the Ansible community package and ansible-base/ansible-core</h2>
+<p><strong>Are there any changes to the Ansible language in 3.0.0?</strong></p>
+<p>There are no significant changes since the Ansible 3.0.0 package depends on the same version of ansible-base as Ansible 2.10.x.</p>
+<p><strong>Why are the versions of ansible-base/ansible-core packages diverging from the Ansible package?</strong></p>
+<p>When the Ansible Community Team set out to restructure the Ansible project, Ansible was split into the following components: </p>
+<ul>
+<li>The core engine, modules and plugins</li>
+<li>Community and partner supported Ansible Collections of modules and plugins</li>
+</ul>
+<p>The former became known as ansible-base, soon to be
+<a href="https://github.com/ansible/ansible/blob/devel/docs/docsite/rst/roadmap/ROADMAP_2_11.rst">ansible-core</a>.
+The latter became additions on top of the core, available either ad-hoc
+or as part of the Ansible community package, which includes a set of
+curated and maintained Collections.</p>
+<p>Semantic versioning of the Ansible package will let us signal
+backwards-compatibility as well as breaking changes in the included
+Collections independently of the core engine.</p>
+<p>Because these are different components and different things, it is
+appropriate for them to be versioned independently from each other.</p>
+<p><strong>Will ansible-base/ansible-core also adopt semantic versioning?</strong></p>
+<p>No, the team managing ansible-core does not currently plan to adopt semantic versioning.</p>
+<p><strong>What is the correlation between Ansible 3.0.0 and ansible-base 2.10.x?</strong></p>
+<p>Ansible 3.0.0 is a package that includes over <a href="https://github.com/ansible-community/ansible-build-data/blob/main/3/ansible-3.build">85 Ansible Collections</a>.
+It doesn't include ansible-base: it <em>depends</em> on it and specifies a required version range such as <em>ansible-base&gt;=2.10.6,&lt;2.11</em> so that the appropriate core package gets installed automatically.
+For Ansible 4.0.0, this dependency will shift to <em>ansible-core&gt;=2.11,&lt;2.12</em> instead.</p>
+<p>ansible-base 2.10.x (as well as ansible-core in the near future) will continue to be available as a standalone package for users that prefer installing only the Collections they need.</p>
+<p><strong>How is the range of included Collection versions established?</strong></p>
+<p>The release build tooling queries the latest version of included Collections and determines the upper-limit based on that version.</p>
+<p>For example, if a collection's version is 1.5, the range would be <em>&gt;=1.5,&lt;2.0</em>.
+If the collection's version is 2.3, the range would be <em>&gt;=2.3,&lt;3.0</em>.</p>
+<p>The general idea is to keep Collections within a single major version throughout the lifecycle of a single Ansible package major version.</p>
+<p><strong>What version will ansible --version return?</strong></p>
+<p><code>ansible --version</code> will return the version of ansible-base, not the version of the Ansible package, because ansible-base is the one providing the ansible command.</p>
+<h3>Installing and upgrading</h3>
+<p><strong>How can I install Ansible 3.0.0?</strong></p>
+<p>The Ansible 3.0.0 Community package is <a href="https://pypi.org/project/ansible/">released to PyPI</a> and can be installed
+with <code>pip install ansible==3.0.0</code>.</p>
+<p><strong>Can I upgrade to Ansible 3.0.0 from previous versions of Ansible? If so which ones?</strong></p>
+<ul>
+<li>To upgrade to Ansible-3.0 from Ansible-2.10: <code>pip install --upgrade ansible</code>.</li>
+<li>To upgrade to Ansible-3.0 from Ansible-2.9 or earlier: <code>pip uninstall ansible</code>; <code>pip install ansible</code>.
+  This is due to a limitation in pip.</li>
+</ul>
+<p>Yes, but the command to upgrade is different depending on the version you have now.</p>
+<p>Ansible 3.0.0 is based on ansible-base 2.10, so playbook syntax remains
+the same between Ansible-2.10 and Ansible-3.0. However, there may be
+incompatibilities in some modules and plugins as Ansible-3.0.0 allows
+backwards-incompatible changes in Collections.</p>
+<p><strong>Will I be able to upgrade to Ansible 4.0.0 from Ansible 3.0.0?</strong></p>
+<p>Yes, but you will have to uninstall and reinstall again, due to
+the renaming of ansible-base to ansible-core: <code>pip uninstall ansible</code>; <code>pip install ansible</code>.</p>
+<p>Ansible 4.0.0 will be based on
+ansible-core 2.11, so playbook syntax in Ansible 4.0.0 may
+include backwards incompatible changes (ansible-core does not
+use semantic versioning, so updates to the minor version can
+contain backwards incompatible changes).  When Ansible 4.0.0 is
+ready to start its pre-release cycle, porting guides will be
+available to help guide you through those
+changes.</p>
+<h3>Release cadence and scope</h3>
+<p><strong>What is the release cadence moving forward?</strong></p>
+<p>Minor version releases of the Ansible package (such as 3.1.0,
+3.2.0) are planned for every three weeks.  These releases will
+include new backwards-compatible features, modules and plugins
+as well as bug fixes.</p>
+<p>Major version releases of the Ansible package (such as 4.0.0,
+5.0.0) will happen after new releases of ansible-core. The
+Ansible 4.0.0 release is planned for May 2021, soon after the
+release of ansible-core 2.11 in April. After 4.0.0, a six month
+release cycle for major versions will become the normal cadence,
+with 5.0.0 releasing in November, trailing the planned 2.12
+release of ansible-core.</p>
+<p><strong>How much change will each minor and major version of Ansible contain?</strong></p>
+<p>Each minor release of the Ansible community package will accept
+only backwards-compatible changes in included Collections.
+Collections must also use semantic versioning, so the Collection
+version numbers will reflect this rule. For example, if Ansible
+3.0.0 releases with community.general 2.0.0, then all minor
+releases of Ansible 3.x (such as Ansible 3.1.0 or Ansible 3.5.0)
+would include a 2.x release of community.general (such as 2.8.0
+or 2.9.5).</p>
+<p>Each major release of the Ansible community package will accept
+the latest released version of each included Collection and may
+include the latest released version of ansible-core. Major
+releases of the Ansible community package can contain breaking
+changes in the modules and other plugins within the included
+Collections and/or in core features.</p>
+<p><strong>What changes will each patch release contain, given the use of semantic versioning here?</strong></p>
+<p>Patch releases will be used only when bugs are discovered that
+warrant a targeted fix for with a quick turnaround.  For
+instance, if a packaging bug is discovered in our release of
+3.1.0 that prevents Debian packages from being built, a 3.1.1
+release may occur the next day that fixes that issue. No new
+features are allowed in patch releases.</p>
+<h3>Packaging</h3>
+<p><strong>Will Ansible 3.0.0 be made available as an upstream RPM?</strong></p>
+<p>No. RPM-based Linux distros, such as <a href="https://src.fedoraproject.org/rpms/ansible">Fedora</a>,
+have been creating superior RPM packages of Ansible for a while
+now. So we decided for Ansible-2.10 and ansible-base-2.10, the
+Ansible project would no longer provide pre-built RPMs.</p>
+<p><strong>Will Ansible 3.0.0 be available on Ubuntu Launchpad?</strong></p>
+<p>Yes. The Ansible Community Team is catching up to the changes
+in how the Ansible content is packaged but plan to have releases
+in the PPA soon.  The team is currently testing a new GitHub
+action to build the debs for the PPA.</p>
+<h3>Terminology</h3>
+<ul>
+<li><em>The ansible package</em></li>
+</ul>
+<p>An all-in-one software package (Python, deb, rpm, etc) that
+provides backwards compatibility with Ansible 2.9 by including
+modules and plugins that have since been migrated to Ansible
+Collections.</p>
+<p>The Ansible package depends on ansible-base (soon ansible-core).
+So when you do pip install ansible, pip installs ansible-base
+automatically.</p>
+<p>Ansible 3.0.0 contains more Collections thanks to the wider
+Ansible community reviewing Collections against the community
+checklist. This list of what's included can be found at
+<a href="https://github.com/ansible-community/ansible-build-data/tree/master/2.10">ansible-build-data</a>.</p>
+<ul>
+<li><em>Collection</em></li>
+</ul>
+<p>A packaging format for bundling and distributing Ansible
+content: plugins, roles, modules, playbooks, documentation and
+more. Can be released independent of other Collections or
+ansible-base so features and bug
+fixes can be made available sooner to users.
+    Installed from source repositories, from
+<a href="https://galaxy.ansible.com/">galaxy.ansible.com</a> via
+<code>ansible-galaxy collection install &lt;namespace.collection&gt;</code> or using a <a href="https://galaxy.ansible.com/docs/using/installing.html#installing-multiple-roles-from-a-file">requirements.yml file</a>.</p>
+<ul>
+<li><em>ansible-base</em></li>
+</ul>
+<p>New for 2.10. The codebase that is now contained in
+<code>github.com/ansible/ansible</code> for the Ansible 2.10 release. It
+contains a minimal amount of modules and plugins and allows
+other Collections to be installed. Similar to Ansible 2.9 though
+without any content that has since moved into a Collection.</p>
+<p>Renamed to ansible-core in the devel branch of Ansible and will
+be released under that name from version 2.11 onwards.</p>
+<ul>
+<li><em>Red Hat Ansible Automation Platform</em></li>
+</ul>
+<p>The commercially available enterprise offering from Red Hat,
+combining multiple Ansible focused projects, including
+ansible-core, awx, galaxy_ng, Collections and various Red Hat
+tools focused on an integrated Ansible user experience.</p>

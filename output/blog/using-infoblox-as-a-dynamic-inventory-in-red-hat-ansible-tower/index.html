@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html prefix="
+og: http://ogp.me/ns# article: http://ogp.me/ns/article#
+" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="Using Infoblox as a source of truth is a common process. In this blog post, we learn how to set up Red Hat Ansible Tower to use Infoblox as its inventory.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Using Infoblox as a dynamic inventory in Red Hat Ansible Tower | Ansible Collaborative</title>
+<link href="../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/baguetteBox.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/rst.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/code.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/theme.css" rel="stylesheet" type="text/css">
+<!-- Red Hat fonts --><link rel="stylesheet" href="https://static.redhat.com/libs/redhat/redhat-font/2.0.0/webfonts/red-hat-font.css">
+<!-- Font Awesome --><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+<!-- Fork Awesome --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css" integrity="sha256-XoaMnoYC5TH6/+ihMEnospgm0J1PM/nioxbOUdnM8HY=" crossorigin="anonymous">
+<!-- Sass compiled css  --><link rel="stylesheet" href="../../assets/css/main.css">
+<link rel="stylesheet" href="../../assets/css/redhat-footer.css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://ansible.com/blog/using-infoblox-as-a-dynamic-inventory-in-red-hat-ansible-tower/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Victor da Costa">
+<link rel="prev" href="../summary-of-authentication-methods-in-red-hat-ansible-tower/" title="Summary of Authentication Methods For Red Hat Ansible Tower" type="text/html">
+<link rel="next" href="../ansible-servicenow-opening-and-closing-tickets/" title="Ansible and ServiceNow Part 1, Opening and Closing Tickets" type="text/html">
+<meta property="og:site_name" content="Ansible Collaborative">
+<meta property="og:title" content="Using Infoblox as a dynamic inventory in Red Hat Ansible Tower">
+<meta property="og:url" content="https://ansible.com/blog/using-infoblox-as-a-dynamic-inventory-in-red-hat-ansible-tower/">
+<meta property="og:description" content="Using Infoblox as a source of truth is a common process. In this blog post, we learn how to set up Red Hat Ansible Tower to use Infoblox as its inventory.">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-05-24T00:00:00Z">
+</head>
+<body id="top">
+
+<div class="global-container" id="content" role="main">
+<!-- Start menubar -->
+<nav class="navbar navbar-expand-lg static-top mb-4 navbar-padding full-width-bg   navbar-dark   bg-pool   "><div class="masthead">
+    <!-- This keeps the margins nice -->
+    <a class="navbar-brand" href="../../">
+        <img src="../../images/ansible_logo-small-15.png" alt="Ansible community logo" id="logo" class="d-inline-block align-top" width="50" height="50"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon nav-toggle-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="bs-navbar">
+      <ul class="navbar-nav mr-auto"></ul>
+<ul class="navbar-nav navbar-right">
+<li class="nav-item dropdown">
+	        <a href="#" class="nav-link nav-link-color dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <i class=""></i> Documentation
+                </a>
+		<div class="dropdown-menu dropdown-menu-border">
+	    
+                    <a href="https://docs.ansible.com/" class="dropdown-item">
+		        <i class=""></i> Project documentation
+                    </a>
+                    <a href="https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/" class="dropdown-item">
+		        <i class=""></i> Ansible Automation Platform documentation
+                    </a>
+            </div>
+                 </li>
+<li class="nav-item">
+		     <a href="https://galaxy.ansible.com/" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Galaxy
+		     </a>
+		 </li>
+                 <li class="nav-item">
+		     <a href="https://forum.ansible.com/" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Forum
+		     </a>
+		 </li>
+            <li class="nav-item dropdown">
+	        <a href="#" class="nav-link nav-link-color dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <i class=""></i> Resources
+                </a>
+		<div class="dropdown-menu dropdown-menu-border">
+	    
+                    <a href="../../how-ansible-works/" class="dropdown-item">
+		        <i class=""></i> How Ansible works
+                    </a>
+                    <a href="../../ecosystem/" class="dropdown-item">
+		        <i class=""></i> Ansible ecosystem
+                    </a>
+                    <a href="../archive.html" class="dropdown-item">
+		        <i class=""></i> Blog
+                    </a>
+                    <a href="../../faq/" class="dropdown-item">
+		        <i class=""></i> Frequently asked questions
+                    </a>
+                    <a href="../../ansible-community-training/" class="dropdown-item">
+		        <i class=""></i> Ansible community training
+                    </a>
+                    <a href="../../contact-us/" class="dropdown-item">
+		        <i class=""></i> Contact us
+                    </a>
+            </div>
+                 </li>
+<li class="nav-item">
+		     <a href="https://www.redhat.com/en/technologies/management/ansible?sc_cid=7015Y000003szaKQAQ" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Ansible Automation Platform
+		     </a>
+		 </li>
+
+        
+      </ul>
+</div>
+    <!-- /.navbar-collapse -->
+  </div>
+  <!-- /.container -->
+</nav><!-- End default Menubar --><div class="body-content center-band">
+        <!--Body content-->
+        
+  <article class="post-text h-entry hentry postpage ansible-content" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Using Infoblox as a dynamic inventory in Red Hat Ansible Tower</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard p-author h-card"><span class="byline-name fn p-name" itemprop="author">
+                    <a class="u-url" href="../../authors/victor-da-costa/">Victor da Costa</a>
+            </span></p>
+            <p class="dateline">
+            <a href="." rel="bookmark">
+            <time class="published dt-published" datetime="2019-05-24T00:00:00Z" itemprop="datePublished" title="2019-05-24 00:00">2019-05-24 00:00</time></a>
+            </p>
+                    <p class="sourceline"><a href="index.md" class="sourcelink">Source</a></p>
+
+        </div>
+        
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+<h2>Using Infoblox as a dynamic inventory in Red Hat Ansible Tower</h2>
+<p>Do you still use spreadsheets to keep track of all your device
+inventory? Do you have Infoblox Appliances deployed in your
+infrastructure? Do you want to start automating without the burden of
+maintaining a static register of devices? If you answered yes to any of
+these questions, this blog is for you.</p>
+<p>Operations teams often struggle to keep their <em>Configuration Management
+Databases</em> (CMDBs) up-to-date, primarily because they were not involved
+in the specification process to share what pieces of information are
+relevant to them, or even if they were, once it is put in place:</p>
+<p>Teams are not allowed to change any of their <strong>Configuration Items (CI) because they have only read-only access!</strong></p>
+<p>The reality is that a lot of the time when we talk about a <em>CMDB</em>, we
+are talking about tables in a database without any version control
+mechanism, therefore only read access is provided to end users.</p>
+<p>The impact is that in order to perform lifecycle management
+(Create/Update/Decommission) of their configuration items, teams must go
+through a fastidious and manual process until they give up changing CIs
+(Configuration Items) in the CMDB and just leave everything as it is.
+<strong>What happens next?</strong> Different teams start to rely on their own
+<em>CMDBs</em> (A.K.A spreadsheets), to track subnets, IP allocations, DNS
+records, Zones, Views, etc. <strong>What's the end result?</strong> End users
+request their machines and still need to wait at least a week before
+someone from the NetOps team consults their own CMDB (yes, the
+spreadsheet) to provide them DNS records and IP addresses.</p>
+<h3>Dynamic Inventory</h3>
+<p>Dynamic Inventory is one of the most powerful features in Red Hat
+Ansible Tower. Dynamic Inventory allows Ansible to query external
+systems and use the response data to construct its inventory. Red Hat
+Ansible Tower provides some out-of-the-box integrations through dynamic
+inventory scripts, and also allows users to extend these capabilities by
+providing their own <a href="https://docs.ansible.com/ansible-tower/latest/html/administration/custom_inventory_script.html">custom dynamic inventory script</a>.</p>
+<h4>Red Hat Ansible Tower and Infoblox</h4>
+<p>Let's take a look at the steps required to configure a custom dynamic
+inventory script to query Infoblox and rely on it as our inventory
+source of truth.</p>
+<h5>Install infoblox-client</h5>
+<p>First we need to install the infoblox-client python library in Red Hat
+Ansible Tower's venv of each node of the cluster, and the configuration
+file required by the infoblox inventory script:</p>
+<div class="code"><pre class="code literal-block"><span class="c1"># source /var/lib/awx/venv/awx/bin/activate</span>
+<span class="c1"># pip install infoblox-client</span>
+</pre></div>
+
+<p>NOTE: You could also create a <a href="https://gist.github.com/victorock/493b2d41f5a148efbed9e66dc2e8dee1">playbook to do</a>
+this, using the Ansible <a href="https://docs.ansible.com/ansible/latest/pip_module.html">pip_module</a>.</p>
+<p>Create the <a href="https://raw.githubusercontent.com/ansible/ansible/devel/contrib/inventory/infoblox.yaml">infoblox configuration file</a>
+in <a href="https://gist.github.com/victorock/3c28056b41e3489d731cc5a2801f2166">/etc/ansible/infoblox.yaml</a>:</p>
+<div class="code"><pre class="code literal-block"><span class="nn">---</span>
+<span class="nt">filters</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">extattrs</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<span class="w">  </span><span class="nt">view</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
+</pre></div>
+
+<p><em>NOTE: Follow</em> <a href="https://github.com/ansible/ansible/issues/53526"><em>this Ansible GitHub
+Issue</em></a> <em>where I
+suggest taking configuration items from an environment variable or a
+file for added flexibility.</em></p>
+<h5>Credential Type</h5>
+<p>After the installation in the previous step completes successfully in
+all the nodes of the cluster, we need to specify in Ansible Tower the
+credential and hostname to establish communication with Infoblox
+Appliances. As of today we don't have any specific Ansible Tower
+Credential for Infoblox, so let's create a <a href="https://docs.ansible.com/ansible-tower/latest/html/userguide/credential_types.html">custom credential
+type</a>.
+We can then provide the information required to communicate with
+Infoblox, have the password protected by Ansible Tower and
+<a href="https://docs.ansible.com/ansible-tower/latest/html/userguide/security.html#role-based-access-controls">RBAC</a>
+(Role-Based Access Control).</p>
+<p>As Administrator, go to <a href="https://docs.ansible.com/ansible-tower/latest/html/userguide/credential_types.html">Credential
+Types</a>
+in the left menu.</p>
+<p>Create a new credential type: <em>INFOBLOX_INVENTORY</em> (Green + sign)</p>
+<p><img alt="Credential Types - Infoblox Inventory" src="../../images/posts/archive/image12.png"></p>
+<p><img alt="screenshot" src="../../images/posts/archive/image5-2.png"></p>
+<p>Define the inputs required in the <em>INPUT CONFIGURATION</em> field:</p>
+<div class="code"><pre class="code literal-block"><span class="nt">fields</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
+<span class="w">    </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hostname</span>
+<span class="w">    </span><span class="nt">label</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Hostname</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
+<span class="w">    </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">username</span>
+<span class="w">    </span><span class="nt">label</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Username</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">secret</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
+<span class="w">    </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">password</span>
+<span class="w">    </span><span class="nt">label</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Password</span>
+<span class="nt">required</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">username</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">password</span>
+</pre></div>
+
+<p>Define the injection of inputs as environment variables in <em>INJECTOR CONFIGURATION</em> field:</p>
+<div class="code"><pre class="code literal-block">env:
+<span class="w">  </span>INFOBLOX_HOST:<span class="w"> </span><span class="s1">'{{ hostname }}'</span>
+<span class="w">  </span>INFOBLOX_PASSWORD:<span class="w"> </span><span class="s1">'{{ password }}'</span>
+<span class="w">  </span>INFOBLOX_USERNAME:<span class="w"> </span><span class="s1">'{{ username }}'</span>
+</pre></div>
+
+<h5>Credential</h5>
+<p>After the creation of the credential type INFOBLOX_INVENTORY in Ansible
+Tower, we can use it to create a new credential, specifying the
+information to communicate with the Infoblox Appliance.</p>
+<p>Create a credential to communicate with Infoblox Appliance:
+<code>infoblox-ip.ip.ip.ip</code></p>
+<p><img alt="Create credential" src="../../images/posts/archive/image2-4.png"></p>
+<p><em>NOTE: In the example, the name includes the IP or FQDN, so we can know
+what appliance this particular credential refers to.</em></p>
+<h5>Inventory Script</h5>
+<p>Creation of custom inventory script to query Infoblox Appliances and
+parse the output to the format expected by Ansible inventory.</p>
+<p>Create a new <a href="https://docs.ansible.com/ansible-tower/latest/html/administration/custom_inventory_script.html">custom inventory script</a>: <code>_infoblox-inventory-script.py</code></p>
+<p>Get the <a href="https://raw.githubusercontent.com/ansible/ansible/devel/contrib/inventory/infoblox.py">infoblox.py</a>
+from Ansible's GitHub and paste into the <em>CUSTOM SCRIPT</em> field:</p>
+<p><img alt="Create inventory script" src="../../images/posts/archive/image14.png"></p>
+<h5>Inventory Source</h5>
+<p>Creation of inventory with the infoblox dynamic script as dynamic source
+and sync to populate our inventory with entries returned by Infoblox
+Appliance.</p>
+<p>Go to Inventories and <a href="https://docs.ansible.com/ansible-tower/latest/html/quickstart/create_inventory.html">create a new Inventory</a>: <code>netops</code></p>
+<p><img alt="Create inventory" src="../../images/posts/archive/image8.png"></p>
+<p><a href="https://docs.ansible.com/ansible-tower/latest/html/userguide/inventories.html#add-source">Add Source</a> referring to the infoblox-dynamic-script.py:</p>
+<p><img alt="add source" src="../../images/posts/archive/image2-5.png"></p>
+<p><a href="https://docs.ansible.com/ansible-tower/latest/html/userguide/inventories.html#add-source">Sync the Inventory Source</a>:</p>
+<p><img alt="sync inventory source" src="../../images/posts/archive/image10.png"></p>
+<p><a href="https://docs.ansible.com/ansible-tower/latest/html/userguide/inventories.html#view-completed-jobs">Check Sync Status</a>:</p>
+<p><img alt="check sync status" src="../../images/posts/archive/image1-5.png"></p>
+<h5>Inventory Entries</h5>
+<p>Verification if the hosts, groups and variables are being populated
+correctly in the inventory, based on existing entries in Infoblox
+Appliance:</p>
+<p>Check host entries in inventory:  <code>netops</code> -&gt; <code>hosts</code></p>
+<p><img alt="check host inventory " src="../../images/posts/archive/image11.png"></p>
+<p>Check variables associate to a host entry: <code>netops</code> -&gt; <code>hosts</code> -&gt; <code>rtr01.acme.com</code></p>
+<p><img alt="check variables" src="../../images/posts/archive/image4-2.png"></p>
+<p><img alt="host details " src="../../images/posts/archive/image13.png"></p>
+<p><img alt="check inventories" src="../../images/posts/archive/image6-1.png"></p>
+<p>At this point we have servers and routers in our dynamic inventory,
+therefore from now on we can execute any Ansible Playbooks against them.
+ In the next section we'll cover how the configurations looks like in
+the infoblox side.</p>
+<h5>Infoblox</h5>
+<p>At this point you may be wondering: How are these variables in Ansible
+Tower's Inventory specified in my Infoblox Appliance? The answer is
+that we are using <em>Extensible Attributes</em> in Infoblox to fulfill
+ansible_* variables, so they are automatically populated in Ansible
+Tower's inventory. Follow below some screenshots taken from Infoblox's
+WEBUI:</p>
+<p>Extensible Attributes Configuration in Infoblox, for the variable "ansible_host":</p>
+<p><img alt="Extensible Attributes Configuration in Infoblox" src="../../images/posts/archive/image9.png"></p>
+<h5>Why are we using Extensible Attributes?</h5>
+<p>The answer is simple. It is common to have entries in the DNS that
+refers to the production interface of the server or the service being
+provided, meanwhile the management access is only available via a
+dedicated out-of-band management interface. The <em>ansible_host</em> extra
+attribute defines that for this particular entry, Ansible shall use its
+value to establish communication with the server, via the management
+interface.</p>
+<p>Additionally, we could rely on Extensible Attributes variable to specify
+if an entry is managed by Ansible Tower or not (<em>Ex: ansible_managed:
+true/false</em>), and update our "<em>Dynamic Inventory Configuration File</em>"
+accordingly, to use this particular attribute as a filter. The result is
+that Ansible Tower's inventory will only populate with entries that we
+want to automate (<em>ansible_managed: true</em>).</p>
+</div>
+    <aside class="postpromonav"><nav><ul class="pager hidden-print">
+<li class="previous">
+                <a href="../summary-of-authentication-methods-in-red-hat-ansible-tower/" rel="prev" title="Summary of Authentication Methods For Red Hat Ansible Tower">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../ansible-servicenow-opening-and-closing-tickets/" rel="next" title="Ansible and ServiceNow Part 1, Opening and Closing Tickets">Next post</a>
+            </li>
+        </ul></nav></aside></article><!--End of body content-->
+</div>
+        <div class="content-slim redhat-footer">
+      <div class="footer-left">
+        <ul class="footer-left-links">
+<li>
+            <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-SA 4.0</a>
+          </li>
+          <li>
+            <a href="https://www.redhat.com/en/about/privacy-policy" target="_blank">Privacy policy</a>
+          </li>
+          <li>
+            <a href="https://docs.ansible.com/ansible/latest/community/code_of_conduct.html" target="_blank">Code of conduct</a>
+          </li>
+        </ul>
+</div>
+      <div class="footer-right">
+        <span class="redhat">Powered by</span>
+        <span class="redhat-logo">
+          <a href="https://www.redhat.com/en/technologies/management/ansible" target="_blank">
+            <img src="../../assets/images/redhat_reversed.svg" alt="Red Hat logo." width="96" height="28"></a>
+        </span>
+      </div>
+    </div>
+
+</div>
+
+            <script src="../../assets/js/jquery.min.js"></script><script src="../../assets/js/popper.min.js"></script><script src="../../assets/js/bootstrap.min.js"></script><script src="../../assets/js/baguetteBox.min.js"></script><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+</script><script src="../../assets/js/clipboard.min.js" type="text/javascript"></script><script src="../../assets/js/clipboard.js" type="text/javascript"></script>
+</body>
+</html>

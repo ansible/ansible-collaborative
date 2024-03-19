@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html prefix="
+og: http://ogp.me/ns# article: http://ogp.me/ns/article#
+" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="In this blog, we run through a simple scenario and apply the new integrated webhook feature.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Using Ansible Automation Platform, GitLab CE and webhooks to deploy IIS website | Ansible Collaborative</title>
+<link href="../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/baguetteBox.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/rst.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/code.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/theme.css" rel="stylesheet" type="text/css">
+<!-- Red Hat fonts --><link rel="stylesheet" href="https://static.redhat.com/libs/redhat/redhat-font/2.0.0/webfonts/red-hat-font.css">
+<!-- Font Awesome --><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+<!-- Fork Awesome --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css" integrity="sha256-XoaMnoYC5TH6/+ihMEnospgm0J1PM/nioxbOUdnM8HY=" crossorigin="anonymous">
+<!-- Sass compiled css  --><link rel="stylesheet" href="../../assets/css/main.css">
+<link rel="stylesheet" href="../../assets/css/redhat-footer.css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://ansible.com/blog/using-ansible-automation-platform-gitlab-ce-and-webhooks-to-deploy-iis-website/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Colin McNaughton">
+<link rel="prev" href="../deep-dive-on-vlans-resource-modules-for-network-automation/" title="Deep dive on VLANS resource modules for network automation" type="text/html">
+<link rel="next" href="../hands-on-with-ansible-collections/" title="Hands on with Ansible collections" type="text/html">
+<meta property="og:site_name" content="Ansible Collaborative">
+<meta property="og:title" content="Using Ansible Automation Platform, GitLab CE and webhooks to deploy II">
+<meta property="og:url" content="https://ansible.com/blog/using-ansible-automation-platform-gitlab-ce-and-webhooks-to-deploy-iis-website/">
+<meta property="og:description" content="In this blog, we run through a simple scenario and apply the new integrated webhook feature.">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2020-03-17T00:00:00Z">
+</head>
+<body id="top">
+
+<div class="global-container" id="content" role="main">
+<!-- Start menubar -->
+<nav class="navbar navbar-expand-lg static-top mb-4 navbar-padding full-width-bg   navbar-dark   bg-pool   "><div class="masthead">
+    <!-- This keeps the margins nice -->
+    <a class="navbar-brand" href="../../">
+        <img src="../../images/ansible_logo-small-15.png" alt="Ansible community logo" id="logo" class="d-inline-block align-top" width="50" height="50"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon nav-toggle-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="bs-navbar">
+      <ul class="navbar-nav mr-auto"></ul>
+<ul class="navbar-nav navbar-right">
+<li class="nav-item dropdown">
+	        <a href="#" class="nav-link nav-link-color dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <i class=""></i> Documentation
+                </a>
+		<div class="dropdown-menu dropdown-menu-border">
+	    
+                    <a href="https://docs.ansible.com/" class="dropdown-item">
+		        <i class=""></i> Project documentation
+                    </a>
+                    <a href="https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/" class="dropdown-item">
+		        <i class=""></i> Ansible Automation Platform documentation
+                    </a>
+            </div>
+                 </li>
+<li class="nav-item">
+		     <a href="https://galaxy.ansible.com/" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Galaxy
+		     </a>
+		 </li>
+                 <li class="nav-item">
+		     <a href="https://forum.ansible.com/" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Forum
+		     </a>
+		 </li>
+            <li class="nav-item dropdown">
+	        <a href="#" class="nav-link nav-link-color dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <i class=""></i> Resources
+                </a>
+		<div class="dropdown-menu dropdown-menu-border">
+	    
+                    <a href="../../how-ansible-works/" class="dropdown-item">
+		        <i class=""></i> How Ansible works
+                    </a>
+                    <a href="../../ecosystem/" class="dropdown-item">
+		        <i class=""></i> Ansible ecosystem
+                    </a>
+                    <a href="../archive.html" class="dropdown-item">
+		        <i class=""></i> Blog
+                    </a>
+                    <a href="../../faq/" class="dropdown-item">
+		        <i class=""></i> Frequently asked questions
+                    </a>
+                    <a href="../../ansible-community-training/" class="dropdown-item">
+		        <i class=""></i> Ansible community training
+                    </a>
+                    <a href="../../contact-us/" class="dropdown-item">
+		        <i class=""></i> Contact us
+                    </a>
+            </div>
+                 </li>
+<li class="nav-item">
+		     <a href="https://www.redhat.com/en/technologies/management/ansible?sc_cid=7015Y000003szaKQAQ" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Ansible Automation Platform
+		     </a>
+		 </li>
+
+        
+      </ul>
+</div>
+    <!-- /.navbar-collapse -->
+  </div>
+  <!-- /.container -->
+</nav><!-- End default Menubar --><div class="body-content center-band">
+        <!--Body content-->
+        
+  <article class="post-text h-entry hentry postpage ansible-content" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Using Ansible Automation Platform, GitLab CE and webhooks to deploy IIS website</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard p-author h-card"><span class="byline-name fn p-name" itemprop="author">
+                    <a class="u-url" href="../../authors/colin-mcnaughton/">Colin McNaughton</a>
+            </span></p>
+            <p class="dateline">
+            <a href="." rel="bookmark">
+            <time class="published dt-published" datetime="2020-03-17T00:00:00Z" itemprop="datePublished" title="2020-03-17 00:00">2020-03-17 00:00</time></a>
+            </p>
+                    <p class="sourceline"><a href="index.md" class="sourcelink">Source</a></p>
+
+        </div>
+        
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+<h2>Using Ansible Automation Platform, GitLab CE and webhooks to deploy IIS website</h2>
+<p>Inside Red Hat Ansible Automation Platform, the Ansible Tower REST API
+is the key mechanism that helps enable automation to be integrated into
+processes or tools that exist in an environment. With Ansible Tower 3.6
+we have brought direct integration with webhooks from GitHub and GitLab,
+including the enterprise on-premises versions. This means that changes
+in source control can trigger automation to apply changes to
+infrastructure configuration, deploy new services, reconfigure existing
+applications, and more. In this blog, I'll run through a simple scenario
+and apply the new integrated webhook feature.</p>
+<h2>Environment</h2>
+<p>My environment consists of Ansible Tower (one component of Red Hat
+Ansible Automation Platform), GitLab CE with a project already created,
+and a code server running an IDE with the same git repository cloned. A
+single inventory exists on Ansible Tower with just one host, an instance
+of Windows 2019 Server running on a certified cloud. For this example,
+I'm going to deploy IIS on top of this Windows server and make some
+modifications to the html file that I'd like to serve from this site. </p>
+<p>My playbook to deploy IIS is <em>very</em> simple:</p>
+<div class="code"><pre class="code literal-block"> ---
+<span class="k">-</span> name: Configure IIS
+  hosts: windows
+
+  tasks:
+  <span class="k">-</span> name: Install IIS
+    win_feature:
+      name: Web-Server
+      state: present
+
+  <span class="k">-</span> name: Start IIS service
+    win_service:
+      name: W3Svc
+      state: started
+
+  <span class="k">-</span> name: Create website index.html
+    win_copy:
+      src: files/web.html
+      dest: C:\Inetpub\wwwroot\index.html
+</pre></div>
+
+<p>All that I am doing here is adding the <code>Web-Server</code> feature, starting
+IIS and copying my site's html file to the default location for web
+content being served by IIS. </p>
+<p>My html file is just as basic:</p>
+<div class="code"><pre class="code literal-block"><span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+
+<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</pre></div>
+
+<h3>Objective and setup</h3>
+<p>What I would like to happen is that, for each merge request that makes
+changes to this one IIS site, the site should be redeployed with this
+basic html file.</p>
+<p><img alt="Colin blog new one" src="../../images/posts/archive/colin-blog-new-one.png"></p>
+<h3>GitLab Access Token</h3>
+<p>As my webhook is triggered, I would like to update the merge request
+created in GitLab with the status of my Ansible Tower job. </p>
+<p>To accomplish this, I first have to create a personal access token for
+my GitLab account so that Ansible Tower can access the GitLab API. This
+is pretty painless. All I have to do is navigate to my user settings and
+select "Access Tokens" from the left side navigation panel:</p>
+<p><img alt="Colin blog two" src="../../images/posts/archive/colin-blog-two.png"></p>
+<p>I give my access token an easily recognizable name of "Ansible Tower,"
+set the expiration date to the end of the month, and scope this access
+token to just the API. Upon clicking "Create personal access token," the
+token itself becomes visible and a new entry is shown at the bottom of
+this page:</p>
+<p><img alt="Colin blog three" src="../../images/posts/archive/colin-blog-three.png"></p>
+<p>Next, I will use this token to create a new credential in Ansible Tower
+of type "GitLab Personal Access Token":</p>
+<p><img alt="Colin blog four" src="../../images/posts/archive/colin-blog-four.png"></p>
+<p>Upon saving, Ansible Tower now has API access to my GitLab account. </p>
+<h3>Ansible Tower Job Template</h3>
+<p>Now that Ansible Tower has the ability to update my merge requests, I
+need to configure webhook access to my job template that is configured
+to run my simple IIS playbook. Since the Ansible Tower 3.6 release,
+there is now a checkbox on each job template called <strong>ENABLE WEBHOOK</strong>.</p>
+<p><img alt="coling blog new three" src="../../images/posts/archive/colin-blog-new-three.png"></p>
+<p>Once I select the option to <strong>ENABLE WEBHOOK</strong> I am presented with a few
+new fields. I select GitLab as my <strong>WEBHOOK SERVICE</strong>, supply the
+credential I created using my GitLab personal access token, <strong>WEBHOOK
+URL</strong> is prepopulated with the path to this job template and, upon
+saving my modifications, a <strong>WEBHOOK KEY</strong> is generated which I will use
+to configure the project hook in GitLab. Also, note that my project
+allows me to override the SCM branch. This means that the project will
+pull updates from the "change-web-text" branch instead of Master. </p>
+<h3>GitLab Project Hook integration</h3>
+<p>The next step takes me back to GitLab, this time navigating to the
+integrations page of the project I would like to execute the webhook.</p>
+<p><img alt="Colin blog six" src="../../images/posts/archive/colin-blog-six.png"></p>
+<p>On the integrations page, I supply the URL (<strong>WEBHOOK URL</strong> from my job
+template in Ansible Tower) and Secret Token (<strong>WEBHOOK KEY</strong> from my job
+template in Ansible Tower). I also specify the Trigger as "Merge request
+events" which means that the URL I specified will be launched anytime a
+merge request is opened.</p>
+<p><img alt="colin blog new two" src="../../images/posts/archive/colin-blog-new-two.png"></p>
+<h3>In action: Updating my website text</h3>
+<p>Now that I've given Ansible Tower access to my projects using a personal
+access token as a new credential type, configured my job template to
+enable webhooks, and configured a Project Hook on GitLab to respond to
+merge request events on my project, I'm ready to make a test commit of
+my html file.</p>
+<p>Here, I add text to the <code>&lt;title&gt;</code> and <code>&lt;body&gt;</code> tags of my html
+document and save the file:</p>
+<p><img alt="Colin blog eight" src="../../images/posts/archive/colin-blog-eight.png"></p>
+<p>Once I've committed my change on my "change-web-text" branch, I will
+push my code, go back to GitLab and open a merge request to merge
+changes back into master.</p>
+<p><img alt="colin new blog" src="../../images/posts/archive/colin-new-blog.png"></p>
+<p>Opening this merge request will now trigger my webhook which will deploy
+my web page changes to my IIS site. Because I have configured Ansible
+Tower with my personal access token, Ansible Tower will post a link to
+the job executed as a result of the webhook trigger on the merge
+request.</p>
+<p>If all has been configured correctly, I should see a new job being
+executed that corresponds to the job template with the configured
+webhook. I should also see a job that has been kicked off, updating my
+project which will pull in the latest changes from my GitLab project.</p>
+<p><img alt="Colin blog nine" src="../../images/posts/archive/colin-blog-nine.png"></p>
+<p>Selecting the job for "iis website create", which is the job template I
+configured for webhook execution, shows that the job was <strong>LAUNCHED BY</strong>
+webhook. <strong>EXTRA VARIABLES</strong> will show a lot of project specific
+configuration facts, and more importantly the job output should show
+that the job is executing what it's supposed to.</p>
+<p><img alt="Colin blog ten" src="../../images/posts/archive/colin-blog-ten.png"></p>
+<p>Upon completion, I should be able to pull up the IP of my IIS server and
+see the changes to my incredible html page:</p>
+<p><img alt="Colin blog eleven" src="../../images/posts/archive/colin-blog-eleven.png"></p>
+<h3>Takeaways</h3>
+<p>Webhooks introduced in Ansible Tower 3.6 are an incredibly powerful way
+to launch automation in response to events in source control. While this
+basic website is just a very quick and simple example, applying this
+functionality to infrastructure as code where all service configurations
+are defined in Ansible Playbooks greatly emphasizes this robust feature.</p>
+</div>
+    <aside class="postpromonav"><nav><ul class="pager hidden-print">
+<li class="previous">
+                <a href="../deep-dive-on-vlans-resource-modules-for-network-automation/" rel="prev" title="Deep dive on VLANS resource modules for network automation">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../hands-on-with-ansible-collections/" rel="next" title="Hands on with Ansible collections">Next post</a>
+            </li>
+        </ul></nav></aside></article><!--End of body content-->
+</div>
+        <div class="content-slim redhat-footer">
+      <div class="footer-left">
+        <ul class="footer-left-links">
+<li>
+            <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-SA 4.0</a>
+          </li>
+          <li>
+            <a href="https://www.redhat.com/en/about/privacy-policy" target="_blank">Privacy policy</a>
+          </li>
+          <li>
+            <a href="https://docs.ansible.com/ansible/latest/community/code_of_conduct.html" target="_blank">Code of conduct</a>
+          </li>
+        </ul>
+</div>
+      <div class="footer-right">
+        <span class="redhat">Powered by</span>
+        <span class="redhat-logo">
+          <a href="https://www.redhat.com/en/technologies/management/ansible" target="_blank">
+            <img src="../../assets/images/redhat_reversed.svg" alt="Red Hat logo." width="96" height="28"></a>
+        </span>
+      </div>
+    </div>
+
+</div>
+
+            <script src="../../assets/js/jquery.min.js"></script><script src="../../assets/js/popper.min.js"></script><script src="../../assets/js/bootstrap.min.js"></script><script src="../../assets/js/baguetteBox.min.js"></script><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+</script><script src="../../assets/js/clipboard.min.js" type="text/javascript"></script><script src="../../assets/js/clipboard.js" type="text/javascript"></script>
+</body>
+</html>

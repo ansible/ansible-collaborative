@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html prefix="
+og: http://ogp.me/ns# article: http://ogp.me/ns/article#
+" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="How to perform unit and integration tests on Ansible automation code with ansible-test as part of devops and CI/CD pipelines.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Introduction to ansible-test | Ansible Collaborative</title>
+<link href="../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/baguetteBox.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/rst.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/code.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/theme.css" rel="stylesheet" type="text/css">
+<!-- Red Hat fonts --><link rel="stylesheet" href="https://static.redhat.com/libs/redhat/redhat-font/2.0.0/webfonts/red-hat-font.css">
+<!-- Font Awesome --><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+<!-- Fork Awesome --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css" integrity="sha256-XoaMnoYC5TH6/+ihMEnospgm0J1PM/nioxbOUdnM8HY=" crossorigin="anonymous">
+<!-- Sass compiled css  --><link rel="stylesheet" href="../../assets/css/main.css">
+<link rel="stylesheet" href="../../assets/css/redhat-footer.css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://ansible.com/blog/introduction-to-ansible-test/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Anshul Behl">
+<link rel="prev" href="../bullhorn-20/" title="Bullhorn #20" type="text/html">
+<link rel="next" href="../bullhorn-21/" title="Bullhorn #21" type="text/html">
+<meta property="og:site_name" content="Ansible Collaborative">
+<meta property="og:title" content="Introduction to ansible-test">
+<meta property="og:url" content="https://ansible.com/blog/introduction-to-ansible-test/">
+<meta property="og:description" content="How to perform unit and integration tests on Ansible automation code with ansible-test as part of devops and CI/CD pipelines.">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2021-02-22T00:00:00Z">
+</head>
+<body id="top">
+
+<div class="global-container" id="content" role="main">
+<!-- Start menubar -->
+<nav class="navbar navbar-expand-lg static-top mb-4 navbar-padding full-width-bg   navbar-dark   bg-pool   "><div class="masthead">
+    <!-- This keeps the margins nice -->
+    <a class="navbar-brand" href="../../">
+        <img src="../../images/ansible_logo-small-15.png" alt="Ansible community logo" id="logo" class="d-inline-block align-top" width="50" height="50"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon nav-toggle-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="bs-navbar">
+      <ul class="navbar-nav mr-auto"></ul>
+<ul class="navbar-nav navbar-right">
+<li class="nav-item dropdown">
+	        <a href="#" class="nav-link nav-link-color dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <i class=""></i> Documentation
+                </a>
+		<div class="dropdown-menu dropdown-menu-border">
+	    
+                    <a href="https://docs.ansible.com/" class="dropdown-item">
+		        <i class=""></i> Project documentation
+                    </a>
+                    <a href="https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/" class="dropdown-item">
+		        <i class=""></i> Ansible Automation Platform documentation
+                    </a>
+            </div>
+                 </li>
+<li class="nav-item">
+		     <a href="https://galaxy.ansible.com/" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Galaxy
+		     </a>
+		 </li>
+                 <li class="nav-item">
+		     <a href="https://forum.ansible.com/" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Forum
+		     </a>
+		 </li>
+            <li class="nav-item dropdown">
+	        <a href="#" class="nav-link nav-link-color dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <i class=""></i> Resources
+                </a>
+		<div class="dropdown-menu dropdown-menu-border">
+	    
+                    <a href="../../how-ansible-works/" class="dropdown-item">
+		        <i class=""></i> How Ansible works
+                    </a>
+                    <a href="../../ecosystem/" class="dropdown-item">
+		        <i class=""></i> Ansible ecosystem
+                    </a>
+                    <a href="../archive.html" class="dropdown-item">
+		        <i class=""></i> Blog
+                    </a>
+                    <a href="../../faq/" class="dropdown-item">
+		        <i class=""></i> Frequently asked questions
+                    </a>
+                    <a href="../../ansible-community-training/" class="dropdown-item">
+		        <i class=""></i> Ansible community training
+                    </a>
+                    <a href="../../contact-us/" class="dropdown-item">
+		        <i class=""></i> Contact us
+                    </a>
+            </div>
+                 </li>
+<li class="nav-item">
+		     <a href="https://www.redhat.com/en/technologies/management/ansible?sc_cid=7015Y000003szaKQAQ" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Ansible Automation Platform
+		     </a>
+		 </li>
+
+        
+      </ul>
+</div>
+    <!-- /.navbar-collapse -->
+  </div>
+  <!-- /.container -->
+</nav><!-- End default Menubar --><div class="body-content center-band">
+        <!--Body content-->
+        
+  <article class="post-text h-entry hentry postpage ansible-content" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Introduction to ansible-test</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard p-author h-card"><span class="byline-name fn p-name" itemprop="author">
+                    <a class="u-url" href="../../authors/anshul-behl/">Anshul Behl</a>
+            </span></p>
+            <p class="dateline">
+            <a href="." rel="bookmark">
+            <time class="published dt-published" datetime="2021-02-22T00:00:00Z" itemprop="datePublished" title="2021-02-22 00:00">2021-02-22 00:00</time></a>
+            </p>
+                    <p class="sourceline"><a href="index.md" class="sourcelink">Source</a></p>
+
+        </div>
+        
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+<h2>Introduction to ansible-test</h2>
+<p>As automation becomes crucial for more and more business cases, there is
+an increased need to test the automation code itself. This is where
+ansible-test comes in: developers who want to test their Ansible Content
+Collections for sanity, unit and integration tests can use 
+ansible-test  to achieve testing workflows that integrate with source
+code repositories.</p>
+<p>Both ansible-core and ansible-base come
+<a href="https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html">packaged</a>
+with a cli tool called ansible-test, which can be used by collection
+developers to test their Collection and its content. The ansible-test
+knows how to perform a wide variety of testing-related tasks, from
+linting module documentation and code to running unit and integration
+tests.</p>
+<p>We will cover different features of ansible-test in brief below.</p>
+<h2>How to run ansible-test?</h2>
+<p>With the general availability of Ansible Content Collections with Ansible-2.9,
+a user can run ansible-test inside a collection to test the collection
+itself. ansible-test needs to be run from the collection root or below
+in order for ansible-test to run tests on the Collection.</p>
+<p>If you try to run ansible-test from outside the above directory norms,
+it will throw an error like below:</p>
+<div class="code"><pre class="code literal-block">root@root<span class="w"> </span>~/.ansible/collections<span class="w"> </span>ansible-test<span class="w"> </span>sanity
+ERROR:<span class="w"> </span>The<span class="w"> </span>current<span class="w"> </span>working<span class="w"> </span>directory<span class="w"> </span>must<span class="w"> </span>be<span class="w"> </span>at<span class="w"> </span>or<span class="w"> </span>below:
+
+-<span class="w"> </span>an<span class="w"> </span>Ansible<span class="w"> </span>collection:<span class="w"> </span><span class="o">{</span>...<span class="o">}</span>/ansible_collections/<span class="o">{</span>namespace<span class="o">}</span>/<span class="o">{</span>collection<span class="o">}</span>/
+
+Current<span class="w"> </span>working<span class="w"> </span>directory:<span class="w"> </span>/root/.ansible/collections
+</pre></div>
+
+<p>from the above output you can see how a collection root appears to
+ansible-test, it has to be in the form of:</p>
+<div class="code"><pre class="code literal-block"><span class="o">{</span>...<span class="o">}</span>/ansible_collections/<span class="o">{</span>namespace<span class="o">}</span>/<span class="o">{</span>collection<span class="o">}</span>/
+</pre></div>
+
+<p>When you install a collection from Ansible Galaxy or Automation Hub, the default installation location is:
+<code>{...}/ansible_collections/{namespace}/{collection}/</code>, which already satisfies the above directory convention.</p>
+<p>Even if you specify the installation path to the ansible-galaxy cli
+(using the -p option), it will also install a collection inside the
+ansible_collections directory by creating one in the given path, like
+below:</p>
+<div class="code"><pre class="code literal-block">root@root<span class="w"> </span>~/temp<span class="w"> </span>ll
+total<span class="w"> </span><span class="m">0</span>
+
+root@root<span class="w"> </span>~/temp<span class="w"> </span>ansible-galaxy<span class="w"> </span>collection<span class="w"> </span>install<span class="w"> </span>arista.eos<span class="w"> </span>-p<span class="w"> </span>.
+Process<span class="w"> </span>install<span class="w"> </span>dependency<span class="w"> </span>map
+Starting<span class="w"> </span>collection<span class="w"> </span>install<span class="w"> </span>process
+Installing<span class="w"> </span><span class="s1">'arista.eos:1.2.0'</span><span class="w"> </span>to<span class="w"> </span><span class="s1">'/root/temp/ansible_collections/arista/eos'</span>
+Installing<span class="w"> </span><span class="s1">'ansible.netcommon:1.4.1'</span><span class="w"> </span>to<span class="w"> </span><span class="s1">'/root/temp/ansible_collections/ansible/netcommon'</span>
+
+root@root<span class="w"> </span>~/temp<span class="w"> </span>ll
+total<span class="w"> </span><span class="m">4</span>.0K
+drwxrwxr-x.<span class="w"> </span><span class="m">4</span><span class="w"> </span>root<span class="w"> </span>root<span class="w"> </span><span class="m">4</span>.0K<span class="w"> </span>Jan<span class="w"> </span><span class="m">18</span><span class="w"> </span><span class="m">19</span>:21<span class="w"> </span>ansible_collections
+</pre></div>
+
+<p>Make sure you keep the above directory norm when you develop your
+collections and test them with ansible-test too, in your local
+development environment.</p>
+<h3>How to test your collection using ansible-test?</h3>
+<p>ansible-test provides ways to run different types of tests on your
+Collections, broadly these tests are of types listed below:</p>
+<ul>
+<li>Sanity Tests</li>
+<li>Unit Tests</li>
+<li>Integration Tests</li>
+</ul>
+<p>We will go through each of these tests in detail.</p>
+<h3>Sanity Tests</h3>
+<p>Sanity tests are made up of scripts and tools used to perform static
+code analysis. The primary purpose of these tests is to enforce Ansible
+coding standards and requirements. ansible-test includes a variety of
+sanity tests to perform the code analysis, which can be found
+<a href="https://docs.ansible.com/ansible/latest/dev_guide/testing/sanity/index.html#all-sanity-tests">in the documentation</a>.</p>
+<h3>How to run?</h3>
+<p>You can run the sanity test suite from the root directory of your
+collection; below are different scenarios on how you can run the sanity
+tests.</p>
+<div class="code"><pre class="code literal-block"><span class="c1"># Run all sanity tests</span>
+ansible-test<span class="w"> </span>sanity
+
+<span class="c1"># Run all sanity tests against against certain files</span>
+ansible-test<span class="w"> </span>sanity<span class="w"> </span>plugins/modules/files/eos_acls.py
+
+<span class="c1"># Run all tests with a specific version of python (3.7 in this case)</span>
+ansible-test<span class="w"> </span>sanity<span class="w"> </span>--python<span class="w"> </span><span class="m">3</span>.7
+
+<span class="c1"># Run all tests inside docker (good if you don't have dependencies installed)</span>
+ansible-test<span class="w"> </span>sanity<span class="w"> </span>--docker<span class="w"> </span>default
+
+<span class="c1"># Run validate-modules against a specific file</span>
+ansible-test<span class="w"> </span>sanity<span class="w"> </span>--test<span class="w"> </span>validate-modules<span class="w"> </span>lib/ansible/modules/files/template.py
+</pre></div>
+
+<p>To list all the sanity tests available:</p>
+<div class="code"><pre class="code literal-block">ansible-test<span class="w"> </span>sanity<span class="w"> </span>--list-tests
+</pre></div>
+
+<h4>How to ignore sanity tests?</h4>
+<p>Since sanity tests change between Ansible releases, a separate ignore
+file is needed for each Ansible major release.</p>
+<p>The filename is <code>tests/sanity/ignore-X.Y.txt</code>
+where <code>X.Y</code> is the <code>ansible-core/ansible-base</code> release being used to test the collection.</p>
+<p>Maintaining a separate file for each Ansible release allows a collection to pass tests for multiple versions of Ansible.</p>
+<p>For information on the format of the ignore files, please refer to the
+<a href="https://docs.ansible.com/ansible/latest/dev_guide/testing/sanity/ignores.html#ignore-file-format">dev guide</a></p>
+<p>There are only a limited number of cases where ignores would be needed, so please refer to the
+<a href="https://github.com/ansible-collections/overview/blob/main/collection_requirements.rst#ci-testing">collections documentation</a></p>
+<h3>Unit Tests</h3>
+<p>Unit tests are small isolated tests that target a specific library or
+module. As a collection developer/maintainer, you want to make sure that
+your code is unit tested, and ansible-test provides a way to run and do
+reporting of unit tests inside your collection.</p>
+<ol>
+<li>The tests/units is where all things related to unit testing live</li>
+<li>ansible-test uses PyTest underneath the surface to do unit testing, hence it expects the tests to be located in files starting with <code>test_</code> or ending with <code>_test.py</code>
+</li>
+</ol>
+<p>For more information on how to write unit tests, please refer to the
+<a href="https://docs.ansible.com/ansible/latest/dev_guide/testing_units_modules.html">guide</a>.</p>
+<p>To run all the unit tests inside a collection, run the below command
+from collection root:</p>
+<div class="code"><pre class="code literal-block"><span class="c1"># Run all tests inside docker (good if you don't have dependencies installed)</span>
+ansible-test<span class="w"> </span>units<span class="w"> </span>--docker<span class="w"> </span>-v
+</pre></div>
+
+<p>Against a single module file by doing:</p>
+<div class="code"><pre class="code literal-block"><span class="c1"># Only runs if the module directory path and unit test file path are similar</span>
+ansible-test<span class="w"> </span>units<span class="w"> </span>--docker<span class="w"> </span>-v<span class="w"> </span>apt
+</pre></div>
+
+<p>Or against a specific python version by doing:</p>
+<div class="code"><pre class="code literal-block">ansible-test<span class="w"> </span>units<span class="w"> </span>--docker<span class="w"> </span>-v<span class="w"> </span>--python<span class="w"> </span><span class="m">2</span>.7<span class="w"> </span>apt
+</pre></div>
+
+<p>If you are running unit tests against things other than modules, such as
+module utilities, specify the whole file path:</p>
+<div class="code"><pre class="code literal-block">ansible-test<span class="w"> </span>units<span class="w"> </span>--docker<span class="w"> </span>-v<span class="w"> </span>test/units/module_utils/basic/test_imports.py
+</pre></div>
+
+<p>For advanced usage, see the help:</p>
+<div class="code"><pre class="code literal-block">ansible-test<span class="w"> </span>units<span class="w"> </span>--help
+</pre></div>
+
+<h3>Code Coverage</h3>
+<p>Code coverage reports make it easy to identify untested code for which
+more tests should be written.</p>
+<p>Add the <code>--coverage</code>= option to any test
+command to collect code coverage data. If you aren't using the
+<code>--venv</code> or <code>--docker</code> options that create an isolated
+python environment, then you may have to use the <code>--requirements</code>
+option to ensure that the correct version of
+the coverage module is installed:</p>
+<div class="code"><pre class="code literal-block">ansible-test<span class="w"> </span>coverage<span class="w"> </span>erase
+ansible-test<span class="w"> </span>units<span class="w"> </span>--coverage<span class="w"> </span>apt
+ansible-test<span class="w"> </span>coverage<span class="w"> </span>html
+</pre></div>
+
+<p>Reports can be generated in several different formats:</p>
+<ul>
+<li>
+<code>ansible-test coverage report</code> - Console report.</li>
+<li>[<code>ansible-test coverage html</code> - HTML report.</li>
+<li>[<code>ansible-test coverage xml</code> - XML report.</li>
+</ul>
+<p>To clear data between test runs, use the ansible-test coverage erase
+command. For a full list of features, see the online help:</p>
+<div class="code"><pre class="code literal-block">ansible-test<span class="w"> </span>coverage<span class="w"> </span>--help
+</pre></div>
+
+<h3>Integration Tests</h3>
+<p>These are end to end tests to check code path functions as expected and
+to catch breaking changes in the product that you are trying to
+automate. In the context of ansible-test essentially:</p>
+<ol>
+<li>The <code>tests/integration</code> is where all things related to integration tests live.</li>
+<li>The <code>tests/integration/targets</code> directory contains all our test cases.
+    Each test case is a barebones Ansible Role.</li>
+</ol>
+<h2>Conclusion &amp; Next Steps</h2>
+<p>As shown above, ansible-test can provide a lot of value testing Ansible
+Content Collections thoroughly.</p>
+<p>For further reading and information, visit the
+<a href="https://docs.ansible.com/ansible/latest/dev_guide/testing.html">Ansible Testing Strategies documentation</a>.
+If you are unfamiliar with Ansible Collections, check out our
+<a href="https://youtube.com/playlist?list=PLdu06OJoEf2Z85Lrc7_Sdw6mTt4aSKfwt">YouTube playlist for everything about Ansible Collections</a>.
+The videos will get you up to speed quickly.</p>
+<p>Also, don't forget to check out our <a href="https://www.redhat.com/en/engage/infra-automation-ebook-s-202009020400">Automate infrastructure workflows e-book</a>
+if you want to learn more about building a unified, automated pipeline for infrastructure operations.</p>
+</div>
+    <aside class="postpromonav"><nav><ul class="pager hidden-print">
+<li class="previous">
+                <a href="../bullhorn-20/" rel="prev" title="Bullhorn #20">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../bullhorn-21/" rel="next" title="Bullhorn #21">Next post</a>
+            </li>
+        </ul></nav></aside></article><!--End of body content-->
+</div>
+        <div class="content-slim redhat-footer">
+      <div class="footer-left">
+        <ul class="footer-left-links">
+<li>
+            <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-SA 4.0</a>
+          </li>
+          <li>
+            <a href="https://www.redhat.com/en/about/privacy-policy" target="_blank">Privacy policy</a>
+          </li>
+          <li>
+            <a href="https://docs.ansible.com/ansible/latest/community/code_of_conduct.html" target="_blank">Code of conduct</a>
+          </li>
+        </ul>
+</div>
+      <div class="footer-right">
+        <span class="redhat">Powered by</span>
+        <span class="redhat-logo">
+          <a href="https://www.redhat.com/en/technologies/management/ansible" target="_blank">
+            <img src="../../assets/images/redhat_reversed.svg" alt="Red Hat logo." width="96" height="28"></a>
+        </span>
+      </div>
+    </div>
+
+</div>
+
+            <script src="../../assets/js/jquery.min.js"></script><script src="../../assets/js/popper.min.js"></script><script src="../../assets/js/bootstrap.min.js"></script><script src="../../assets/js/baguetteBox.min.js"></script><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+</script><script src="../../assets/js/clipboard.min.js" type="text/javascript"></script><script src="../../assets/js/clipboard.js" type="text/javascript"></script>
+</body>
+</html>

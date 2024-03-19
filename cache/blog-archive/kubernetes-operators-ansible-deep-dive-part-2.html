@@ -1,0 +1,460 @@
+<h1>Kubernetes Operators with Ansible Deep Dive, Part 2</h1>
+<p>In part 1 of this series, we looked at operators overall, and what they do in
+OpenShift/Kubernetes. We peeked at the Operator SDK, and why you'd want
+to use an Ansible Operator rather than other kinds of operators provided
+by the SDK. We also explored how Ansible Operators are structured and
+the relevant files created by the Operator SDK when building Kubernetes
+Operators with Ansible.</p>
+<p>In this the second part of this deep dive series, we'll:</p>
+<ol>
+<li>Take a look at creating an OpenShift Project and deploying a Galera Operator.</li>
+<li>Next we'll check the MySQL cluster, then setup and test a Galera cluster.</li>
+<li>Then we'll test scaling down, disaster recovery, and demonstrate cleaning up.</li>
+</ol>
+<h2>Creating the project and deploying the operator</h2>
+<p>We start by creating a new project in OpenShift, which we'll simply call <code>test</code>:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>oc<span class="w"> </span>new-project<span class="w"> </span><span class="nb">test</span><span class="w"> </span>--display-name<span class="o">=</span><span class="s2">&quot;Testing Ansible Operator&quot;</span>
+Now<span class="w"> </span>using<span class="w"> </span>project<span class="w"> </span><span class="s2">&quot;test&quot;</span><span class="w"> </span>on<span class="w"> </span>server<span class="w"> </span><span class="s2">&quot;https://ec2-xx-yy-zz-1.us-east-2.compute.amazonaws.com:8443&quot;</span>
+</pre></div>
+
+<p>We won't delve too much into this role, however the basic operation is:</p>
+<ol>
+<li>Use <code>set_fact</code> to generate variables using the <code>k8s</code> lookup plugin or other variables defined in <code>defaults/main.yml</code>.</li>
+<li>Determine if any corrective action needs to be taken based on the above variables.
+    For example, one variable determines how many Galera node pods are currently running.
+    This is compared against the variable defined on the <code>CustomResource</code>.
+    If they differ, the role will add or remove pods as needed.</li>
+</ol>
+<p>To begin the deployment, we have a simple script, which builds the operator image and pushes it to the OpenShift registry for
+the <code>test</code> project:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>cat<span class="w"> </span>./create_operator.sh
+<span class="c1">#!/bin/bash</span>
+
+docker<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>docker-registry-default.router.default.svc.cluster.local/test/galera-ansible-operator:latest<span class="w"> </span>.
+docker<span class="w"> </span>push<span class="w"> </span>docker-registry-default.router.default.svc.cluster.local/test/galera-ansible-operator:latest
+kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>deploy/operator.yaml
+kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>deploy/cr.yaml
+</pre></div>
+
+<p>Before we run this script, we need to first deploy the RBAC rules and
+custom resource definition for our Galera example:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>oc<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>deploy/rbac.yaml
+clusterrole<span class="w"> </span><span class="s2">&quot;galera-ansible-operator&quot;</span><span class="w"> </span>created
+clusterrolebinding<span class="w"> </span><span class="s2">&quot;default-account-app-operator&quot;</span><span class="w"> </span>created
+$<span class="w"> </span>oc<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>deploy/crd.yaml
+customresourcedefinition<span class="w"> </span><span class="s2">&quot;galeraservices.galera.database.coreos.com&quot;</span><span class="w"> </span>created
+</pre></div>
+
+<p>Now, we run the script (after using the login command to allow docker to
+connect to the OpenShift registry we created):</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>docker<span class="w"> </span>login<span class="w"> </span>-p<span class="w"> </span><span class="k">$(</span>oc<span class="w"> </span>whoami<span class="w"> </span>-t<span class="k">)</span><span class="w"> </span>-u<span class="w"> </span>unused<span class="w"> </span>docker-registry-default.router.default.svc.cluster.local
+Login<span class="w"> </span>Succeeded
+
+$<span class="w"> </span>./create_operator.sh
+Sending<span class="w"> </span>build<span class="w"> </span>context<span class="w"> </span>to<span class="w"> </span>Docker<span class="w"> </span>daemon<span class="w"> </span><span class="m">490</span><span class="w"> </span>kB
+...
+deployment.apps/galera-ansible-operator<span class="w"> </span>created
+galeraservice<span class="w"> </span><span class="s2">&quot;galera-example&quot;</span><span class="w"> </span>created
+</pre></div>
+
+<p>In short order, we will see the galera-ansible-operator pod start up,
+followed by a single pod named galera-node-0001 and a LoadBalancer
+service which provides our ingress to our Galera cluster:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>oc<span class="w"> </span>get<span class="w"> </span>all
+NAME<span class="w"> </span>DOCKER<span class="w"> </span>REPO<span class="w"> </span>TAGS<span class="w"> </span>UPDATED
+is/galera-ansible-operator<span class="w"> </span>docker-registry-default.router...:5000/test/galera-ansible-operator<span class="w"> </span>latest<span class="w"> </span><span class="m">3</span><span class="w"> </span>hours<span class="w"> </span>ago
+
+NAME<span class="w"> </span>DESIRED<span class="w"> </span>CURRENT<span class="w"> </span>UP-TO-DATE<span class="w"> </span>AVAILABLE<span class="w"> </span>AGE
+deploy/galera-ansible-operator<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="m">1</span><span class="w"> </span>4m
+
+NAME<span class="w"> </span>CLUSTER-IP<span class="w"> </span>EXTERNAL-IP<span class="w"> </span>PORT<span class="o">(</span>S<span class="o">)</span><span class="w"> </span>AGE
+svc/galera-external-loadbalancer<span class="w"> </span><span class="m">172</span>.30.251.195<span class="w"> </span><span class="m">172</span>.29.17.210,172.29.17.210<span class="w"> </span><span class="m">33066</span>:30072/TCP<span class="w"> </span>1m
+svc/glusterfs-dynamic-galera-node-0001-mysql-data<span class="w"> </span><span class="m">172</span>.30.49.250<span class="w"> </span>&lt;none&gt;<span class="w"> </span><span class="m">1</span>/TCP<span class="w"> </span>1m
+
+NAME<span class="w"> </span>DESIRED<span class="w"> </span>CURRENT<span class="w"> </span>READY<span class="w"> </span>AGE
+rs/galera-ansible-operator-bc6cd548<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="m">1</span><span class="w"> </span>4m
+
+NAME<span class="w"> </span>READY<span class="w"> </span>STATUS<span class="w"> </span>RESTARTS<span class="w"> </span>AGE
+po/galera-ansible-operator-bc6cd548-46b2r<span class="w"> </span><span class="m">1</span>/1<span class="w"> </span>Running<span class="w"> </span><span class="m">5</span><span class="w"> </span>4m
+po/galera-node-0001<span class="w"> </span><span class="m">1</span>/1<span class="w"> </span>Running<span class="w"> </span><span class="m">0</span><span class="w"> </span>1m
+</pre></div>
+
+<p>Verifying the MySQL cluster, initial setup and testing</p>
+<p>We can use the describe function to see the status of our custom
+resource, specifically the size we specified:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>kubectl<span class="w"> </span>describe<span class="w"> </span>-f<span class="w"> </span>deploy/cr.yaml<span class="w"> </span><span class="p">|</span>grep<span class="w"> </span>-i<span class="w"> </span>size
+Galera<span class="w"> </span>_<span class="w"> </span>Cluster<span class="w"> </span>_<span class="w"> </span>Size:<span class="w"> </span><span class="m">1</span>
+</pre></div>
+
+<p>Now that we have a MySQL cluster, let's test it using
+<a href="https://github.com/akopytov/sysbench">sysbench</a>.
+As mentioned above, we have a system from which to do the testing so we
+can avoid internet round trips. But first, we'll need some info. We
+need to know the forwarded port we can connect to through the load
+balancing service created as part of the operator deployment:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>oc<span class="w"> </span>get<span class="w"> </span>services
+</pre></div>
+
+<p>Next, we need to know the IP of the master. We can get this with <code>oc describe</code>:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>oc<span class="w"> </span>describe<span class="w"> </span>node<span class="w"> </span>ec2-xx-yy-zz-1.us-east-2.compute.amazonaws.com<span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>^Addresses
+Addresses:<span class="w"> </span><span class="m">10</span>.0.0.46,ec2-xx-yy-zz-1.us-east-2.compute.amazonaws.com
+</pre></div>
+
+<p>So for this test, we'll be connecting to the IP 10.0.0.46 on port
+XXXXX. The port value 33066 was specified in the spec above, and is the
+port which will receive the forwarded traffic. We'll export those to
+make it a little easier to re-use our test commands.</p>
+<p>From the test server:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span><span class="nb">export</span><span class="w"> </span><span class="nv">MYSQL_IP</span><span class="o">=</span><span class="m">10</span>.0.0.46
+$<span class="w"> </span><span class="nb">export</span><span class="w"> </span><span class="nv">MYSQL_PORT</span><span class="o">=</span>XXXXX
+</pre></div>
+
+<p>Before running sysbench, we need to create the database it expects
+(future versions of the Galera operator will be able to do this
+automatically):</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>mysql<span class="w"> </span>-h<span class="w"> </span><span class="nv">$MYSQL_IP</span><span class="w"> </span>--port<span class="o">=</span><span class="nv">$MYSQL_PORT</span><span class="w"> </span>-u<span class="w"> </span>root<span class="w"> </span>-e<span class="w"> </span><span class="s1">&#39;create database sbtest;&#39;</span>
+</pre></div>
+
+<p>Next, we'll prepare the test by running sysbench using the OLTP
+read-only test with a table of 1 million rows:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>sysbench<span class="w"> </span>--db-driver<span class="o">=</span>mysql<span class="w"> </span>--threads<span class="o">=</span><span class="m">150</span><span class="w"> </span>--mysql-host<span class="o">=</span><span class="si">${</span><span class="nv">MYSQL_IP</span><span class="si">}</span><span class="w"> </span>--mysql-port<span class="o">=</span><span class="si">${</span><span class="nv">MYSQL_PORT</span><span class="si">}</span><span class="w"> </span>--mysql-user<span class="o">=</span>root<span class="w"> </span>--mysql-password<span class="o">=</span><span class="w"> </span>--mysql-ignore-errors<span class="o">=</span>all<span class="w"> </span>--table-size<span class="o">=</span><span class="m">1000000</span><span class="w"> </span>/usr/share/sysbench/oltp_read_only.lua<span class="w"> </span>prepare
+sysbench<span class="w"> </span><span class="m">1</span>.0.9<span class="w"> </span><span class="o">(</span>using<span class="w"> </span>system<span class="w"> </span>LuaJIT<span class="w"> </span><span class="m">2</span>.0.4<span class="o">)</span>
+Initializing<span class="w"> </span>worker<span class="w"> </span>threads...
+Creating<span class="w"> </span>table<span class="w"> </span><span class="s1">&#39;sbtest1&#39;</span>...
+Inserting<span class="w"> </span><span class="m">1000000</span><span class="w"> </span>records<span class="w"> </span>into<span class="w"> </span><span class="s1">&#39;sbtest1&#39;</span>
+Creating<span class="w"> </span>a<span class="w"> </span>secondary<span class="w"> </span>index<span class="w"> </span>on<span class="w"> </span><span class="s1">&#39;sbtest1&#39;</span>
+
+...
+</pre></div>
+
+<p>Note that we use 150 threads here, as a single MySQL/MariaDB instance
+defaults to this size for its maximum connections allowed.</p>
+<p>So now that everything's ready, lets run our first test with sysbench:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>sysbench<span class="w"> </span>--db-driver<span class="o">=</span>mysql<span class="w"> </span>--threads<span class="o">=</span><span class="m">150</span><span class="w"> </span>--mysql-host<span class="o">=</span><span class="si">${</span><span class="nv">MYSQL_IP</span><span class="si">}</span><span class="w"> </span>--mysql-port<span class="o">=</span><span class="si">${</span><span class="nv">MYSQL_PORT</span><span class="si">}</span><span class="w"> </span>--mysql-user<span class="o">=</span>root<span class="w"> </span>--mysql-password<span class="o">=</span><span class="w"> </span>--mysql-ignore-errors<span class="o">=</span>all<span class="w"> </span>/usr/share/sysbench/oltp_read_only.lua<span class="w"> </span>run
+sysbench<span class="w"> </span><span class="m">1</span>.0.9<span class="w"> </span><span class="o">(</span>using<span class="w"> </span>system<span class="w"> </span>LuaJIT<span class="w"> </span><span class="m">2</span>.0.4<span class="o">)</span>
+Running<span class="w"> </span>the<span class="w"> </span><span class="nb">test</span><span class="w"> </span>with<span class="w"> </span>following<span class="w"> </span>options:
+Number<span class="w"> </span>of<span class="w"> </span>threads:<span class="w"> </span><span class="m">150</span>
+Initializing<span class="w"> </span>random<span class="w"> </span>number<span class="w"> </span>generator<span class="w"> </span>from<span class="w"> </span>current<span class="w"> </span><span class="nb">time</span>
+Initializing<span class="w"> </span>worker<span class="w"> </span>threads...
+Threads<span class="w"> </span>started!
+SQL<span class="w"> </span>statistics:
+<span class="w">    </span>queries<span class="w"> </span>performed:
+<span class="w">        </span>read:<span class="w">                            </span><span class="m">174776</span>
+<span class="w">        </span>write:<span class="w">                           </span><span class="m">0</span>
+<span class="w">        </span>other:<span class="w">                           </span><span class="m">24968</span>
+<span class="w">        </span>total:<span class="w">                           </span><span class="m">199744</span>
+<span class="w">    </span>transactions:<span class="w">                        </span><span class="m">12484</span><span class="w">  </span><span class="o">(</span><span class="m">1239</span>.55<span class="w"> </span>per<span class="w"> </span>sec.<span class="o">)</span>
+<span class="w">    </span>queries:<span class="w">                             </span><span class="m">199744</span><span class="w"> </span><span class="o">(</span><span class="m">19832</span>.77<span class="w"> </span>per<span class="w"> </span>sec.<span class="o">)</span>
+<span class="w">    </span>ignored<span class="w"> </span>errors:<span class="w">                      </span><span class="m">0</span><span class="w">      </span><span class="o">(</span><span class="m">0</span>.00<span class="w"> </span>per<span class="w"> </span>sec.<span class="o">)</span>
+<span class="w">    </span>reconnects:<span class="w">                          </span><span class="m">0</span><span class="w">      </span><span class="o">(</span><span class="m">0</span>.00<span class="w"> </span>per<span class="w"> </span>sec.<span class="o">)</span>
+General<span class="w"> </span>statistics:
+<span class="w">    </span>total<span class="w"> </span>time:<span class="w">                          </span><span class="m">10</span>.0700s
+<span class="w">    </span>total<span class="w"> </span>number<span class="w"> </span>of<span class="w"> </span>events:<span class="w">              </span><span class="m">12484</span>
+Latency<span class="w"> </span><span class="o">(</span>ms<span class="o">)</span>:
+<span class="w">         </span>min:<span class="w">                                  </span><span class="m">3</span>.82
+<span class="w">         </span>avg:<span class="w">                                </span><span class="m">120</span>.66
+<span class="w">         </span>max:<span class="w">                               </span><span class="m">1028</span>.51
+<span class="w">         </span>95th<span class="w"> </span>percentile:<span class="w">                    </span><span class="m">292</span>.60
+<span class="w">         </span>sum:<span class="w">                            </span><span class="m">1506263</span>.71
+Threads<span class="w"> </span>fairness:
+<span class="w">    </span>events<span class="w"> </span><span class="o">(</span>avg/stddev<span class="o">)</span>:<span class="w">           </span><span class="m">83</span>.2267/42.84
+<span class="w">    </span>execution<span class="w"> </span><span class="nb">time</span><span class="w"> </span><span class="o">(</span>avg/stddev<span class="o">)</span>:<span class="w">   </span><span class="m">10</span>.0418/0.02
+</pre></div>
+
+<p>This was just one run, but re-running a few times produces similar
+results. So our one-node cluster can process about 20K queries/second.
+But a cluster with only one member isn't very useful - so lets scale it
+up. We do this by editing the custom resource we defined earlier and
+changing the <code>galera_cluster_size</code> variable.
+For now, we'll spin up to a three-node cluster:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>oc<span class="w"> </span>edit<span class="w"> </span>-f<span class="w"> </span>deploy/cr.yaml
+galeraservice.galera.database.coreos.com/galera-example<span class="w"> </span>edited
+</pre></div>
+
+<p>Next, we can verify OpenShift sees this new value:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>kubectl<span class="w"> </span>describe<span class="w"> </span>-f<span class="w"> </span>deploy/cr.yaml<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-i<span class="w"> </span>size
+Galera<span class="w"> </span>_<span class="w"> </span>Cluster<span class="w"> </span>_<span class="w"> </span>Size:<span class="w"> </span><span class="m">3</span>
+</pre></div>
+
+<p>And in short order, we see the Ansible operator receive an event
+signalling the change and start working to update the cluster:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>oc<span class="w"> </span>get<span class="w"> </span>pods
+NAME<span class="w"> </span>READY<span class="w"> </span>STATUS<span class="w"> </span>RESTARTS<span class="w"> </span>AGE
+galera-ansible-operator-bc6cd548-46b2r<span class="w"> </span><span class="m">1</span>/1<span class="w"> </span>Running<span class="w"> </span><span class="m">5</span><span class="w"> </span>30m
+galera-node-0001<span class="w"> </span><span class="m">1</span>/1<span class="w"> </span>Running<span class="w"> </span><span class="m">0</span><span class="w"> </span>26m
+galera-node-0002<span class="w"> </span><span class="m">0</span>/1<span class="w"> </span>Running<span class="w"> </span><span class="m">0</span><span class="w"> </span>1m
+galera-node-0003<span class="w"> </span><span class="m">0</span>/1<span class="w"> </span>Running<span class="w"> </span><span class="m">0</span><span class="w"> </span>56s
+</pre></div>
+
+<p>And after about a minute (each Galera node has to start and sync data from another member), we see the new pods become ready:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>oc<span class="w"> </span>get<span class="w"> </span>pods
+NAME<span class="w"> </span>READY<span class="w"> </span>STATUS<span class="w"> </span>RESTARTS<span class="w"> </span>AGE
+galera-ansible-operator-bc6cd548-46b2r<span class="w"> </span><span class="m">1</span>/1<span class="w"> </span>Running<span class="w"> </span><span class="m">5</span><span class="w"> </span>31m
+galera-node-0001<span class="w"> </span><span class="m">1</span>/1<span class="w"> </span>Running<span class="w"> </span><span class="m">0</span><span class="w"> </span>27m
+galera-node-0002<span class="w"> </span><span class="m">1</span>/1<span class="w"> </span>Running<span class="w"> </span><span class="m">0</span><span class="w"> </span>2m
+galera-node-0003<span class="w"> </span><span class="m">1</span>/1<span class="w"> </span>Running<span class="w"> </span><span class="m">0</span><span class="w"> </span>2m
+</pre></div>
+
+<p>Now that we have a three node cluster, we can re-run the same test as earlier:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>sysbench<span class="w"> </span>--db-driver<span class="o">=</span>mysql<span class="w"> </span>--threads<span class="o">=</span><span class="m">150</span><span class="w"> </span>--mysql-host<span class="o">=</span><span class="si">${</span><span class="nv">MYSQL_IP</span><span class="si">}</span><span class="w"> </span>--mysql-port<span class="o">=</span><span class="si">${</span><span class="nv">MYSQL_PORT</span><span class="si">}</span><span class="w"> </span>--mysql-user<span class="o">=</span>root<span class="w"> </span>--mysql-password<span class="o">=</span><span class="w"> </span>--mysql-ignore-errors<span class="o">=</span>all<span class="w"> </span>/usr/share/sysbench/oltp_read_only.lua<span class="w"> </span>run
+sysbench<span class="w"> </span><span class="m">1</span>.0.9<span class="w"> </span><span class="o">(</span>using<span class="w"> </span>system<span class="w"> </span>LuaJIT<span class="w"> </span><span class="m">2</span>.0.4<span class="o">)</span>
+Running<span class="w"> </span>the<span class="w"> </span><span class="nb">test</span><span class="w"> </span>with<span class="w"> </span>following<span class="w"> </span>options:
+Number<span class="w"> </span>of<span class="w"> </span>threads:<span class="w"> </span><span class="m">150</span>
+Initializing<span class="w"> </span>random<span class="w"> </span>number<span class="w"> </span>generator<span class="w"> </span>from<span class="w"> </span>current<span class="w"> </span><span class="nb">time</span>
+Initializing<span class="w"> </span>worker<span class="w"> </span>threads...
+Threads<span class="w"> </span>started!
+SQL<span class="w"> </span>statistics:
+<span class="w">    </span>queries<span class="w"> </span>performed:
+<span class="w">        </span>read:<span class="w">                            </span><span class="m">527282</span>
+<span class="w">        </span>write:<span class="w">                           </span><span class="m">0</span>
+<span class="w">        </span>other:<span class="w">                           </span><span class="m">75326</span>
+<span class="w">        </span>total:<span class="w">                           </span><span class="m">602608</span>
+<span class="w">    </span>transactions:<span class="w">                        </span><span class="m">37663</span><span class="w">  </span><span class="o">(</span><span class="m">3756</span>.49<span class="w"> </span>per<span class="w"> </span>sec.<span class="o">)</span>
+<span class="w">    </span>queries:<span class="w">                             </span><span class="m">602608</span><span class="w"> </span><span class="o">(</span><span class="m">60103</span>.86<span class="w"> </span>per<span class="w"> </span>sec.<span class="o">)</span>
+<span class="w">    </span>ignored<span class="w"> </span>errors:<span class="w">                      </span><span class="m">0</span><span class="w">      </span><span class="o">(</span><span class="m">0</span>.00<span class="w"> </span>per<span class="w"> </span>sec.<span class="o">)</span>
+<span class="w">    </span>reconnects:<span class="w">                          </span><span class="m">0</span><span class="w">      </span><span class="o">(</span><span class="m">0</span>.00<span class="w"> </span>per<span class="w"> </span>sec.<span class="o">)</span>
+General<span class="w"> </span>statistics:
+<span class="w">    </span>total<span class="w"> </span>time:<span class="w">                          </span><span class="m">10</span>.0247s
+<span class="w">    </span>total<span class="w"> </span>number<span class="w"> </span>of<span class="w"> </span>events:<span class="w">              </span><span class="m">37663</span>
+Latency<span class="w"> </span><span class="o">(</span>ms<span class="o">)</span>:
+<span class="w">         </span>min:<span class="w">                                  </span><span class="m">4</span>.30
+<span class="w">         </span>avg:<span class="w">                                 </span><span class="m">39</span>.88
+<span class="w">         </span>max:<span class="w">                               </span><span class="m">8371</span>.55
+<span class="w">         </span>95th<span class="w"> </span>percentile:<span class="w">                     </span><span class="m">82</span>.96
+<span class="w">         </span>sum:<span class="w">                            </span><span class="m">1501845</span>.63
+Threads<span class="w"> </span>fairness:
+<span class="w">    </span>events<span class="w"> </span><span class="o">(</span>avg/stddev<span class="o">)</span>:<span class="w">           </span><span class="m">251</span>.0867/87.82
+<span class="w">    </span>execution<span class="w"> </span><span class="nb">time</span><span class="w"> </span><span class="o">(</span>avg/stddev<span class="o">)</span>:<span class="w">   </span><span class="m">10</span>.0123/0.01
+</pre></div>
+
+<p>With dramatic results! Our cluster is now able to process 60K queries
+per second! How far can we take this? Well, if you noticed our node
+count at the start we have five nodes in our k8s cluster, so lets make
+our Galera cluster match that:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>oc<span class="w"> </span>edit<span class="w"> </span>-f<span class="w"> </span>deploy/cr.yaml
+galeraservice.galera.database.coreos.com/galera-example<span class="w"> </span>edited
+$<span class="w"> </span>kubectl<span class="w"> </span>describe<span class="w"> </span>-f<span class="w"> </span>deploy/cr.yaml<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-i<span class="w"> </span>size
+Galera<span class="w"> </span>_<span class="w"> </span>Cluster<span class="w"> </span>_<span class="w"> </span>Size:<span class="w"> </span><span class="m">5</span>
+</pre></div>
+
+<p>The Ansible operator starts growing the Galera cluster...:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>oc<span class="w"> </span>get<span class="w"> </span>pods
+NAME<span class="w"> </span>READY<span class="w"> </span>STATUS<span class="w"> </span>RESTARTS<span class="w"> </span>AGE
+galera-ansible-operator-bc6cd548-46b2r<span class="w"> </span><span class="m">1</span>/1<span class="w"> </span>Running<span class="w"> </span><span class="m">5</span><span class="w"> </span>35m
+galera-node-0001<span class="w"> </span><span class="m">1</span>/1<span class="w"> </span>Running<span class="w"> </span><span class="m">0</span><span class="w"> </span>32m
+galera-node-0002<span class="w"> </span><span class="m">1</span>/1<span class="w"> </span>Running<span class="w"> </span><span class="m">0</span><span class="w"> </span>7m
+galera-node-0003<span class="w"> </span><span class="m">1</span>/1<span class="w"> </span>Running<span class="w"> </span><span class="m">0</span><span class="w"> </span>7m
+galera-node-0004<span class="w"> </span><span class="m">0</span>/1<span class="w"> </span>Running<span class="w"> </span><span class="m">0</span><span class="w"> </span>38s
+galera-node-0005<span class="w"> </span><span class="m">0</span>/1<span class="w"> </span>Running<span class="w"> </span><span class="m">0</span><span class="w"> </span>34s
+</pre></div>
+
+<p>And again after about a minute or so we have a Galera cluster with five
+pods ready to serve queries:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>oc<span class="w"> </span>get<span class="w"> </span>pods
+NAME<span class="w"> </span>READY<span class="w"> </span>STATUS<span class="w"> </span>RESTARTS<span class="w"> </span>AGE
+galera-ansible-operator-bc6cd548-46b2r<span class="w"> </span><span class="m">1</span>/1<span class="w"> </span>Running<span class="w"> </span><span class="m">5</span><span class="w"> </span>36m
+galera-node-0001<span class="w"> </span><span class="m">1</span>/1<span class="w"> </span>Running<span class="w"> </span><span class="m">0</span><span class="w"> </span>33m
+galera-node-0002<span class="w"> </span><span class="m">1</span>/1<span class="w"> </span>Running<span class="w"> </span><span class="m">0</span><span class="w"> </span>8m
+galera-node-0003<span class="w"> </span><span class="m">1</span>/1<span class="w"> </span>Running<span class="w"> </span><span class="m">0</span><span class="w"> </span>8m
+galera-node-0004<span class="w"> </span><span class="m">1</span>/1<span class="w"> </span>Running<span class="w"> </span><span class="m">0</span><span class="w"> </span>1m
+galera-node-0005<span class="w"> </span><span class="m">1</span>/1<span class="w"> </span>Running<span class="w"> </span><span class="m">1</span><span class="w"> </span>1m
+</pre></div>
+
+<p>Oddly, the fifth node had a problem, but OpenShift retried it after it
+failed and it came up and into the cluster. Great!</p>
+<p>So let's rerun our same test once again:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>sysbench<span class="w"> </span>--db-driver<span class="o">=</span>mysql<span class="w"> </span>--threads<span class="o">=</span><span class="m">150</span><span class="w"> </span>--mysql-host<span class="o">=</span><span class="si">${</span><span class="nv">MYSQL_IP</span><span class="si">}</span><span class="w"> </span>--mysql-port<span class="o">=</span><span class="si">${</span><span class="nv">MYSQL_PORT</span><span class="si">}</span><span class="w"> </span>--mysql-user<span class="o">=</span>root<span class="w"> </span>--mysql-password<span class="o">=</span><span class="w"> </span>--mysql-ignore-errors<span class="o">=</span>all<span class="w"> </span>/usr/share/sysbench/oltp_read_only.lua<span class="w"> </span>run
+sysbench<span class="w"> </span><span class="m">1</span>.0.9<span class="w"> </span><span class="o">(</span>using<span class="w"> </span>system<span class="w"> </span>LuaJIT<span class="w"> </span><span class="m">2</span>.0.4<span class="o">)</span>
+Running<span class="w"> </span>the<span class="w"> </span><span class="nb">test</span><span class="w"> </span>with<span class="w"> </span>following<span class="w"> </span>options:
+Number<span class="w"> </span>of<span class="w"> </span>threads:<span class="w"> </span><span class="m">150</span>
+Initializing<span class="w"> </span>random<span class="w"> </span>number<span class="w"> </span>generator<span class="w"> </span>from<span class="w"> </span>current<span class="w"> </span><span class="nb">time</span>
+Initializing<span class="w"> </span>worker<span class="w"> </span>threads...
+Threads<span class="w"> </span>started!
+SQL<span class="w"> </span>statistics:
+queries<span class="w"> </span>performed:
+<span class="w">        </span>read:<span class="w">                            </span><span class="m">869260</span>
+<span class="w">        </span>write:<span class="w">                           </span><span class="m">0</span>
+<span class="w">        </span>other:<span class="w">                           </span><span class="m">124180</span>
+<span class="w">        </span>total:<span class="w">                           </span><span class="m">993440</span>
+<span class="w">    </span>transactions:<span class="w">                        </span><span class="m">62090</span><span class="w">  </span><span class="o">(</span><span class="m">6196</span>.82<span class="w"> </span>per<span class="w"> </span>sec.<span class="o">)</span>
+<span class="w">    </span>queries:<span class="w">                             </span><span class="m">993440</span><span class="w"> </span><span class="o">(</span><span class="m">99149</span>.17<span class="w"> </span>per<span class="w"> </span>sec.<span class="o">)</span>
+<span class="w">    </span>ignored<span class="w"> </span>errors:<span class="w">                      </span><span class="m">0</span><span class="w">      </span><span class="o">(</span><span class="m">0</span>.00<span class="w"> </span>per<span class="w"> </span>sec.<span class="o">)</span>
+<span class="w">    </span>reconnects:<span class="w">                          </span><span class="m">0</span><span class="w">      </span><span class="o">(</span><span class="m">0</span>.00<span class="w"> </span>per<span class="w"> </span>sec.<span class="o">)</span>
+General<span class="w"> </span>statistics:
+<span class="w">    </span>total<span class="w"> </span>time:<span class="w">                          </span><span class="m">10</span>.0183s
+<span class="w">    </span>total<span class="w"> </span>number<span class="w"> </span>of<span class="w"> </span>events:<span class="w">              </span><span class="m">62090</span>
+Latency<span class="w"> </span><span class="o">(</span>ms<span class="o">)</span>:
+<span class="w">         </span>min:<span class="w">                                  </span><span class="m">5</span>.41
+<span class="w">         </span>avg:<span class="w">                                 </span><span class="m">24</span>.18
+<span class="w">         </span>max:<span class="w">                                </span><span class="m">159</span>.70
+<span class="w">         </span>95th<span class="w"> </span>percentile:<span class="w">                     </span><span class="m">46</span>.63
+<span class="w">         </span>sum:<span class="w">                            </span><span class="m">1501042</span>.93
+Threads<span class="w"> </span>fairness:
+<span class="w">    </span>events<span class="w"> </span><span class="o">(</span>avg/stddev<span class="o">)</span>:<span class="w">           </span><span class="m">413</span>.9333/78.17
+<span class="w">    </span>execution<span class="w"> </span><span class="nb">time</span><span class="w"> </span><span class="o">(</span>avg/stddev<span class="o">)</span>:<span class="w">   </span><span class="m">10</span>.0070/0.00
+</pre></div>
+
+<p>And we're hitting 100K queries per second. Our cluster has thus-far
+scaled linearly with the number of nodes we've spun up. At this point,
+we've maxed out the resources of our OpenShift cluster, and spinning up
+more Galera nodes doesn't help:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>oc<span class="w"> </span>edit<span class="w"> </span>-f<span class="w"> </span>deploy/cr.yaml
+galeraservice.galera.database.coreos.com/galera-example<span class="w"> </span>edited
+$<span class="w"> </span>kubectl<span class="w"> </span>describe<span class="w"> </span>-f<span class="w"> </span>deploy/cr.yaml<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-i<span class="w"> </span>size
+Galera<span class="w"> </span>_<span class="w"> </span>Cluster<span class="w"> </span>_<span class="w"> </span>Size:<span class="w"> </span><span class="m">9</span>
+
+$<span class="w"> </span>oc<span class="w"> </span>get<span class="w"> </span>pods
+NAME<span class="w"> </span>READY<span class="w"> </span>STATUS<span class="w"> </span>RESTARTS<span class="w"> </span>AGE
+galera-ansible-operator-bc6cd548-46b2r<span class="w"> </span><span class="m">1</span>/1<span class="w"> </span>Running<span class="w"> </span><span class="m">5</span><span class="w"> </span>44m
+galera-node-0001<span class="w"> </span><span class="m">1</span>/1<span class="w"> </span>Running<span class="w"> </span><span class="m">0</span><span class="w"> </span>41m
+galera-node-0002<span class="w"> </span><span class="m">1</span>/1<span class="w"> </span>Running<span class="w"> </span><span class="m">0</span><span class="w"> </span>16m
+galera-node-0003<span class="w"> </span><span class="m">1</span>/1<span class="w"> </span>Running<span class="w"> </span><span class="m">0</span><span class="w"> </span>16m
+galera-node-0004<span class="w"> </span><span class="m">1</span>/1<span class="w"> </span>Running<span class="w"> </span><span class="m">0</span><span class="w"> </span>9m
+galera-node-0005<span class="w"> </span><span class="m">1</span>/1<span class="w"> </span>Running<span class="w"> </span><span class="m">1</span><span class="w"> </span>9m
+galera-node-0006<span class="w"> </span><span class="m">1</span>/1<span class="w"> </span>Running<span class="w"> </span><span class="m">0</span><span class="w"> </span>1m
+galera-node-0007<span class="w"> </span><span class="m">1</span>/1<span class="w"> </span>Running<span class="w"> </span><span class="m">0</span><span class="w"> </span>1m
+galera-node-0008<span class="w"> </span><span class="m">1</span>/1<span class="w"> </span>Running<span class="w"> </span><span class="m">0</span><span class="w"> </span>1m
+galera-node-0009<span class="w"> </span><span class="m">1</span>/1<span class="w"> </span>Running<span class="w"> </span><span class="m">0</span><span class="w"> </span>1m
+
+$<span class="w"> </span>sysbench<span class="w"> </span>--db-driver<span class="o">=</span>mysql<span class="w"> </span>--threads<span class="o">=</span><span class="m">150</span><span class="w"> </span>--mysql-host<span class="o">=</span><span class="si">${</span><span class="nv">MYSQL_IP</span><span class="si">}</span><span class="w"> </span>--mysql-port<span class="o">=</span><span class="si">${</span><span class="nv">MYSQL_PORT</span><span class="si">}</span><span class="w"> </span>--mysql-user<span class="o">=</span>root<span class="w"> </span>--mysql-password<span class="o">=</span><span class="w"> </span>--mysql-ignore-errors<span class="o">=</span>all<span class="w"> </span>/usr/share/sysbench/oltp_read_only.lua<span class="w"> </span>run
+sysbench<span class="w"> </span><span class="m">1</span>.0.9<span class="w"> </span><span class="o">(</span>using<span class="w"> </span>system<span class="w"> </span>LuaJIT<span class="w"> </span><span class="m">2</span>.0.4<span class="o">)</span>
+Running<span class="w"> </span>the<span class="w"> </span><span class="nb">test</span><span class="w"> </span>with<span class="w"> </span>following<span class="w"> </span>options:
+Number<span class="w"> </span>of<span class="w"> </span>threads:<span class="w"> </span><span class="m">150</span>
+Initializing<span class="w"> </span>random<span class="w"> </span>number<span class="w"> </span>generator<span class="w"> </span>from<span class="w"> </span>current<span class="w"> </span><span class="nb">time</span>
+Initializing<span class="w"> </span>worker<span class="w"> </span>threads...
+Threads<span class="w"> </span>started!
+SQL<span class="w"> </span>statistics:
+<span class="w">    </span>queries<span class="w"> </span>performed:
+<span class="w">        </span>read:<span class="w">                            </span><span class="m">841260</span>
+<span class="w">        </span>write:<span class="w">                           </span><span class="m">0</span>
+<span class="w">        </span>other:<span class="w">                           </span><span class="m">120180</span>
+<span class="w">        </span>total:<span class="w">                           </span><span class="m">961440</span>
+<span class="w">    </span>transactions:<span class="w">                        </span><span class="m">60090</span><span class="w">  </span><span class="o">(</span><span class="m">5995</span>.71<span class="w"> </span>per<span class="w"> </span>sec.<span class="o">)</span>
+<span class="w">    </span>queries:<span class="w">                             </span><span class="m">961440</span><span class="w"> </span><span class="o">(</span><span class="m">95931</span>.35<span class="w"> </span>per<span class="w"> </span>sec.<span class="o">)</span>
+<span class="w">    </span>ignored<span class="w"> </span>errors:<span class="w">                      </span><span class="m">0</span><span class="w">      </span><span class="o">(</span><span class="m">0</span>.00<span class="w"> </span>per<span class="w"> </span>sec.<span class="o">)</span>
+<span class="w">    </span>reconnects:<span class="w">                          </span><span class="m">0</span><span class="w">      </span><span class="o">(</span><span class="m">0</span>.00<span class="w"> </span>per<span class="w"> </span>sec.<span class="o">)</span>
+General<span class="w"> </span>statistics:
+<span class="w">    </span>total<span class="w"> </span>time:<span class="w">                          </span><span class="m">10</span>.0208s
+<span class="w">    </span>total<span class="w"> </span>number<span class="w"> </span>of<span class="w"> </span>events:<span class="w">              </span><span class="m">60090</span>
+Latency<span class="w"> </span><span class="o">(</span>ms<span class="o">)</span>:
+<span class="w">         </span>min:<span class="w">                                  </span><span class="m">5</span>.24
+<span class="w">         </span>avg:<span class="w">                                 </span><span class="m">24</span>.98
+<span class="w">         </span>max:<span class="w">                                </span><span class="m">192</span>.46
+<span class="w">         </span>95th<span class="w"> </span>percentile:<span class="w">                     </span><span class="m">57</span>.87
+<span class="w">         </span>sum:<span class="w">                            </span><span class="m">1501266</span>.08
+Threads<span class="w"> </span>fairness:
+<span class="w">    </span>events<span class="w"> </span><span class="o">(</span>avg/stddev<span class="o">)</span>:<span class="w">           </span><span class="m">400</span>.6000/134.04
+<span class="w">    </span>execution<span class="w"> </span><span class="nb">time</span><span class="w"> </span><span class="o">(</span>avg/stddev<span class="o">)</span>:<span class="w">   </span><span class="m">10</span>.0084/0.01
+</pre></div>
+
+<p>Performance actually decreased a bit! This shows that MySQL/MariaDB are
+pretty resource-intensive, so if you want to continue scaling out the
+performance you may need to add more OpenShift cluster resources. But at
+this point, our cluster is serving nearly 5x the traffic as when we
+originally started it up. Continued tuning of MySQL/MariaDB and Galera
+could extend that and allow us to increase performance further. However
+the goal here was to show how to create an Ansible operator to control a
+very complex, data-oriented application.</p>
+<h2>Scaling the cluster down</h2>
+<p>Since those extra nodes aren't helping out (other than providing a bit
+more redundancy in the event of a failure), lets scale the cluster back
+down to five nodes:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>oc<span class="w"> </span>edit<span class="w"> </span>-f<span class="w"> </span>deploy/cr.yaml
+galeraservice.galera.database.coreos.com/galera-example<span class="w"> </span>edited
+$<span class="w"> </span>kubectl<span class="w"> </span>describe<span class="w"> </span>-f<span class="w"> </span>deploy/cr.yaml<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-i<span class="w"> </span>size
+Galera<span class="w"> </span>_<span class="w"> </span>Cluster<span class="w"> </span>_<span class="w"> </span>Size:<span class="w"> </span><span class="m">5</span>
+</pre></div>
+
+<p>After a short while, we see the operator begin to terminate pods that
+are no longer required:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>oc<span class="w"> </span>get<span class="w"> </span>pods
+NAME<span class="w"> </span>READY<span class="w"> </span>STATUS<span class="w"> </span>RESTARTS<span class="w"> </span>AGE
+galera-ansible-operator-bc6cd548-46b2r<span class="w"> </span><span class="m">1</span>/1<span class="w"> </span>Running<span class="w"> </span><span class="m">5</span><span class="w"> </span>46m
+galera-node-0001<span class="w"> </span><span class="m">1</span>/1<span class="w"> </span>Running<span class="w"> </span><span class="m">0</span><span class="w"> </span>43m
+galera-node-0002<span class="w"> </span><span class="m">1</span>/1<span class="w"> </span>Running<span class="w"> </span><span class="m">0</span><span class="w"> </span>18m
+galera-node-0003<span class="w"> </span><span class="m">1</span>/1<span class="w"> </span>Running<span class="w"> </span><span class="m">0</span><span class="w"> </span>18m
+galera-node-0004<span class="w"> </span><span class="m">1</span>/1<span class="w"> </span>Running<span class="w"> </span><span class="m">0</span><span class="w"> </span>11m
+galera-node-0005<span class="w"> </span><span class="m">1</span>/1<span class="w"> </span>Running<span class="w"> </span><span class="m">1</span><span class="w"> </span>11m
+galera-node-0006<span class="w"> </span><span class="m">0</span>/1<span class="w"> </span>Terminating<span class="w"> </span><span class="m">0</span><span class="w"> </span>3m
+galera-node-0007<span class="w"> </span><span class="m">0</span>/1<span class="w"> </span>Terminating<span class="w"> </span><span class="m">0</span><span class="w"> </span>3m
+galera-node-0008<span class="w"> </span><span class="m">0</span>/1<span class="w"> </span>Terminating<span class="w"> </span><span class="m">0</span><span class="w"> </span>3m
+galera-node-0009<span class="w"> </span><span class="m">0</span>/1<span class="w"> </span>Terminating<span class="w"> </span><span class="m">0</span><span class="w"> </span>3m
+</pre></div>
+
+<h2>Disaster recovery</h2>
+<p>Now, let's add some chaos. Looking at our first worker <code>xx-yy-zz-2</code>, we can see which pods are running on the node:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>oc<span class="w"> </span>describe<span class="w"> </span>node<span class="w"> </span>ec2-xx-yy-zz-2.us-east-2.compute.amazonaws.com
+...
+Non-terminated<span class="w"> </span>Pods:<span class="w"> </span><span class="o">(</span><span class="m">5</span><span class="w"> </span><span class="k">in</span><span class="w"> </span>total<span class="o">)</span>
+Namespace<span class="w"> </span>Name<span class="w"> </span>CPU<span class="w"> </span>Requests<span class="w"> </span>CPU<span class="w"> </span>Limits<span class="w"> </span>Memory<span class="w"> </span>Requests<span class="w"> </span>Memory<span class="w"> </span>Limits
+---------<span class="w"> </span>----<span class="w"> </span>------------<span class="w"> </span>----------<span class="w"> </span>---------------<span class="w"> </span>-------------
+openshift-monitoring<span class="w"> </span>node-exporter-bqnzv<span class="w"> </span>10m<span class="w"> </span><span class="o">(</span><span class="m">0</span>%<span class="o">)</span><span class="w"> </span>20m<span class="w"> </span><span class="o">(</span><span class="m">1</span>%<span class="o">)</span><span class="w"> </span>20Mi<span class="w"> </span><span class="o">(</span><span class="m">0</span>%<span class="o">)</span><span class="w"> </span>40Mi<span class="w"> </span><span class="o">(</span><span class="m">0</span>%<span class="o">)</span>
+openshift-node<span class="w"> </span>sync-hjtmj<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">(</span><span class="m">0</span>%<span class="o">)</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">(</span><span class="m">0</span>%<span class="o">)</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">(</span><span class="m">0</span>%<span class="o">)</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">(</span><span class="m">0</span>%<span class="o">)</span>
+openshift-sdn<span class="w"> </span>ovs-55hw4<span class="w"> </span>100m<span class="w"> </span><span class="o">(</span><span class="m">5</span>%<span class="o">)</span><span class="w"> </span>200m<span class="w"> </span><span class="o">(</span><span class="m">10</span>%<span class="o">)</span><span class="w"> </span>300Mi<span class="w"> </span><span class="o">(</span><span class="m">4</span>%<span class="o">)</span><span class="w"> </span>400Mi<span class="w"> </span><span class="o">(</span><span class="m">5</span>%<span class="o">)</span>
+openshift-sdn<span class="w"> </span>sdn-rd7kp<span class="w"> </span>100m<span class="w"> </span><span class="o">(</span><span class="m">5</span>%<span class="o">)</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">(</span><span class="m">0</span>%<span class="o">)</span><span class="w"> </span>200Mi<span class="w"> </span><span class="o">(</span><span class="m">2</span>%<span class="o">)</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">(</span><span class="m">0</span>%<span class="o">)</span>
+<span class="nb">test</span><span class="w"> </span>galera-node-0004<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">(</span><span class="m">0</span>%<span class="o">)</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">(</span><span class="m">0</span>%<span class="o">)</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">(</span><span class="m">0</span>%<span class="o">)</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">(</span><span class="m">0</span>%<span class="o">)</span>
+...
+</pre></div>
+
+<p>So galera-node-0004 is running here, along with some other
+infrastructure bits. Lets restart it from the AWS EC2 console and see
+what happens...</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>oc<span class="w"> </span>get<span class="w"> </span>nodes
+NAME<span class="w"> </span>STATUS<span class="w"> </span>AGE
+ec2-xx-yy-zz-1.us-east-2.compute.amazonaws.com<span class="w"> </span>Ready<span class="w"> </span>1d
+ec2-xx-yy-zz-2.us-east-2.compute.amazonaws.com<span class="w"> </span>NotReady<span class="w"> </span>1d
+ec2-xx-yy-zz-3.us-east-2.compute.amazonaws.com<span class="w"> </span>Ready<span class="w"> </span>1d
+ec2-xx-yy-zz-4.us-east-2.compute.amazonaws.com<span class="w"> </span>Ready<span class="w"> </span>1d
+ec2-xx-yy-zz-5.us-east-2.compute.amazonaws.com<span class="w"> </span>Ready<span class="w"> </span>1d
+ec2-xx-yy-zz-6.us-east-2.compute.amazonaws.com<span class="w"> </span>Ready<span class="w"> </span>1d
+ec2-xx-yy-zz-7.us-east-2.compute.amazonaws.com<span class="w"> </span>Ready<span class="w"> </span>1d
+ec2-xx-yy-zz-8.us-east-2.compute.amazonaws.com<span class="w"> </span>Ready<span class="w"> </span>1d
+</pre></div>
+
+<p>Eventually, we see galera-node-0004 enter an unknown state:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>oc<span class="w"> </span>get<span class="w"> </span>pods
+NAME<span class="w"> </span>READY<span class="w"> </span>STATUS<span class="w"> </span>RESTARTS<span class="w"> </span>AGE
+galera-ansible-operator-bc6cd548-46b2r<span class="w"> </span><span class="m">1</span>/1<span class="w"> </span>Running<span class="w"> </span><span class="m">5</span><span class="w"> </span>50m
+galera-node-0001<span class="w"> </span><span class="m">1</span>/1<span class="w"> </span>Running<span class="w"> </span><span class="m">0</span><span class="w"> </span>47m
+galera-node-0002<span class="w"> </span><span class="m">1</span>/1<span class="w"> </span>Running<span class="w"> </span><span class="m">0</span><span class="w"> </span>22m
+galera-node-0003<span class="w"> </span><span class="m">1</span>/1<span class="w"> </span>Running<span class="w"> </span><span class="m">0</span><span class="w"> </span>22m
+galera-node-0004<span class="w"> </span><span class="m">1</span>/1<span class="w"> </span>Unknown<span class="w"> </span><span class="m">0</span><span class="w"> </span>16m
+galera-node-0005<span class="w"> </span><span class="m">1</span>/1<span class="w"> </span>Running<span class="w"> </span><span class="m">1</span><span class="w"> </span>16m
+</pre></div>
+
+<p>And in a while the pod will be terminated, after which the Ansible
+operator will restart it:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>oc<span class="w"> </span>get<span class="w"> </span>pods
+NAME<span class="w"> </span>READY<span class="w"> </span>STATUS<span class="w"> </span>RESTARTS<span class="w"> </span>AGE
+galera-ansible-operator-bc6cd548-46b2r<span class="w"> </span><span class="m">1</span>/1<span class="w"> </span>Running<span class="w"> </span><span class="m">5</span><span class="w"> </span>55m
+galera-node-0001<span class="w"> </span><span class="m">1</span>/1<span class="w"> </span>Running<span class="w"> </span><span class="m">0</span><span class="w"> </span>52m
+galera-node-0002<span class="w"> </span><span class="m">1</span>/1<span class="w"> </span>Running<span class="w"> </span><span class="m">0</span><span class="w"> </span>27m
+galera-node-0003<span class="w"> </span><span class="m">1</span>/1<span class="w"> </span>Running<span class="w"> </span><span class="m">0</span><span class="w"> </span>27m
+galera-node-0004<span class="w"> </span><span class="m">1</span>/1<span class="w"> </span>Running<span class="w"> </span><span class="m">1</span><span class="w"> </span>1m
+galera-node-0005<span class="w"> </span><span class="m">1</span>/1<span class="w"> </span>Running<span class="w"> </span><span class="m">1</span><span class="w"> </span>21m
+</pre></div>
+
+<p>... and our cluster is back to its requested capacity!</p>
+<h2>Cleanup</h2>
+<p>Since this is a test we'll want to clean up after ourselves. When we're
+done we use the delete_operator.sh script to remove the custom resource
+and the operator deployment:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>./delete_operator.sh
+galeraservice.galera.database.coreos.com<span class="w"> </span><span class="s2">&quot;galera-example&quot;</span><span class="w"> </span>deleted
+deployment.apps<span class="w"> </span><span class="s2">&quot;galera-ansible-operator&quot;</span><span class="w"> </span>deleted
+</pre></div>
+
+<p>In a couple of minutes, everything is gone:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>oc<span class="w"> </span>get<span class="w"> </span>all
+NAME<span class="w"> </span>DOCKER<span class="w"> </span>REPO<span class="w"> </span>TAGS<span class="w"> </span>UPDATED
+is/galera-ansible-operator<span class="w"> </span>docker-registry-default.router...:5000/test/galera-ansible-operator<span class="w"> </span>latest<span class="w"> </span><span class="m">4</span><span class="w"> </span>hours<span class="w"> </span>ago
+</pre></div>
+
+<h1>Summary</h1>
+<p>The Galera operator is a work in progress and is most definitely not
+ready for production. If you'd like to view the playbooks themselves,
+you can see the code here:</p>
+<p><a href="https://github.com/water-hole/galera-ansible-operator">https://github.com/water-hole/galera-ansible-operator</a></p>
+<p>We're going to be continuing development on this with the goal of
+making it the de facto example for other data storage applications.
+Thanks for reading!</p>

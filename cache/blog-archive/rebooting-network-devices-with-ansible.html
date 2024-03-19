@@ -1,0 +1,114 @@
+<h1>Rebooting Network Devices with Ansible</h1>
+<p>With the Red Hat Ansible Automation Platform release in November, we
+released over 50 network resource modules to help make automating
+network devices easier and more turn-key for network engineers.  In
+addition to the new resource modules, Andrius also discussed fact
+gathering enhancements in his blog post,
+which means with every new resource module, users gain increased fact
+coverage for network devices.  For this blog post I want to cover
+another cool enhancement that may have gone unnoticed. This is the
+ability for network devices to make use of the
+<a href="https://docs.ansible.com/ansible/latest/modules/wait_for_connection_module.html">wait_for_connection</a>
+module.  If you are a network engineer that has operational Ansible
+Playbooks that need to reboot devices or take them offline, this module
+will help you make more programmatic playbooks to handle disconnects. 
+By leveraging wait_for_connection network automation playbooks can look
+and behave more like playbooks for Linux or Windows hosts.</p>
+<h2>Comparing wait_for and wait_for_connection</h2>
+<p>There are two great modules that can wait for a condition to be met,
+<a href="https://docs.ansible.com/ansible/latest/modules/wait_for_module.html">wait_for</a>
+and the wait_for_connection.  I highly recommend against using the pause
+module if you can get away with it, and I equate it to using a
+programming equivalent of a sleep within an Ansible Playbook.  Using
+either of these two wait_for modules is superior to random pauses within
+your Ansible Playbook because they are a more programmatic solution that
+is more adaptable to devices taking different amounts of time to
+complete a task.  The other problem with the pause module is that using
+prompts does not work within Ansible Tower. A much better solution for
+human interaction would be to use an Ansible Tower workflow with an
+<a href="https://docs.ansible.com/ansible-tower/latest/html/userguide/workflow_templates.html#approval-nodes">approval node</a>.</p>
+<p>The wait_for module can wait until a path on a filesystem exists, or
+until a port is active again.  This works great for most reboot use
+cases, except for when a system is not able to be logged into
+immediately after the port is up.  The wait_for_connection extends the
+functionality of the wait_for use case a bit further. The
+wait_for_connection module will make sure that Ansible can log back into
+the device and receive the appropriate prompts before finishing
+completing the task. For Linux and Windows hosts it will use the ping or
+win_ping module, for network devices it will make sure the
+<a href="https://docs.ansible.com/ansible/latest/plugins/connection.html">connection plugin</a>
+that was last used can fully connect to the device.  At the time of this
+blog post this only works with the <code>network_cli</code> connection plugin.  This
+means that subsequent tasks can begin operating as intended as soon as
+wait_for_connection completes versus where wait_for just knows that port
+is open.</p>
+<h2>Dealing with prompts</h2>
+<p>With networking devices when we perform operational tasks such as a
+reboot, there is often a prompt to confirm that you want to take an
+action.</p>
+<p>For example on a Juniper vSRX device:</p>
+<div class="code"><pre class="code literal-block">admin@rtr3&gt;<span class="w"> </span>request<span class="w"> </span>system<span class="w"> </span>reboot
+Reboot<span class="w"> </span>the<span class="w"> </span>system<span class="w"> </span>?<span class="w"> </span><span class="o">[</span>yes,no<span class="o">]</span><span class="w"> </span><span class="o">(</span>no<span class="o">)</span>
+</pre></div>
+
+<p>The user has to confirm the reload to be able to proceed.
+Something I neglected to cover on my deep dive with <code>cli_command</code> blog was that <a href="https://docs.ansible.com/ansible/latest/modules/cli_command_module.html">cli_command module</a> can handle prompts.
+The <code>cli_command</code> module can even handle multiple prompts!
+For this example the Cisco router had not saved its config, and we are performing a reload.
+First the Cisco router will alert me that the System configuration has been modified, and ask me if I want to save this before I lose my running-configuration:</p>
+<div class="code"><pre class="code literal-block">rtr1#reload
+
+System<span class="w"> </span>configuration<span class="w"> </span>has<span class="w"> </span>been<span class="w"> </span>modified.<span class="w"> </span>Save?<span class="w"> </span><span class="o">[</span>yes/no<span class="o">]</span>:
+</pre></div>
+
+<p>After confirming <code>yes</code> or <code>no</code>, you will receive a second prompt:</p>
+<div class="code"><pre class="code literal-block">Proceed<span class="w"> </span>with<span class="w"> </span>reload?<span class="w"> </span><span class="o">[</span>confirm<span class="o">]</span>
+</pre></div>
+
+<p>We need to build a task that can handle both prompts using the <code>cli_command</code> module:</p>
+<div class="code"><pre class="code literal-block"><span class="nn">---</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">reboot ios device</span>
+<span class="w">  </span><span class="nt">cli_command</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">reload</span>
+<span class="w">    </span><span class="nt">prompt</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Save?</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">confirm</span>
+<span class="w">    </span><span class="nt">answer</span><span class="p">:</span>
+<span class="w">     </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">y</span>
+<span class="w">     </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">y</span>
+</pre></div>
+
+<p>The above task will answer yes to both prompts, saving the config and reloading the device.
+The list for prompt answer and the list for answer must match and be in the same order.
+This means that the answer for <code>prompt[0]</code> must be <code>answer[0]</code>.</p>
+<p>If you want to see a more detailed example of handling multiple prompts,
+<a href="https://github.com/ansible/workshops/blob/master/provisioner/roles/configure_routers/tasks/juniper_default.yml">here is an example of a password reset on a Juniper vSRX device</a>.</p>
+<h2>Using reset_connection in combination</h2>
+<p>Now that you understand how to reboot the device with cli_command we can combine that with the wait_for_connection to create a reusable Ansible Playbook.
+However, we need to add one more task, a <a href="https://docs.ansible.com/ansible/latest/modules/meta_module.html">meta: reset_connection</a> to make this work programmatically.  </p>
+<p>We need to make sure the current connection to the network device is
+closed so that the socket can be reestablished to the network device
+after the reboot takes place.  If the connection is not closed and the
+command timeout is longer than the time it takes to reboot, the
+persistent connection will attempt to reuse the closed SSH connection
+resulting in the failure "Socket is closed". A correct Ansible Playbook
+looks like this:</p>
+<div class="code"><pre class="code literal-block"><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">reboot task (this is a snippet, full task removed for brevity)</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">reset the connection</span>
+<span class="w">  </span><span class="nt">meta</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">reset_connection</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Wait for the network device to reload</span>
+<span class="w">  </span><span class="nt">wait_for_connection</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">delay</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
+</pre></div>
+
+<p>Now we have an Ansible Playbook that can reconnect to network devices after a reboot is issued!
+For a full example please <a href="https://gist.github.com/IPvSean/56f6522cc73629984d3e47013240a1fa">refer to this reboot.yml</a> Ansible Playbook for Arista vEOS network devices.</p>
+<h2>Where to go next?</h2>
+<p>This blog helped outline how to create reusable Ansible Playbooks for
+rebooting network devices.  One of the next steps is obviously building
+out an Ansible Role that can reboot multiple network platforms.  I have
+gone ahead and <a href="https://github.com/network-automation/tower_workshop/blob/master/network_reload.yml">created one and uploaded it to Github here</a>. 
+This role will work on Juniper Junos, Cisco IOS and Arista EOS devices
+and can be easily modified to handle many more network operating systems.</p>

@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html prefix="
+og: http://ogp.me/ns# article: http://ogp.me/ns/article#
+" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="For this post, I am going to walk through two common scenarios where Ansible Automation Platform can help in public clouds.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Two Simple Ways Automation Can Save You Money on Your AWS Bill | Ansible Collaborative</title>
+<link href="../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/baguetteBox.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/rst.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/code.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/theme.css" rel="stylesheet" type="text/css">
+<!-- Red Hat fonts --><link rel="stylesheet" href="https://static.redhat.com/libs/redhat/redhat-font/2.0.0/webfonts/red-hat-font.css">
+<!-- Font Awesome --><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+<!-- Fork Awesome --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css" integrity="sha256-XoaMnoYC5TH6/+ihMEnospgm0J1PM/nioxbOUdnM8HY=" crossorigin="anonymous">
+<!-- Sass compiled css  --><link rel="stylesheet" href="../../assets/css/main.css">
+<link rel="stylesheet" href="../../assets/css/redhat-footer.css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://ansible.com/blog/two-simple-ways-automation-can-save-money-on-aws/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Sean Cavanaugh">
+<link rel="prev" href="../bullhorn-49/" title="Bullhorn #49" type="text/html">
+<link rel="next" href="../bullhorn-50/" title="Bullhorn #50" type="text/html">
+<meta property="og:site_name" content="Ansible Collaborative">
+<meta property="og:title" content="Two Simple Ways Automation Can Save You Money on Your AWS Bill">
+<meta property="og:url" content="https://ansible.com/blog/two-simple-ways-automation-can-save-money-on-aws/">
+<meta property="og:description" content="For this post, I am going to walk through two common scenarios where Ansible Automation Platform can help in public clouds.">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2022-03-14T00:00:00Z">
+</head>
+<body id="top">
+
+<div class="global-container" id="content" role="main">
+<!-- Start menubar -->
+<nav class="navbar navbar-expand-lg static-top mb-4 navbar-padding full-width-bg   navbar-dark   bg-pool   "><div class="masthead">
+    <!-- This keeps the margins nice -->
+    <a class="navbar-brand" href="../../">
+        <img src="../../images/ansible_logo-small-15.png" alt="Ansible community logo" id="logo" class="d-inline-block align-top" width="50" height="50"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon nav-toggle-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="bs-navbar">
+      <ul class="navbar-nav mr-auto"></ul>
+<ul class="navbar-nav navbar-right">
+<li class="nav-item dropdown">
+	        <a href="#" class="nav-link nav-link-color dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <i class=""></i> Documentation
+                </a>
+		<div class="dropdown-menu dropdown-menu-border">
+	    
+                    <a href="https://docs.ansible.com/" class="dropdown-item">
+		        <i class=""></i> Project documentation
+                    </a>
+                    <a href="https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/" class="dropdown-item">
+		        <i class=""></i> Ansible Automation Platform documentation
+                    </a>
+            </div>
+                 </li>
+<li class="nav-item">
+		     <a href="https://galaxy.ansible.com/" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Galaxy
+		     </a>
+		 </li>
+                 <li class="nav-item">
+		     <a href="https://forum.ansible.com/" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Forum
+		     </a>
+		 </li>
+            <li class="nav-item dropdown">
+	        <a href="#" class="nav-link nav-link-color dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <i class=""></i> Resources
+                </a>
+		<div class="dropdown-menu dropdown-menu-border">
+	    
+                    <a href="../../how-ansible-works/" class="dropdown-item">
+		        <i class=""></i> How Ansible works
+                    </a>
+                    <a href="../../ecosystem/" class="dropdown-item">
+		        <i class=""></i> Ansible ecosystem
+                    </a>
+                    <a href="../archive.html" class="dropdown-item">
+		        <i class=""></i> Blog
+                    </a>
+                    <a href="../../faq/" class="dropdown-item">
+		        <i class=""></i> Frequently asked questions
+                    </a>
+                    <a href="../../ansible-community-training/" class="dropdown-item">
+		        <i class=""></i> Ansible community training
+                    </a>
+                    <a href="../../contact-us/" class="dropdown-item">
+		        <i class=""></i> Contact us
+                    </a>
+            </div>
+                 </li>
+<li class="nav-item">
+		     <a href="https://www.redhat.com/en/technologies/management/ansible?sc_cid=7015Y000003szaKQAQ" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Ansible Automation Platform
+		     </a>
+		 </li>
+
+        
+      </ul>
+</div>
+    <!-- /.navbar-collapse -->
+  </div>
+  <!-- /.container -->
+</nav><!-- End default Menubar --><div class="body-content center-band">
+        <!--Body content-->
+        
+  <article class="post-text h-entry hentry postpage ansible-content" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Two Simple Ways Automation Can Save You Money on Your AWS Bill</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard p-author h-card"><span class="byline-name fn p-name" itemprop="author">
+                    <a class="u-url" href="../../authors/sean-cavanaugh/">Sean Cavanaugh</a>
+            </span></p>
+            <p class="dateline">
+            <a href="." rel="bookmark">
+            <time class="published dt-published" datetime="2022-03-14T00:00:00Z" itemprop="datePublished" title="2022-03-14 00:00">2022-03-14 00:00</time></a>
+            </p>
+                    <p class="sourceline"><a href="index.md" class="sourcelink">Source</a></p>
+
+        </div>
+        
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+<h2>Two Simple Ways Automation Can Save You Money on Your AWS Bill</h2>
+<p>Red Hat Ansible Automation Platform is an excellent automation and
+orchestration tool for public clouds. For this post, I am going to walk
+through two common scenarios where Ansible Automation Platform can help
+out. I want to look outside the common public cloud use-case of
+provisioning and deprovisioning resources and instead look at automating
+common operational tasks.</p>
+<p><img alt="cloud engineer diagram" src="../../images/posts/archive/cloud-engineer-diagram.png"></p>
+<p>What is an operational task? It is simply anything that an administrator
+has to do outside of creating and deleting cloud resources (e.g.
+instances, networks, keys, etc.) to help maintain their company's
+public cloud account. One of the problems I've encountered is instances
+being left on, running up our public cloud bill in the background while
+we were focusing our attention elsewhere. The more users you have, the
+more likely problems are to occur; automation can help address these
+issues and maintain control of your account. There are two common
+scenarios I want to address here:</p>
+<ol>
+<li>Bespoke AWS instances were manually created for a one-off
+    initiative, usually to test something, then instances were forgotten
+    about and left running.</li>
+<li>Continuous Integration (CI) instances were spun up to test changes
+    programmatically every time a Pull Request (PR) went into our
+    project, and would sometimes hit a corner case where not everything
+    was deprovisioned correctly (turned off).</li>
+</ol>
+<p>In both cases, orphaned instances can be left on for a long time.
+Imagine you spun up a couple dozen instances to test something on a
+public cloud, then you got busy, lost track of time and forgot to
+terminate the instances before stopping work for the day. That might be
+16 hours (at minimum) of time when you were charged and received no
+value out of the public cloud that your company was financing. Now
+multiply this by dozens of users and that bill can end up in tens of
+thousands of dollars really quickly.</p>
+<h3>Use-case one: dealing with bespoke orphaned instances</h3>
+<p>So let's tackle each of these issues and use Ansible Automation
+Platform to automate a solution for the first scenario above where
+instances are being spun up outside any automation guard rails (i.e.
+they are not using any automation tools, including Ansible, to spin up
+cloud resources). We require everyone on my team who has access to the
+public cloud account to tag their instances. They must create a key,
+pair tag that says: <code>owner: person</code></p>
+<p><img alt="inventory tags screenshot" src="../../images/posts/archive/inventory-tags.png"></p>
+<p>This creates a really easy way to audit and see who (which person,
+organization, or team) is accountable for billing, which is half the
+battle. I am going to write a very simple Ansible Playbook that will
+enforce this. I will use the fully supported amazon.aws collection to
+demonstrate this.  </p>
+<ul>
+<li><strong>amazon.aws</strong></li>
+<li>downstream content fully supported on <a href="https://cloud.redhat.com/ansible/automation-hub/repo/published/amazon/aws">Ansible automation hub</a>
+</li>
+<li>upstream code found on <a href="https://galaxy.ansible.com/amazon/aws">Ansible Galaxy</a>
+</li>
+</ul>
+<p>The primary difference between the community and supported Collections
+here is support with your Red Hat subscription. There is also
+significant integration testing, code auditing and Python 3 / boto3
+support with the fully supported amazon.aws collection that is included
+as part of your Red Hat subscription.</p>
+<h3>Dealing with untagged instances</h3>
+<p>In my first Ansible Playbook, I want to get a list of all instances that
+have no tags. First, let's retrieve all instances in a particular
+region that are running:</p>
+<div class="code"><pre class="code literal-block"><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">grab info for un-tagged instances</span>
+<span class="w">  </span><span class="nt">amazon.aws.ec2_instance_info</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">region</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">ec2_region</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="w">    </span><span class="nt">filters</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">instance-state-name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">running</span>
+<span class="w">  </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ec2_node_info</span>
+</pre></div>
+
+<p>I am using the ec2_instance_info module found in the AWS Collection,
+part of the Amazon namespace. This task retrieves all instances
+(regardless of tags). I found the easiest way was to grab everything
+then filter out for empty tags:</p>
+<div class="code"><pre class="code literal-block"><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">set the untagged to a var</span>
+<span class="w">  </span><span class="nt">set_fact</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">untagged_instances</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">ec2_node_info.instances</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">selectattr('tags',</span><span class="nv"> </span><span class="s">'equalto',</span><span class="nv"> </span><span class="s">{})</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">map(attribute='instance_id')</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">list</span><span class="nv"> </span><span class="s">}}"</span>
+</pre></div>
+
+<p>This
+<a href="https://docs.ansible.com/ansible/latest/user_guide/complex_data_manipulation.html#data-manipulation">selectattr</a>
+filter is simply matching any instance that has no tags with the
+<code>['tags', 'equalto', {} ]</code></p>
+<p>I can then simply terminate these since my colleague didn't follow my
+well establish guidelines:</p>
+<div class="code"><pre class="code literal-block"><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Terminate every un-tagged running instance in a region.</span>
+<span class="w">  </span><span class="nt">amazon.aws.ec2</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">region</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">ec2_region</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="w">    </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">absent</span>
+<span class="w">    </span><span class="nt">instance_ids</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">untagged_instances</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="w">  </span><span class="nt">when</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">untagged_instances | length  &gt; 0</span>
+</pre></div>
+
+<p>However, since you might be more forgiving than me, you could use
+<code>state: stopped</code> versus
+absent which will turn them off versus terminate them.</p>
+<h3>Retrieving any instances with missing tags</h3>
+<p>To expand on the above, we don't just care about instances that are
+untagged entirely (meaning there are no tags at all), but we are
+specifically looking for the owner tag. I now want to retrieve any
+instance that is missing the owner tag. I can use the exact same logic
+as above but instead use the selectattr filter to look for undefined. </p>
+<div class="code"><pre class="code literal-block"><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">set the missing tag to a var</span>
+<span class="w">  </span><span class="nt">set_fact</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">missing_tag</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">ec2_node_info.instances</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">selectattr('tags.owner',</span><span class="nv"> </span><span class="s">'undefined')</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">map(attribute='instance_id')</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">list</span><span class="nv"> </span><span class="s">}}"</span>
+</pre></div>
+
+<p>I wanted to show both examples above to give a path to
+operationalization. Implementing the above using Ansible Automation
+Platform, your organization can now understand that they need to use
+tags, or their instances will be turned off (or worse!). Going further,
+the organization could use automation to enforce a particular tag to
+assign ownership, or action on the instance will be taken. You could use
+one or both of these previous examples.</p>
+<h3>Use-case two: Dealing with automated instances</h3>
+<p>For my particular use-case I have a code repository that is
+automatically tested. Our code is tested nightly, and everytime there is
+a Pull Request (PR) into the code repository. The CI testing will
+provision instances on AWS, configure the instances, run through
+automated tests, then deprovision them. Sometimes the deprovisioning
+step will not complete successfully, leaving orphaned hosts. One of the
+common things I have noticed is that the instances are often found
+partially turned off, where their tags are completely missing (removed)
+but the instances are not actually off, so we are still getting billed.
+The above Ansible Playbook in the previous example can catch that.</p>
+<p>However another great test is to use a new uptime parameter.</p>
+<div class="code"><pre class="code literal-block"><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">grab info</span>
+<span class="w">  </span><span class="nt">amazon.aws.ec2_instance_info</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">region</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">ec2_region</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="w">    </span><span class="nt">uptime</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">121</span>
+<span class="w">    </span><span class="nt">filters</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">instance-state-name</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="w"> </span><span class="s">"running"</span><span class="w"> </span><span class="p p-Indicator">]</span>
+<span class="w">      </span><span class="s">"tag:ansible-workshops"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ec2_node_info</span>
+</pre></div>
+
+<p>In this task there are two parameters I want to call out. First is the
+uptime parameter (added in the 1.4.0 of amazon.aws), which will only
+return instances that have run for more than that integer in minutes.
+For this example it has to run for more than 121 minutes, or more than
+two hours. I know that my CI testing should never take more than two
+hours. Either the instance is stuck, my automated testing broke, or
+deprovisioning didn't happen successfully.</p>
+<p>The other tag here is simply a filter so that I only return instances
+that are part of my automated testing (versus other initiatives). In
+this example, it has to be a
+<a href="https://github.com/ansible/workshops">workshop</a>. Now it should click
+why I need the "no tagged" example at the beginning! This entire
+operational task will fail if there is no tag at all. So the no tags
+use-case overlaps with every other use case because of how important
+tags can be in public cloud infrastructure. </p>
+<h3>Automating the automation</h3>
+<p>So this automation is great and all, but manually running playbooks only
+saves you so much time. I went ahead and used the <a href="https://docs.ansible.com/ansible-tower/latest/html/userguide/workflows.html">Ansible workflows</a>
+feature to hit multiple regions at once, and then schedule it so that my
+automation jobs run every hour.</p>
+<p><img alt="ansible workflow diagrams" src="../../images/posts/archive/automating-automation.png"></p>
+<p>Each rectangle on the right represents an automation
+<a href="https://docs.ansible.com/ansible-tower/latest/html/userguide/job_templates.html">job</a>.
+Each job in the same column is run in parallel on my Ansible Automation
+Platform cluster. Each job template is set to a different region. I also
+used the <a href="https://docs.ansible.com/ansible-tower/latest/html/userguide/job_templates.html#surveys">survey feature</a>
+to make this easy to configure from the Web UI.</p>
+<p><img alt="screenshot" src="../../images/posts/archive/aws-untagged-instances.png"></p>
+<p>In my particular scenario I was running automated testing in four AWS
+regions (us-east-1, ap-northeast-1, ap-southeast-1 and eu-central-1).
+Now that my workflow is complete, it is trivial to schedule my workflow
+to run every hour.</p>
+<p><img alt="screenshot" src="../../images/posts/archive/schedule-details-ui.png"></p>
+<p>Voila! Now I have automated testing behind the scenes to make sure that
+no orphaned instances are running. For my particular use case this will
+save a lot of money, and force a culture of accountability around public
+cloud use so that costs are clear and transparent between team
+members.  </p>
+</div>
+    <aside class="postpromonav"><nav><ul class="pager hidden-print">
+<li class="previous">
+                <a href="../bullhorn-49/" rel="prev" title="Bullhorn #49">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../bullhorn-50/" rel="next" title="Bullhorn #50">Next post</a>
+            </li>
+        </ul></nav></aside></article><!--End of body content-->
+</div>
+        <div class="content-slim redhat-footer">
+      <div class="footer-left">
+        <ul class="footer-left-links">
+<li>
+            <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-SA 4.0</a>
+          </li>
+          <li>
+            <a href="https://www.redhat.com/en/about/privacy-policy" target="_blank">Privacy policy</a>
+          </li>
+          <li>
+            <a href="https://docs.ansible.com/ansible/latest/community/code_of_conduct.html" target="_blank">Code of conduct</a>
+          </li>
+        </ul>
+</div>
+      <div class="footer-right">
+        <span class="redhat">Powered by</span>
+        <span class="redhat-logo">
+          <a href="https://www.redhat.com/en/technologies/management/ansible" target="_blank">
+            <img src="../../assets/images/redhat_reversed.svg" alt="Red Hat logo." width="96" height="28"></a>
+        </span>
+      </div>
+    </div>
+
+</div>
+
+            <script src="../../assets/js/jquery.min.js"></script><script src="../../assets/js/popper.min.js"></script><script src="../../assets/js/bootstrap.min.js"></script><script src="../../assets/js/baguetteBox.min.js"></script><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+</script><script src="../../assets/js/clipboard.min.js" type="text/javascript"></script><script src="../../assets/js/clipboard.js" type="text/javascript"></script>
+</body>
+</html>

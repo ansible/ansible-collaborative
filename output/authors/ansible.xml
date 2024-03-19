@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Ansible Collaborative (Posts by Ansible)</title><link>https://ansible.com/</link><description></description><atom:link href="https://ansible.com/authors/ansible.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2024 &lt;a href="mailto:website@ansible.community"&gt;Ansible Collaborative, et al&lt;/a&gt; </copyright><lastBuildDate>Mon, 18 Mar 2024 19:47:35 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>AnsibleFest 2020 is now a virtual experience</title><link>https://ansible.com/blog/ansiblefest-2020-is-now-a-virtual-experience/</link><dc:creator>Ansible</dc:creator><description>&lt;h2&gt;AnsibleFest 2020 is now a virtual experience&lt;/h2&gt;
+&lt;p&gt;Each year, AnsibleFest is one of our favorite events because it brings
+together our customers, partners, community members and Red Hatters to
+talk about the open source innovations and best practices that are
+enabling the future of enterprise technology and automation.&lt;/p&gt;
+&lt;p&gt;Because the safety of our attendees is our first priority, we have
+decided to make AnsibleFest 2020 a virtual experience. We are excited to
+connect with everyone virtually, and look forward to expanding our
+conversation across the globe. By changing our event platform, we hope
+to use this opportunity to collaborate, connect, and chat with more
+automation fans than ever before. It is exciting to think about how many
+more people will be able to join in on the automation conversation.&lt;/p&gt;
+&lt;p&gt;The AnsibleFest Virtual Experience will be a free, immersive multi-day
+event the week of October 12th, 2020, that will deliver timely and
+useful customer keynotes, breakout sessions, direct access to Ansible
+experts, and more. You will want to sign up to stay connected and
+up-to-date on all things AnsibleFest. &lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Call for proposals is open&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;We are still working through the details for the virtual event, but are
+very excited to announce that the &lt;a href="https://ansiblefest2020.eventpoint.com/cfp"&gt;call for proposals&lt;/a&gt; is
+&lt;strong&gt;now open through July 15&lt;/strong&gt;. We will post additional information on the Ansible Blog
+and on the AnsibleFest site as it
+becomes available. Stay tuned! &lt;/p&gt;
+&lt;p&gt;We look forward to hosting this event and thank you all in advance for
+your collaboration to make this a great success. &lt;/p&gt;
+&lt;h3&gt;Frequently Asked Questions&lt;/h3&gt;
+&lt;h4&gt;Why did you cancel the in-person AnsibleFest event?&lt;/h4&gt;
+&lt;p&gt;We have been closely monitoring the feasibility of the physical event in
+San Diego and have decided to rebuild AnsibleFest 2020 as a virtual
+event. Our goal is to serve and support AnsibleFest attendees with a
+virtual celebration that captures the immersive AnsibleFest experience,
+and allows us to welcome an even larger audience than usual.&lt;/p&gt;
+&lt;h4&gt;What will you be doing instead of an in-person event?&lt;/h4&gt;
+&lt;p&gt;We will be hosting the AnsibleFest Virtual Experience, a free, immersive
+multi-day event from October 13-14, 2020, that delivers the same
+inspiring content from AnsibleFest 2020 - keynotes, breakout sessions,
+access to experts, and more.  We are still working through many of the
+details for the virtual event, but we are excited about the opportunity
+to share content selected to help you transform your organization by
+delivering the right Automation strategy, combined with the cultural
+change needed to succeed in the constantly  evolving digital journey.&lt;/p&gt;
+&lt;p&gt;In the current world of Cloud and DevOps, Automation can be used to
+enable open ways of working in order to build business resilience and
+innovation.&lt;/p&gt;
+&lt;h4&gt;How do I register for  the AnsibleFest virtual experience?&lt;/h4&gt;
+&lt;p&gt;Information and details on registration will be announced within the
+month of June. Follow Red Hat Ansible - &lt;a href="https://twitter.com/ansible"&gt;\@ansible on
+Twitter&lt;/a&gt; and sign up for information on our
+site &lt;a href="http://www.ansiblefest.com/"&gt;www.ansiblefest.com&lt;/a&gt;  to get all
+information as it becomes available.  &lt;/p&gt;
+&lt;h4&gt;Will there be sponsorship opportunities for the AnsibleFest virtual experience?&lt;/h4&gt;
+&lt;p&gt;Yes, there will be sponsorship opportunities available. These will be
+released later this summer. Questions? Please reach out to the
+&lt;a href="mailto:sponsorships@redhat.com"&gt;sponsorship team&lt;/a&gt;&lt;/p&gt;
+&lt;h4&gt;Will you be having any in-person events later?&lt;/h4&gt;
+&lt;p&gt;We are exploring that situation, and will announce any plans we have. 
+But for now, we hope you can join our virtual experience on October
+13-14!&lt;/p&gt;
+&lt;h4&gt;When is AnsibleFest in 2021?&lt;/h4&gt;
+&lt;p&gt;A date has not been set for AnsibleFest in 2021.&lt;/p&gt;
+&lt;h4&gt;What kind of software will be required to view keynotes and interact with the experts at the virtual event? Will users have to install anything?&lt;/h4&gt;
+&lt;p&gt;It will be web-based, so all you will need is a computer with a
+supported browser and an internet connection capable of streaming video.
+&lt;a href="https://presentations.akamaized.net/ProductResources/Production/HTML/ComputerTips/ComputerTipsStudio.html"&gt;This page has requirements&lt;/a&gt;
+for desktop browser and operating systems.&lt;/p&gt;
+&lt;h5&gt;I booked my air travel already.  Can I get a refund?&lt;/h5&gt;
+&lt;p&gt;We're announcing this well ahead of time in the hopes that we reach our
+attendees before they've booked travel. Unfortunately, we are unable to
+provide a refund for your air travel.  Check with your airline or travel
+agency.  Many airlines are waiving change fees or providing credits for
+airfare.&lt;/p&gt;</description><guid>https://ansible.com/blog/ansiblefest-2020-is-now-a-virtual-experience/</guid><pubDate>Mon, 11 May 2020 00:00:00 GMT</pubDate></item></channel></rss>

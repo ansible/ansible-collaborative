@@ -1,0 +1,65 @@
+.global-container {
+  padding: 0 13rem;
+  padding-bottom: 4.5rem;
+
+  @media screen and (max-width: 1170px) {
+    padding: 0 6rem;
+    padding-bottom: 4.5rem;
+
+  }
+  @media screen and (max-width: 768px) {
+    padding: 0 2rem;
+    padding-bottom: 7.5rem;
+  }
+}
+
+/** No vertical padding **/
+.full-width-bg {
+  margin: 0 -13rem;
+  padding: 0 13rem;
+
+  @media screen and (max-width: 1170px) {
+    margin: 0 -6rem;
+    padding: 0 6rem;
+  }
+  @media screen and (max-width: 768px) {
+    margin: 0 -2rem;
+    padding: 0 2rem;
+  }
+}
+
+/** Uses vertical padding **/
+.full-width-band {
+  margin: 0 -13rem;
+  padding: 4rem 13rem;
+
+  @media screen and (max-width: 1170px) {
+    margin: 0 -6rem;
+    padding: 3rem 6rem;
+  }
+  @media screen and (max-width: 768px) {
+    margin: 0 -2rem;
+    padding: 2rem 2rem;
+  }
+}
+
+/** Centers pages and blog posts **/
+.center-band {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  padding: 4rem 13rem;
+
+  @media screen and (max-width: 1170px) {
+    padding: 3rem 6rem;
+  }
+  @media screen and (max-width: 768px) {
+    padding: 2rem 2rem;
+  }
+}
+
+.max-width-prose {
+  max-width: 80ch;
+}

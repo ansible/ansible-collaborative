@@ -1,0 +1,36 @@
+.section-title {
+  display: flex;
+  flex-direction: column;
+  h2 {
+    font-size: $font-xl;
+    text-transform: none;
+  }
+  p {
+    font-size: $font-md;
+    text-transform: none;
+    padding: 1rem 0;
+    transform:translatex(0px) translatey(0px);
+    min-height:0px;
+    padding-top:0px;
+    padding-bottom:0px;
+    line-height:1.5em;
+  }
+}
+
+.section-top {
+  display: flex;
+  align-items: center;
+}
+
+.section-icon {
+  float: left;
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+}
+
+.section-view-more {
+  font-size: $font-sm;
+  text-transform: none;
+  margin-left: auto;
+}

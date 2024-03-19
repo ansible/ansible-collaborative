@@ -1,0 +1,380 @@
+<h1>Developing and Testing Ansible Roles with Molecule and Podman - Part 2</h1>
+<p>Molecule is a complete testing framework that helps you develop and test
+Ansible roles, which allows you to focus on role content instead of
+focusing on managing testing infrastructure. In the first
+part of this series, we've successfully installed, configured and used
+Molecule to set up new testing instances.</p>
+<p>Now that the instances are running, let's start developing the new role
+and apply Molecule to ensure it runs according to the specifications.</p>
+<p>This basic role deploys a web application supported by the Apache web
+server. It must support Red Hat Enterprise Linux (RHEL) 8 and Ubuntu
+20.04.</p>
+<h2>Developing the Ansible Role with Molecule</h2>
+<p>Molecule helps in the development stage by allowing you to "converge"
+the instances with the role content. You can test each step without
+worrying about managing the instances and test environment. It provides
+quick feedback, allowing you to focus on the role content, ensuring it
+works in all platforms.</p>
+<p>In the first part of this series, we initialized a new role "mywebapp". If you're not
+there yet, switch to the role directory "mywebapp" and add the first
+task, installing the Apache package "httpd" using the "package" Ansible
+module. Edit the file "tasks/main.yaml" and include this task:</p>
+<div class="code"><pre class="code literal-block"><span class="l l-Scalar l-Scalar-Plain">$ vi tasks/main.yml</span>
+<span class="nn">---</span>
+<span class="c1"># tasks file for mywebapp</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Ensure httpd installed</span>
+<span class="w">  </span><span class="nt">package</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;httpd&quot;</span>
+<span class="w">    </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">present</span>
+</pre></div>
+
+<p>Save the file and "converge" the instances by running "molecule
+converge". The "converge" command applies the current version of the
+role to all the running container instances. Molecule "converge" does
+not restart the instances if they are already running. It tries to
+converge those instances by making their configuration match the desired
+state described by the role currently testing.</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>molecule<span class="w"> </span>converge
+...<span class="w"> </span>TRUNCATED<span class="w"> </span>OUTPUT<span class="w"> </span>...
+<span class="w">   </span>TASK<span class="w"> </span><span class="o">[</span>mywebapp<span class="w"> </span>:<span class="w"> </span>Ensure<span class="w"> </span>httpd<span class="w"> </span>installed<span class="o">]</span><span class="w"> </span>***************************************
+<span class="w">    </span>Saturday<span class="w"> </span><span class="m">27</span><span class="w"> </span>June<span class="w"> </span><span class="m">2020</span><span class="w">  </span><span class="m">08</span>:45:01<span class="w"> </span>-0400<span class="w"> </span><span class="o">(</span><span class="m">0</span>:00:00.060<span class="o">)</span><span class="w">       </span><span class="m">0</span>:00:04.277<span class="w"> </span>*********
+fatal:<span class="w"> </span><span class="o">[</span>ubuntu<span class="o">]</span>:<span class="w"> </span>FAILED!<span class="w"> </span><span class="o">=</span>&gt;<span class="w"> </span><span class="o">{</span><span class="s2">&quot;changed&quot;</span>:<span class="w"> </span>false,<span class="w"> </span><span class="s2">&quot;msg&quot;</span>:<span class="w"> </span><span class="s2">&quot;No package matching &#39;httpd&#39; is available&quot;</span><span class="o">}</span>
+<span class="w">    </span>changed:<span class="w"> </span><span class="o">[</span>rhel8<span class="o">]</span>
+...<span class="w"> </span>TRUNCATED<span class="w"> </span>OUTPUT<span class="w"> </span>...
+</pre></div>
+
+<p>Notice that the current version worked well on the RHEL8 instance, but
+failed for the Ubuntu instance. By using Molecule, you can quickly
+evaluate the result of your tasks in all platforms and verify if the
+role works according to the requirements! In this example however, the
+tasks failed because Ubuntu does not have a package named "httpd". For
+that platform, the package name is "apache2".</p>
+<p>So let's modify the role to include variables with the correct package
+name for each platform. Start with RHEL8 by adding a file "RedHat.yaml"
+under the "vars" sub-directory with this content:</p>
+<div class="code"><pre class="code literal-block"><span class="l l-Scalar l-Scalar-Plain">$ vi vars/RedHat.yaml</span>
+<span class="nn">---</span>
+<span class="nt">httpd_package</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">httpd</span>
+</pre></div>
+
+<p>Save this file and add the corresponding file "vars/Debian.yaml" for
+Ubuntu:</p>
+<div class="code"><pre class="code literal-block"><span class="l l-Scalar l-Scalar-Plain">$ vi vars/Debian.yaml</span>
+<span class="nn">---</span>
+<span class="nt">httpd_package</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">apache2</span>
+</pre></div>
+
+<p>Save this file and modify the "tasks/main.yaml" file to include these
+variable files according to the OS family identified by Ansible via the
+<a href="https://docs.ansible.com/ansible/devel/user_guide/playbooks_vars_facts.html">system fact variable</a>
+"ansible_os_family". We also have to include a task to update the
+package cache for systems in the "Debian" family since their package
+manager caches results otherwise. Last, we update the install task to
+use the variable "httpd_package" that you defined in the variables
+files:</p>
+<div class="code"><pre class="code literal-block"><span class="l l-Scalar l-Scalar-Plain">$ vi tasks/main.yml</span>
+<span class="l l-Scalar l-Scalar-Plain">- name</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Include OS-specific variables.</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">include_vars</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">ansible_os_family</span><span class="nv"> </span><span class="s">}}.yaml&quot;</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Ensure package cache up-to-date</span>
+<span class="w">  </span><span class="nt">apt</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">update_cache</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">yes</span>
+<span class="w">    </span><span class="nt">cache_valid_time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3600</span>
+<span class="w">  </span><span class="nt">when</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ansible_os_family == &quot;Debian&quot;</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Ensure httpd installed</span>
+<span class="w">  </span><span class="nt">package</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">httpd_package</span><span class="nv"> </span><span class="s">}}&quot;</span>
+<span class="w">    </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">present</span>
+</pre></div>
+
+<p>Save this file, and "converge" the instances again to ensure it works
+this time:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>molecule<span class="w"> </span>converge
+...<span class="w"> </span>TRUNCATED<span class="w"> </span>OUTPUT<span class="w"> </span>...
+<span class="w">   </span>TASK<span class="w"> </span><span class="o">[</span>mywebapp<span class="w"> </span>:<span class="w"> </span>Ensure<span class="w"> </span>httpd<span class="w"> </span>installed<span class="o">]</span><span class="w"> </span>***************************************
+<span class="w">    </span>Saturday<span class="w"> </span><span class="m">27</span><span class="w"> </span>June<span class="w"> </span><span class="m">2020</span><span class="w">  </span><span class="m">08</span>:59:13<span class="w"> </span>-0400<span class="w"> </span><span class="o">(</span><span class="m">0</span>:00:07.338<span class="o">)</span><span class="w">       </span><span class="m">0</span>:00:12.925<span class="w"> </span>*********
+<span class="w">    </span>ok:<span class="w"> </span><span class="o">[</span>rhel8<span class="o">]</span>
+<span class="w">    </span>changed:<span class="w"> </span><span class="o">[</span>ubuntu<span class="o">]</span>
+...<span class="w"> </span>TRUNCATED<span class="w"> </span>OUTPUT<span class="w"> </span>...
+</pre></div>
+
+<p>Because the package was already installed in the RHEL8 instance, Ansible
+returned the status "OK" and it did not make any changes. It installed
+the package correctly in the Ubuntu instance this time.</p>
+<p>We have installed the package - but the naming problem also exists with
+the service itself: they are named differently in RHEL and Ubuntu. So we
+add service name variables to the playbooks and variable files. Start
+with RHEL8:</p>
+<div class="code"><pre class="code literal-block"><span class="l l-Scalar l-Scalar-Plain">$ vi vars/RedHat.yaml</span>
+<span class="nn">---</span>
+<span class="nt">httpd_package</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">httpd</span>
+<span class="nt">httpd_service</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">httpd</span>
+</pre></div>
+
+<p>Save this file and then edit the file "vars/Debian.yaml" for Ubuntu:</p>
+<div class="code"><pre class="code literal-block"><span class="l l-Scalar l-Scalar-Plain">$ vi vars/Debian.yaml</span>
+<span class="nn">---</span>
+<span class="nt">httpd_package</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">apache2</span>
+<span class="nt">httpd_service</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">apache2</span>
+</pre></div>
+
+<p>Save the file and add the new task at the end of the "tasks/main.yml"
+file:</p>
+<div class="code"><pre class="code literal-block"><span class="l l-Scalar l-Scalar-Plain">$ vi tasks/main.yml</span>
+<span class="l l-Scalar l-Scalar-Plain">- name</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Ensure httpd svc started</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">service</span><span class="p p-Indicator">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">httpd_service</span><span class="nv"> </span><span class="s">}}&quot;</span>
+<span class="w">    </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">started</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">yes</span>
+</pre></div>
+
+<p>Save the file and "converge" the instances again to start the Apache
+httpd service:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>molecule<span class="w"> </span>converge
+...<span class="w"> </span>TRUNCATED<span class="w"> </span>OUTPUT<span class="w"> </span>...
+<span class="w">   </span>TASK<span class="w"> </span><span class="o">[</span>mywebapp<span class="w"> </span>:<span class="w"> </span>Ensure<span class="w"> </span>httpd<span class="w"> </span>svc<span class="w"> </span>started<span class="o">]</span><span class="w"> </span>*************************************
+<span class="w">    </span>Saturday<span class="w"> </span><span class="m">27</span><span class="w"> </span>June<span class="w"> </span><span class="m">2020</span><span class="w">  </span><span class="m">09</span>:34:38<span class="w"> </span>-0400<span class="w"> </span><span class="o">(</span><span class="m">0</span>:00:06.776<span class="o">)</span><span class="w">       </span><span class="m">0</span>:00:17.233<span class="w"> </span>*********
+<span class="w">    </span>changed:<span class="w"> </span><span class="o">[</span>ubuntu<span class="o">]</span>
+<span class="w">    </span>changed:<span class="w"> </span><span class="o">[</span>rhel8<span class="o">]</span>
+...<span class="w"> </span>TRUNCATED<span class="w"> </span>OUTPUT<span class="w"> </span>...
+</pre></div>
+
+<p>Let's add a final task to create some content for the web application.
+Each platform requires the HTML files owned by different groups. Add new
+variables to each variable file to define the group name:</p>
+<div class="code"><pre class="code literal-block"><span class="l l-Scalar l-Scalar-Plain">$ vi vars/RedHat.yaml</span>
+<span class="nn">---</span>
+<span class="nt">httpd_package</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">httpd</span>
+<span class="nt">httpd_service</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">httpd</span>
+<span class="nt">httpd_group</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">apache</span>
+</pre></div>
+
+<p>Save this file then edit the file "vars/Debian.yaml" for Ubuntu:</p>
+<div class="code"><pre class="code literal-block"><span class="l l-Scalar l-Scalar-Plain">$ vi vars/Debian.yaml</span>
+<span class="nn">---</span>
+<span class="nt">httpd_package</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">apache2</span>
+<span class="nt">httpd_service</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">apache2</span>
+<span class="nt">httpd_group</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">www-data</span>
+</pre></div>
+
+<p>Save the file and add the new task at the end of the "tasks/main.yml"
+file:</p>
+<div class="code"><pre class="code literal-block"><span class="l l-Scalar l-Scalar-Plain">$ vi tasks/main.yml</span>
+<span class="l l-Scalar l-Scalar-Plain">- name</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Ensure HTML Index</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">copy</span><span class="p p-Indicator">:</span>
+<span class="w">    </span><span class="nt">dest</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/var/www/html/index.html</span>
+<span class="w">    </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0644</span>
+<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">root</span>
+<span class="w">    </span><span class="nt">group</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">httpd_group</span><span class="nv"> </span><span class="s">}}&quot;</span>
+<span class="w">    </span><span class="nt">content</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">web_content</span><span class="nv"> </span><span class="s">}}&quot;</span>
+</pre></div>
+
+<p>This task allows the role user to specify the content by using the
+variable "web_content" when calling the role. Add a default value to
+this variable in case the user does not specify it:</p>
+<div class="code"><pre class="code literal-block"><span class="l l-Scalar l-Scalar-Plain">$ vi defaults/main.yml</span>
+<span class="nn">---</span>
+<span class="c1"># defaults file for mywebapp</span>
+<span class="nt">web_content</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">There&#39;s a web server here</span>
+</pre></div>
+
+<p>Save this file and "converge" the instances one more time to add the
+content:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>molecule<span class="w"> </span>converge
+...<span class="w"> </span>TRUNCATED<span class="w"> </span>OUTPUT<span class="w"> </span>...
+<span class="w">   </span>TASK<span class="w"> </span><span class="o">[</span>mywebapp<span class="w"> </span>:<span class="w"> </span>Ensure<span class="w"> </span>HTML<span class="w"> </span>Index<span class="o">]</span><span class="w"> </span>********************************************
+<span class="w">    </span>Saturday<span class="w"> </span><span class="m">27</span><span class="w"> </span>June<span class="w"> </span><span class="m">2020</span><span class="w">  </span><span class="m">09</span>:50:11<span class="w"> </span>-0400<span class="w"> </span><span class="o">(</span><span class="m">0</span>:00:03.261<span class="o">)</span><span class="w">       </span><span class="m">0</span>:00:17.753<span class="w"> </span>*********
+<span class="w">    </span>changed:<span class="w"> </span><span class="o">[</span>rhel8<span class="o">]</span>
+<span class="w">    </span>changed:<span class="w"> </span><span class="o">[</span>ubuntu<span class="o">]</span>
+...<span class="w"> </span>TRUNCATED<span class="w"> </span>OUTPUT<span class="w"> </span>...
+</pre></div>
+
+<p>At this time, both instances are converged. Manually verify that the
+role worked by using the molecule login command to log into one of the
+instances and running the "curl" command to get the content:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>molecule<span class="w"> </span>login<span class="w"> </span>-h<span class="w"> </span>rhel8
+<span class="o">[</span>root@2ce0a0ea8692<span class="w"> </span>/<span class="o">]</span><span class="c1"># curl http://localhost</span>
+There<span class="err">&#39;</span>s<span class="w"> </span>a<span class="w"> </span>web<span class="w"> </span>server<span class="w"> </span>here
+<span class="o">[</span>root@2ce0a0ea8692<span class="w"> </span>/<span class="o">]</span><span class="c1"># exit</span>
+</pre></div>
+
+<p>You used Molecule to aid with the role development by ensuring that it
+is working properly across multiple platforms for each step of the way.</p>
+<p>Next, let's automate the verification process.</p>
+<h2>Verifying the Role with Molecule</h2>
+<p>In addition to helping you converge the instance to aid with the role
+development, Molecule can also automate the testing process by executing
+a verification task. To verify the results of your playbook, Molecule
+can use either the "testinfra" framework or it can use Ansible itself. </p>
+<p>Let's use an Ansible Playbook to verify the results of this new role. By
+default, Molecule provides a basic verifier playbook
+"molecule/default/verify.yml" as a starting point. This playbook
+contains the basic required structure but does not do any useful
+verification. Update this playbook to test this role result by using the
+Ansible's "uri" module to obtain the content from the running web server
+and the "assert" module to ensure it's the correct content:</p>
+<div class="code"><pre class="code literal-block"><span class="l l-Scalar l-Scalar-Plain">$ vi molecule/default/verify.yml</span>
+<span class="nn">---</span>
+<span class="c1"># This is an example playbook to execute Ansible tests.</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Verify</span>
+<span class="w">  </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">all</span>
+<span class="w">  </span><span class="nt">vars</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">expected_content</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;There&#39;s</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">web</span><span class="nv"> </span><span class="s">server</span><span class="nv"> </span><span class="s">here&quot;</span>
+<span class="w">  </span><span class="nt">tasks</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Get index.html</span>
+<span class="w">    </span><span class="nt">uri</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://localhost</span>
+<span class="w">      </span><span class="nt">return_content</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">yes</span>
+<span class="w">    </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">this</span>
+<span class="w">    </span><span class="nt">failed_when</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;expected_content</span><span class="nv"> </span><span class="s">not</span><span class="nv"> </span><span class="s">in</span><span class="nv"> </span><span class="s">this.content&quot;</span>
+
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Ensure content type is text/html</span>
+<span class="w">    </span><span class="nt">assert</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">that</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;&#39;text/html&#39;</span><span class="nv"> </span><span class="s">in</span><span class="nv"> </span><span class="s">this.content_type&quot;</span>
+
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Debug results</span>
+<span class="w">    </span><span class="nt">debug</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">var</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">this.content</span>
+</pre></div>
+
+<p>Save and close this file. Verify the results by running "molecule
+verify":</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>molecule<span class="w"> </span>verify
+...<span class="w"> </span>TRUNCATED<span class="w"> </span>OUTPUT<span class="w"> </span>...
+<span class="w">   </span>TASK<span class="w"> </span><span class="o">[</span>Ensure<span class="w"> </span>content<span class="w"> </span><span class="nb">type</span><span class="w"> </span>is<span class="w"> </span>text/html<span class="o">]</span><span class="w"> </span>****************************************
+<span class="w">    </span>Saturday<span class="w"> </span><span class="m">27</span><span class="w"> </span>June<span class="w"> </span><span class="m">2020</span><span class="w">  </span><span class="m">10</span>:03:18<span class="w"> </span>-0400<span class="w"> </span><span class="o">(</span><span class="m">0</span>:00:03.131<span class="o">)</span><span class="w">       </span><span class="m">0</span>:00:07.255<span class="w"> </span>*********
+<span class="w">    </span>ok:<span class="w"> </span><span class="o">[</span>rhel8<span class="o">]</span><span class="w"> </span><span class="o">=</span>&gt;<span class="w"> </span><span class="o">{</span>
+<span class="w">        </span><span class="s2">&quot;changed&quot;</span>:<span class="w"> </span>false,
+<span class="w">        </span><span class="s2">&quot;msg&quot;</span>:<span class="w"> </span><span class="s2">&quot;All assertions passed&quot;</span>
+<span class="w">    </span><span class="o">}</span>
+<span class="w">    </span>ok:<span class="w"> </span><span class="o">[</span>ubuntu<span class="o">]</span><span class="w"> </span><span class="o">=</span>&gt;<span class="w"> </span><span class="o">{</span>
+<span class="w">        </span><span class="s2">&quot;changed&quot;</span>:<span class="w"> </span>false,
+<span class="w">        </span><span class="s2">&quot;msg&quot;</span>:<span class="w"> </span><span class="s2">&quot;All assertions passed&quot;</span>
+<span class="w">    </span><span class="o">}</span>
+...<span class="w"> </span>TRUNCATED<span class="w"> </span>OUTPUT<span class="w"> </span>...
+Verifier<span class="w"> </span>completed<span class="w"> </span>successfully.
+</pre></div>
+
+<p>Molecule runs the verifier playbook against all instances ensuring the
+results match the expected values.</p>
+<p>You can change the default values for the test by editing the converge
+playbook to update the "web_content" variable:</p>
+<div class="code"><pre class="code literal-block"><span class="l l-Scalar l-Scalar-Plain">$ vi molecule/default/converge.yml</span>
+<span class="nn">---</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Converge</span>
+<span class="w">  </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">all</span>
+<span class="w">  </span><span class="nt">tasks</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Include</span><span class="nv"> </span><span class="s">mywebapp&quot;</span>
+<span class="w">      </span><span class="nt">include_role</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mywebapp&quot;</span>
+<span class="w">      </span><span class="nt">vars</span><span class="p">:</span>
+<span class="w">         </span><span class="nt">web_content</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;New</span><span class="nv"> </span><span class="s">content</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">testing</span><span class="nv"> </span><span class="s">only&quot;</span>
+</pre></div>
+
+<p>Then, update the "expected_content" variable in the verifier playbook:</p>
+<div class="code"><pre class="code literal-block"><span class="l l-Scalar l-Scalar-Plain">$ vi molecule/default/verify.yml</span>
+<span class="nn">---</span>
+<span class="c1"># This is an example playbook to execute Ansible tests.</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Verify</span>
+<span class="w">  </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">all</span>
+<span class="w">  </span><span class="nt">vars</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">expected_content</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;New</span><span class="nv"> </span><span class="s">content</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">testing</span><span class="nv"> </span><span class="s">only&quot;</span>
+<span class="w">  </span><span class="nt">tasks</span><span class="p">:</span>
+</pre></div>
+
+<p>Converge the instances one more time to update the web server content,
+then verify the results:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>molecule<span class="w"> </span>converge
+...<span class="w"> </span>TRUNCATED<span class="w"> </span>OUTPUT<span class="w"> </span>...
+<span class="w">   </span>TASK<span class="w"> </span><span class="o">[</span>mywebapp<span class="w"> </span>:<span class="w"> </span>Ensure<span class="w"> </span>HTML<span class="w"> </span>Index<span class="o">]</span><span class="w"> </span>********************************************
+<span class="w">    </span>Saturday<span class="w"> </span><span class="m">27</span><span class="w"> </span>June<span class="w"> </span><span class="m">2020</span><span class="w">  </span><span class="m">10</span>:09:34<span class="w"> </span>-0400<span class="w"> </span><span class="o">(</span><span class="m">0</span>:00:03.331<span class="o">)</span><span class="w">       </span><span class="m">0</span>:00:19.607<span class="w"> </span>*********
+<span class="w">    </span>changed:<span class="w"> </span><span class="o">[</span>rhel8<span class="o">]</span>
+<span class="w">    </span>changed:<span class="w"> </span><span class="o">[</span>ubuntu<span class="o">]</span>
+...<span class="w"> </span>TRUNCATED<span class="w"> </span>OUTPUT<span class="w"> </span>...
+$<span class="w"> </span>molecule<span class="w"> </span>verify
+...<span class="w"> </span>TRUNCATED<span class="w"> </span>OUTPUT<span class="w"> </span>...
+<span class="w">   </span>TASK<span class="w"> </span><span class="o">[</span>Debug<span class="w"> </span>results<span class="o">]</span><span class="w"> </span>***********************************************************
+<span class="w">    </span>Saturday<span class="w"> </span><span class="m">27</span><span class="w"> </span>June<span class="w"> </span><span class="m">2020</span><span class="w">  </span><span class="m">10</span>:10:15<span class="w"> </span>-0400<span class="w"> </span><span class="o">(</span><span class="m">0</span>:00:00.299<span class="o">)</span><span class="w">       </span><span class="m">0</span>:00:10.142<span class="w"> </span>*********
+<span class="w">    </span>ok:<span class="w"> </span><span class="o">[</span>rhel8<span class="o">]</span><span class="w"> </span><span class="o">=</span>&gt;<span class="w"> </span><span class="o">{</span>
+<span class="w">        </span><span class="s2">&quot;this.content&quot;</span>:<span class="w"> </span><span class="s2">&quot;New content for testing only&quot;</span>
+<span class="w">    </span><span class="o">}</span>
+<span class="w">    </span>ok:<span class="w"> </span><span class="o">[</span>ubuntu<span class="o">]</span><span class="w"> </span><span class="o">=</span>&gt;<span class="w"> </span><span class="o">{</span>
+<span class="w">        </span><span class="s2">&quot;this.content&quot;</span>:<span class="w"> </span><span class="s2">&quot;New content for testing only&quot;</span>
+<span class="w">    </span><span class="o">}</span>
+...<span class="w"> </span>TRUNCATED<span class="w"> </span>OUTPUT<span class="w"> </span>...
+Verifier<span class="w"> </span>completed<span class="w"> </span>successfully.
+</pre></div>
+
+<p>Using the verifier, you can define a playbook to execute checks and
+ensure the role produces the required results.</p>
+<p>In the final step, let's put it all together with automated tests.</p>
+<h2>Automating the Complete Test Workflow</h2>
+<p>Now that all of the pieces are together, automate the complete testing
+process workflow using the command "molecule test".</p>
+<p>Unlike the "molecule converge", which aided with role development, the
+goal with "molecule test" is to provide an automated and repeatable
+environment to ensure the role works according to its specifications.
+Therefore, the test process destroys and re-creates the instances for
+every test.</p>
+<p>By default, "molecule test" executes these steps in order:</p>
+<ol>
+<li>Install required dependencies</li>
+<li>Lint the project</li>
+<li>Destroy existing instances</li>
+<li>Run a syntax check</li>
+<li>Create instances</li>
+<li>Prepare instances (if required)</li>
+<li>Converge instances by applying the role tasks</li>
+<li>Check the role for idempotence</li>
+<li>Verify the results using the defined verifier</li>
+<li>Destroy the instances</li>
+</ol>
+<p>You can change these steps by adding the "test_sequence" dictionary with
+the required steps to the Molecule configuration file. For additional
+information, consult the official
+<a href="https://molecule.readthedocs.io/en/latest/configuration.html#scenario">documentation</a>.</p>
+<p>Execute the test scenario:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>molecule<span class="w"> </span><span class="nb">test</span>
+...<span class="w"> </span>TRUNCATED<span class="w"> </span>OUTPUT<span class="w"> </span>...
+--&gt;<span class="w"> </span>Test<span class="w"> </span>matrix
+
+└──<span class="w"> </span>default
+<span class="w">    </span>├──<span class="w"> </span>dependency
+<span class="w">    </span>├──<span class="w"> </span>lint
+<span class="w">    </span>├──<span class="w"> </span>cleanup
+<span class="w">    </span>├──<span class="w"> </span>destroy
+<span class="w">    </span>├──<span class="w"> </span>syntax
+<span class="w">    </span>├──<span class="w"> </span>create
+<span class="w">    </span>├──<span class="w"> </span>prepare
+<span class="w">    </span>├──<span class="w"> </span>converge
+<span class="w">    </span>├──<span class="w"> </span>idempotence
+<span class="w">    </span>├──<span class="w"> </span>side_effect
+<span class="w">    </span>├──<span class="w"> </span>verify
+<span class="w">    </span>├──<span class="w"> </span>cleanup
+<span class="w">    </span>└──<span class="w"> </span>destroy
+
+--&gt;<span class="w"> </span>Scenario:<span class="w"> </span><span class="s1">&#39;default&#39;</span>
+...<span class="w"> </span>TRUNCATED<span class="w"> </span>OUTPUT<span class="w"> </span>...
+</pre></div>
+
+<p>If the test workflow fails at any point, the command returns a status
+code different than zero. You can use that return code to automate the
+process or integrate Molecule with CI/CD workflows.</p>
+<h2>Conclusion</h2>
+<p>Now that you've successfully applied Molecule to develop and test a role
+that is well written and works reliably across different environments,
+you can integrate it into your development cycle to produce high
+standard roles consistently without worrying about the testing
+infrastructure.</p>
+<p>Molecule helps during the role development process by providing constant
+feedback, which ensures your role works as designed each step of the
+way.</p>
+<p>For more advanced scenarios, Molecule supports additional drivers that
+allow you to test roles with different platforms, virtualization and
+cloud providers.</p>
+<p>Finally, you can integrate Molecule with CI/CD workflows to automate the
+complete testing process for your Ansible roles.</p>

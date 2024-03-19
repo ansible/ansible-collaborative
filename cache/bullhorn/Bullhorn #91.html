@@ -1,0 +1,110 @@
+<p><img alt="Ansible Bullhorn banner" src="/images/bullhorn-banner-mango.png"></p>
+<p><em>A Newsletter for the Ansible Developer Community</em>
+<em>Issue #91, 2023-02-20 (<a href="https://us19.campaign-archive.com/home/?u=56d874e027110e35dea0e03c1&amp;id=d6635f5420">Past Issues</a>)</em></p>
+<p>Welcome to <a href="https://github.com/ansible/community/wiki/News#the-bullhorn">The Bullhorn</a>, our newsletter for the Ansible developer community. If you have any questions or content you’d like to share, you're welcome to chat with us in the <a href="https://matrix.to/#/#social:ansible.com">Ansible Social room on Matrix</a>, and mention <a href="https://matrix.to/#/@newsbot:ansible.im"><code>newsbot</code></a> to have your news item tagged for review for the next weekly issue!</p>
+<!-- TEASER_END -->
+
+<h2>KEY DATES ⏱️</h2>
+<p><a href="https://matrix.to/#/@cybette:ansible.im">cybette</a> shared</p>
+<blockquote>
+<ul>
+<li>2023-02-21: <a href="https://github.com/ansible/community/issues/678">DaWGs meeting</a>, 16:00 UTC</li>
+<li>2023-02-22: <a href="https://github.com/ansible/community/issues/679">Community WG meeting</a>, 19:00 UTC (propose topics <a href="https://github.com/ansible-community/community-topics/issues">here</a>)</li>
+<li>2023-02-23: <a href="https://github.com/ansible/community/wiki/News#the-bullhorn">Bullhorn #92 content deadline</a>, 18:00 UTC</li>
+<li>2023-02-27: ETA for Ansible-Core 2.14.3</li>
+<li>2023-02-28: <a href="https://docs.ansible.com/ansible/devel/roadmap/COLLECTIONS_7.html">ETA for Ansible 7.3.0 release</a></li>
+</ul>
+</blockquote>
+<h2>GENERAL NEWS UPDATES 🔈️</h2>
+<p><a href="https://matrix.to/#/@gwmngilfen:ansible.im">Gwmngilfen</a> said</p>
+<blockquote>
+<p>FOSDEM <em>and</em> CfgMgmtCamp <em>and</em> Contributor Summit happened earlier this month!</p>
+<p>We're not quite ready to share the videos with you yet, but we promise that will be in a near-future Bullhorn for you. Huge thanks to @cybette, Kris &amp; Tosh, the FOSDEM team, and Mark our video guy!</p>
+<p>I'll also be doing an event write-up as soon as I possibly can, so look out for that. In the meantime, put this in your calendar for next year!</p>
+</blockquote>
+<h2>MAJOR NEW RELEASES 🏆️</h2>
+<h3>AWX Project <a href="https://github.com/ansible/awx">↗</a></h3>
+<p>AWX provides a web-based user interface, REST API, and task engine built on top of Ansible.</p>
+<p><a href="https://matrix.to/#/@john-westcott-iv:ansible.im">john-westcott-iv</a> said</p>
+<blockquote>
+<p>We're happy to announce that the next release of AWX, version 21.12.0 is now available!
+Some notable features include:
+* Update clustering.md to be more current
+* Enable support for injecting complex extra vars
+* Adding new management command to allow failsafe enabling of local auth
+* SAML enhancements
+* Add <code>--order_by</code> option to awx CLI
+* Re-add workflow approval bulk actions to workflow approvals list
+* Attempt to consolidate CI logic with github_ci_runner target</p>
+<p>In addition AWX Operator version 1.2.0 has also been released!
+Some notable features include:
+* [fix] Backup role use k8s_cp module to write large files
+* Add <code>additional_labels</code> parameter
+* Auto-assign NodePort port by default rather than hardcoding a default</p>
+<p>Please see the releases pages for more details: <a href="https://github.com/ansible/awx/releases/tag/21.12.0">AWX</a>, <a href="https://github.com/ansible/awx-operator/releases/tag/1.2.0">Operator</a>.</p>
+</blockquote>
+<h2>COLLECTION UPDATES 🪄</h2>
+<p><a href="https://matrix.to/#/@markuman:matrix.org">markuman</a> contributed</p>
+<blockquote>
+<p>community.mysql <a href="https://github.com/ansible-collections/community.mysql/releases/tag/1.5.0">1.5.0</a>, <a href="https://github.com/ansible-collections/community.mysql/releases/tag/2.4.0">2.4.0</a> and <a href="https://github.com/ansible-collections/community.mysql/releases/tag/3.6.0">3.6.0</a> have been released.</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@mariolenz:matrix.org">mariolenz</a> contributed</p>
+<blockquote>
+<p>As mentioned in <a href="https://mailchi.mp/redhat/the-bullhorn-90">The Bullhorn #90</a>, people stepped up and started to maintain <code>google.cloud</code> again. Therefor, we <a href="https://github.com/ansible-community/community-topics/issues/105#issuecomment-1412001896">had a vote on cancelling the removal process</a> - which was accepted. So this collection will stay in the community package!</p>
+<p>Thanks <a href="https://github.com/toumorokoshi">toumorokoshi</a> for reaching out to us and resurrecting the collection!</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@felixfontein:libera.chat">felixfontein</a> contributed</p>
+<blockquote>
+<p>community.docker 1.10.15 (<a href="https://github.com/ansible-collections/community.docker/blob/stable-1/CHANGELOG.rst#v1-10-15">changelog</a>) has been released. This is the final release of the 1.x.y release stream; the <code>stable-1</code> branch is now End of Life. If you are still using it, please upgrade to community.docker 2.x.y or (better) 3.x.y. If you are still using Ansible 2.9 or ansible-base 2.10, you will have to use 2.x.y, as 3.x.y no longer supports these versions.</p>
+</blockquote>
+<h2>HELP WANTED 🙏</h2>
+<p><a href="https://matrix.to/#/@orandon:ansible.im">Don Naro</a> shared</p>
+<blockquote>
+<p>Are you interested in helping improve the navigation and layout of "docs.ansible.com"? Do you think you can help connect users with information in the docs more efficiently? If so, the Ansible community team invites you to contribute to <a href="https://github.com/ansible/jinja-docsite">this</a> repository. We plan to use this repository to overhaul the landing pages for Ansible community documentation and create a more intuitive and modern user experience. See you in the PR queue!</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@andersson007_:matrix.org">andersson007_</a> contributed</p>
+<blockquote>
+<p>The <a href="https://github.com/ansible-collections/ansible-inclusion/discussions/categories/new-collection-reviews">new collection inclusion requests</a> are waiting for your <a href="https://github.com/ansible-collections/ansible-inclusion#review-process">reviews</a>. Please help the community extend the package!</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@samccann:ansible.im">samccann</a> said</p>
+<blockquote>
+<p>Looking to help out in Ansible but not sure where to start? Take a look at some easyfix or good first issues:
+* across multiple <a href="https://github.com/search?q=user%3Aansible-collections+label%3Aeasyfix%2C%22good+first+issue%22+state%3Aopen&amp;type=Issues">collections</a>
+* for all <a href="https://github.com/search?q=user%3Aansible+user%3Aansible-community+label%3Aeasyfix%2C%22good+first+issue%22+state%3Aopen&amp;type=Issues">other</a> Ansible projects</p>
+</blockquote>
+<h2>PROPOSALS - DISCUSS AND VOTE! 🗳️</h2>
+<p><a href="https://matrix.to/#/@andersson007_:matrix.org">andersson007_</a> shared</p>
+<blockquote>
+<p>The Community will be happy to get your ideas on the <code>Role or playbook-focused collections: include in the Ansible package or not?</code> community <a href="https://github.com/ansible-community/community-topics/issues/197">topic</a>!</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@andersson007_:matrix.org">andersson007_</a> contributed</p>
+<blockquote>
+<p>As the concerns about future of the Ansible package continue to show up, the <a href="https://github.com/ansible-community/community-topics/issues/198">Community Certification instead of collection inclusion?</a> community topic has been created. Let's discuss it!</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@jillr:libera.chat">jillr</a> shared</p>
+<blockquote>
+<p>The Ansible Cloud team is proposing a new way to <strong>manage cloud resources in a more declarative fashion</strong>. We're looking for community feedback on the project <a href="https://github.com/ansible-collections/pravic/pull/12">here</a>.</p>
+</blockquote>
+<h2>COMMUNITY EVENTS AND MEETUPS 📅</h2>
+<p><a href="https://matrix.to/#/@ompragash:ansible.im">ompragash</a> shared</p>
+<blockquote>
+<p>📣 We are excited to announce the upcoming <strong>Ansible Community Day</strong> in India!</p>
+<p>Join us in-person for a day of presentations, workshops, and networking with other Ansible enthusiasts. Learn about the latest developments in Ansible and how it can help you automate your IT infrastructure. Don't miss out on this opportunity to connect with the Ansible community and take your skills to the next level.</p>
+<p>Register now on <a href="https://www.meetup.com/ansible-pune/events/290492160/">meetup.com</a>. If you have an interesting Ansible use case or experience you would like to share, submit your talk proposal <a href="https://forms.gle/DjTewB8GsgZdzJkc7">here</a>.</p>
+<p>🗓 SAT, FEB 25, 2023, 9:30 AM IST
+📍 Red Hat India Private Limited, Magarpatta Inner Circle · Pune, Maharashtra</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@cybette:ansible.im">cybette</a> said</p>
+<blockquote>
+<p>There are several community meetups coming up! 
+* <a href="https://www.meetup.com/ansible-atlanta/events/291211206/">Ansible Atlanta</a> on Feb 23 @ 7:00 PM EST
+* <a href="https://www.meetup.com/ansible-zurich/events/290204496/">Ansible Zürich</a> on Feb 28 @ 5:00 PM CET
+* <a href="https://www.meetup.com/ansible-munchen/events/289768549/">Ansible München</a> also on Feb 28 @ 6:00PM CET</p>
+<p>Check out the respective event pages for details and RSVP!</p>
+</blockquote>
+<p><a href="https://matrix.to/#/@cmrussell99:matrix.org">cmrussell99</a> shared</p>
+<blockquote>
+<p>Join the next office hours call on <strong>Event-Driven Ansible</strong>!  We share tips and techniques and most importantly answer your questions as you try Event-Driven Ansible. Next call is on March 2, 2023 at 11AM ET. Register <a href="https://www.redhat.com/en/events/webinar/event-driven-ansible-office-hours-march">here</a>.</p>
+</blockquote>
+<h2>THAT'S ALL FOR NOW!</h2>
+<p>Have any questions you’d like to ask, or issues you’d like to see covered? Please ask in <a href="https://matrix.to/#/#social:ansible.com">#social:ansible.com</a>! See you next time!</p>

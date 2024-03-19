@@ -1,0 +1,91 @@
+<h1>Getting Started With Ansible Content Collections</h1>
+<p>With the release of Red Hat Ansible Automation Platform, Ansible Content
+Collections are now fully supported. Ansible Content Collections, or
+collections, represent the new standard of distributing, maintaining and
+consuming automation. By combining multiple types of Ansible content
+(playbooks, roles, modules, and plugins), flexibility and scalability
+are greatly improved.</p>
+<h2>Who Benefits?</h2>
+<p><strong>Everyone!</strong></p>
+<p>Traditionally, module creators have had to wait for their modules to be
+marked for inclusion in an upcoming Ansible release or had to add them
+to roles, which made consumption and management more difficult. By
+shipping modules within Ansible Content Collections along with pertinent
+roles and documentation, and removing the barrier to entry, creators are
+now able to move as fast as the demand for their creations. For a public
+cloud provider, this means new functionality of an existing service or a
+new service altogether, can be rolled out along with the ability to
+automate the new functionality.</p>
+<p>For the automation consumer, this means that fresh content is
+continuously made available for consumption. Managing content in this
+manner also becomes easier as modules, plugins, roles, and docs are
+packaged and tagged with a collection version. Modules can be updated,
+renamed, improved upon; roles can be updated to reflect changes in
+module interaction; docs can be regenerated to reflect the edits and all
+are packaged and tagged together. </p>
+<p>On top of this, before collections, it was not uncommon for modules to
+break or lack timely updates needed to interact with the services they
+were interfacing with. This often required Ansible users or Ansible
+Tower administrators to run multiple versions of Ansible in <a href="https://docs.ansible.com/ansible-tower/latest/html/administration/tipsandtricks.html#using-virtualenv-with-at">virtual
+environments</a>
+in order to consume a patch that addressed a module issue. Ansible
+Content Collections bring stability and predictability by breaking
+modules out from the core distribution.</p>
+<p>For automated organizations, this means that certified content is
+readily available to be applied to use-cases ripe for automation from
+day one.</p>
+<h2>Where to Find Collections</h2>
+<p>With the launch of Red Hat Ansible Automation Platform, Automation Hub
+will be the source for certified collections. Additionally, collections
+creators can also package and distribute content on Ansible Galaxy.
+Ultimately, it is up to the creator to decide the delivery mechanism for
+their content, with Automation Hub being the only source for Red Hat
+Certified Collections.</p>
+<h2>A Closer Look at Collections</h2>
+<p>An Ansible Content Collection can be described as a package format for
+Ansible content:</p>
+<p><img alt="example collection filesystem" src="/images/posts/archive/example-collection-filesystem.png"></p>
+<p>This format has a simple, predictable data structure, with a
+straightforward definition:</p>
+<ul>
+<li><code>docs/</code>: local documentation for the collection</li>
+<li><code>galaxy.yml</code>: source data for the MANIFEST.json that will be part of
+    the collection package</li>
+<li><code>playbooks/</code>: playbooks reside here <ul>
+<li><code>tasks/</code>: this holds 'task list files' for <code>include_tasks/import_tasks</code> usage</li>
+</ul>
+</li>
+<li><code>plugins/</code>: all ansible plugins and modules go here, each in its own subdir<ul>
+<li><code>modules/</code>: ansible modules</li>
+<li><code>lookups/</code>: <a href="https://docs.ansible.com/ansible/latest/plugins/lookup.html">lookup plugins</a></li>
+<li><code>filters/</code>: <a href="https://docs.ansible.com/ansible/latest/user_guide/playbooks_filters.html">Jinja2 filter plugins</a></li>
+<li><code>connection/</code>: <a href="https://docs.ansible.com/ansible/latest/plugins/connection.html">connection plugins</a>
+    required if not using default</li>
+</ul>
+</li>
+<li><code>roles/</code>: directory for ansible roles</li>
+<li><code>tests/</code>: tests for the collection's content</li>
+</ul>
+<p><a href="https://docs.ansible.com/ansible/latest/dev_guide/collections_galaxy_meta.html">More information regarding collection
+metadata</a></p>
+<h2>Interacting with Collections</h2>
+<p>In addition to downloading collections through the browser, the
+<code>ansible-galaxy</code> command line utility has been updated to manage
+collections, providing much of the same functionality as has always been
+present to manage, create and consume roles. For example,
+<code>ansible-galaxy collection init</code> can be used to create a starting
+point for a new user created collection.</p>
+<p><img alt="galaxy collection init example" src="/images/posts/archive/init-galaxy-collection.gif"></p>
+<p>Along with the correct directory structure to start creating a
+collection from, this command also generates a metadata file that will
+be used while building the collection with namespace and collection name
+pre-populated:</p>
+<p><img alt="example galaxy metadata" src="/images/posts/archive/example-collection-galaxy.png"></p>
+<h2>Where to Go Next</h2>
+<p>Ansible Content Collections were first introduced as tech preview in
+Ansible Engine 2.8 and are now fully supported in Ansible Engine 2.9 and
+are an integral part of Red Hat Ansible Automation Platform. Collections
+allow Red Hat Ansible Automation Platform to offer certified, stable
+content in order to continue expanding use cases for automation. Future
+posts will dive deeper into developing new collections and converting
+existing roles into collections.</p>

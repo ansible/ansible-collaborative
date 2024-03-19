@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Ansible Collaborative (Posts by Christian Adams)</title><link>https://ansible.com/</link><description></description><atom:link href="https://ansible.com/authors/christian-adams.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2024 &lt;a href="mailto:website@ansible.community"&gt;Ansible Collaborative, et al&lt;/a&gt; </copyright><lastBuildDate>Mon, 18 Mar 2024 19:47:35 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Summary of Authentication Methods For Red Hat Ansible Tower</title><link>https://ansible.com/blog/summary-of-authentication-methods-in-red-hat-ansible-tower/</link><dc:creator>Christian Adams</dc:creator><description>&lt;h2&gt;Summary of Authentication Methods For Red Hat Ansible Tower&lt;/h2&gt;
+&lt;p&gt;Red Hat Ansible Tower 3.4.0 has added token authentication as a new
+method for authentication so I wanted to use this post to summarize the
+numerous enterprise authentication methods and the best use case for
+each. Ansible Tower is designed for organizations to centralize and
+control their automation with a visual dashboard for out-of-the box
+control while providing a REST API to integrate with your other tooling
+on a deeper level. We support a number of authentication methods to make
+it easy to embed Ansible Tower into existing tools and processes to help
+ensure the right people can access Ansible Tower resources. For this
+blog post I will go over four of Ansible Tower's authentication methods:
+Session, Basic, OAuth2 Token, and Single Sign-on (SSO). For each method
+I will provide some quick examples and links to the relevant supporting
+documentation, so you can easily integrate Ansible Tower into your
+environment.&lt;/p&gt;
+&lt;h3&gt;Session Authentication&lt;/h3&gt;
+&lt;p&gt;Session authentication is what's used when logging in directly to
+Ansible Tower's API or UI. It is used when a user wants to remain logged
+in for a prolonged period of time, not just for that HTTP request, i.e.
+when browsing the UI or API in a browser like Chrome or Firefox. When a
+user logs in, a session cookie is created, which enables the user to
+remain logged in when navigating to different pages within Ansible
+Tower.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Blog-TAO-Login" src="https://ansible.com/images/posts/archive/Blog-TAO-Login.png"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;How does it work?&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Blog-TAO-API" src="https://ansible.com/images/posts/archive/Blog-TAO-API.png"&gt;&lt;/p&gt;
+&lt;p&gt;Using the Curl tool, let's take a deeper look at what happens when you
+log in to Ansible Tower.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;GET to &lt;code&gt;/api/login/&lt;/code&gt; endpoint to grab the &lt;code&gt;csrftoken&lt;/code&gt; cookie&lt;/p&gt;
+&lt;p&gt;```bash
+curl -k -c - https://&lt;tower-host&gt;/api/login/&lt;/tower-host&gt;&lt;/p&gt;
+&lt;p&gt;localhost   FALSE   /   FALSE   0   csrftoken
+AswSFn5p1qQvaX4KoRZN6A5yer0Pq0VG2cXMTzZnzuhaY0L4tiidYqwf5PXZckuj
+```&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;POST to the &lt;code&gt;/api/login/&lt;/code&gt; endpoint with username, password, and
+&lt;code&gt;X-CSRFToken=&amp;lt;token-value&amp;gt;&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;bash
+curl -X POST -H 'Content-Type: application/x-www-form-urlencoded' \
+  --referer https://&amp;lt;tower-host&amp;gt;/api/login/ \
+  -H 'X-CSRFToken: K580zVVm0rWX8pmNylz5ygTPamgUJxifrdJY0UDtMMoOis5Q1UOxRmV9918BUBIN' \
+  --data 'username=root&amp;amp;password=reverse' \
+  --cookie 'csrftoken=K580zVVm0rWX8pmNylz5ygTPamgUJxifrdJY0UDtMMoOis5Q1UOxRmV9918BUBIN' \
+  https://&amp;lt;tower-host&amp;gt;/api/login/ -k -D - -o /dev/null&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;All of this is done by Ansible Tower when you log in to the UI or API in
+the browser, and should only be used when authenticating in the browser.
+For programmatic integration with Ansible Tower, you should use OAuth 2
+tokens, not the process described above.&lt;/p&gt;
+&lt;p&gt;Note: The session expiration time can be changed by setting the
+&lt;a href="https://docs.ansible.com/ansible-tower/latest/html/administration/session_limits.html#working-with-session-limits"&gt;SESSION_COOKIE_AGE&lt;/a&gt;
+setting.&lt;/p&gt;
+&lt;p&gt;Example with browsable API:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Blog-TAO-Cred-List" src="https://ansible.com/images/posts/archive/Blog-TAO-Cred-List.png"&gt;&lt;/p&gt;
+&lt;h3&gt;Basic Authentication&lt;/h3&gt;
+&lt;p&gt;Basic Authentication is stateless, thus the base64 encoded `username`
+and &lt;code&gt;password&lt;/code&gt; must be sent along with each request via the
+Authorization header.&lt;/p&gt;
+&lt;p&gt;Use Case: For API calls from curls, python scripts, or individual
+requests to the API.  OAuth2 Authentication is recommended for accessing
+the API when at all possible.  &lt;/p&gt;
+&lt;p&gt;Example with curl:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;curl&lt;span class="w"&gt; &lt;/span&gt;-X&lt;span class="w"&gt; &lt;/span&gt;GET&lt;span class="w"&gt; &lt;/span&gt;-H&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;'Authorization: Basic dXNlcjpwYXNzd29yZA==’&lt;/span&gt;
+&lt;span class="s1"&gt;https://&amp;lt;tower-host&amp;gt;/api/v2/credentials -k -L&lt;/span&gt;
+
+&lt;span class="s1"&gt;# the --user flag adds this Authorization header for us&lt;/span&gt;
+&lt;span class="s1"&gt;curl -X GET --user '&lt;/span&gt;user:password&lt;span class="err"&gt;'&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;https://&amp;lt;tower-host&amp;gt;/api/v2/credentials&lt;span class="w"&gt; &lt;/span&gt;-k&lt;span class="w"&gt; &lt;/span&gt;-L
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;For more information about the Basic HTTP Authentication scheme, see
+&lt;a href="https://tools.ietf.org/html/rfc7617"&gt;RFC 7617&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Note: Basic Auth can be disabled for security purposes, see the
+&lt;a href="https://docs.ansible.com/ansible-tower/2.4.3/html/administration/social_auth.html#basic-authentication-settings"&gt;docs&lt;/a&gt;
+for more info.&lt;/p&gt;
+&lt;h3&gt;OAuth 2 Token Authentication&lt;/h3&gt;
+&lt;p&gt;OAuth (Open Authorization) is an open standard for token-based
+authentication and authorization. OAuth 2 authentication is commonly
+used when interacting with the Ansible Tower API programmatically. Like
+Basic Auth, an OAuth 2 token is supplied with each API request via the
+Authorization header. Unlike Basic Auth, OAuth 2 tokens have a
+configurable timeout and are scopable. Tokens have a configurable
+expiration time and can be easily revoked for one user or for the entire
+Ansible Tower system by an admin if needed. This can be done with the
+&lt;code&gt;tower-manage revoke_oauth2_tokens&lt;/code&gt; management command. Here is&lt;a href="https://docs.ansible.com/ansible-tower/latest/html/administration/tower-manage.html#revoke-oauth2-tokens"&gt; more
+information&lt;/a&gt;
+on doing that. Additionally, the type of users able to create tokens can
+be limited to users created in Ansible Tower, as opposed to external
+users created from an SSO (see SSO section below). For more on how to do
+this see the note in these
+&lt;a href="https://docs.ansible.com/ansible-tower/latest/html/administration/oauth2_token_auth.html#revoke-an-access-token"&gt;docs&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Different methods for obtaining OAuth 2 Access Tokens in Ansible Tower:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Personal access tokens (PAT)&lt;/li&gt;
+&lt;li&gt;Application Token: Password grant type&lt;/li&gt;
+&lt;li&gt;Application Token: Implicit grant type&lt;/li&gt;
+&lt;li&gt;Application Token: Authorization Code grant type&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;First, a user needs to create an OAuth 2 Access Token in the API, or in
+their User's &lt;code&gt;Token&lt;/code&gt; tab in the UI. For the purposes of this article,
+we will use the personal access token method (PAT) for creating a token.
+Upon token creation, the user can set the scope. The expiration time of
+the token can be configured system-wide as well.&lt;/p&gt;
+&lt;p&gt;Below is an example of creating a PAT in the UI:\
+ &lt;img alt="Blog-TAO-Token" src="https://ansible.com/images/posts/archive/Blog-TAO-Token.png"&gt;&lt;/p&gt;
+&lt;p&gt;Token authentication is best used for any programmatic use of Ansible
+Tower's API, such as Python scripts or tools like curl. See the example
+for a personal access token (PAT) below:&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Curl Example&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;First, create an OAuth 2 token without an associated Application; in
+other words, a personal access token. In this example, we will do so
+through the API with curl.&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;curl&lt;span class="w"&gt; &lt;/span&gt;-u&lt;span class="w"&gt; &lt;/span&gt;user:password&lt;span class="w"&gt; &lt;/span&gt;-k&lt;span class="w"&gt; &lt;/span&gt;-X&lt;span class="w"&gt; &lt;/span&gt;POST&lt;span class="w"&gt; &lt;/span&gt;https://&amp;lt;tower-host&amp;gt;/api/v2/tokens/
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;You can now use that token to perform a GET request for an Ansible Tower
+resource, e.g., Hosts.&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;curl&lt;span class="w"&gt; &lt;/span&gt;-k&lt;span class="w"&gt; &lt;/span&gt;-X&lt;span class="w"&gt; &lt;/span&gt;POST&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;-H&lt;span class="w"&gt; &lt;/span&gt;“Content-Type:&lt;span class="w"&gt; &lt;/span&gt;application/json”
+&lt;span class="w"&gt;    &lt;/span&gt;-H&lt;span class="w"&gt; &lt;/span&gt;“Authorization:&lt;span class="w"&gt; &lt;/span&gt;Bearer&lt;span class="w"&gt; &lt;/span&gt;&amp;lt;oauth2-token-value&amp;gt;”&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;https://&amp;lt;tower-host&amp;gt;/api/v2/hosts/
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Similarly, a job can be launched by making a POST to the job template
+that you want to launch.&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;curl&lt;span class="w"&gt; &lt;/span&gt;-k&lt;span class="w"&gt; &lt;/span&gt;-X&lt;span class="w"&gt; &lt;/span&gt;POST&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;-H&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"Authorization: Bearer &amp;lt;oauth2-token-value&amp;gt;"&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;-H&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"Content-Type: application/json"&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;--data&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;'{"limit" : "ansible"}'&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;https://&amp;lt;tower&amp;gt;/api/v2/job_templates/14/launch/
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;Python Example&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Tower-CLI is an open source tool that makes it easy to use HTTP requests
+to access Ansible Tower's API. You can have Tower-CLI authenticate to
+Tower using your OAuth 2 token by setting it in &lt;code&gt;tower-cli config&lt;/code&gt;, or
+have it acquire a PAT on your behalf by using the &lt;code&gt;tower-cli login&lt;/code&gt;
+command. It is easy to use and I would recommend checking it out:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;pip&lt;span class="w"&gt; &lt;/span&gt;install&lt;span class="w"&gt; &lt;/span&gt;ansible-tower-cli
+
+tower-cli&lt;span class="w"&gt; &lt;/span&gt;config&lt;span class="w"&gt; &lt;/span&gt;tower
+tower-cli&lt;span class="w"&gt; &lt;/span&gt;login
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;For more information on how to use OAuth 2 in Ansible Tower in the
+context of integrating external applications, check out these
+&lt;a href="https://docs.ansible.com/ansible-tower/latest/html/administration/oauth2_token_auth.html"&gt;docs&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;If you need to write custom requests, you can write a Python script
+using the &lt;a href="https://pypi.org/project/requests/"&gt;Python library requests&lt;/a&gt;. Here is
+an example.&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;requests&lt;/span&gt;
+
+&lt;span class="n"&gt;oauth2_token_value&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;'y1Q8ye4hPvT61aQq63Da6N1C25jiA'&lt;/span&gt;   &lt;span class="c1"&gt;# your token value from Tower&lt;/span&gt;
+&lt;span class="n"&gt;url&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;'https://&amp;lt;tower-host&amp;gt;/api/v2/users/'&lt;/span&gt;
+&lt;span class="n"&gt;payload&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{}&lt;/span&gt;
+&lt;span class="n"&gt;headers&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s1"&gt;'Authorization'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;'Bearer '&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;oauth2_token_value&lt;/span&gt;&lt;span class="p"&gt;,}&lt;/span&gt;
+
+&lt;span class="c1"&gt;# makes request to Tower user endpoint&lt;/span&gt;
+&lt;span class="n"&gt;response&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;requests&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;request&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'GET'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;url&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;headers&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;headers&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;payload&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="n"&gt;allow_redirects&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;False&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;verify&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;False&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="c1"&gt;# prints json returned from Tower with formatting&lt;/span&gt;
+&lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;json&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;dumps&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;response&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;json&lt;/span&gt;&lt;span class="p"&gt;(),&lt;/span&gt; &lt;span class="n"&gt;indent&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;sort_keys&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;True&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3&gt;SSO Authentication&lt;/h3&gt;
+&lt;p&gt;Single sign-on (SSO) authentication methods are fundamentally different
+because the authentication of the user happens external to Ansible
+Tower. For example, with GitHub SSO GitHub is the single source of
+truth, which verifies your identity based on the username and password
+you gave Tower.&lt;/p&gt;
+&lt;p&gt;Once you have configured an SSO method in Ansible Tower, a button for
+that SSO will be present on the login screen. If you click that button,
+it will redirect you to the Identity Provider, in this case GitHub,
+where you will present your credentials. If the Identity Provider
+verifies you successfully, then Ansible Tower will make a user linked to
+your GitHub user (if this is your first time logging in via this SSO
+method), and log you in.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://docs.ansible.com/ansible-tower/latest/html/administration/ldap_auth.html#ag-ldap"&gt;LDAP&lt;/a&gt; -
+    a directory of identities external to Ansible Tower that can be used
+    to check authentication credentials against. Active Directory can be
+    configured via the LDAP SSO in Ansible Tower.&lt;/li&gt;
+&lt;li&gt;SAML - allows Ansible Tower users to authenticate via a single
+    sign-on authentication service, so that authentication is consistent
+    for the user across multiple services used by their team. SAML is
+    particularly useful for maintaining permission groups across
+    services.&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://docs.ansible.com/ansible-tower/latest/html/administration/social_auth.html#github-oauth2-settings"&gt;GitHub&lt;/a&gt; -
+    allows Ansible Tower users to authenticate with their GitHub
+    credentials if they are in the Github Organization, Team or User
+    that the system admin specified in
+    `/api/v2/settings/authentication/`. Ansible Tower uses OAuth 2 to
+    verify the user's credentials with GitHub.&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://docs.ansible.com/ansible-tower/latest/html/administration/ent_auth.html#azure-active-directory-ad"&gt;Azure Active
+    Directory&lt;/a&gt; -
+    allows Ansible Tower users to authenticate with the Azure
+    credentials. Ansible Tower uses OAuth 2 to authenticate to Azure to
+    verify your credentials and obtain user group data.&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://docs.ansible.com/ansible-tower/latest/html/administration/ent_auth.html#radius-authentication-settings"&gt;RADIUS&lt;/a&gt; -
+    is an authentication protocol generally used for network devices. It
+    can minimize network traffic for authentication, as it is
+    lightweight.&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://docs.ansible.com/ansible-tower/latest/html/administration/social_auth.html#google-oauth2-settings"&gt;Google OAuth&lt;/a&gt; -
+    allows Ansible Tower users to authenticate with their Google Cloud.
+    Ansible Tower authenticates to Google using the OAuth 2 protocol to
+    check your username and password credentials against the identities
+    in your Google organization.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Which Authentication is right for me?&lt;/h3&gt;
+&lt;p&gt;I've shown you four types of authentication you can use in Ansible
+Tower. Each method has pros and cons and lends itself to certain use
+cases.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Session Authentication&lt;/strong&gt; (logging in to the UI or browsable API): I am using Ansible Tower to manually create resources (inventory, project, job template) and launch jobs in the browser.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Basic Authentication:&lt;/strong&gt;  I am troubleshooting Ansible Tower with curl, HTTPie, or another similar tool and have not yet set up an OAuth 2 Token for my user&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;OAuth 2 Token Authentication&lt;/strong&gt;&lt;ul&gt;
+&lt;li&gt;Authorization Code Flow -I am a user of an application interfacing with Ansible Tower&lt;/li&gt;
+&lt;li&gt;Personal Access Tokens (PAT) - I am automating my usage of Ansible Tower programmatically&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;SSO:&lt;/strong&gt; I am using Ansible Tower inside a large organization and want to use a central Identity provider or want to allow users to authenticate using external authentication like Google SSO, Azure SSO, LDAP, SAML, or GitHub.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;You now have the knowledge needed to choose the most effective
+authentication methods for your needs! I hope this guide helps to
+clarify your options for authenticating with Ansible Tower.&lt;/p&gt;</description><guid>https://ansible.com/blog/summary-of-authentication-methods-in-red-hat-ansible-tower/</guid><pubDate>Mon, 22 Apr 2019 00:00:00 GMT</pubDate></item></channel></rss>

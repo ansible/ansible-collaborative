@@ -1,0 +1,30 @@
+<div class="grid-wrapper homepage-ecosystem-band full-width-band"
+     id="ecosystem">
+  <div class="section-title width-12-12 width-12-12-m">
+    <div class="section-top">
+      <h2>{{ homepage.ecosystem.title }}</h2>
+    </div>
+    <p>{{ homepage.ecosystem.intro }}</p>
+  </div>
+  <div class="section-title width-12-12 width-12-12-m">
+    <div class="section-top">
+      <div class="ecosystem-content max-width-prose">
+        <span class="homepage-link"><a href="{{ homepage.ecosystem.url }}">{{ homepage.ecosystem.link_title }}</a>&ensp;<i class="fa fa-arrow-right" aria-hidden="true" /></span>
+      </div>
+    </div>
+  </div>
+  {% for key, item in homepage.ecosystem.projects.items() %}
+    <div class="ecosystem-card width-4-12 width-12-12-m">
+      <div class="ecosystem-content">
+        <h3>{{ item.heading }}</h3>
+        <p>{{ item.description }}</p>
+        <span class="homepage-link"><a href="{{ item.link }}" target="_blank">{{ homepage.ecosystem.label }}</a>&ensp;<i class="fa fa-arrow-right" aria-hidden="true" /></span>
+      </div>
+      <img class="ecosystem-logo"
+           src="/images/{{ item.logo }}"
+           alt="{{ item.alt }}"
+           width="100"
+           height="100" />
+    </div>
+  {% endfor %}
+</div>

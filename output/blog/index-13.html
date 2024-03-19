@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html prefix="
+og: http://ogp.me/ns# article: http://ogp.me/ns/article#
+" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="Ansible Collaborative Website">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ansible Collaborative (old posts, page 13) | Ansible Collaborative</title>
+<link href="../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="../assets/css/baguetteBox.min.css" rel="stylesheet" type="text/css">
+<link href="../assets/css/rst.css" rel="stylesheet" type="text/css">
+<link href="../assets/css/code.css" rel="stylesheet" type="text/css">
+<link href="../assets/css/theme.css" rel="stylesheet" type="text/css">
+<!-- Red Hat fonts --><link rel="stylesheet" href="https://static.redhat.com/libs/redhat/redhat-font/2.0.0/webfonts/red-hat-font.css">
+<!-- Font Awesome --><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+<!-- Fork Awesome --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css" integrity="sha256-XoaMnoYC5TH6/+ihMEnospgm0J1PM/nioxbOUdnM8HY=" crossorigin="anonymous">
+<!-- Sass compiled css  --><link rel="stylesheet" href="../assets/css/main.css">
+<link rel="stylesheet" href="../assets/css/redhat-footer.css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../rss.xml">
+<link rel="canonical" href="https://ansible.com/blog/index-13.html">
+<link rel="prev" href="index-14.html" type="text/html">
+<link rel="next" href="index-12.html" type="text/html">
+<!--[if lt IE 9]><script src="../assets/js/html5.js"></script><![endif]-->
+</head>
+<body id="top">
+
+<div class="global-container" id="content" role="main">
+<!-- Start menubar -->
+<nav class="navbar navbar-expand-lg static-top mb-4 navbar-padding full-width-bg   navbar-dark   bg-pool   "><div class="masthead">
+    <!-- This keeps the margins nice -->
+    <a class="navbar-brand" href="../">
+        <img src="../images/ansible_logo-small-15.png" alt="Ansible community logo" id="logo" class="d-inline-block align-top" width="50" height="50"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon nav-toggle-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="bs-navbar">
+      <ul class="navbar-nav mr-auto"></ul>
+<ul class="navbar-nav navbar-right">
+<li class="nav-item dropdown">
+	        <a href="#" class="nav-link nav-link-color dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <i class=""></i> Documentation
+                </a>
+		<div class="dropdown-menu dropdown-menu-border">
+	    
+                    <a href="https://docs.ansible.com/" class="dropdown-item">
+		        <i class=""></i> Project documentation
+                    </a>
+                    <a href="https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/" class="dropdown-item">
+		        <i class=""></i> Ansible Automation Platform documentation
+                    </a>
+            </div>
+                 </li>
+<li class="nav-item">
+		     <a href="https://galaxy.ansible.com/" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Galaxy
+		     </a>
+		 </li>
+                 <li class="nav-item">
+		     <a href="https://forum.ansible.com/" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Forum
+		     </a>
+		 </li>
+            <li class="nav-item dropdown">
+	        <a href="#" class="nav-link nav-link-color dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    <i class=""></i> Resources
+                </a>
+		<div class="dropdown-menu dropdown-menu-border">
+	    
+                    <a href="../how-ansible-works/" class="dropdown-item">
+		        <i class=""></i> How Ansible works
+                    </a>
+                    <a href="../ecosystem/" class="dropdown-item">
+		        <i class=""></i> Ansible ecosystem
+                    </a>
+                    <a href="archive.html" class="dropdown-item">
+		        <i class=""></i> Blog
+                    </a>
+                    <a href="../faq/" class="dropdown-item">
+		        <i class=""></i> Frequently asked questions
+                    </a>
+                    <a href="../ansible-community-training/" class="dropdown-item">
+		        <i class=""></i> Ansible community training
+                    </a>
+                    <a href="../contact-us/" class="dropdown-item">
+		        <i class=""></i> Contact us
+                    </a>
+            </div>
+                 </li>
+<li class="nav-item">
+		     <a href="https://www.redhat.com/en/technologies/management/ansible?sc_cid=7015Y000003szaKQAQ" target="_blank" class="nav-link nav-link-color">
+		         <i class=""></i> Ansible Automation Platform
+		     </a>
+		 </li>
+
+        
+      </ul>
+</div>
+    <!-- /.navbar-collapse -->
+  </div>
+  <!-- /.container -->
+</nav><!-- End default Menubar --><div class="body-content center-band">
+        <!--Body content-->
+        
+    
+  <div class="postindex ansible-content">
+      <article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title">
+            <a href="bullhorn-43/" class="u-url">Bullhorn #43</a>
+          </h1>
+          <div class="metadata">
+            <p class="byline author vcard">
+              <span class="byline-name fn" itemprop="author">
+                  <a href="../authors/ansible-collaborative-et-al/">Ansible Collaborative, et al</a>
+              </span>
+            </p>
+            <p class="dateline">
+              <a href="bullhorn-43/" rel="bookmark">
+                <time class="published dt-published" datetime="2022-01-28T11:00:00Z" itemprop="datePublished" title="2022-01-28 11:00">2022-01-28 11:00</time></a>
+            </p>
+          </div>
+        </header><div class="p-summary entry-summary">
+            <div>
+<p><img alt="Ansible Bullhorn banner" src="../images/bullhorn-banner-mango.png"></p>
+<p><em>A Newsletter for the Ansible Developer Community</em>
+<em>Issue #43, 2022-01-28 (<a href="https://us19.campaign-archive.com/home/?u=56d874e027110e35dea0e03c1&amp;id=d6635f5420">Past Issues</a>)</em></p>
+<p>Welcome to the Bullhorn, our newsletter for the Ansible developer community. If you have any questions or content you’d like to share, please reach out to us at the-bullhorn@redhat.com, or chat with us in the <a href="https://matrix.to/#/#social:ansible.com">Ansible Social room on Matrix</a>.</p>
+</div>
+          </div>
+      </article><br><hr>
+<br><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title">
+            <a href="getting-started-with-ansible.utils-collection-for-playbook-creators-part-1/" class="u-url">Getting Started with Ansible.utils Collection for Playbook Creators</a>
+          </h1>
+          <div class="metadata">
+            <p class="byline author vcard">
+              <span class="byline-name fn" itemprop="author">
+                  <a href="../authors/ashwini-mhatre/">Ashwini Mhatre</a>
+              </span>
+            </p>
+            <p class="dateline">
+              <a href="getting-started-with-ansible.utils-collection-for-playbook-creators-part-1/" rel="bookmark">
+                <time class="published dt-published" datetime="2022-01-24T00:00:00Z" itemprop="datePublished" title="2022-01-24 00:00">2022-01-24 00:00</time></a>
+            </p>
+          </div>
+        </header><div class="p-summary entry-summary">
+            <h2>Part 1: The Ansible.utils Collection for Playbook Creators</h2>
+<p>The Ansible <code>ansible.utils</code> collection includes a variety of plugins that
+aid in the management, manipulation and visibility of data for the
+Ansible playbook developer. The most common use case for this collection
+is when you want to work with the complex data structures present in an
+Ansible playbook, inventory, or returned from modules. See each plugin
+<a href="https://docs.ansible.com/ansible/latest/collections/ansible/utils/index.html">documentation</a>
+page for detailed examples for how these utilities can be used in tasks.
+In this two-part blog we will overview this collection in part one and
+see an example use case of using the utils collection in detail in part
+two.</p>
+<h2>Plugins inside ansible.utils</h2>
+<p>Plugins are code which will augment ansible core functionality. This
+code executes on control node.it and gives options and extensions for
+the core features of Red Hat Ansible Automation Platform. This
+<code>ansible.utils</code> plugin collection includes:</p>
+<ul>
+<li>Filter plugins</li>
+<li>Lookup plugins</li>
+<li>Test plugins</li>
+<li>Modules</li>
+</ul>
+<h3>Filter plugins</h3>
+<p>Filter plugins manipulate data. With the right filter you can extract a
+particular value, transform data types and formats, perform mathematical
+calculations, split and concatenate strings, insert dates and times, and
+do much more. Ansible Automation Platform uses the <a href="https://jinja.palletsprojects.com/en/3.0.x/templates/#builtin-filters">standard filters</a>
+shipped with Jinja2 and adds some specialized filter plugins. You can
+<a href="https://docs.ansible.com/ansible/latest/dev_guide/developing_plugins.html#developing-filter-plugins">create custom Ansible filters as plugins</a>.
+Please refer to the
+<a href="https://docs.ansible.com/ansible/latest/plugins/filter.html">docs</a> for
+more information.</p>
+<p>The <code>ansible.utils</code> filter plugins include the following:</p>
+<ul>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.from_xml_filter.rst">ansible.utils.from_xml</a> - Convert a given XML string to native python dictionary.</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.get_path_filter.rst">ansible.utils.get_path</a> - Retrieve the value in a variable using a path</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.index_of_filter.rst">ansible.utils.index_of</a> - Find the indices of items in a list matching some criteria</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.param_list_compare_filter.rst">ansible.utils.param_list_compare</a> - Generate the final param list combining/comparing base and provided parameters.</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.to_paths_filter.rst">ansible.utils.to_paths</a> - Flatten a complex object into a dictionary of paths and values</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.to_xml_filter.rst">ansible.utils.to_xml</a> - Convert given JSON string to XML</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.usable_range_filter.rst">ansible.utils.usable_range</a> - Expand the usable IP addresses</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.validate_filter.rst">ansible.utils.validate</a> - Validate data with provided criteria</li>
+</ul>
+<h3>Lookup plugins</h3>
+<p>Lookup plugins are an Ansible-specific extension to the Jinja2
+templating language. You can use lookup plugins to access data from
+outside sources (files, databases, key/value stores, APIs, and other
+services) within your playbooks. Like all
+<a href="https://docs.ansible.com/ansible/latest/user_guide/playbooks_templating.html#playbooks-templating">templating</a>,
+lookups execute and are evaluated on the Ansible Automation Platform
+control machine. Ansible makes the data returned by a lookup plugin
+available using the standard templating system. You can use lookup
+plugins to load variables or templates with information from external
+sources. You can also<a href="https://docs.ansible.com/ansible/latest/dev_guide/developing_plugins.html#developing-lookup-plugins">create custom lookup plugins</a>.
+Please refer to the <a href="https://docs.ansible.com/ansible/latest/plugins/lookup.html">docs</a> for more information.</p>
+<p>The <code>ansible.utils</code> lookup plugins include:</p>
+<ul>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.get_path_lookup.rst">ansible.utils.get_path</a> - Retrieve the value in a variable using a path</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.index_of_lookup.rst">ansible.utils.index_of</a> - Find the indices of items in a list matching some criteria</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.to_paths_lookup.rst">ansible.utils.to_paths</a> - Flatten a complex object into a dictionary of paths and values</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.validate_lookup.rst">ansible.utils.validate</a> - Validate data with provided criteria</li>
+</ul>
+<p>Note: In <code>ansible.utils</code> some plugins were
+implemented as both filter and lookup plugins to give the playbook
+developer flexibility depending on their use case.</p>
+<h3>Test plugins</h3>
+<p>Test plugins evaluate template expressions and return a value of True or
+False. With test plugins you can create
+<a href="https://docs.ansible.com/ansible/latest/user_guide/playbooks_conditionals.html#playbooks-conditionals">conditionals</a>
+to implement the logic of your tasks, blocks, plays, playbooks, and
+roles. Ansible Automation Platform uses the standard tests shipped as
+part of Jinja, and adds some specialized test plugins. Please refer to
+the <a href="https://docs.ansible.com/ansible/latest/plugins/test.html">docs</a>
+for more information.</p>
+<p>The <code>ansible.utils</code> test plugins include:</p>
+<ul>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.in_any_network_test.rst">ansible.utils.in_any_network</a> - Test if an IP or network falls in any network</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.in_network_test.rst">ansible.utils.in_network</a> - Test if IP address falls in the network</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.in_one_network_test.rst">ansible.utils.in_one_network</a> - Test if IP address belongs in any one of the networks in the list</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.ip_test.rst">ansible.utils.ip</a> - Test if something in an IP address or network</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.ip_address_test.rst">ansible.utils.ip_address</a> - Test if something in an IP address</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.ipv4_test.rst">ansible.utils.ipv4</a> - Test if something is an IPv4 address or network</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.ipv4_address_test.rst">ansible.utils.ipv4_address</a> - Test if something is an IPv4 address</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.ipv4_hostmask_test.rst">ansible.utils.ipv4_hostmask</a> - Test if an address is a valid hostmask</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.ipv4_netmask_test.rst">ansible.utils.ipv4_netmask</a> - Test if an address is a valid netmask</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.ipv6_test.rst">ansible.utils.ipv6</a> - Test if something is an IPv6 address or network</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.ipv6_address_test.rst">ansible.utils.ipv6_address</a> - Test if something is an IPv6 address</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.ipv6_ipv4_mapped_test.rst">ansible.utils.ipv6_ipv4_mapped</a> - Test if something appears to be a mapped IPv6 to IPv4 mapped address</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.ipv6_sixtofour_test.rst">ansible.utils.ipv6_sixtofour</a> - Test if something appears to be a 6to4 address</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.ipv6_teredo_test.rst">ansible.utils.ipv6_teredo</a> - Test if something appears to be an IPv6 teredo address</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.loopback_test.rst">ansible.utils.loopback</a> - Test if an IP address is a loopback</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.mac_test.rst">ansible.utils.mac</a> - Test if something appears to be a valid MAC address</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.multicast_test.rst">ansible.utils.multicast</a> - Test for a multicast IP address</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.private_test.rst">ansible.utils.private</a> - Test if an IP address is private</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.public_test.rst">ansible.utils.public</a> - Test if an IP address is public</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.reserved_test.rst">ansible.utils.reserved</a> - Test for a reserved IP address</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.resolvable_test.rst">ansible.utils.resolvable</a> - Test if an IP or name can be resolved via /etc/hosts or DNS</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.subnet_of_test.rst">ansible.utils.subnet_of</a> - Test if a network is a subnet of another network</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.supernet_of_test.rst">ansible.utils.supernet_of</a> - Test if a network is a supernet of another network</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.unspecified_test.rst">ansible.utils.unspecified</a> - Test for an unspecified IP address</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.validate_test.rst">ansible.utils.validate</a> - Validate data with provided criteria</li>
+</ul>
+<h3>Modules</h3>
+<p>Modules are the main building blocks of Ansible playbooks. Although we
+do not generally speak of "module plugins", a module is a type of
+plugin. For a developer-focused description of the differences between
+modules and other plugins, see
+<a href="https://docs.ansible.com/ansible/latest/dev_guide/developing_locally.html#modules-vs-plugins">Modules and plugins: what is the difference?</a>.
+Please refer to the <a href="https://docs.ansible.com/ansible/latest/plugins/module.html">docs</a> for more information.</p>
+<p>The <code>ansible.utils</code> modules include:</p>
+<ul>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.cli_parse_module.rst">ansible.utils.cli_parse</a> - Parse cli output or text using a variety of parsers</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.fact_diff_module.rst">ansible.utils.fact_diff</a> - Find the difference between currently set facts</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.update_fact_module.rst">ansible.utils.update_fact</a> - Update currently set facts</li>
+<li>
+<a href="https://github.com/ansible-collections/ansible.utils/blob/main/docs/ansible.utils.validate_module.rst">ansible.utils.validate</a> - Validate data with provided criteria</li>
+</ul>
+<h3>Accessing and using the ansible.utils Collection</h3>
+<p>To download the utils Collection, refer to Automation hub (fully
+supported, requires a Red Hat Ansible Automation Platform subscription)
+or Ansible Galaxy (upstream):</p>
+<ul>
+<li>
+<a href="https://console.redhat.com/ansible/automation-hub/repo/published/ansible/utils">Automation hub Collection</a>: <code>ansible.utils</code>
+</li>
+<li>
+<a href="https://galaxy.ansible.com/ansible/utils">Ansible Galaxy Collection</a>: <code>ansible.utils</code>
+</li>
+</ul>
+<p>​​Ansible.utils is also available in the Supported Execution environment
+along with its required python libraries. Please refer to
+<a href="https://docs.ansible.com/automation-controller/latest/html/userguide/execution_environments.html">docs for more details about Execution Environments.</a></p>
+<h3>Different use cases of Utils</h3>
+<p>As we know, <code>ansible.utils</code> has a variety of plugins and it has various
+use cases. The following are the most common use cases of <code>ansible.utils</code>:</p>
+<ul>
+<li>Validating business logic before pushing configurations using validate and test plugins</li>
+<li>Auditing architectural deposition and layouts using test plugins</li>
+<li>Managing complex data structure in ansible playbook using <code>get_path</code>, <code>to_path</code> plugins</li>
+<li>Conducting minor checks related to network address using test plugins</li>
+<li>Operational state assessment using cli_parse, validate plugins</li>
+</ul>
+<h3>Future scope</h3>
+<p>Here are some additional <code>ansible.utils</code> capabilities that are on the
+horizon:</p>
+<ul>
+<li>
+<p><strong>Ipaddr filter plugin supports:</strong></p>
+<ul>
+<li>The Ipaddr filter is designed to provide an interface to the <a href="https://pypi.org/project/netaddr/">netaddr</a> Python package from within Ansible.</li>
+<li>It can operate on strings or lists of items, test various data to check if they are valid IP addresses, and manipulate the input data to extract requested information.</li>
+<li>
+<code>ipaddr()</code> works with both IPv4 and IPv6 addresses in various forms. </li>
+<li>There are also additional functions available to manipulate IP subnets and MAC addresses.</li>
+<li>We are currently working on supporting the <code>ipaddr</code> filter as part of <code>ansible.utils</code> collection.</li>
+</ul>
+</li>
+<li>
+<p><strong>Support of more number of validate engines in ansible.utils.validation plugin:</strong></p>
+<ul>
+<li>Currently the validate plugin is supporting only <code>ansible.utils.jsonschema</code> validation engines, but there is plan to add more validation engines.</li>
+</ul>
+</li>
+<li>
+<p><strong>Support different filter plugins to manipulate input data:</strong></p>
+<ul>
+<li>Recursive plugins: <code>remove_keys</code>, <code>replace_keys</code>, <code>keep_keys</code>
+</li>
+</ul>
+</li>
+</ul>
+<h3>Contributing to this collection</h3>
+<p>This collection is intended for plugins that are not platform or
+discipline specific. Simple plugin examples should be generic in nature.
+More complex examples can include real world platform modules to
+demonstrate the utility of the plugin in a playbook.</p>
+<p>We welcome community contributions to this collection. If you find
+problems, please open an issue or create a PR against the
+<a href="https://github.com/ansible-collections/ansible.utils">ansible.utils collection repository</a>.
+See <a href="https://docs.ansible.com/ansible/devel/community/contributing_maintained_collections.html#contributing-maintained-collections">Contributing to Ansible-maintained collections</a>
+for complete details.
+See the <a href="https://docs.ansible.com/ansible/latest/community/index.html">Ansible Community Guide</a>
+for details on contributing to Ansible.</p>
+<h3>Takeaways and next steps</h3>
+<ul>
+<li>
+<code>ansible.utils</code> plugins makes playbook writing experience simple and smooth</li>
+<li>Implementation of <code>ansible.utils</code> plugins is very fast as they executed locally</li>
+<li>Easy to understand, code, use, and integrate with other modules</li>
+<li>As its plugins ecosystem, it is so easy to add new plugins in <code>ansible.utils</code>
+</li>
+</ul>
+</div>
+      </article><br><hr>
+<br><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title">
+            <a href="getting-started-with-ansible.utils-collection-for-playbook-creators-part-2/" class="u-url">Getting Started with Ansible.utils Collection for Playbook Creators</a>
+          </h1>
+          <div class="metadata">
+            <p class="byline author vcard">
+              <span class="byline-name fn" itemprop="author">
+                  <a href="../authors/ashwini-mhatre/">Ashwini Mhatre</a>
+              </span>
+            </p>
+            <p class="dateline">
+              <a href="getting-started-with-ansible.utils-collection-for-playbook-creators-part-2/" rel="bookmark">
+                <time class="published dt-published" datetime="2022-01-24T00:00:00Z" itemprop="datePublished" title="2022-01-24 00:00">2022-01-24 00:00</time></a>
+            </p>
+          </div>
+        </header><div class="p-summary entry-summary">
+            <h2>Part 2: Use case of operational state assessment using ansible.utils collection</h2>
+<p>In <code>ansible.utils</code>, there are a variety of plugins which we can use for
+operational state assessment of network devices. I overviewed the
+<code>ansible.utils</code> collection in part one of this two part blog series. If
+you have not reviewed part one,
+I recommend you do so, since I will build on this information in this
+part two blog. We will see how the <code>ansible.utils</code> collection can be
+useful in operational state assessment as an example use case.</p>
+<p>In general, state assessment workflow has following steps:</p>
+<ul>
+<li>
+<p>Retrieve (Source of Truth)</p>
+<ul>
+<li>Collect the current operational state from the remote host. </li>
+<li>Convert it into normalized structured data. Structured data can
+    be in json, yaml format or any other format.</li>
+<li>Store is an inventory variable.</li>
+</ul>
+</li>
+<li>
+<p>Validate</p>
+<ul>
+<li>Define the desired state criteria in a standard based format,
+    for example, as defined in a json schema format.</li>
+<li>Retrieve operational state at runtime.</li>
+<li>Validate the current state data against the pre-defined criteria
+    to identify if there is any deviation.</li>
+</ul>
+</li>
+<li>
+<p>Remediate</p>
+<ul>
+<li>Implement required configuration changes to correct drift. </li>
+<li>Report on the change as an audit trail.</li>
+</ul>
+</li>
+</ul>
+<h3>How can ansible.utils collection help in this workflow?</h3>
+<p>The <code>ansible.utils</code> collection makes it easier to retrieve and parse the
+data so it can then be further assessed from a structured format.</p>
+<h4>Retrieving operational state in structured format using Ansible.utils.cli_parse</h4>
+<p>This module is available as <code>ansible.utils</code> collection. It has a variety
+of parsers which help to parse CLI output or text output. It can work
+with multiple remote hosts like network, Linux, or windows.it. It
+supports multiple parsing engines and it is extensible which means you
+can create your own parsing engine. It is a single task to run a
+command, parse and set facts.</p>
+<p>Before the utils collection was available, we would need to write three
+different tasks to run commands, parse the output from command and set
+facts. But thanks to <code>cli_parse</code> we only have one task which will return
+structured data from the "show command"
+output.</p>
+<p>Let's see an example of <code>ansible.utils.cli_parse</code> task:</p>
+<div class="code"><pre class="code literal-block">  tasks:
+
+  <span class="k">-</span> name:  Run a command and parse results
+    ansible.utils.cli_parse:
+        command: show interfaces
+        parser:
+            name: ansible.utils.xxxx
+            set_fact: interfaces
+</pre></div>
+
+<p>In this task we need to provide a command which will execute on the
+device. Parser, which is a subplugin of <code>cli_parse</code>, <code>plugin.set_fact</code> sets
+the converted structure in the interfaces key. We can then refer to the
+interfaces key in our playbook. </p>
+<p>The above task will perform following operation:</p>
+<ul>
+<li>Run the command on the device </li>
+<li>Parse using the 'xxxx' engine </li>
+<li>Use a default template folder </li>
+<li>Set parsed data as fact</li>
+<li>Return command output as stdout</li>
+</ul>
+<p>Currently <code>ansible.utils.cli_parse</code> plugin has following parsers:</p>
+<ul>
+<li>
+<code>ansible.utils.textfsm</code>: Python module for parsing semi-formatted
+    text</li>
+<li>
+<code>ansible.utils.ttp</code>: Template based parsing, low regex use,
+    jinja-like DSL</li>
+<li>
+<code>ansible.netcommon.native</code>: Internal jinja, regex, yaml without
+    additional 3rd party libraries required</li>
+<li>
+<code>ansible.netcommon.ntc_templates</code>: Predefined textfsm templates
+    packaged as python library </li>
+<li>
+<code>ansible.netcommon.pyats</code>: Cisco Test Automation &amp; Validation
+    Solution (11 OSs/2500 parsers) </li>
+<li>
+<code>ansible.utils.from_xml</code>: convert XML to json using xmltodict </li>
+</ul>
+<p>All of the generic parsers are part of the <code>ansible.utils</code> collection and
+all network-related parsers are part of the <code>ansible.netcommon</code>
+collection.</p>
+<h4>Validating structured data and report errors using ansible.utils.validate</h4>
+<p>The <code>Ansible.utils.validate</code> module is a new module available as part of
+the <code>ansible.utils</code> collection which works with all platforms. It has
+extensible engine support and currently works with the jsonschema
+validation engine which uses the jsonschema python library underneath.
+It is a single task, which reads structured data and validates it
+against the data model provided in the task. This task will report
+success or error in case the data is valid or invalid as per the
+schema. </p>
+<p>Let's see an example of <code>ansible.utils.validate</code> task:</p>
+<div class="code"><pre class="code literal-block"><span class="x">tasks:</span>
+
+<span class="x">- name:  Validate structured data</span>
+<span class="x">   ansible.utils.validate:</span>
+<span class="x">       data: "</span><span class="cp">{{</span> <span class="nv">input_data</span> <span class="cp">}}</span><span class="x">"</span>
+<span class="x">       criteria:</span>
+<span class="x">       - "</span><span class="cp">{{</span> <span class="nv">lookup</span><span class="o">(</span><span class="s1">'file'</span><span class="o">,</span> <span class="s1">'./criteria.json'</span><span class="o">)</span> <span class="o">|</span> <span class="nf">from_json</span> <span class="cp">}}</span><span class="x">"</span>
+<span class="x">       engine: ansible.utils.xxxx</span>
+</pre></div>
+
+<p>In this task we need to provide data which is supposed to be structured
+data. Criteria is a list of criteria. Since currently we are using
+jsonschema, we have criteria in json format. Engine is a sub-plugin of
+the top level validate plugin. Here it is <code>ansible.utils.jsonschema</code>.
+Again, you can write your own engine as it is extensible. </p>
+<p>The above task will perform following operation:</p>
+<ul>
+<li>Reads the input JSON data and the criteria for data (schema mode)</li>
+<li>Validate using the 'xxxx' engine</li>
+<li>Returns list of errors if data does not conform to the schema criteria</li>
+</ul>
+<p>Currently <code>ansible.utils.validate</code> plugin supports following validation
+engine:</p>
+<ul>
+<li>
+<code>ansible.utils.jsonschema</code>: Python module to validate json data against a schema. </li>
+</ul>
+<p>Now let's use the above plugins from <code>ansible.utils</code> to see how we can
+use them in actual scenarios. In this example we will see how to use
+<code>ansible.utils</code> to fetch BGP operational state data, validate it against
+predefined json schema and also remediate configuration drift when
+detected. </p>
+<p>For this scenario consider we have three CSRv routers which are running
+cisco ios xe. All of them are BGP neighbors to each other and advertise
+three networks each.</p>
+<p><img alt="utils blog 2 image one" src="../images/posts/archive/utils-blog-one.png"></p>
+<p>Lets check running configuration and operation state data related to BGP.</p>
+<p><img alt="utils blog 2 image two" src="../images/posts/archive/utils-blog-two.jpeg"></p>
+<p>Let's check the CSRv1 node. Lets execute command <code>show running-config | section bgp</code>.
+As you can see it has two neighbors configured, where
+both of them have the same Remote AS, so they are IBGP neighbors. The
+neighbors are activated and soft reconfiguration inbound is enabled on
+them. This node also advertises three networks.</p>
+<p>Now let's execute the command <code>show bgp summary</code>.</p>
+<p><img alt="utils blog 2 image three" src="../images/posts/archive/utils-blog-three.png"></p>
+<p>The above screenshot tells us the neighbor relationships with the other
+two nodes established and the current node receiving 3 prefixes from the
+other two nodes.</p>
+<p>Now let's validate it using routing table entries.
+Lets execute command <code>show ip route bgp</code>.</p>
+<p><img alt="utils blog 2 image four" src="../images/posts/archive/utils-blog-four.png"></p>
+<p>The above screenshot shows route table entries from node 1. As you can
+see, this node is aware of six routes, with the next hop being the
+respective BGP neighbors advertising them.</p>
+<p>Similarly we have configured CSRv2 and CSRv3.</p>
+<p>Now let's check the playbooks which we are using in this example with
+detailed steps.</p>
+<p>Checkout this <a href="https://github.com/ashwini-mhatre/bgp_demo/">code</a>
+if you want to learn more details.</p>
+<p>Playbooks are divided into two parts:</p>
+<ul>
+<li>Gather facts and store them in a yaml file as the Source of Truth (SOT)</li>
+<li>Validate structured data against SOT and rectify drift if it is detected</li>
+</ul>
+<p><strong>Gather facts and store it in a yaml file for SOT</strong></p>
+<p>Let's check the content of <a href="https://github.com/ashwini-mhatre/bgp_demo/blob/main/playbooks/facts.yaml">facts.yaml</a>.</p>
+<p><img alt="utils blog 2 image five" src="../images/posts/archive/utils-blog-five.png"></p>
+<p>In the first task we are gathering bgp_global and bgp_address_family
+facts from target devices. In the second task we are storing them in a
+flat file under the hostvars directory. These files will act as SOT
+(source of truth) for BGP config on target devices.</p>
+<p>Lets run the above playbook with <code>ansible-navigator run playbooks/facts.yaml</code> using this command.
+See <a href="https://ansible-navigator.readthedocs.io/en/latest/">ansible-navigator</a> docs for more details.</p>
+<p>How does this data look after execution of the playbook? Let's check
+<a href="https://github.com/ashwini-mhatre/bgp_demo/blob/fest21/playbooks/host_vars/csrv-1.yaml">playbooks/host_vars/csrv-1.yaml.</a></p>
+<p><img alt="utils blog 2 image six" src="../images/posts/archive/utils-blog-six.png"></p>
+<p><strong>Validate structured data against SOT and rectify drift if it is detected</strong></p>
+<p>In this step we will inspect BGP operational state data for all the
+nodes in our topology and then determine if they are running as expected
+or if there is any configuration drift.</p>
+<p>Now let's see the
+<a href="https://github.com/ashwini-mhatre/bgp_demo/blob/fest21/playbooks/verify.yaml">playbooks/verify.yaml</a>
+playbook which will validate and rectify drift if it is present.</p>
+<p><img alt="utils blog 2 image seven" src="../images/posts/archive/utils-blog-seven.png"></p>
+<p>In the first task we have used the <code>ansible.utils.cli_parse</code> plugin to
+execute the <code>show ip route bgp</code> command on the target device and then
+pass the output of this command to <code>pyats parser</code>.</p>
+<p>The pyats parser then converts the output to structured data which is
+stored in the result variable.</p>
+<p>In the next task we pass the value in the result variable along with a
+predefined schema to the <code>ansible.utils.validate</code> plugin. The plugin
+then compares the data against the schema or the criteria using the
+jsonschema engine. Each node has a schema file that defines the prefix
+ranges which they received from the other two neighbors .</p>
+<p>As we saw from the topology and the CLI that these nodes are supposed to
+receive six routes (three in total) from each of the neighbor nodes. Now
+these prefixes are represented as patterns in the schema along with
+other properties like source_protocol, route_preferences, metric and
+active state.</p>
+<p>The schema also sets the additional properties to false and defines
+minimum and maximum number of properties as six. This ensures that
+validating against the schema will always tell us whether the devices
+are receiving exactly the set of routes which they are supposed to
+receive or not.</p>
+<p>Following is the example of a
+<a href="https://github.com/ashwini-mhatre/bgp_demo/blob/fest21/playbooks/bgp_schema/csrv-1.json">schema file</a>
+for node CSRv1.</p>
+<p><img alt="utils-blog-eight" src="../images/posts/archive/utils-blog-eight.png"></p>
+<p>Let's check further tasks of
+<a href="https://github.com/ashwini-mhatre/bgp_demo/blob/fest21/playbooks/verify.yaml">verify.yaml</a></p>
+<p>If the schema validation in the second task fails, the playbook enters
+the rescue section. This is where we used the BGP resource modules to
+enforce the SOT which we have saved previously in yaml files on the
+target devices. The end result will be remediating any configuration
+drift which causes failure in operation state validation.</p>
+<p>If we execute the verify.yaml playbook with the <code>ansible-navigator run playbooks/verify.yaml</code>
+command, as we have not made changes to any
+of the target devices, we see that they are working as expected and
+schema validation passes. See
+<a href="https://ansible-navigator.readthedocs.io/en/latest/">ansible-navigator</a>
+docs for more details.</p>
+<p><img alt="utils-blog-nine" src="../images/posts/archive/utils-blog-nine.png"></p>
+<p>Let's manually introduce erroneous changes on all devices. Then we
+will run the same playbook again and see how it behaves. Let's remove
+the routes to make the erroneous changes they are
+advertising.</p>
+<p><img alt="utils-blog-ten" src="../images/posts/archive/utils-blog-ten.png"></p>
+<p>Now we have made changes in all the routers. Let's run the playbook
+again with <code>ansible-navigator run playbooks/verify.yaml.</code></p>
+<p>This time the schema validation fails. Remediation tasks are executed
+and they add facts that are missing prefixes on all three nodes. Let's
+take a detailed look into this.</p>
+<p><img alt="utils-blog-eleven" src="../images/posts/archive/utils-blog-eleven.jpg"></p>
+<p>The first task, as usual, fetches the output of the show command and
+converts it to structured data.</p>
+<p>The second task fails because the schema validation fails with multiple
+errors. The data doesn't match the constraints defined in the schema.
+This causes the remediation tasks to execute one by one. </p>
+<p>After the remediation tasks are complete, the configure BGP task showed
+no changes because we did not make any changes to the BGP global
+attribute.</p>
+<p>The second one is where the BGP address family detects the drifts and
+reconfigures the missing prefixes. </p>
+<p>As we can see in the commands sent for all the target devices, the
+playbook adds facts to the routes that are deleted.</p>
+<p>If we run this playbook once again it will be idempotent and report no
+changes, thereby indicating everything working as expected. </p>
+<p>In a production environment, this playbook can be triggered based on
+external events or also can be scheduled as a periodic job in Red Hat
+Ansible Automation Platform's Automation controller to ensure compliance
+with the expected operational state.</p>
+<h3>Takeaways &amp; Next Steps</h3>
+<p>As shown above, the <code>ansible.utils</code> collection: </p>
+<ul>
+<li>Makes operational state assessment easier, complementing Ansible
+    Automation Platform's configuration management capabilities.</li>
+<li>Acts as a single entry point for gathering the operational state of
+    the entire inventory.</li>
+<li>Provides a standardized way to define and validate the operational
+    criteria as a structured data model.</li>
+<li>Adds the steps for operational state assessment as a workflow
+    template in Automation controller which can trigger other events,
+    like running a playbook for automated remediation or reporting to an
+    external tool, etc. </li>
+</ul>
+</div>
+      </article><br><hr>
+<br><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title">
+            <a href="bullhorn-42/" class="u-url">Bullhorn #42</a>
+          </h1>
+          <div class="metadata">
+            <p class="byline author vcard">
+              <span class="byline-name fn" itemprop="author">
+                  <a href="../authors/ansible-collaborative-et-al/">Ansible Collaborative, et al</a>
+              </span>
+            </p>
+            <p class="dateline">
+              <a href="bullhorn-42/" rel="bookmark">
+                <time class="published dt-published" datetime="2022-01-14T10:30:00Z" itemprop="datePublished" title="2022-01-14 10:30">2022-01-14 10:30</time></a>
+            </p>
+          </div>
+        </header><div class="p-summary entry-summary">
+            <div>
+<p><img alt="Ansible Bullhorn banner" src="../images/bullhorn-banner-mango.png"></p>
+<p><em>A Newsletter for the Ansible Developer Community</em>
+<em>Issue #42, 2022-01-14 (<a href="https://us19.campaign-archive.com/home/?u=56d874e027110e35dea0e03c1&amp;id=d6635f5420">Past Issues</a>)</em></p>
+<p>Welcome to the Bullhorn, our newsletter for the Ansible developer community. If you have any questions or content you’d like to share, please reach out to us at the-bullhorn@redhat.com, or chat with us in the <a href="https://matrix.to/#/#social:ansible.com">Ansible Social room on Matrix</a> - mention <a href="https://matrix.to/#/@newsbot:ansible.im"><code>newsbot</code></a> to have your news item tagged for review for the next issue!</p>
+</div>
+          </div>
+      </article><br><hr>
+<br><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title">
+            <a href="bullhorn-41/" class="u-url">Bullhorn #41</a>
+          </h1>
+          <div class="metadata">
+            <p class="byline author vcard">
+              <span class="byline-name fn" itemprop="author">
+                  <a href="../authors/ansible-collaborative-et-al/">Ansible Collaborative, et al</a>
+              </span>
+            </p>
+            <p class="dateline">
+              <a href="bullhorn-41/" rel="bookmark">
+                <time class="published dt-published" datetime="2022-01-07T14:00:00Z" itemprop="datePublished" title="2022-01-07 14:00">2022-01-07 14:00</time></a>
+            </p>
+          </div>
+        </header><div class="p-summary entry-summary">
+            <div>
+<p><img alt="Ansible Bullhorn banner" src="../images/bullhorn-banner-mango.png"></p>
+<p><em>A Newsletter for the Ansible Developer Community</em>
+<em>Issue #41, 2022-01-07 (<a href="https://us19.campaign-archive.com/home/?u=56d874e027110e35dea0e03c1&amp;id=d6635f5420">Past Issues</a>)</em></p>
+<p>Welcome to the Bullhorn, our newsletter for the Ansible developer community. If you have any questions or content you’d like to share, please reach out to us at the-bullhorn@redhat.com, or chat with us in the <a href="https://matrix.to/#/#social:ansible.com">Ansible Social room on Matrix</a>.</p>
+<p>Happy New Year to our wonderful Ansible Developer Community! We look forward to collaborating more with all of you in 2022!</p>
+</div>
+          </div>
+      </article><br><hr>
+<br><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title">
+            <a href="bullhorn-40/" class="u-url">Bullhorn #40</a>
+          </h1>
+          <div class="metadata">
+            <p class="byline author vcard">
+              <span class="byline-name fn" itemprop="author">
+                  <a href="../authors/ansible-collaborative-et-al/">Ansible Collaborative, et al</a>
+              </span>
+            </p>
+            <p class="dateline">
+              <a href="bullhorn-40/" rel="bookmark">
+                <time class="published dt-published" datetime="2021-12-21T22:30:00Z" itemprop="datePublished" title="2021-12-21 22:30">2021-12-21 22:30</time></a>
+            </p>
+          </div>
+        </header><div class="p-summary entry-summary">
+            <div>
+<p><img alt="Ansible Bullhorn banner" src="../images/bullhorn-banner-mango.png"></p>
+<p><em>A Newsletter for the Ansible Developer Community</em>
+<em>Issue #40, 2021-12-21 (<a href="https://us19.campaign-archive.com/home/?u=56d874e027110e35dea0e03c1&amp;id=d6635f5420">Past Issues</a>)</em></p>
+<p>Welcome to the Bullhorn, our newsletter for the Ansible developer community. If you have any questions or content you’d like to share, please reach out to us at the-bullhorn@redhat.com, or chat with us in the <a href="https://matrix.to/#/#social:ansible.com">Ansible Social room on Matrix</a>.</p>
+<p>This will be the last issue for 2021. A big THANKS to every one of you for all of your contributions! Happy holidays and see you in 2022 :tada:</p>
+</div>
+          </div>
+      </article><br><hr>
+<br><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title">
+            <a href="bullhorn-39/" class="u-url">Bullhorn #39</a>
+          </h1>
+          <div class="metadata">
+            <p class="byline author vcard">
+              <span class="byline-name fn" itemprop="author">
+                  <a href="../authors/ansible-collaborative-et-al/">Ansible Collaborative, et al</a>
+              </span>
+            </p>
+            <p class="dateline">
+              <a href="bullhorn-39/" rel="bookmark">
+                <time class="published dt-published" datetime="2021-12-03T15:00:00Z" itemprop="datePublished" title="2021-12-03 15:00">2021-12-03 15:00</time></a>
+            </p>
+          </div>
+        </header><div class="p-summary entry-summary">
+            <div>
+<p><img alt="Ansible Bullhorn banner" src="../images/bullhorn-banner-mango.png"></p>
+<p><em>A Newsletter for the Ansible Developer Community</em>
+<em>Issue #39, 2021-12-03 (<a href="https://us19.campaign-archive.com/home/?u=56d874e027110e35dea0e03c1&amp;id=d6635f5420">Past Issues</a>)</em></p>
+<p>Welcome to the Bullhorn, our newsletter for the Ansible developer community. If you have any questions or content you’d like to share, please reach out to us at the-bullhorn@redhat.com, or chat with us in the <a href="https://matrix.to/#/#social:ansible.com">Ansible Social room on Matrix</a>.</p>
+</div>
+          </div>
+      </article><br><hr>
+<br><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title">
+            <a href="bullhorn-38/" class="u-url">Bullhorn #38</a>
+          </h1>
+          <div class="metadata">
+            <p class="byline author vcard">
+              <span class="byline-name fn" itemprop="author">
+                  <a href="../authors/ansible-collaborative-et-al/">Ansible Collaborative, et al</a>
+              </span>
+            </p>
+            <p class="dateline">
+              <a href="bullhorn-38/" rel="bookmark">
+                <time class="published dt-published" datetime="2021-11-18T22:30:00Z" itemprop="datePublished" title="2021-11-18 22:30">2021-11-18 22:30</time></a>
+            </p>
+          </div>
+        </header><div class="p-summary entry-summary">
+            <div>
+<p><img alt="Ansible Bullhorn banner" src="../images/bullhorn-banner-mango.png"></p>
+<p><em>A Newsletter for the Ansible Developer Community</em>
+<em>Issue #38, 2021-11-18 (<a href="https://us19.campaign-archive.com/home/?u=56d874e027110e35dea0e03c1&amp;id=d6635f5420">Past Issues</a>)</em></p>
+<p>Welcome to the Bullhorn, our newsletter for the Ansible developer community. If you have any questions or content you’d like to share, please reach out to us at the-bullhorn@redhat.com, or chat with us in the <a href="https://matrix.to/#/#social:ansible.com">Ansible Social room on Matrix</a>.</p>
+</div>
+          </div>
+      </article><br><hr>
+<br><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title">
+            <a href="bullhorn-37/" class="u-url">Bullhorn #37</a>
+          </h1>
+          <div class="metadata">
+            <p class="byline author vcard">
+              <span class="byline-name fn" itemprop="author">
+                  <a href="../authors/ansible-collaborative-et-al/">Ansible Collaborative, et al</a>
+              </span>
+            </p>
+            <p class="dateline">
+              <a href="bullhorn-37/" rel="bookmark">
+                <time class="published dt-published" datetime="2021-11-06T06:30:00Z" itemprop="datePublished" title="2021-11-06 06:30">2021-11-06 06:30</time></a>
+            </p>
+          </div>
+        </header><div class="p-summary entry-summary">
+            <div>
+<p><img alt="Ansible Bullhorn banner" src="../images/bullhorn-banner-mango.png"></p>
+<h3>The Bullhorn</h3>
+<p><em>A Newsletter for the Ansible Developer Community</em>
+<em>Issue #37, 2021-11-04 (<a href="https://us19.campaign-archive.com/home/?u=56d874e027110e35dea0e03c1&amp;id=d6635f5420">Past Issues</a>)</em></p>
+<p>Welcome to the Bullhorn, our newsletter for the Ansible developer community. If you have any questions or content you’d like to share, please reach out to us at the-bullhorn@redhat.com, or comment on this <a href="https://github.com/ansible/community/issues/546">GitHub issue</a>. Take a look at the "Community Update" torwards the end of this edition for a new way of sharing news/content!</p>
+</div>
+          </div>
+      </article><br><hr>
+<br><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title">
+            <a href="ansiblefest-2021-what-means-for-partners/" class="u-url">AnsibleFest 2021, What it means for Partners</a>
+          </h1>
+          <div class="metadata">
+            <p class="byline author vcard">
+              <span class="byline-name fn" itemprop="author">
+                  <a href="../authors/nelson-hsu/">Nelson Hsu</a>
+              </span>
+            </p>
+            <p class="dateline">
+              <a href="ansiblefest-2021-what-means-for-partners/" rel="bookmark">
+                <time class="published dt-published" datetime="2021-11-02T00:00:00Z" itemprop="datePublished" title="2021-11-02 00:00">2021-11-02 00:00</time></a>
+            </p>
+          </div>
+        </header><div class="p-summary entry-summary">
+            <h2>AnsibleFest 2021, What it means for Partners</h2>
+<p>As the weather turns to Fall, the seasons seem to parallel that of the
+technology cycles. Over the past couple of decades, we have seen various
+transformations within the high-tech area:</p>
+<ul>
+<li>From mainframe to distributed computing to hybrid cloud and now edge</li>
+<li>From databases to data warehouse to advanced analytics and machine learning</li>
+<li>From the challenges of storing a gigabyte of data, now grown to storing zetabytes+ of data per day.</li>
+</ul>
+<p>All of this has moved businesses forward, driving great innovation. When
+it comes to infrastructure, nothing is more impactful than a core
+architectural update that fundamentally changes the way enterprises
+drive their business.  Distributed computing, distributed architectures
+like cloud, hybrid cloud and edge computing reinforce this  premise in
+the era of hybrid cloud computing.</p>
+<p>The recent announcement of Red Hat Ansible Automation Platform 2 aligns
+to this blossoming hybrid cloud model, where automation meets the modern
+hybrid cloud environment.  This represents a great opportunity for our
+<a href="https://connect.redhat.com/user/register/lookup">Red Hat Ansible Partner Ecosystem</a>.</p>
+<h3>AnsibleFest Announcements - Key Partner Takeaways</h3>
+<p>Red Hat recently held
+<a href="https://events.ansiblefest.redhat.com/widget/redhat/ansible21/sessioncatalog">AnsibleFest</a>
+2021 which included some fantastic content that is still available on
+demand. I would like to highlight some of  the exciting AnsibleFest news
+and announcements that are key for Red Hat Ansible partners.  </p>
+<p>Much has been written by Red Hat colleagues to highlight all of the
+game-changing features that leverage the new hybrid cloud-ready
+architecture, and you will find links below to learn more.  With  new
+features like Automation controller and Automation execution
+environments, new opportunities abound for our partners to grow with
+us.  By separating the control layer (Automation controller) from the
+execution layer (Automation execution environments), the scalability of
+Ansible Automation Platform environments enables customers to grow
+regardless of the computing paradigm they employ - from mainframe to
+hybrid cloud to the edge. This is the value of this new release of
+Ansible Automation Platform which can address all of these environments
+using a single automation tool within a specific deployment model or
+across all of these modes (this is reinforced later when we
+discuss the value to Edge in more detail).</p>
+<p>Our focus has been to drive a culture of automation with a consistent
+experience across different roles (e.g., creators, operators, admins and
+architects) and enterprise IT domains (network, security,
+infrastructure, DevOps, cloud etc.).   This means you and our mutual
+customers can drive greater efficiencies and automate at scale from
+on-premises to hybrid cloud to Edge,with the same experience
+throughout.  Applications and infrastructure built to run on a
+variety of platforms and solutions can be automated faster with over 100
+<a href="https://connect.redhat.com/en/partner-with-us/red-hat-ansible-automation-certification">Ansible Certified Collections</a>,
+allowing you as our partner to bring greater value to our mutual
+customers.   For example, you can use these certified collections and
+scale to greater levels with Ansible Automation Platform 2 to automate
+functions on F5 networks or automate identity management functions built
+on Fortinet.   </p>
+<p>The Edge presents a great new opportunity for all, but it also
+introduces challenges of scale with new vectors of vulnerability. With
+the control plane separated from the execution plane, you can scale
+those near and far edge devices.  Network edge mis-configurations can
+abound exponentially, but with Automation controller you can maintain
+network governance with automation all the way to  the Edge.  Think
+about the number of near edge servers or IoT far edge devices where
+firewalls come under attack. Automation execution environments allow
+teams to package Ansible into containerized environments for a defined,
+standardized, and portable set of automation resources that can work
+near edge or at the edge. This allows customers to further
+scale automation with network and security
+automation to thwart attacks by managing each edge server or device,
+such as applying new patches and securing the Edge.</p>
+<p>Customers can continue to leverage the great solutions from the Ansible
+Automation Platform ecosystem to drive scalability  by using existing
+playbooks and further expanding them on their journey to automation
+maturity.</p>
+<h3>DevOps, the Evolution of Automation - "Shift Left"</h3>
+<p>When it comes to automation, we are in the midst of an evolution of
+DevOps, DevSecOps and Infrastructure as Code. Red Hat Ansible Automation
+Platform 2 has evolved to new heights by "shifting left" and developing
+more agility for enterprise applications and workloads with the new
+architecture and tools like ansible-builder and ansible-navigator. 
+Developers can now control their environments and leverage Ansible
+Automation Platform as their operations counterparts have.  With these
+new tools, developers can easily write, test, distribute and manage
+automation and deliver it all as they have for content creation. We
+immediately impact developer productivity and agility; which is then
+multiplied by the great complementary solutions from you, our partners. </p>
+<p>Red Hat Ansible Automation Platform stands out in the market due to its
+ability to   deliver greater time to value for customers and partners of
+course increasing the value overall when paired with our partners'
+certified <a href="https://connect.redhat.com/en/partner-with-us/red-hat-ansible-automation-certification?hsLang=en-us">Content Collections</a>. 
+This enables our partners to fully participate in the automation journey
+as joint customers "Create, Manage and Scale" their automation from
+network to security to workloads like SAP and ITSM workflows with
+ServiceNow.  I urge you to listen to the AnsibleFest customer
+presentations from Discover Financial Services, JPMC and a major airline
+as they highlight how your offerings work with Ansible Automation
+Platform and explain how they are taking automation to new heights. Of
+course, while you are there be sure to take in all the great Ansible
+content from partners, customers and the community.</p>
+<p>Here's a great note from IDC providing keen insight to the effect of
+Automation on DevOps:</p>
+<p>"IDC projects that more than 500 million new business applications will
+be created by 2023. As these applications grow in scope and complexity,
+developers and the IT operations and infrastructure teams that support
+them will need to better manage and compress application delivery
+cycles."</p>
+<p>Jevin Jensen, Jim Mercer, IDC,  "AnsibleFest 2021: Ansible Automation
+Platform 2 is re-architected for speed and ease of use", September
+29,2021</p>
+<p>A key takeaway is that it is the robust nature of Ansible and its time
+to value has exponentially increased with this new architecture.  As
+part of the <a href="https://www.ansible.com/integrations">Ansible ecosystem</a>,
+you don't have to do significant additional work to participate in this
+new flexible and scalable environment. Use Automation controller and
+Automation execution environments to further deploy your solution. Red
+Hat Ansible Automation Platform 2 is a win for all as we scale to new
+heights.</p>
+          </div>
+      </article><br><hr>
+<br>
+</div>
+          <ul class="pager postindexpager clearfix">
+<li class="previous"><a href="index-14.html" rel="prev">Newer posts</a></li>
+            <li class="next"><a href="index-12.html" rel="next">Older posts</a></li>
+        </ul>
+<!--End of body content-->
+</div>
+        <div class="content-slim redhat-footer">
+      <div class="footer-left">
+        <ul class="footer-left-links">
+<li>
+            <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-SA 4.0</a>
+          </li>
+          <li>
+            <a href="https://www.redhat.com/en/about/privacy-policy" target="_blank">Privacy policy</a>
+          </li>
+          <li>
+            <a href="https://docs.ansible.com/ansible/latest/community/code_of_conduct.html" target="_blank">Code of conduct</a>
+          </li>
+        </ul>
+</div>
+      <div class="footer-right">
+        <span class="redhat">Powered by</span>
+        <span class="redhat-logo">
+          <a href="https://www.redhat.com/en/technologies/management/ansible" target="_blank">
+            <img src="../assets/images/redhat_reversed.svg" alt="Red Hat logo." width="96" height="28"></a>
+        </span>
+      </div>
+    </div>
+
+</div>
+
+            <script src="../assets/js/jquery.min.js"></script><script src="../assets/js/popper.min.js"></script><script src="../assets/js/bootstrap.min.js"></script><script src="../assets/js/baguetteBox.min.js"></script><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+</script><script src="../assets/js/clipboard.min.js" type="text/javascript"></script><script src="../assets/js/clipboard.js" type="text/javascript"></script>
+</body>
+</html>

@@ -1,0 +1,112 @@
+<h1>Ansible Certified Content Collection for Chocolatey</h1>
+<p>It's a constant battle to keep your Windows estate updated and secure.
+Using Red Hat Ansible Automation Platform and Chocolatey, you can easily
+keep your software up-to-date and react quickly to bug fixes, security
+issues and 0-days on dozens, hundreds or thousands of nodes.</p>
+<p>We're going to take you through three simple steps to show you how
+simple it is to deploy and update software using Chocolatey and Ansible.</p>
+<h2>Before We Start: Windows Prerequisites</h2>
+<p>Ansible  uses Winrm by default to communicate with Windows machines.
+Therefore, we need to ensure we have that enabled by running
+<code>Enable-PSRemoting</code> on the remote Windows computer.</p>
+<p>For production use, we recommend enabling
+<a href="https://support.microsoft.com/en-gb/help/2019527/how-to-configure-winrm-for-https">HTTPS for WinRM</a>. </p>
+<p>The code examples shown below are all using the user 'ansible' as the
+default. If you are using a different username, make sure you change it!</p>
+<p><strong>Step 1: Configure Ansible to use Chocolatey.</strong></p>
+<p>We need to install the Chocolatey module so that Ansible can use. The 
+Chocolatey Ansible Content Collection is called
+<a href="https://galaxy.ansible.com/chocolatey/chocolatey">chocolatey:chocolatey</a>
+and is maintained by the
+<a href="https://github.com/chocolatey/chocolatey-ansible">Chocolatey</a>
+Team. To install the Collection, and therefore the win_chocolatey
+modules, on your Ansible server, run:</p>
+<div class="code"><pre class="code literal-block">ansible-galaxy collection install chocolatey.chocolatey
+</pre></div>
+
+<p>That's all there is to it! Ansible can now work with Chocolatey using
+the modules in the Collection.</p>
+<p><strong>Step 2: Install software on a remote computer</strong></p>
+<p>Now that we have the win_chocolatey module installed, we can go ahead
+and install or manage software on our remote computers.</p>
+<p>Let's create a file called <code>install_notepadplusplus.yml</code> with the
+following contents:</p>
+<div class="code"><pre class="code literal-block"><span class="o">---</span>
+<span class="o">-</span><span class="w"> </span><span class="n">hosts</span><span class="p">:</span><span class="w"> </span><span class="n">all</span>
+<span class="w">  </span><span class="n">gather_facts</span><span class="p">:</span><span class="w"> </span><span class="bp">false</span>
+
+<span class="w">  </span><span class="n">vars_prompt</span><span class="p">:</span>
+<span class="w">    </span><span class="o">-</span><span class="w"> </span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="n">password</span>
+<span class="w">      </span><span class="n">prompt</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Enter the password for the node&quot;</span>
+
+<span class="w">  </span><span class="n">vars</span><span class="p">:</span>
+<span class="w">      </span><span class="n">ansible_user</span><span class="p">:</span><span class="w"> </span><span class="n">ansible</span>
+<span class="w">      </span><span class="n">ansible_password</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{{ password }}&quot;</span>
+<span class="w">      </span><span class="n">ansible_connection</span><span class="p">:</span><span class="w"> </span><span class="n">winrm</span>
+<span class="w">      </span><span class="n">ansible_winrm_transport</span><span class="p">:</span><span class="w"> </span><span class="n">ntlm</span>
+<span class="w">      </span><span class="n">ansible_winrm_server_cert_validation</span><span class="p">:</span><span class="w"> </span><span class="n">ignore</span>
+
+<span class="w">  </span><span class="n">tasks</span><span class="p">:</span>
+<span class="w">      </span><span class="o">-</span><span class="w"> </span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="n">Install</span><span class="w"> </span><span class="n">Notepad</span><span class="o">++</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="mf">7.8</span>
+<span class="w">        </span><span class="n">win_chocolatey</span><span class="p">:</span>
+<span class="w">          </span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="n">notepadplusplus</span>
+<span class="w">          </span><span class="n">version</span><span class="p">:</span><span class="w"> </span><span class="err">‘</span><span class="mf">7.8</span><span class="err">’</span>
+</pre></div>
+
+<p>Run <code>ansible-playbook install_notepadplusplus.yaml -i &lt;ip address&gt;,</code>
+(note the comma after the IP address) to install Notepad++ on your
+remote computer. Note that we are not installing the latest version in
+this example as we will update to that in the next step.</p>
+<p>Once installed, open Notepad++ and press <code>F1</code> to ensure we have
+installed the requested version. </p>
+<p><strong>Step 3: Update software on a remote computer</strong></p>
+<p>To ensure you always have the latest version of software installed on
+your computers, you can use Chocolatey to upgrade them. We'll upgrade to
+the latest version of Notepad++.</p>
+<p>Create a file called <code>upgrade_notepadplusplus.yml</code> with the following
+contents:</p>
+<div class="code"><pre class="code literal-block"><span class="o">---</span>
+<span class="o">-</span><span class="w"> </span><span class="n">hosts</span><span class="p">:</span><span class="w"> </span><span class="n">all</span>
+<span class="w">  </span><span class="n">gather_facts</span><span class="p">:</span><span class="w"> </span><span class="bp">false</span>
+
+<span class="w">  </span><span class="n">vars_prompt</span><span class="p">:</span>
+<span class="w">    </span><span class="o">-</span><span class="w"> </span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="n">password</span>
+<span class="w">      </span><span class="n">prompt</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Enter the password for the node&quot;</span>
+
+<span class="w">  </span><span class="n">vars</span><span class="p">:</span>
+<span class="w">    </span><span class="n">ansible_user</span><span class="p">:</span><span class="w"> </span><span class="n">ansible</span>
+<span class="w">    </span><span class="n">ansible_password</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{{ password }}&quot;</span>
+<span class="w">    </span><span class="n">ansible_connection</span><span class="p">:</span><span class="w"> </span><span class="n">winrm</span>
+<span class="w">    </span><span class="n">ansible_winrm_transport</span><span class="p">:</span><span class="w"> </span><span class="n">ntlm</span>
+<span class="w">    </span><span class="n">ansible_winrm_server_cert_validation</span><span class="p">:</span><span class="w"> </span><span class="n">ignore</span>
+
+<span class="w">  </span><span class="n">tasks</span><span class="p">:</span>
+<span class="w">    </span><span class="o">-</span><span class="w"> </span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="n">Install</span><span class="w"> </span><span class="n">latest</span><span class="w"> </span><span class="n">Notepad</span><span class="o">++</span>
+<span class="w">      </span><span class="n">win_chocolatey</span><span class="p">:</span>
+<span class="w">        </span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="n">notepadplusplus</span>
+<span class="w">        </span><span class="n">state</span><span class="p">:</span><span class="w"> </span><span class="n">latest</span>
+</pre></div>
+
+<p>Run <code>ansible-playbook upgrade_notepadplusplus.yaml -i &lt;ip address&gt;,</code>
+(note the comma after the IP address) to update, or install, the latest
+Notepad++ on your remote computer. Once installed, open Notepad++ and
+press <code>F1</code> to ensure we have installed the latest version. </p>
+<h2>Next Steps</h2>
+<p>While we have only worked with one remote computer in this blog post,
+Ansible allows you to replicate this across dozens, hundreds and
+thousands of remote computers.</p>
+<p>Now that you have the Ansible Chocolatey modules installed, you can
+install, uninstall, update and manage packages on your computers. Other
+modules in the Chocolatey Ansible  Content Collection give you the
+ability to manage the configuration, features and sources for Chocolatey
+itself. You can find more information on the
+<a href="https://galaxy.ansible.com/chocolatey/chocolatey">Ansible Galaxy Chocolatey collection page</a>.</p>
+<p>Chocolatey has a <a href="https://chocolatey.org/docs/how-to-setup-internal-package-repository">recommended architecture</a>
+for organizations, which includes setting up an internal repository. To
+speed up that process, there is a <a href="https://chocolatey.org/docs/quick-deployment-environment">Quick Deployment Environment</a> that
+allows you to be up and running with an internal repository with useful
+packages already loaded, Jenkins for automation and Chocolatey Central
+Management for reporting in around two hours.</p>
+<p>For package management on Windows, Chocolatey is the package manager of
+choice. Working in harmony with Ansible, you can use it to update and
+manage your Windows computers in a similar way as you would with Linux.</p>
