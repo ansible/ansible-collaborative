@@ -3,7 +3,7 @@ import nox
 @nox.session
 def build(session: nox.Session):
     """
-    Build the Ansible community website.
+    Build the Ansible Collaborative website.
     """
     session.install(
       "-r", "requirements.in",

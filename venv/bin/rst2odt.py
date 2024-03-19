@@ -1,4 +1,4 @@
-#!/Users/wbentley/Code/community-website/venv/bin/python
+#!/Users/wbentley/Code/ansible-collaborative/venv/bin/python
 
 # $Id: rst2odt.py 9115 2022-07-28 17:06:24Z milde $
 # Author: Dave Kuhlman <dkuhlman@rexx.com>

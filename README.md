@@ -1,8 +1,4 @@
-[![Discuss at #website:ansible.com on Matrix](https://img.shields.io/matrix/website:ansible.com.svg?server_fqdn=ansible-accounts.ems.host&label=Discuss%20at%20%23website:ansible.com&logo=matrix)](https://matrix.to/#/#website:ansible.com)
-
-This repository contains the assets required to build the Ansible Community website. Welcome!
-
-See the WIP site at [https://ansible-community-website.readthedocs.io/](https://ansible-community-website.readthedocs.io/)
+This repository contains the assets required to build the Ansible Collaborative website. Welcome!
 
 ## Contributing to the website
 
@@ -20,7 +16,7 @@ questions.
 
 ## Building the website locally
 
-The Ansible community website is static HTML generated from this repository.
+The Ansible Collaborative website is static HTML generated from this repository.
 You can build the website locally if you want to evaluate changes or experiment.
 
 ### Using nox
@@ -58,7 +54,7 @@ We recommend that you use a Python virtual environment.
 
 #### Building and viewing the site
 
-The Ansible community website is built with [Nikola](https://getnikola.com/).
+The Ansible Collaborative website is built with [Nikola](https://getnikola.com/).
 
     # Build the site with Nikola.
     nikola build

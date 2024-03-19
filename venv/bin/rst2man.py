@@ -1,4 +1,4 @@
-#!/Users/wbentley/Code/community-website/venv/bin/python
+#!/Users/wbentley/Code/ansible-collaborative/venv/bin/python
 
 # Author:
 # Contact: grubert@users.sf.net

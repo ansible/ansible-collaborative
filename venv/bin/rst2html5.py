@@ -1,4 +1,4 @@
-#!/Users/wbentley/Code/community-website/venv/bin/python
+#!/Users/wbentley/Code/ansible-collaborative/venv/bin/python
 # :Copyright: © 2015 Günter Milde.
 # :License: Released under the terms of the `2-Clause BSD license`_, in short:
 #
