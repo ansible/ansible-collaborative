@@ -67,7 +67,8 @@ collection:
 adoption:
   title: Automation adoption
   intro: Expanding automation in your organization requires expertise in both technology and culture. Red Hat excels in creating and supporting successful communities, and we can help you build yours.
-  url: 
+  url: https://www.redhat.com/en/topics/automation/how-to-build-automation-center-of-excellence?sc_cid=7015Y000003szaeQAA
+  cta: Learn how to build a CoE 
 community:
   section_icon: /assets/images/community-cyan.svg
   icon_alt: Ansible community icon
