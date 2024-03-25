@@ -284,6 +284,8 @@ Set overriding homepage properties in the hero-container class.
 .homepage-link {
   color: #0066CC;
   white-space: nowrap; }
+  .homepage-link a {
+    font-weight: 500; }
 
 .section-title {
   display: flex;
@@ -298,12 +300,21 @@ Set overriding homepage properties in the hero-container class.
     transform: translatex(0px) translatey(0px);
     min-height: 0px;
     padding-top: 0px;
-    padding-bottom: 0px;
+    padding-bottom: 16px;
     line-height: 1.5em; }
+  .section-title a {
+    font-weight: 500; }
 
 .section-top {
   display: flex;
   align-items: center; }
+  .section-top a {
+    position: relative;
+    top: 10px;
+    font-weight: 500; }
+  .section-top i {
+    position: relative;
+    top: 10px; }
 
 .section-icon {
   float: left;
@@ -325,7 +336,7 @@ Set overriding homepage properties in the hero-container class.
 .homepage-banner-band {
   position: relative;
   padding-top: 3rem;
-  padding-bottom: 6rem;
+  padding-bottom: 48px;
   gap: 10px; }
 
 .banner-row {
@@ -431,7 +442,10 @@ Set overriding homepage properties in the hero-container class.
     width: 100%; } }
 
 .homepage-ansible-band {
-  background-color: #ffffff; }
+  background-color: #ffffff;
+  transform: translatex(0px) translatey(0px);
+  padding-bottom: 48px;
+  padding-top: 56px; }
 
 .what-is-ansible {
   display: flex;
@@ -471,6 +485,8 @@ Set overriding homepage properties in the hero-container class.
   border-radius: 5px;
   background-color: #ffffff;
   justify-content: stretch; }
+  .ecosystem-card a {
+    font-weight: 500; }
 
 .ecosystem-content {
   display: flex;
@@ -484,7 +500,8 @@ Set overriding homepage properties in the hero-container class.
   .ecosystem-content p {
     font-size: 1rem;
     text-transform: none;
-    text-align: left; }
+    text-align: left;
+    padding-bottom: 4px; }
   .ecosystem-content a {
     font-size: 1rem;
     white-space: nowrap; }
@@ -581,8 +598,10 @@ Set overriding homepage properties in the hero-container class.
     font-weight: 500; }
 
 .homepage-platform-band {
-  background-image: url(/images/ansible-collaborative-gray-bkg.png);
-  background-size: cover; }
+  background-image: url(/images/AnsibleBanner_Desktop.png);
+  background-size: cover;
+  padding-bottom: 16px;
+  min-height: 465px; }
 
 .platform-row {
   grid-column: span 2;
@@ -608,7 +627,7 @@ Set overriding homepage properties in the hero-container class.
     color: #004080; }
   .platform-box-left h3 {
     font-size: 30px;
-    font-weight: 600;
+    font-weight: 500;
     text-transform: none;
     color: #004080;
     color: #000000; }
@@ -616,7 +635,15 @@ Set overriding homepage properties in the hero-container class.
     font-size: 1.125rem; }
   .platform-box-left img {
     width: 200px;
-    height: 67px; }
+    height: 67px;
+    padding-bottom: 0px;
+    margin-bottom: 16px; }
+  .platform-box-left a {
+    color: #0066cc;
+    font-weight: 500; }
+  .platform-box-left i {
+    color: #0066cc;
+    font-weight: 500; }
 
 .platform-box-right {
   display: flex;
@@ -653,7 +680,7 @@ Set overriding homepage properties in the hero-container class.
   flex-direction: column;
   justify-content: center;
   text-align: left;
-  padding-bottom: 2rem; }
+  padding-bottom: 16px; }
   .ecosystem-page-title p {
     font-size: 1.125rem; }
 
@@ -920,6 +947,8 @@ a.ansible-button {
   border-radius: 5px;
   background-color: #ffffff;
   justify-content: stretch; }
+  .collection-card a {
+    font-weight: 500; }
 
 .collection-content {
   display: flex;

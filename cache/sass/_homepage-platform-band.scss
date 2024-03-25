@@ -1,6 +1,8 @@
 .homepage-platform-band {
-  background-image: url(/images/ansible-collaborative-gray-bkg.png);
+  background-image: url(/images/AnsibleBanner_Desktop.png);
   background-size:cover;
+  padding-bottom:16px;
+  min-height:465px;
 }
 
 .platform-row {
@@ -31,7 +33,7 @@
   }
   h3 {
     font-size: 30px;
-    font-weight: 600;
+    font-weight: 500;
     text-transform: none;
     color: $cyan;
     color:#000000
@@ -42,6 +44,16 @@
   img {
     width:200px;
     height:67px;
+    padding-bottom:0px;
+    margin-bottom:16px;
+  }
+  a {
+    color:#0066cc;
+    font-weight:500;
+  }
+  i {
+    color:#0066cc;
+    font-weight:500;
   }
 }
 
