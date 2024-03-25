@@ -29,4 +29,7 @@
 .homepage-link {
   color: $blue-anchor;
   white-space: nowrap;
+  a {
+    font-weight:500;
+  }
 }
