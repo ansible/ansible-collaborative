@@ -1,5 +1,5 @@
 # Build the community website with Nikola
-FROM python:3.12 AS builder
+FROM registry.fedoraproject.org/fedora:39 AS builder
 
 # Add the contents of this repository to the working directory
 ADD . /ansible-collaborative
@@ -8,6 +8,7 @@ ADD . /ansible-collaborative
 WORKDIR /ansible-collaborative
 
 # Install Nikola and build the community website
+RUN dnf install -y python3-pip && dnf clean all
 RUN pip install -r requirements.in -c requirements.txt
 RUN nikola build --strict
 
