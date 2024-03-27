@@ -153,7 +153,7 @@ NAVIGATION_ALT_LINKS = {
         (
           (
             ("https://docs.ansible.com/", "Project documentation", ""),
-            ("https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/", "Ansible Automation Platform documentation", ""),
+            ("https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform?sc_cid=7015Y000003szaeQAA", "Ansible Automation Platform documentation", ""),
           ),
           "Documentation", ""
         ),
