@@ -1,3 +1,5 @@
+This website is derived from initial work done in [the previous website repo](https://github.com/ansible-community/community-website/) under the CC BY-SA 4.0 License, © 2023 by it's [contributors](https://github.com/ansible-community/community-website/graphs/contributors).  
+
 This repository contains the assets required to build the Ansible Collaborative website. Welcome!
 
 ## Contributing to the website
