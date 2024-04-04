@@ -84,3 +84,28 @@
    padding-bottom:0px;
   }
 }
+
+@media (max-width:768px) {
+  /* Paragraph */
+  #content .body-content #platform .section-title .platform-row .platform-box-left p {
+   width:195% !important;
+  }
+
+ /* Heading */
+  #content .body-content #platform .section-title .platform-row .platform-box-left h3 {
+   width:195% !important;
+  }
+ 
+ /* Image */
+  #platform .platform-box-left img {
+   min-height:67px;
+   min-width:200px;
+  }
+}
+
+@media (max-width:480px) {
+  /* Image */
+  #platform .platform-box-left img {
+   min-height:83px;
+  }
+}

@@ -165,6 +165,7 @@ NAVIGATION_ALT_LINKS = {
             ("/ecosystem/", "Ansible ecosystem", ""),
             ("/blog/archive.html", "Blog", ""),
             ("/faq/", "Frequently asked questions", ""),
+            ("/events/", "Events", ""),
             ("/ansible-community-training/", "Ansible community training", ""),
             ("/contact-us/", "Contact us", ""),
           ),
@@ -272,6 +273,7 @@ PAGES = (
     ("pages/*.rst", "", "page.tmpl"),
     ("pages/*.txt", "", "page.tmpl"),
     ("pages/*.html", "", "page.tmpl"),
+    ("events/*.md", "event", "page.tmpl"),
 )
 
 
@@ -1439,6 +1441,7 @@ try:
     "ecosystem": load_data('data/ecosystem.yaml'),
     "homepage": load_data('data/homepage.yaml'),
     "training": load_data('data/training.yaml'),
+    "events": load_data('data/events.yaml'),
     }
 
 except ImportError:
