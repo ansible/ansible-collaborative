@@ -20,7 +20,7 @@ BLOG_AUTHOR = "Ansible Collaborative, et al"  # (translatable)
 BLOG_TITLE = "Ansible Collaborative"  # (translatable)
 # This is the main URL for your site. It will be used
 # in a prominent link. Don't forget the protocol (http/https)!
-SITE_URL = "https://ansible.com/"
+SITE_URL = "https://www.ansible.com/"
 # This is the URL where Nikola's output will be deployed.
 # If not set, defaults to SITE_URL
 # BASE_URL = "https://ansible.community/"
@@ -165,6 +165,7 @@ NAVIGATION_ALT_LINKS = {
             ("/ecosystem/", "Ansible ecosystem", ""),
             ("/blog/archive.html", "Blog", ""),
             ("/faq/", "Frequently asked questions", ""),
+            ("/events/", "Events", ""),
             ("/ansible-community-training/", "Ansible community training", ""),
             ("/contact-us/", "Contact us", ""),
           ),
@@ -272,6 +273,7 @@ PAGES = (
     ("pages/*.rst", "", "page.tmpl"),
     ("pages/*.txt", "", "page.tmpl"),
     ("pages/*.html", "", "page.tmpl"),
+    ("events/*.md", "event", "page.tmpl"),
 )
 
 
@@ -655,7 +657,7 @@ ARCHIVE_FILENAME = "archive.html"
 # Final location for the blog main RSS feed is:
 # output / TRANSLATION[lang] / RSS_PATH / RSS_FILENAME_BASE RSS_EXTENSION
 # (translatable)
-# RSS_PATH = ""
+RSS_PATH = "blog/"
 
 # Final location for the blog main Atom feed is:
 # output / TRANSLATION[lang] / ATOM_PATH / ATOM_FILENAME_BASE ATOM_EXTENSION
@@ -1439,6 +1441,7 @@ try:
     "ecosystem": load_data('data/ecosystem.yaml'),
     "homepage": load_data('data/homepage.yaml'),
     "training": load_data('data/training.yaml'),
+    "events": load_data('data/events.yaml'),
     }
 
 except ImportError:

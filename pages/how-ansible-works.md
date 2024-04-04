@@ -21,7 +21,7 @@ Red Hat Ansible Automation Platform is a subscription product built on the found
 This page will give you an overview of Ansible fundamentals that apply to both community Ansible and Red Hat Ansible Automation Platform. For more detail, please visit [http://docs.ansible.com/](docs.ansible.com).
 
 
-| Red Hat Ansible Automation Platform: A beginner’s guide <br><br>[Get the e-book](https://www.redhat.com/en/engage/redhat-ansible-automation-20220412) |   | Explore Ansible Automation Platform learning materials and tools<br><br>[Visit the learning hub](https://www.redhat.com/en/engage/automation-at-edge-20220727) |
+| Red Hat Ansible Automation Platform: A beginner’s guide <br><br>[Get the e-book](https://www.redhat.com/en/engage/redhat-ansible-automation-20220412){:target="_blank"} |   | Explore Ansible Automation Platform learning materials and tools<br><br>[Visit the learning hub](https://www.redhat.com/en/technologies/management/ansible/learn){:target="_blank"} |
 |-------------------------------------------------------------------------------:|---|-----------------------------------------------------------------------------------------------:|
 <br><br>
 
