@@ -12,6 +12,29 @@
 </head>
 <body id="top">
 
+<!--Red Hat AnsibleFest Banner code begins here-->
+<div class="banner">
+  <div class="banner__content">
+    <div class="banner__text">
+      <img src="/images/combo-logo.png"
+             alt="Combo RH Summit and AnsibleFest logo" />
+      Red Hat&reg; Summit and AnsibleFest, together again May 6-9.
+      <b><a href="https://www.redhat.com/en/summit" target="_blank">Register now</a>&ensp;<i class="fa fa-arrow-right" aria-hidden="true" /></b>
+    </div>
+    <button class="banner__close" type="button">
+    <span class="material-icons">
+      close
+    </span>
+    </button>
+  </div>
+</div>
+<script>
+  document.querySelector(".banner__close").addEventListener("click", function () {
+    this.closest(".banner").style.display = "none";
+  });
+</script>
+<!--Red Hat AnsibleFest Banner code ends here-->
+
 <div class="global-container" id="content" role="main">
   {% if permalink == '/' %}
     {% block hero_content %}{% endblock hero_content %}
