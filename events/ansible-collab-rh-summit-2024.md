@@ -35,7 +35,7 @@ These events are organized in various locations geographically, primarily target
 
 ## Schedule
 
-Here [click here](https://events.experiences.redhat.com/widget/redhat/sum24/SessionCatalog2024?tab.day=20240506&search=&search.communityday=1703716355611002CI3s){:target="_blank"} to see the full schedule and agenda.
+Here [click here](https://events.experiences.redhat.com/widget/redhat/sum24/SessionCatalog2024?tab.day=20240506&search.communityday=1703716355611002CI3s){:target="_blank"} to see the full schedule and agenda.
 
 ## Venue
 
