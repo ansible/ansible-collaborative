@@ -62,3 +62,59 @@ h5 {
 h6 {
   font-family: $font-display;
 }
+
+.banner {
+  background: #DCEDFE;
+}
+
+.banner__content {
+  padding: 16px;
+  max-width: 866.79px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  height: 78px;
+}
+
+.banner__text {
+  flex-grow: 1;
+  line-height: 1.4;
+  line-height:24px;
+  color:#151515;
+  transform:translatex(0px) translatey(0px);
+  font-size:12px;
+  display:inline-block;
+
+  p {
+    line-height:24px;
+    color:#151515;
+  }
+  b a {
+    padding-left:24px;
+    font-size:14px;
+    line-height:27px;
+    color:#0066cc;
+  }
+  b i {
+    color:#0066cc;
+  }
+  img {
+    padding-right:24px;
+    display:inline-block;
+    transform:translatex(0px) translatey(0px);
+    width:181px;
+    height:33px;
+    max-width:181px;
+  }
+}
+
+.banner__close {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.banner__text,
+.banner__close > span {
+  color: #000000;
+}
