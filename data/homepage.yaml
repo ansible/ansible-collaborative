@@ -180,3 +180,12 @@ links:
   platform:
     home: https://www.redhat.com/en/technologies/management/ansible
     use_cases: https://www.redhat.com/en/technologies/management/ansible/use-cases
+pac:
+  main: Automate Policy as Code for consistency and compliance
+  discover: Ansible’s automated Policy as Code capabilities will help you automate compliance and policy enforcement across the full operational life cycle that now includes AI—from creating automation to managing IT processes at scale. Join the Ansible Policy as Code advocacy group to learn best practices, share your ideas with others, and help to shape this technology as it develops.
+  cta: Get involved
+  link1: Customers
+  link1_url: https://forum.ansible.com/tag/policy-as-code
+  link2: Partners
+  link2_url: https://forum.ansible.com/tag/policy-as-code-partn
+  logo_alt: Red Hat Policy as Code logo
