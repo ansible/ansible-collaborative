@@ -91,3 +91,23 @@
    padding-bottom:0px;
   }
 }
+
+@media (max-width:767px){
+
+  /* Paragraph */
+  #pac .pac-box-right p{
+   transform:translatex(0px) translatey(0px);
+   width:45%;
+  }
+  
+  /* Heading */
+  #pac .pac-box-right h3{
+   width:45%;
+  }
+  
+  /* Pac */
+  #pac{
+   height:439px;
+  }
+  
+ }
