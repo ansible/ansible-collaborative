@@ -1,0 +1,21 @@
+{% extends "base.tmpl" %}
+{% block content %}
+  <div class="grid-wrapper events-page">
+    <div class="width-12-12 width-12-12-m events-page-title">
+      <h1>Upcoming Events</h1>
+    </div>
+    <!-- Start events list -->
+    {% for key, item in events.items() %}
+      <div class="events-project-card width-6-12 width-12-12-m" onclick="location.href='{{ item.link }}';" style="cursor: pointer;">
+        <div class="events-project-content">
+          <p>{{ item.dayofweek }}</p>
+          <h3>{{ item.day }}</h3>
+          <h4>{{ item.month }}</h4>
+          <h3>{{ item.year }}</h3>
+        </div>
+        <h3>{{ item.event }}</h3>
+      </div>
+    {% endfor %}
+    <!-- End events list -->
+  </div>
+{% endblock content %}

@@ -35,16 +35,16 @@ learn:
       link5_url: https://docs.ansible.com/ansible/latest/getting_started/get_started_inventory.html
     interactive_labs:
       heading: Interactive labs
-      link1: Create an Ansible collection
-      link1_url: https://play.instruqt.com/embedv2/redhat/tracks/ansible-community-creating-your-own-collection?token=em_zcnbza2ex66zqptw
-      link2: Test a pull request locally
-      link2_url: https://play.instruqt.com/embedv2/redhat/tracks/ansible-community-testing-pull-request-locally?token=em_6ke967cktu5m9cww
-      link3: Develop an Ansible module
-      link3_url: https://play.instruqt.com/embedv2/redhat/tracks/ansible-community-developing-ansible-module?token=em_W1mnN4dZouYAhFBI
-      link4: Fix bugs in Ansible code
-      link4_url: https://play.instruqt.com/embedv2/redhat/tracks/community-fixing-a-bug?token=em_l4flalsa12evd97a
-      link5: Add integration tests
-      link5_url: https://play.instruqt.com/embedv2/redhat/tracks/adding-integration-tests-to-ansible-collections?token=em_6uMp_ZmBv4Fuug-z
+      link1: Writing first Ansible playbook
+      link1_url: https://play.instruqt.com/redhat/invite/2uijms9cndx0
+      link2: Intro to Ansible automation controller
+      link2_url: https://play.instruqt.com/redhat/invite/2uijms9cndx0
+      link3: Get started with ansible-navigator
+      link3_url: https://play.instruqt.com/redhat/invite/2uijms9cndx0
+      link4: Get started with ansible-builder
+      link4_url: https://play.instruqt.com/redhat/invite/2uijms9cndx0
+      link5: Get started with Event-Driven Ansible and Ansible rulebooks
+      link5_url: https://play.instruqt.com/redhat/invite/2uijms9cndx0
 collection:
   title: Ansible collections
   intro: With Ansible Galaxy, you can jump-start your automation with pre-packaged roles and collections. Use this content in Ansible Playbooks to automate your work faster and improve productivity.
