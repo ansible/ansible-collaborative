@@ -64,6 +64,8 @@ Find answers to many frequency asked questions below.  Please share any addition
 
 [Q: How can I contribute back to the user ecosystem?](#17)
 
+[Q: Where can I find the blogs once on Ansible.com?](#18)
+
 ---
 
 # Core
@@ -228,3 +230,9 @@ Here are just a few examples:
 
 Want to get involved?
 Check out our [contributor resources](https://forum.ansible.com/pub/how-to-contribute) or chat with [other users](https://matrix.to/#/#social:ansible.com) - we'd love to have you.
+
+<a name="18">
+
+**Where can I find the blogs once on Ansible.com?**
+
+Click [here](https://www.ansible.com/blog/archive.html) to find the blog archive from Ansible.com.

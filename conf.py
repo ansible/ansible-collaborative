@@ -163,7 +163,7 @@ NAVIGATION_ALT_LINKS = {
           (
             ("/how-ansible-works/", "How Ansible works", ""),
             ("/ecosystem/", "Ansible ecosystem", ""),
-            ("/blog/archive.html", "Blog", ""),
+            ("/blog/index.html", "Blog", ""),
             ("/faq/", "Frequently asked questions", ""),
             ("/events/", "Events", ""),
             ("/ansible-community-training/", "Ansible community training", ""),
@@ -985,7 +985,7 @@ INDEX_TEASERS = True
 
 # 'Read more...' for the index page, if INDEX_TEASERS is True (translatable)
 #INDEX_READ_MORE_LINK = '<p class="more"><a href="{link}">{read_more}…</a></p>'
-INDEX_READ_MORE_LINK = ''
+INDEX_READ_MORE_LINK = '<p class="more"><a href="{link}">{read_more}…</a></p>'
 # 'Read more...' for the feeds, if FEED_TEASERS is True (translatable)
 FEED_READ_MORE_LINK = '<p><a href="{link}">{read_more}…</a> ({min_remaining_read})</p>'
 
@@ -1205,7 +1205,7 @@ MARKDOWN_EXTENSIONS = ['markdown.extensions.fenced_code', 'markdown.extensions.c
 
 # Modify the number of Post per Index Page
 # Defaults to 10
-# INDEX_DISPLAY_POST_COUNT = 10
+INDEX_DISPLAY_POST_COUNT = 5
 
 # By default, Nikola generates RSS files for the website and for tags, and
 # links to it.  Set this to False to disable everything RSS-related.

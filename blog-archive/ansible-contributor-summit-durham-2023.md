@@ -26,7 +26,7 @@ NC. Our previous experience co-locating the Contributor Summit with
 another related event was in February in Ghent, Belgium as part of
 CfgMgmtCamp 2023. It was so successful, we wanted to do it again with
 another great match.
-
+<!-- TEASER_END -->
 ## Hello, Durham!
 
 We will be meeting in the "Bull City", the home of Ansible itself and

@@ -17,7 +17,7 @@ Today, we're delighted to announce the launch of the new
 for questions and help, development discussions, events, and much more.
 Everyone is invited, whether you are an Ansible user, contributor or
 developer, we are all community! [Register here to join us](https://forum.ansible.com/signup?)!
-
+<!-- TEASER_END -->
 ## Hello Discourse!
 
 Here is a screenshot of the forum's main page:
