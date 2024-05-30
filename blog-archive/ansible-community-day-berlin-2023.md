@@ -23,7 +23,7 @@ AnsibleFest 2023, the community had the opportunity to meet in-person
 and get to know each other, learn a few things and share their knowledge
 using Ansible. It was such a great experience that we couldn't wait to
 have another. And here it is!
-
+<!-- TEASER_END -->
 ## Guten Tag Berlin!
 
 After two very successful Ansible Community Day events this year, the

@@ -15,7 +15,7 @@ For awhile, the Red Hat Ansible team behind the components Ansible automation hu
 The current Galaxy service has been running at galaxy.ansible.com for many years and is hugely successful in the community. It drives and nurtures Ansible adoption by sharing prebuilt Ansible content that solves many automation challenges.
 
 One of the statistics we are most proud of are the contributions of 33,965 individual automation answers by the community in either Ansible Content Collections or Ansible Roles. Some of the top ranking automation content includes AWS, VMware, Linux, and Windows. Community users are able to download content for free, self-supported and interact with authors via GitHub for any further help or enhancements.
-
+<!-- TEASER_END -->
 * We are excited to announce that the [galaxy.ansible.com](https://github.com/ansible/galaxy_ng/) code base is being updated with a host of exciting new features that the Ansible community can look forward to. Brought to you by the Red Hat Ansible team behind Ansible Automation Hub and Ansible Cloud Automation Hub on console.redhat.com, this new version will enhance the galaxy_ng code base that also serves the above listed components.
 As galaxy.ansible.com ages, the frameworks it sits on requires consistent maintenance for security vulnerabilities, including frequent patching. The team is committed to keeping Galaxy secure and high-functioning, so we set out to enable Galaxy with an automation hub, otherwise known as the [galaxy_ng](https://github.com/ansible/galaxy_ng/) codebase.
 
