@@ -301,3 +301,51 @@ vscode:
     github:
       link: "https://github.com/ansible/vscode-ansible"
       text: Source code
+ansible-community-package:
+  name: Ansible community package
+  description: The Ansible community package consists of ansible-core and a set of Ansible collections published as the Python `ansible` package, in tradition of the Ansible 2.9 and earlier "batteries included" releases.
+  logo: project-logos/ansible-community.svg
+  alt: Ansible community logo
+  resources:
+    pypi:
+      link: "https://pypi.org/project/ansible/"
+      text: PyPI page for Ansible community package
+    docs:
+      link: "https://ansible.readthedocs.io/projects/ansible-build-data/"
+      text: Documentation of package build process
+    github:
+      link: "https://github.com/ansible-community/ansible-build-data"
+      text: Source code of package build
+    antsibull:
+      link: "https://github.com/ansible-community/antsibull"
+      text: Source code of the Antsibull build tool
+antsibull-changelog:
+  name: Antsibull Changelog
+  description: A changelog generator used by ansible-core and Ansible collections.
+  logo: project-logos/ansible-community.svg
+  alt: Ansible community logo
+  resources:
+    docs:
+      link: "https://ansible.readthedocs.io/projects/antsibull-changelog/"
+      text: Documentation
+    github:
+      link: "https://github.com/ansible-community/antsibull-changelog"
+      text: Source code
+antsibull-docs:
+  name: Antsibull Docs
+  description: Tooling for building documenation for Ansible collections, ansible-core, and the Ansible community package.
+  logo: project-logos/ansible-community.svg
+  alt: Ansible community logo
+  resources:
+    docs:
+      link: "https://ansible.readthedocs.io/projects/antsibull-docs/"
+      text: Documentation
+    github:
+      link: "https://github.com/ansible-community/antsibull-docs"
+      text: Source code
+    library-python:
+      link: "https://github.com/ansible-community/antsibull-docs-parser"
+      text: Python library for parsing Ansible markup
+    library-typescript:
+      link: "https://github.com/ansible-community/antsibull-docs-ts"
+      text: TypeScript library for parsing Ansible markup
