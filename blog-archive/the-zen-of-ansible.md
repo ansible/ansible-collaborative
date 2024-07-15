@@ -213,7 +213,7 @@ automate. 
 This aphorism, like "readability counts", is also taken directly from
 "The Zen of Python" because you cannot improve upon perfection.
 
-In his essay on [Literate Programming, Charles Knuth](https://www-cs-faculty.stanford.edu/~knuth/lp.html) wrote,
+In his essay on [Literate Programming, Donald Knuth](https://www-cs-faculty.stanford.edu/~knuth/lp.html) wrote,
 "Instead of imagining that our main task is to instruct a computer what
 to do, let us concentrate rather on explaining to human beings what we
 want a computer to do." So it goes that if you cannot explain or
