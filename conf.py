@@ -1438,6 +1438,7 @@ try:
     from nikola.utils import load_data
     GLOBAL_CONTEXT = {
     "meta": load_data('data/meta.yaml'),
+    "banner": load_data('data/banner.yaml'),
     "ecosystem": load_data('data/ecosystem.yaml'),
     "homepage": load_data('data/homepage.yaml'),
     "training": load_data('data/training.yaml'),
