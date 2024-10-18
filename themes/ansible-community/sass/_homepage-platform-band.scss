@@ -42,8 +42,9 @@
     font-size: $font-md;
   }
   img {
-    width:200px;
-    height:67px;
+    width:230px;
+    height:70px;
+    object-fit:contain;
     padding-bottom:0px;
     margin-bottom:16px;
   }
@@ -94,18 +95,5 @@
  /* Heading */
   #content .body-content #platform .section-title .platform-row .platform-box-left h3 {
    width:195% !important;
-  }
- 
- /* Image */
-  #platform .platform-box-left img {
-   min-height:67px;
-   min-width:200px;
-  }
-}
-
-@media (max-width:480px) {
-  /* Image */
-  #platform .platform-box-left img {
-   min-height:83px;
   }
 }
